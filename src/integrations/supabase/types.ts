@@ -1170,6 +1170,63 @@ export type Database = {
           },
         ]
       }
+      listing_offers: {
+        Row: {
+          created_at: string | null
+          created_by: string | null
+          description: string | null
+          discount_amount: number | null
+          expiry_at: string | null
+          id: string
+          listing_id: string | null
+          offer_type: string | null
+          status: string | null
+          title: string
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          created_by?: string | null
+          description?: string | null
+          discount_amount?: number | null
+          expiry_at?: string | null
+          id?: string
+          listing_id?: string | null
+          offer_type?: string | null
+          status?: string | null
+          title: string
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          created_by?: string | null
+          description?: string | null
+          discount_amount?: number | null
+          expiry_at?: string | null
+          id?: string
+          listing_id?: string | null
+          offer_type?: string | null
+          status?: string | null
+          title?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "listing_offers_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "listing_offers_listing_id_fkey"
+            columns: ["listing_id"]
+            isOneToOne: false
+            referencedRelation: "listings"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       listings: {
         Row: {
           ai_generated_title: boolean | null

@@ -23,6 +23,7 @@ import Admin from "./pages/admin/index";
 import AdminAnalytics from "./pages/admin/analytics";
 import DeveloperAiSummary from "./pages/admin/developer-ai-summary";
 import CreditPacks from "./pages/admin/credit-packs";
+import ListingOffers from "./pages/admin/listing-offers";
 import NotFound from "./pages/404";
 
 const queryClient = new QueryClient();
@@ -53,6 +54,7 @@ const App = () => (
                 <Route path="/admin/analytics" element={<AdminAnalytics />} />
                 <Route path="/admin/developer-ai-summary" element={<DeveloperAiSummary />} />
                 <Route path="/admin/credit-packs" element={<CreditPacks />} />
+                <Route path="/admin/listing-offers" element={<ListingOffers />} />
                 <Route path="/404" element={<NotFound />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
