@@ -9,7 +9,109 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      [_ in never]: never
+      auth_sessions: {
+        Row: {
+          created_at: string | null
+          expires_at: string
+          id: string
+          is_active: boolean | null
+          session_token: string
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          expires_at: string
+          id?: string
+          is_active?: boolean | null
+          session_token: string
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          expires_at?: string
+          id?: string
+          is_active?: boolean | null
+          session_token?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "auth_sessions_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      users: {
+        Row: {
+          created_at: string | null
+          email: string
+          full_name: string
+          id: string
+          is_rera_verified: boolean | null
+          phone: string | null
+          rera_number: string | null
+          role: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          email: string
+          full_name: string
+          id?: string
+          is_rera_verified?: boolean | null
+          phone?: string | null
+          rera_number?: string | null
+          role?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          email?: string
+          full_name?: string
+          id?: string
+          is_rera_verified?: boolean | null
+          phone?: string | null
+          rera_number?: string | null
+          role?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      wallets: {
+        Row: {
+          balance: number | null
+          id: string
+          last_updated: string | null
+          status: string | null
+          user_id: string | null
+        }
+        Insert: {
+          balance?: number | null
+          id?: string
+          last_updated?: string | null
+          status?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          balance?: number | null
+          id?: string
+          last_updated?: string | null
+          status?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "wallets_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never

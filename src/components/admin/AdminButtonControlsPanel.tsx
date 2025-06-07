@@ -29,12 +29,12 @@ export const AdminButtonControlsPanel: React.FC = () => {
         .order('page_slug');
 
       if (error) throw error;
-      return data as UiButtonControl[];
+      return data;
     }
   });
 
   const updateMutation = useMutation({
-    mutationFn: async ({ id, updates }: { id: string; updates: Partial<UiButtonControl> }) => {
+    mutationFn: async ({ id, updates }: { id: string; updates: any }) => {
       const { error } = await supabase
         .from('ui_button_controls')
         .update(updates)
@@ -48,7 +48,7 @@ export const AdminButtonControlsPanel: React.FC = () => {
     }
   });
 
-  const handleEdit = (control: UiButtonControl) => {
+  const handleEdit = (control: any) => {
     setEditingPage(control.id);
     setFormData({
       allowed_variants: control.allowed_variants,
