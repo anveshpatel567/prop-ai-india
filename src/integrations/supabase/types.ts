@@ -202,6 +202,38 @@ export type Database = {
           },
         ]
       }
+      ai_faq_generations: {
+        Row: {
+          context: string
+          created_at: string | null
+          faq_markdown: string
+          generated_by: string | null
+          id: string
+        }
+        Insert: {
+          context: string
+          created_at?: string | null
+          faq_markdown: string
+          generated_by?: string | null
+          id?: string
+        }
+        Update: {
+          context?: string
+          created_at?: string | null
+          faq_markdown?: string
+          generated_by?: string | null
+          id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_faq_generations_generated_by_fkey"
+            columns: ["generated_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       ai_followups: {
         Row: {
           agent_id: string | null
@@ -731,6 +763,44 @@ export type Database = {
           },
         ]
       }
+      ai_recommender_optimizations: {
+        Row: {
+          affected_feature: string
+          applied_at: string | null
+          id: string
+          model_version: string
+          notes: string | null
+          optimization_type: string
+          user_id: string | null
+        }
+        Insert: {
+          affected_feature: string
+          applied_at?: string | null
+          id?: string
+          model_version: string
+          notes?: string | null
+          optimization_type: string
+          user_id?: string | null
+        }
+        Update: {
+          affected_feature?: string
+          applied_at?: string | null
+          id?: string
+          model_version?: string
+          notes?: string | null
+          optimization_type?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_recommender_optimizations_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       ai_resume_profiles: {
         Row: {
           created_at: string | null
@@ -850,6 +920,41 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "ai_search_history_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ai_search_rerankings: {
+        Row: {
+          created_at: string | null
+          id: string
+          original_query: string
+          reason_summary: string | null
+          reranked_results: string
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          original_query: string
+          reason_summary?: string | null
+          reranked_results: string
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          original_query?: string
+          reason_summary?: string | null
+          reranked_results?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_search_rerankings_user_id_fkey"
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "users"

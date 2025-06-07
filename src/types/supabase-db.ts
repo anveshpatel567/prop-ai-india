@@ -1217,6 +1217,84 @@ export interface Database {
           created_at?: string;
         };
       };
+      ai_recommender_optimizations: {
+        Row: {
+          id: string;
+          model_version: string;
+          user_id: string | null;
+          optimization_type: string;
+          affected_feature: string;
+          notes: string | null;
+          applied_at: string;
+        };
+        Insert: {
+          id?: string;
+          model_version: string;
+          user_id?: string | null;
+          optimization_type: string;
+          affected_feature: string;
+          notes?: string | null;
+          applied_at?: string;
+        };
+        Update: {
+          id?: string;
+          model_version?: string;
+          user_id?: string | null;
+          optimization_type?: string;
+          affected_feature?: string;
+          notes?: string | null;
+          applied_at?: string;
+        };
+      };
+      ai_faq_generations: {
+        Row: {
+          id: string;
+          context: string;
+          generated_by: string | null;
+          faq_markdown: string;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          context: string;
+          generated_by?: string | null;
+          faq_markdown: string;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          context?: string;
+          generated_by?: string | null;
+          faq_markdown?: string;
+          created_at?: string;
+        };
+      };
+      ai_search_rerankings: {
+        Row: {
+          id: string;
+          user_id: string;
+          original_query: string;
+          reranked_results: string;
+          reason_summary: string | null;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          user_id: string;
+          original_query: string;
+          reranked_results: string;
+          reason_summary?: string | null;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          user_id?: string;
+          original_query?: string;
+          reranked_results?: string;
+          reason_summary?: string | null;
+          created_at?: string;
+        };
+      };
     };
     Views: {};
     Functions: {};
