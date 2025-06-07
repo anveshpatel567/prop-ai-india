@@ -47,22 +47,24 @@ export function withMobileOptimization<T extends object>(
   return function MobileOptimizedComponent(props: T) {
     return (
       <div className="mobile-modal-container">
-        <style jsx>{`
-          .mobile-modal-container :global(.DialogContent) {
-            width: 95vw !important;
-            max-width: 28rem !important;
-            margin: auto !important;
-            max-height: 90vh !important;
-            overflow-y: auto !important;
-          }
-          
-          @media (min-width: 768px) {
-            .mobile-modal-container :global(.DialogContent) {
-              width: auto !important;
-              max-width: 32rem !important;
+        <style>
+          {`
+            .mobile-modal-container .DialogContent {
+              width: 95vw !important;
+              max-width: 28rem !important;
+              margin: auto !important;
+              max-height: 90vh !important;
+              overflow-y: auto !important;
             }
-          }
-        `}</style>
+            
+            @media (min-width: 768px) {
+              .mobile-modal-container .DialogContent {
+                width: auto !important;
+                max-width: 32rem !important;
+              }
+            }
+          `}
+        </style>
         <WrappedComponent {...props} />
       </div>
     );

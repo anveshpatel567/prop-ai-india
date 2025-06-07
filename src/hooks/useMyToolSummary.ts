@@ -10,6 +10,9 @@ export interface MyToolSummary {
   total_attempts: number;
   successful_attempts: number;
   blocked_attempts: number;
+  total_credits_used: number;
+  tools_used: number;
+  last_used_days_ago: number;
 }
 
 export function useMyToolSummary() {
@@ -20,7 +23,10 @@ export function useMyToolSummary() {
     credits_consumed: 0,
     total_attempts: 0,
     successful_attempts: 0,
-    blocked_attempts: 0
+    blocked_attempts: 0,
+    total_credits_used: 0,
+    tools_used: 0,
+    last_used_days_ago: 0
   });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -39,7 +45,7 @@ export function useMyToolSummary() {
       
       const { data, error } = await supabase
         .from('ai_tool_attempt_logs')
-        .select('tool_name, was_allowed, credits_required')
+        .select('tool_name, was_allowed, credits_required, attempted_at')
         .eq('user_id', user.id);
 
       if (error) throw error;
@@ -65,13 +71,26 @@ export function useMyToolSummary() {
       const successfulAttempts = data.filter(log => log.was_allowed).length;
       const blockedAttempts = data.filter(log => !log.was_allowed).length;
 
+      // Calculate days since last use
+      const lastAttempt = data.reduce((latest, log) => {
+        const attemptDate = new Date(log.attempted_at);
+        return attemptDate > latest ? attemptDate : latest;
+      }, new Date(0));
+      
+      const daysSinceLastUse = Math.floor(
+        (Date.now() - lastAttempt.getTime()) / (1000 * 60 * 60 * 24)
+      );
+
       setSummary({
         tools_tried: Object.keys(toolCounts).length,
         most_used_tool: mostUsedTool,
         credits_consumed: creditsConsumed,
         total_attempts: data.length,
         successful_attempts: successfulAttempts,
-        blocked_attempts: blockedAttempts
+        blocked_attempts: blockedAttempts,
+        total_credits_used: creditsConsumed, // Alias for backward compatibility
+        tools_used: Object.keys(toolCounts).length, // Alias for backward compatibility
+        last_used_days_ago: daysSinceLastUse
       });
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to fetch your summary');

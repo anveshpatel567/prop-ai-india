@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import { Navbar } from '@/components/layout/Navbar';
 import { Footer } from '@/components/layout/Footer';
 import { Toaster } from '@/components/ui/toaster';
@@ -48,60 +48,58 @@ import AdminQAToolsPage from '@/pages/admin/qa-tools';
 
 export const AppRoutes: React.FC = () => {
   return (
-    <Router>
-      <div className="min-h-screen flex flex-col">
-        <Navbar />
-        <main className="flex-grow">
-          <Routes>
-            {/* Public Routes */}
-            <Route path="/" element={<HomePage />} />
-            <Route path="/auth" element={<AuthPage />} />
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/register" element={<RegisterPage />} />
-            <Route path="/search" element={<SearchPage />} />
-            <Route path="/listing/all" element={<AllListingsPage />} />
-            <Route path="/compare" element={<ComparePage />} />
+    <div className="min-h-screen flex flex-col">
+      <Navbar />
+      <main className="flex-grow">
+        <Routes>
+          {/* Public Routes */}
+          <Route path="/" element={<HomePage />} />
+          <Route path="/auth" element={<AuthPage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
+          <Route path="/search" element={<SearchPage />} />
+          <Route path="/listing/all" element={<AllListingsPage />} />
+          <Route path="/compare" element={<ComparePage />} />
 
-            {/* Protected Routes */}
-            <Route path="/dashboard" element={<DashboardPage />} />
-            <Route path="/profile" element={<ProfilePage />} />
-            <Route path="/list-property" element={<ListPropertyPage />} />
-            <Route path="/listing/create" element={<ListingCreatePage />} />
+          {/* Protected Routes */}
+          <Route path="/dashboard" element={<DashboardPage />} />
+          <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/list-property" element={<ListPropertyPage />} />
+          <Route path="/listing/create" element={<ListingCreatePage />} />
 
-            {/* AI Tools */}
-            <Route path="/ai" element={<AiToolsPage />} />
-            <Route path="/my-ai-usage" element={<MyAiUsagePage />} />
-            <Route path="/tools/loan-optimizer" element={<LoanOptimizerPage />} />
-            <Route path="/tools/locality-report" element={<LocalityReportPage />} />
-            <Route path="/tools/seo-schema" element={<SeoSchemaPage />} />
-            <Route path="/tools/title-chain" element={<TitleChainPage />} />
+          {/* AI Tools */}
+          <Route path="/ai" element={<AiToolsPage />} />
+          <Route path="/my-ai-usage" element={<MyAiUsagePage />} />
+          <Route path="/tools/loan-optimizer" element={<LoanOptimizerPage />} />
+          <Route path="/tools/locality-report" element={<LocalityReportPage />} />
+          <Route path="/tools/seo-schema" element={<SeoSchemaPage />} />
+          <Route path="/tools/title-chain" element={<TitleChainPage />} />
 
-            {/* Seeker Tools */}
-            <Route path="/seeker/agent-match" element={<AgentMatchPage />} />
-            <Route path="/seeker/smart-matches" element={<SmartMatchesPage />} />
+          {/* Seeker Tools */}
+          <Route path="/seeker/agent-match" element={<AgentMatchPage />} />
+          <Route path="/seeker/smart-matches" element={<SmartMatchesPage />} />
 
-            {/* Agent Tools */}
-            <Route path="/agent/resume" element={<AgentResumePage />} />
+          {/* Agent Tools */}
+          <Route path="/agent/resume" element={<AgentResumePage />} />
 
-            {/* Admin Routes */}
-            <Route path="/admin" element={<AdminIndexPage />} />
-            <Route path="/admin/analytics" element={<AdminAnalyticsPage />} />
-            <Route path="/admin/ai-insights" element={<AdminAiInsightsPage />} />
-            <Route path="/admin/ai-oversight" element={<AdminAiOversightPage />} />
-            <Route path="/admin/qa-tools" element={<AdminQAToolsPage />} />
-            <Route path="/admin/campaign-insights" element={<AdminCampaignInsightsPage />} />
-            <Route path="/admin/credit-packs" element={<AdminCreditPacksPage />} />
-            <Route path="/admin/listing-offers" element={<AdminListingOffersPage />} />
-            <Route path="/admin/property-matches" element={<AdminPropertyMatchesPage />} />
-            <Route path="/admin/developer-ai-summary" element={<AdminDeveloperAiSummaryPage />} />
+          {/* Admin Routes */}
+          <Route path="/admin" element={<AdminIndexPage />} />
+          <Route path="/admin/analytics" element={<AdminAnalyticsPage />} />
+          <Route path="/admin/ai-insights" element={<AdminAiInsightsPage />} />
+          <Route path="/admin/ai-oversight" element={<AdminAiOversightPage />} />
+          <Route path="/admin/qa-tools" element={<AdminQAToolsPage />} />
+          <Route path="/admin/campaign-insights" element={<AdminCampaignInsightsPage />} />
+          <Route path="/admin/credit-packs" element={<AdminCreditPacksPage />} />
+          <Route path="/admin/listing-offers" element={<AdminListingOffersPage />} />
+          <Route path="/admin/property-matches" element={<AdminPropertyMatchesPage />} />
+          <Route path="/admin/developer-ai-summary" element={<AdminDeveloperAiSummaryPage />} />
 
-            {/* Catch all */}
-            <Route path="*" element={<NotFoundPage />} />
-          </Routes>
-        </main>
-        <Footer />
-        <Toaster />
-      </div>
-    </Router>
+          {/* Catch all */}
+          <Route path="*" element={<NotFoundPage />} />
+        </Routes>
+      </main>
+      <Footer />
+      <Toaster />
+    </div>
   );
 };

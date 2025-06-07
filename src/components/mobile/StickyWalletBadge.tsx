@@ -6,13 +6,15 @@ import { useWallet } from '@/context/WalletContext';
 import { cn } from '@/lib/utils';
 
 export const StickyWalletBadge: React.FC = () => {
-  const { balance, loading } = useWallet();
+  const { balance } = useWallet();
   const [isLow, setIsLow] = useState(false);
   const [shouldAnimate, setShouldAnimate] = useState(false);
 
+  const currentBalance = balance?.balance || 0;
+
   useEffect(() => {
     const lowThreshold = 50; // Credits below which we consider "low"
-    const newIsLow = balance < lowThreshold;
+    const newIsLow = currentBalance < lowThreshold;
     
     if (newIsLow && !isLow) {
       setShouldAnimate(true);
@@ -20,9 +22,9 @@ export const StickyWalletBadge: React.FC = () => {
     }
     
     setIsLow(newIsLow);
-  }, [balance, isLow]);
+  }, [currentBalance, isLow]);
 
-  if (loading) return null;
+  if (!balance) return null;
 
   return (
     <div className="fixed top-4 right-4 z-50 md:hidden">
@@ -38,7 +40,7 @@ export const StickyWalletBadge: React.FC = () => {
         ) : (
           <Wallet className="h-3 w-3" />
         )}
-        <span>{balance} credits</span>
+        <span>{currentBalance} credits</span>
       </Badge>
     </div>
   );

@@ -1,6 +1,7 @@
+
 import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
-import AppRoutes from './AppRoutes';
+import { AppRoutes } from './AppRoutes';
 import { AuthProvider } from './context/AuthContext';
 import { WalletProvider } from './context/WalletContext';
 import { Toaster } from '@/components/ui/toaster';
