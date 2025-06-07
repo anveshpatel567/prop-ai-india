@@ -362,6 +362,39 @@ export type Database = {
           },
         ]
       }
+      ai_enforcement_rules: {
+        Row: {
+          action: string
+          created_at: string | null
+          created_by: string | null
+          enabled: boolean | null
+          id: string
+          rule_condition: string
+          rule_name: string
+          target_module: string
+        }
+        Insert: {
+          action: string
+          created_at?: string | null
+          created_by?: string | null
+          enabled?: boolean | null
+          id?: string
+          rule_condition: string
+          rule_name: string
+          target_module: string
+        }
+        Update: {
+          action?: string
+          created_at?: string | null
+          created_by?: string | null
+          enabled?: boolean | null
+          id?: string
+          rule_condition?: string
+          rule_name?: string
+          target_module?: string
+        }
+        Relationships: []
+      }
       ai_engagement_audit: {
         Row: {
           action_type: string
@@ -1444,6 +1477,30 @@ export type Database = {
         }
         Relationships: []
       }
+      ai_model_freeze_logs: {
+        Row: {
+          frozen_at: string | null
+          frozen_by: string | null
+          id: string
+          model_version: string
+          reason: string
+        }
+        Insert: {
+          frozen_at?: string | null
+          frozen_by?: string | null
+          id?: string
+          model_version: string
+          reason: string
+        }
+        Update: {
+          frozen_at?: string | null
+          frozen_by?: string | null
+          id?: string
+          model_version?: string
+          reason?: string
+        }
+        Relationships: []
+      }
       ai_model_version_logs: {
         Row: {
           feature_area: string
@@ -2155,6 +2212,62 @@ export type Database = {
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ai_retrain_triggers: {
+        Row: {
+          id: string
+          requested_at: string | null
+          requested_by: string | null
+          status: string
+          trigger_reason: string
+        }
+        Insert: {
+          id?: string
+          requested_at?: string | null
+          requested_by?: string | null
+          status?: string
+          trigger_reason: string
+        }
+        Update: {
+          id?: string
+          requested_at?: string | null
+          requested_by?: string | null
+          status?: string
+          trigger_reason?: string
+        }
+        Relationships: []
+      }
+      ai_rule_violations: {
+        Row: {
+          auto_action_taken: boolean | null
+          detected_at: string | null
+          id: string
+          offending_value: string
+          rule_id: string | null
+        }
+        Insert: {
+          auto_action_taken?: boolean | null
+          detected_at?: string | null
+          id?: string
+          offending_value: string
+          rule_id?: string | null
+        }
+        Update: {
+          auto_action_taken?: boolean | null
+          detected_at?: string | null
+          id?: string
+          offending_value?: string
+          rule_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_rule_violations_rule_id_fkey"
+            columns: ["rule_id"]
+            isOneToOne: false
+            referencedRelation: "ai_enforcement_rules"
             referencedColumns: ["id"]
           },
         ]

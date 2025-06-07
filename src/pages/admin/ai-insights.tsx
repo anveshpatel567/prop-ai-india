@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Brain } from 'lucide-react';
 import { Navbar } from '@/components/layout/Navbar';
@@ -15,6 +14,10 @@ import { ToxicityDetectionPanel } from '@/components/admin/ToxicityDetectionPane
 import { DriftDetectionPanel } from '@/components/admin/DriftDetectionPanel';
 import { RestrictedInputLogsPanel } from '@/components/admin/RestrictedInputLogsPanel';
 import { ManualReviewFlagPanel } from '@/components/admin/ManualReviewFlagPanel';
+import { AiRuleManagerPanel } from '@/components/admin/AiRuleManagerPanel';
+import { AiRuleViolationsPanel } from '@/components/admin/AiRuleViolationsPanel';
+import { ModelFreezePanel } from '@/components/admin/ModelFreezePanel';
+import { RetrainTriggerPanel } from '@/components/admin/RetrainTriggerPanel';
 
 export default function AiInsightsPage() {
   return (
@@ -56,6 +59,16 @@ export default function AiInsightsPage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <RestrictedInputLogsPanel />
             <ManualReviewFlagPanel />
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <AiRuleManagerPanel />
+            <AiRuleViolationsPanel />
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <ModelFreezePanel />
+            <RetrainTriggerPanel />
           </div>
 
           <div className="grid grid-cols-1 gap-6">
