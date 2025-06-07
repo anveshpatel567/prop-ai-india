@@ -828,6 +828,44 @@ export type Database = {
           },
         ]
       }
+      ai_performance_evaluations: {
+        Row: {
+          ai_module: string
+          evaluated_at: string | null
+          evaluated_by: string | null
+          evaluation_context: string | null
+          feedback: string | null
+          id: string
+          quality_score: number | null
+        }
+        Insert: {
+          ai_module: string
+          evaluated_at?: string | null
+          evaluated_by?: string | null
+          evaluation_context?: string | null
+          feedback?: string | null
+          id?: string
+          quality_score?: number | null
+        }
+        Update: {
+          ai_module?: string
+          evaluated_at?: string | null
+          evaluated_by?: string | null
+          evaluation_context?: string | null
+          feedback?: string | null
+          id?: string
+          quality_score?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_performance_evaluations_evaluated_by_fkey"
+            columns: ["evaluated_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       ai_personalization_feedback: {
         Row: {
           created_at: string | null
@@ -907,6 +945,44 @@ export type Database = {
             columns: ["listing_id"]
             isOneToOne: false
             referencedRelation: "listings"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ai_prompt_tuning_logs: {
+        Row: {
+          admin_id: string | null
+          ai_module: string
+          id: string
+          new_prompt: string
+          old_prompt: string
+          reason_for_change: string | null
+          tuned_at: string | null
+        }
+        Insert: {
+          admin_id?: string | null
+          ai_module: string
+          id?: string
+          new_prompt: string
+          old_prompt: string
+          reason_for_change?: string | null
+          tuned_at?: string | null
+        }
+        Update: {
+          admin_id?: string | null
+          ai_module?: string
+          id?: string
+          new_prompt?: string
+          old_prompt?: string
+          reason_for_change?: string | null
+          tuned_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_prompt_tuning_logs_admin_id_fkey"
+            columns: ["admin_id"]
+            isOneToOne: false
+            referencedRelation: "users"
             referencedColumns: ["id"]
           },
         ]
@@ -1452,6 +1528,38 @@ export type Database = {
             columns: ["listing_id"]
             isOneToOne: false
             referencedRelation: "listings"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ai_visibility_tracking_logs: {
+        Row: {
+          ai_feature: string
+          id: string
+          interaction_taken: boolean | null
+          user_id: string | null
+          viewed_at: string | null
+        }
+        Insert: {
+          ai_feature: string
+          id?: string
+          interaction_taken?: boolean | null
+          user_id?: string | null
+          viewed_at?: string | null
+        }
+        Update: {
+          ai_feature?: string
+          id?: string
+          interaction_taken?: boolean | null
+          user_id?: string | null
+          viewed_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_visibility_tracking_logs_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
             referencedColumns: ["id"]
           },
         ]

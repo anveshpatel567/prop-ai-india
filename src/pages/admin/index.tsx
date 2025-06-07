@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Navbar } from '../../components/layout/Navbar';
 import { Footer } from '../../components/layout/Footer';
@@ -7,6 +8,9 @@ import AdminButtonControlsPanel from '../../components/admin/AdminButtonControls
 import RecommendationOverridePanel from '../../components/ai-tools/RecommendationOverridePanel';
 import PricingFeedbackPanel from '../../components/ai-tools/PricingFeedbackPanel';
 import MarketPressurePanel from '../../components/ai-tools/MarketPressurePanel';
+import AiPromptTuningLogPanel from '../../components/ai-tools/AiPromptTuningLogPanel';
+import AiVisibilityTrackingPanel from '../../components/ai-tools/AiVisibilityTrackingPanel';
+import AiPerformanceEvaluationPanel from '../../components/ai-tools/AiPerformanceEvaluationPanel';
 
 const Admin: React.FC = () => {
   const { user } = useAuth();
@@ -114,11 +118,18 @@ const Admin: React.FC = () => {
         {/* Button Controls Panel */}
         <AdminButtonControlsPanel />
 
-        {/* New AI Analytics Panels */}
+        {/* AI Analytics Panels - Batches 28-30 */}
         <div className="grid lg:grid-cols-3 gap-8 mt-8">
           <RecommendationOverridePanel />
           <PricingFeedbackPanel />
           <MarketPressurePanel />
+        </div>
+
+        {/* AI Visibility & Performance Panels - Batches 31-33 */}
+        <div className="grid lg:grid-cols-3 gap-8 mt-8">
+          <AiPromptTuningLogPanel />
+          <AiVisibilityTrackingPanel />
+          <AiPerformanceEvaluationPanel />
         </div>
       </div>
       <Footer />
