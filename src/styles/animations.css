@@ -20,12 +20,40 @@
   }
 }
 
+@keyframes float-slow {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes fadein {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .animate-scale-up {
   animation: scale-up 0.4s ease-out;
 }
 
 .animate-pulse-glow {
   animation: pulse-glow 2s ease-in-out infinite;
+}
+
+.animate-float-slow {
+  animation: float-slow 6s ease-in-out infinite;
+}
+
+.animate-fadein {
+  animation: fadein 0.8s ease-out;
 }
 
 /* Fire gradient background for auth */
@@ -37,4 +65,25 @@
     rgba(255, 106, 0, 0.1) 75%,
     rgba(255, 60, 56, 0.1) 100%
   );
+}
+
+/* Premium glassmorphic effects */
+.glass-card {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.glow-hover:hover {
+  box-shadow: 0 0 12px rgba(255, 106, 0, 0.4);
+  transition: box-shadow 0.3s ease-in-out;
+}
+
+/* Hero background smoke effect */
+.hero-smoke {
+  background-image: radial-gradient(circle at center, rgba(255,255,255,0.05), transparent);
+}
+
+.hero-gradient {
+  background: linear-gradient(135deg, rgba(255, 218, 185, 0.1) 0%, transparent 50%, transparent 100%);
 }

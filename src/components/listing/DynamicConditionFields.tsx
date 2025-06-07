@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { ListingCondition } from '../../types';
+import { getSafeSelectValue, getSafeSelectLabel } from '../../utils/selectUtils';
 
 interface DynamicConditionFieldsProps {
   conditions: ListingCondition[];
@@ -22,15 +23,15 @@ export const DynamicConditionFields: React.FC<DynamicConditionFieldsProps> = ({
       case 'dropdown':
         return (
           <select
-            value={value}
-            onChange={(e) => onChange(condition.id, e.target.value)}
+            value={getSafeSelectValue(value)}
+            onChange={(e) => onChange(condition.id, e.target.value === '-' ? '' : e.target.value)}
             className="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl 
               glow-focus transition-all duration-200 font-inter"
           >
-            <option value="">Select {condition.label}</option>
+            <option value="-">Select {condition.label}</option>
             {condition.options?.map((option, index) => (
-              <option key={index} value={option}>
-                {option}
+              <option key={index} value={getSafeSelectValue(option)}>
+                {getSafeSelectLabel(option)}
               </option>
             ))}
           </select>
