@@ -1,3 +1,4 @@
+
 import React from 'react';
 import AdminAnalyticsPanel from '@/components/admin/AdminAnalyticsPanel';
 import DeveloperAiUsagePanel from '@/components/admin/DeveloperAiUsagePanel';
@@ -47,6 +48,10 @@ import { HallucinationRiskPanel } from '@/components/admin/HallucinationRiskPane
 import { AnomalyLogPanel } from '@/components/admin/AnomalyLogPanel';
 import { AgentBehaviorLogPanel } from '@/components/admin/AgentBehaviorLogPanel';
 import { BehaviorChangeRequestPanel } from '@/components/admin/BehaviorChangeRequestPanel';
+import { ShadowbanManagerPanel } from '@/components/admin/ShadowbanManagerPanel';
+import { ThrottleZonePanel } from '@/components/admin/ThrottleZonePanel';
+import { FlaggedUserPanel } from '@/components/admin/FlaggedUserPanel';
+import { UserRestorationPanel } from '@/components/admin/UserRestorationPanel';
 
 export function AdminPanelsGrid(): JSX.Element {
   return (
@@ -169,6 +174,16 @@ export function AdminPanelsGrid(): JSX.Element {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
         <AgentBehaviorLogPanel />
         <BehaviorChangeRequestPanel />
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+        <ShadowbanManagerPanel />
+        <ThrottleZonePanel />
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+        <FlaggedUserPanel />
+        <UserRestorationPanel />
       </div>
     </>
   );

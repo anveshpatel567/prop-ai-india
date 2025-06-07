@@ -843,6 +843,33 @@ export type Database = {
         }
         Relationships: []
       }
+      ai_flagged_users: {
+        Row: {
+          flag_reason: string
+          flag_type: string
+          flagged_at: string | null
+          flagged_by: string | null
+          id: string
+          user_id: string | null
+        }
+        Insert: {
+          flag_reason: string
+          flag_type: string
+          flagged_at?: string | null
+          flagged_by?: string | null
+          id?: string
+          user_id?: string | null
+        }
+        Update: {
+          flag_reason?: string
+          flag_type?: string
+          flagged_at?: string | null
+          flagged_by?: string | null
+          id?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       ai_followup_reminders: {
         Row: {
           agent_id: string | null
@@ -2842,6 +2869,87 @@ export type Database = {
           id?: string
           reviewed?: boolean | null
           suggested_text?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      ai_user_restoration_logs: {
+        Row: {
+          id: string
+          restoration_reason: string | null
+          restoration_type: string
+          restored_at: string | null
+          restored_by: string | null
+          user_id: string | null
+        }
+        Insert: {
+          id?: string
+          restoration_reason?: string | null
+          restoration_type: string
+          restored_at?: string | null
+          restored_by?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          id?: string
+          restoration_reason?: string | null
+          restoration_type?: string
+          restored_at?: string | null
+          restored_by?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      ai_user_shadowban_logs: {
+        Row: {
+          banned_by: string | null
+          id: string
+          reason: string
+          shadowban_end: string | null
+          shadowban_start: string | null
+          user_id: string | null
+        }
+        Insert: {
+          banned_by?: string | null
+          id?: string
+          reason: string
+          shadowban_end?: string | null
+          shadowban_start?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          banned_by?: string | null
+          id?: string
+          reason?: string
+          shadowban_end?: string | null
+          shadowban_start?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      ai_user_throttle_zones: {
+        Row: {
+          id: string
+          imposed_at: string | null
+          imposed_by: string | null
+          throttle_level: string | null
+          throttle_reason: string
+          user_id: string | null
+        }
+        Insert: {
+          id?: string
+          imposed_at?: string | null
+          imposed_by?: string | null
+          throttle_level?: string | null
+          throttle_reason: string
+          user_id?: string | null
+        }
+        Update: {
+          id?: string
+          imposed_at?: string | null
+          imposed_by?: string | null
+          throttle_level?: string | null
+          throttle_reason?: string
           user_id?: string | null
         }
         Relationships: []

@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Brain } from 'lucide-react';
 import { Navbar } from '@/components/layout/Navbar';
@@ -22,6 +23,10 @@ import { HallucinationRiskPanel } from '@/components/admin/HallucinationRiskPane
 import { AnomalyLogPanel } from '@/components/admin/AnomalyLogPanel';
 import { AgentBehaviorLogPanel } from '@/components/admin/AgentBehaviorLogPanel';
 import { BehaviorChangeRequestPanel } from '@/components/admin/BehaviorChangeRequestPanel';
+import { ShadowbanManagerPanel } from '@/components/admin/ShadowbanManagerPanel';
+import { ThrottleZonePanel } from '@/components/admin/ThrottleZonePanel';
+import { FlaggedUserPanel } from '@/components/admin/FlaggedUserPanel';
+import { UserRestorationPanel } from '@/components/admin/UserRestorationPanel';
 
 export default function AiInsightsPage() {
   return (
@@ -83,6 +88,16 @@ export default function AiInsightsPage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <AgentBehaviorLogPanel />
             <BehaviorChangeRequestPanel />
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <ShadowbanManagerPanel />
+            <ThrottleZonePanel />
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <FlaggedUserPanel />
+            <UserRestorationPanel />
           </div>
 
           <div className="grid grid-cols-1 gap-6">
