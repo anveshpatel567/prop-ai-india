@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Shield, Users, CreditCard, BarChart, Zap, Lightbulb } from 'lucide-react';
 import { Navbar } from '@/components/layout/Navbar';
@@ -22,6 +21,9 @@ import { AiOutputQualityRatingsPanel } from '@/components/admin/AiOutputQualityR
 import { LatencyIncidentPanel } from '@/components/admin/LatencyIncidentPanel';
 import { PromptRegenLogsPanel } from '@/components/admin/PromptRegenLogsPanel';
 import { HallucinationReviewPanel } from '@/components/admin/HallucinationReviewPanel';
+import { AiInputTracePanel } from '@/components/admin/AiInputTracePanel';
+import { AiInfluencePanel } from '@/components/admin/AiInfluencePanel';
+import { ModelVersionTrackerPanel } from '@/components/admin/ModelVersionTrackerPanel';
 
 export default function AdminPage() {
   return (
@@ -134,6 +136,12 @@ export default function AdminPage() {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+          <AiInputTracePanel />
+          <AiInfluencePanel />
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+          <ModelVersionTrackerPanel />
           <div className="bg-white p-6 rounded-lg shadow-sm border">
             <div className="flex items-center gap-2 mb-4">
               <BarChart className="h-5 w-5 text-gray-500" />
@@ -151,7 +159,9 @@ export default function AdminPage() {
               </a>
             </div>
           </div>
-          
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
           <div className="bg-white p-6 rounded-lg shadow-sm border">
             <div className="flex items-center gap-2 mb-4">
               <Zap className="h-5 w-5 text-blue-500" />

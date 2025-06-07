@@ -614,6 +614,33 @@ export type Database = {
         }
         Relationships: []
       }
+      ai_input_trace_logs: {
+        Row: {
+          feature_area: string
+          id: string
+          input_data: Json
+          logged_at: string | null
+          trace_level: string
+          user_id: string | null
+        }
+        Insert: {
+          feature_area: string
+          id?: string
+          input_data: Json
+          logged_at?: string | null
+          trace_level: string
+          user_id?: string | null
+        }
+        Update: {
+          feature_area?: string
+          id?: string
+          input_data?: Json
+          logged_at?: string | null
+          trace_level?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       ai_interaction_logs: {
         Row: {
           action_type: string
@@ -1084,6 +1111,33 @@ export type Database = {
         }
         Relationships: []
       }
+      ai_model_version_logs: {
+        Row: {
+          feature_area: string
+          id: string
+          model_name: string
+          notes: string | null
+          timestamp: string | null
+          version: string
+        }
+        Insert: {
+          feature_area: string
+          id?: string
+          model_name: string
+          notes?: string | null
+          timestamp?: string | null
+          version: string
+        }
+        Update: {
+          feature_area?: string
+          id?: string
+          model_name?: string
+          notes?: string | null
+          timestamp?: string | null
+          version?: string
+        }
+        Relationships: []
+      }
       ai_negotiation_logs: {
         Row: {
           agent_id: string | null
@@ -1144,6 +1198,36 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      ai_output_influence_logs: {
+        Row: {
+          feature_name: string
+          id: string
+          influence_weights: number[]
+          influencing_factors: string[]
+          output_summary: string
+          recorded_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          feature_name: string
+          id?: string
+          influence_weights: number[]
+          influencing_factors: string[]
+          output_summary: string
+          recorded_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          feature_name?: string
+          id?: string
+          influence_weights?: number[]
+          influencing_factors?: string[]
+          output_summary?: string
+          recorded_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
       }
       ai_output_quality_ratings: {
         Row: {
