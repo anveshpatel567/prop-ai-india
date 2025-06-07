@@ -7,6 +7,19 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
+interface TitleChainEvent {
+  id: string;
+  event_label: string;
+  event_date: string;
+  description?: string;
+}
+
+interface TitleChainResponse {
+  events: TitleChainEvent[];
+  property_id: string;
+  confidence_score: number;
+}
+
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
@@ -23,6 +36,7 @@ serve(async (req) => {
     if (!user) throw new Error('Unauthorized');
 
     const { property_id } = await req.json();
+    if (!property_id) throw new Error('Property ID is required');
 
     // Check user wallet balance
     const { data: wallet } = await supabaseClient
@@ -35,13 +49,30 @@ serve(async (req) => {
       throw new Error('Insufficient credits');
     }
 
-    // Simulate AI title chain analysis
-    const mockChain = {
-      steps: [
-        { description: "Original property registration", date: "2010-03-15", owner: "John Smith" },
-        { description: "Property transferred via sale deed", date: "2015-08-22", owner: "Mary Johnson" },
-        { description: "Current ownership established", date: "2020-12-10", owner: "ABC Realty Corp" }
-      ],
+    // Generate mock title chain events
+    const mockEvents: TitleChainEvent[] = [
+      {
+        id: crypto.randomUUID(),
+        event_label: "Original Purchase",
+        event_date: "2010-03-15T00:00:00.000Z",
+        description: "Property originally purchased by John Smith from ABC Development"
+      },
+      {
+        id: crypto.randomUUID(),
+        event_label: "Transfer via Sale Deed",
+        event_date: "2015-08-22T00:00:00.000Z",
+        description: "Property transferred to Mary Johnson through registered sale deed"
+      },
+      {
+        id: crypto.randomUUID(),
+        event_label: "Current Ownership",
+        event_date: "2020-12-10T00:00:00.000Z",
+        description: "Current ownership established under XYZ Realty Corp"
+      }
+    ];
+
+    const titleChainData = {
+      events: mockEvents,
       verification_status: "verified",
       encumbrances: [],
       liens: []
@@ -53,7 +84,7 @@ serve(async (req) => {
       .insert({
         user_id: user.id,
         property_id,
-        chain_json: mockChain,
+        chain_json: titleChainData,
         confidence_score: 0.92
       })
       .select()
@@ -77,10 +108,13 @@ serve(async (req) => {
         description: 'AI Title Chain Generation'
       });
 
-    return new Response(JSON.stringify({ 
-      title_chain: chainResult,
-      steps_found: mockChain.steps.length 
-    }), {
+    const response: TitleChainResponse = {
+      events: mockEvents,
+      property_id,
+      confidence_score: 0.92
+    };
+
+    return new Response(JSON.stringify(response), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });
   } catch (error) {

@@ -16,7 +16,7 @@ export const Navbar: React.FC = () => {
   };
 
   return (
-    <nav className="bg-white shadow-lg border-b border-orange-100">
+    <nav className="bg-white shadow-lg border-b border-orange-100 sticky top-0 z-40">
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center h-16">
           <Link to="/" className="flex items-center space-x-2">
@@ -30,23 +30,23 @@ export const Navbar: React.FC = () => {
               <>
                 <Link to="/dashboard" className="flex items-center space-x-1 text-gray-700 hover:text-orange-600 transition-colors">
                   <Home className="h-4 w-4" />
-                  <span>Dashboard</span>
+                  <span className="hidden sm:inline">Dashboard</span>
                 </Link>
                 
                 <Link to="/ai" className="flex items-center space-x-1 text-gray-700 hover:text-orange-600 transition-colors">
                   <Zap className="h-4 w-4" />
-                  <span>AI Tools</span>
+                  <span className="hidden sm:inline">AI Tools</span>
                 </Link>
 
                 <Link to="/my-ai-usage" className="flex items-center space-x-1 text-gray-700 hover:text-orange-600 transition-colors">
                   <BarChart3 className="h-4 w-4" />
-                  <span>Usage</span>
+                  <span className="hidden sm:inline">Usage</span>
                 </Link>
 
                 {user.role === 'admin' && (
                   <Link to="/admin" className="flex items-center space-x-1 text-gray-700 hover:text-orange-600 transition-colors">
                     <Settings className="h-4 w-4" />
-                    <span>Admin</span>
+                    <span className="hidden sm:inline">Admin</span>
                   </Link>
                 )}
 
@@ -54,7 +54,7 @@ export const Navbar: React.FC = () => {
 
                 <Link to="/profile" className="flex items-center space-x-1 text-gray-700 hover:text-orange-600 transition-colors">
                   <User className="h-4 w-4" />
-                  <span>Profile</span>
+                  <span className="hidden sm:inline">Profile</span>
                 </Link>
 
                 <Button
@@ -64,12 +64,12 @@ export const Navbar: React.FC = () => {
                   className="flex items-center space-x-1 border-orange-200 text-orange-600 hover:bg-orange-50"
                 >
                   <LogOut className="h-4 w-4" />
-                  <span>Logout</span>
+                  <span className="hidden sm:inline">Logout</span>
                 </Button>
               </>
             ) : (
               <Link to="/login">
-                <button className="bg-gradient-to-r from-orange-500 to-red-500 text-white font-semibold px-6 py-2 rounded-xl shadow-md hover:shadow-lg hover:shadow-orange-400/30 transition-all duration-300 transform hover:scale-105">
+                <button className="bg-gradient-to-r from-orange-500 to-red-500 text-white font-semibold px-6 py-2 rounded-xl shadow-md hover:shadow-lg hover:shadow-orange-400/40 transition-all duration-300 transform hover:scale-105 hover:from-orange-600 hover:to-red-600">
                   Start Now
                 </button>
               </Link>
