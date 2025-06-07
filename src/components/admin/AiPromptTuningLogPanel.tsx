@@ -8,11 +8,11 @@ import { Settings, Edit, User } from 'lucide-react';
 
 export default function AiPromptTuningLogPanel() {
   const { user } = useAuth();
-  const { tuningLogs, loading, fetchTuningLogs } = useAiPromptTuning();
+  const { tuningLogs, loading, fetchPromptTuningLogs } = useAiPromptTuning();
 
   useEffect(() => {
     if (user?.role === 'admin') {
-      fetchTuningLogs();
+      fetchPromptTuningLogs();
     }
   }, [user?.role]);
 
