@@ -1,3 +1,4 @@
+
 import { UserRole } from './global';
 
 export interface Database {
@@ -864,6 +865,251 @@ export interface Database {
           agent_id?: string;
           city?: string;
           activity_score?: number;
+          created_at?: string;
+          updated_at?: string;
+        };
+      };
+      crm_ai_trails: {
+        Row: {
+          id: string;
+          lead_id: string;
+          user_id: string;
+          ai_tool: string;
+          suggestion: string | null;
+          credits_used: number;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          lead_id: string;
+          user_id: string;
+          ai_tool: string;
+          suggestion?: string | null;
+          credits_used?: number;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          lead_id?: string;
+          user_id?: string;
+          ai_tool?: string;
+          suggestion?: string | null;
+          credits_used?: number;
+          created_at?: string;
+          updated_at?: string;
+        };
+      };
+      lead_scores: {
+        Row: {
+          id: string;
+          lead_id: string;
+          score: number;
+          score_factors: string | null;
+          calculated_at: string | null;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          lead_id: string;
+          score?: number;
+          score_factors?: string | null;
+          calculated_at?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          lead_id?: string;
+          score?: number;
+          score_factors?: string | null;
+          calculated_at?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+      };
+      ai_listing_heatmaps: {
+        Row: {
+          id: string;
+          listing_id: string;
+          views_count: number;
+          interest_score: number;
+          engagement_rate: number;
+          last_calculated: string | null;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          listing_id: string;
+          views_count?: number;
+          interest_score?: number;
+          engagement_rate?: number;
+          last_calculated?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          listing_id?: string;
+          views_count?: number;
+          interest_score?: number;
+          engagement_rate?: number;
+          last_calculated?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+      };
+      ai_engagement_audit: {
+        Row: {
+          id: string;
+          user_id: string;
+          listing_id: string;
+          action_type: string;
+          interaction_data: string | null;
+          session_id: string | null;
+          duration_seconds: number | null;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          user_id: string;
+          listing_id: string;
+          action_type: string;
+          interaction_data?: string | null;
+          session_id?: string | null;
+          duration_seconds?: number | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          user_id?: string;
+          listing_id?: string;
+          action_type?: string;
+          interaction_data?: string | null;
+          session_id?: string | null;
+          duration_seconds?: number | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+      };
+      listing_offer_logs: {
+        Row: {
+          id: string;
+          listing_id: string;
+          offered_by: string;
+          offer_amount: number;
+          offer_status: 'pending' | 'accepted' | 'rejected' | 'expired';
+          expires_at: string | null;
+          response_message: string | null;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          listing_id: string;
+          offered_by: string;
+          offer_amount: number;
+          offer_status?: 'pending' | 'accepted' | 'rejected' | 'expired';
+          expires_at?: string | null;
+          response_message?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          listing_id?: string;
+          offered_by?: string;
+          offer_amount?: number;
+          offer_status?: 'pending' | 'accepted' | 'rejected' | 'expired';
+          expires_at?: string | null;
+          response_message?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+      };
+      ai_negotiation_logs: {
+        Row: {
+          id: string;
+          listing_id: string;
+          seeker_id: string;
+          agent_id: string;
+          negotiation_step: string | null;
+          ai_suggestion: string | null;
+          user_response: string | null;
+          step_outcome: string | null;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          listing_id: string;
+          seeker_id: string;
+          agent_id: string;
+          negotiation_step?: string | null;
+          ai_suggestion?: string | null;
+          user_response?: string | null;
+          step_outcome?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          listing_id?: string;
+          seeker_id?: string;
+          agent_id?: string;
+          negotiation_step?: string | null;
+          ai_suggestion?: string | null;
+          user_response?: string | null;
+          step_outcome?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+      };
+      agent_campaign_logs: {
+        Row: {
+          id: string;
+          agent_id: string;
+          campaign_name: string;
+          campaign_type: 'whatsapp' | 'sms' | 'email';
+          target_count: number;
+          sent_count: number;
+          response_count: number;
+          campaign_status: 'draft' | 'active' | 'paused' | 'completed';
+          started_at: string | null;
+          completed_at: string | null;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          agent_id: string;
+          campaign_name: string;
+          campaign_type: 'whatsapp' | 'sms' | 'email';
+          target_count?: number;
+          sent_count?: number;
+          response_count?: number;
+          campaign_status?: 'draft' | 'active' | 'paused' | 'completed';
+          started_at?: string | null;
+          completed_at?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          agent_id?: string;
+          campaign_name?: string;
+          campaign_type?: 'whatsapp' | 'sms' | 'email';
+          target_count?: number;
+          sent_count?: number;
+          response_count?: number;
+          campaign_status?: 'draft' | 'active' | 'paused' | 'completed';
+          started_at?: string | null;
+          completed_at?: string | null;
           created_at?: string;
           updated_at?: string;
         };

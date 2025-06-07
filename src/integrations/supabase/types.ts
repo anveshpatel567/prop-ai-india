@@ -9,6 +9,59 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      agent_campaign_logs: {
+        Row: {
+          agent_id: string | null
+          campaign_name: string
+          campaign_status: string | null
+          campaign_type: string | null
+          completed_at: string | null
+          created_at: string | null
+          id: string
+          response_count: number | null
+          sent_count: number | null
+          started_at: string | null
+          target_count: number | null
+          updated_at: string | null
+        }
+        Insert: {
+          agent_id?: string | null
+          campaign_name: string
+          campaign_status?: string | null
+          campaign_type?: string | null
+          completed_at?: string | null
+          created_at?: string | null
+          id?: string
+          response_count?: number | null
+          sent_count?: number | null
+          started_at?: string | null
+          target_count?: number | null
+          updated_at?: string | null
+        }
+        Update: {
+          agent_id?: string | null
+          campaign_name?: string
+          campaign_status?: string | null
+          campaign_type?: string | null
+          completed_at?: string | null
+          created_at?: string | null
+          id?: string
+          response_count?: number | null
+          sent_count?: number | null
+          started_at?: string | null
+          target_count?: number | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "agent_campaign_logs_agent_id_fkey"
+            columns: ["agent_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       agent_heatmaps: {
         Row: {
           activity_score: number | null
@@ -38,6 +91,57 @@ export type Database = {
           {
             foreignKeyName: "agent_heatmaps_agent_id_fkey"
             columns: ["agent_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ai_engagement_audit: {
+        Row: {
+          action_type: string
+          created_at: string | null
+          duration_seconds: number | null
+          id: string
+          interaction_data: string | null
+          listing_id: string | null
+          session_id: string | null
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          action_type: string
+          created_at?: string | null
+          duration_seconds?: number | null
+          id?: string
+          interaction_data?: string | null
+          listing_id?: string | null
+          session_id?: string | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          action_type?: string
+          created_at?: string | null
+          duration_seconds?: number | null
+          id?: string
+          interaction_data?: string | null
+          listing_id?: string | null
+          session_id?: string | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_engagement_audit_listing_id_fkey"
+            columns: ["listing_id"]
+            isOneToOne: false
+            referencedRelation: "listings"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ai_engagement_audit_user_id_fkey"
+            columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "users"
             referencedColumns: ["id"]
@@ -91,6 +195,47 @@ export type Database = {
             columns: ["lead_id"]
             isOneToOne: false
             referencedRelation: "leads"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ai_listing_heatmaps: {
+        Row: {
+          created_at: string | null
+          engagement_rate: number | null
+          id: string
+          interest_score: number | null
+          last_calculated: string | null
+          listing_id: string | null
+          updated_at: string | null
+          views_count: number | null
+        }
+        Insert: {
+          created_at?: string | null
+          engagement_rate?: number | null
+          id?: string
+          interest_score?: number | null
+          last_calculated?: string | null
+          listing_id?: string | null
+          updated_at?: string | null
+          views_count?: number | null
+        }
+        Update: {
+          created_at?: string | null
+          engagement_rate?: number | null
+          id?: string
+          interest_score?: number | null
+          last_calculated?: string | null
+          listing_id?: string | null
+          updated_at?: string | null
+          views_count?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_listing_heatmaps_listing_id_fkey"
+            columns: ["listing_id"]
+            isOneToOne: true
+            referencedRelation: "listings"
             referencedColumns: ["id"]
           },
         ]
@@ -188,6 +333,67 @@ export type Database = {
           {
             foreignKeyName: "ai_listing_videos_user_id_fkey"
             columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ai_negotiation_logs: {
+        Row: {
+          agent_id: string | null
+          ai_suggestion: string | null
+          created_at: string | null
+          id: string
+          listing_id: string | null
+          negotiation_step: string | null
+          seeker_id: string | null
+          step_outcome: string | null
+          updated_at: string | null
+          user_response: string | null
+        }
+        Insert: {
+          agent_id?: string | null
+          ai_suggestion?: string | null
+          created_at?: string | null
+          id?: string
+          listing_id?: string | null
+          negotiation_step?: string | null
+          seeker_id?: string | null
+          step_outcome?: string | null
+          updated_at?: string | null
+          user_response?: string | null
+        }
+        Update: {
+          agent_id?: string | null
+          ai_suggestion?: string | null
+          created_at?: string | null
+          id?: string
+          listing_id?: string | null
+          negotiation_step?: string | null
+          seeker_id?: string | null
+          step_outcome?: string | null
+          updated_at?: string | null
+          user_response?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_negotiation_logs_agent_id_fkey"
+            columns: ["agent_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ai_negotiation_logs_listing_id_fkey"
+            columns: ["listing_id"]
+            isOneToOne: false
+            referencedRelation: "listings"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ai_negotiation_logs_seeker_id_fkey"
+            columns: ["seeker_id"]
             isOneToOne: false
             referencedRelation: "users"
             referencedColumns: ["id"]
@@ -549,6 +755,54 @@ export type Database = {
           },
         ]
       }
+      crm_ai_trails: {
+        Row: {
+          ai_tool: string
+          created_at: string | null
+          credits_used: number | null
+          id: string
+          lead_id: string | null
+          suggestion: string | null
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          ai_tool: string
+          created_at?: string | null
+          credits_used?: number | null
+          id?: string
+          lead_id?: string | null
+          suggestion?: string | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          ai_tool?: string
+          created_at?: string | null
+          credits_used?: number | null
+          id?: string
+          lead_id?: string | null
+          suggestion?: string | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "crm_ai_trails_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "leads"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "crm_ai_trails_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       crm_interactions: {
         Row: {
           created_at: string | null
@@ -643,6 +897,44 @@ export type Database = {
             foreignKeyName: "crm_lead_audit_logs_lead_id_fkey"
             columns: ["lead_id"]
             isOneToOne: false
+            referencedRelation: "leads"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      lead_scores: {
+        Row: {
+          calculated_at: string | null
+          created_at: string | null
+          id: string
+          lead_id: string | null
+          score: number | null
+          score_factors: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          calculated_at?: string | null
+          created_at?: string | null
+          id?: string
+          lead_id?: string | null
+          score?: number | null
+          score_factors?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          calculated_at?: string | null
+          created_at?: string | null
+          id?: string
+          lead_id?: string | null
+          score?: number | null
+          score_factors?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "lead_scores_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: true
             referencedRelation: "leads"
             referencedColumns: ["id"]
           },
@@ -790,6 +1082,57 @@ export type Database = {
             columns: ["applies_to_category_id"]
             isOneToOne: false
             referencedRelation: "listing_categories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      listing_offer_logs: {
+        Row: {
+          created_at: string | null
+          expires_at: string | null
+          id: string
+          listing_id: string | null
+          offer_amount: number | null
+          offer_status: string | null
+          offered_by: string | null
+          response_message: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          expires_at?: string | null
+          id?: string
+          listing_id?: string | null
+          offer_amount?: number | null
+          offer_status?: string | null
+          offered_by?: string | null
+          response_message?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          expires_at?: string | null
+          id?: string
+          listing_id?: string | null
+          offer_amount?: number | null
+          offer_status?: string | null
+          offered_by?: string | null
+          response_message?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "listing_offer_logs_listing_id_fkey"
+            columns: ["listing_id"]
+            isOneToOne: false
+            referencedRelation: "listings"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "listing_offer_logs_offered_by_fkey"
+            columns: ["offered_by"]
+            isOneToOne: false
+            referencedRelation: "users"
             referencedColumns: ["id"]
           },
         ]
