@@ -8,6 +8,9 @@ import { AiHealthDashboard } from '@/components/admin/AiHealthDashboard';
 import { BiasDetectionPanel } from '@/components/admin/BiasDetectionPanel';
 import { ToxicityFlagQueuePanel } from '@/components/admin/ToxicityFlagQueuePanel';
 import { PromptDriftTrackerPanel } from '@/components/admin/PromptDriftTrackerPanel';
+import { AiFeatureHeatmapPanel } from '@/components/admin/AiFeatureHeatmapPanel';
+import { AiFailureLogsPanel } from '@/components/admin/AiFailureLogsPanel';
+import { AiAuditTrailPanel } from '@/components/admin/AiAuditTrailPanel';
 
 export default function AiInsightsPage() {
   return (
@@ -34,6 +37,15 @@ export default function AiInsightsPage() {
 
           <div className="grid grid-cols-1 gap-6">
             <PromptDriftTrackerPanel />
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <AiFeatureHeatmapPanel />
+            <AiFailureLogsPanel />
+          </div>
+
+          <div className="grid grid-cols-1 gap-6">
+            <AiAuditTrailPanel />
           </div>
         </div>
       </div>

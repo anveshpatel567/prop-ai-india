@@ -151,6 +151,36 @@ export type Database = {
           },
         ]
       }
+      ai_admin_audit_trail: {
+        Row: {
+          admin_id: string | null
+          change_type: string
+          changed_at: string | null
+          id: string
+          new_value: string | null
+          previous_value: string | null
+          tool_name: string
+        }
+        Insert: {
+          admin_id?: string | null
+          change_type: string
+          changed_at?: string | null
+          id?: string
+          new_value?: string | null
+          previous_value?: string | null
+          tool_name: string
+        }
+        Update: {
+          admin_id?: string | null
+          change_type?: string
+          changed_at?: string | null
+          id?: string
+          new_value?: string | null
+          previous_value?: string | null
+          tool_name?: string
+        }
+        Relationships: []
+      }
       ai_autoresponse_feedback: {
         Row: {
           created_at: string | null
@@ -343,6 +373,36 @@ export type Database = {
           },
         ]
       }
+      ai_failure_logs: {
+        Row: {
+          error_message: string | null
+          error_type: string
+          failed_at: string | null
+          feature: string
+          id: string
+          retry_attempted: boolean | null
+          user_id: string | null
+        }
+        Insert: {
+          error_message?: string | null
+          error_type: string
+          failed_at?: string | null
+          feature: string
+          id?: string
+          retry_attempted?: boolean | null
+          user_id?: string | null
+        }
+        Update: {
+          error_message?: string | null
+          error_type?: string
+          failed_at?: string | null
+          feature?: string
+          id?: string
+          retry_attempted?: boolean | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       ai_faq_generations: {
         Row: {
           context: string
@@ -505,6 +565,33 @@ export type Database = {
           severity?: string
           submitted_at?: string | null
           user_id?: string | null
+        }
+        Relationships: []
+      }
+      ai_feature_usage_heatmap: {
+        Row: {
+          feature: string
+          hour_segment: number
+          id: string
+          logged_date: string
+          usage_count: number
+          user_role: string
+        }
+        Insert: {
+          feature: string
+          hour_segment: number
+          id?: string
+          logged_date?: string
+          usage_count?: number
+          user_role: string
+        }
+        Update: {
+          feature?: string
+          hour_segment?: number
+          id?: string
+          logged_date?: string
+          usage_count?: number
+          user_role?: string
         }
         Relationships: []
       }
