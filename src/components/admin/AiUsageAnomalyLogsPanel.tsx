@@ -47,7 +47,7 @@ export function AiUsageAnomalyLogsPanel(): JSX.Element {
 
   const getAnomalyColor = (anomalyType: string) => {
     switch (anomalyType) {
-      case 'spike': return 'bg-orange-100 text-orange-700';
+      case 'spike': return 'bg-yellow-100 text-yellow-700';
       case 'drop': return 'bg-blue-100 text-blue-700';
       case 'abuse': return 'bg-red-100 text-red-700';
       default: return 'bg-gray-100 text-gray-700';
@@ -71,7 +71,7 @@ export function AiUsageAnomalyLogsPanel(): JSX.Element {
         ) : (
           <div className="space-y-4">
             <div className="grid grid-cols-2 gap-4">
-              <div className="p-3 bg-orange-50 rounded-lg">
+              <div className="p-3 bg-gray-50 rounded-lg">
                 <strong>Usage Spikes:</strong> {spikeAnomalies.length}
               </div>
               <div className="p-3 bg-red-50 rounded-lg">
@@ -96,7 +96,7 @@ export function AiUsageAnomalyLogsPanel(): JSX.Element {
                 <div className="space-y-2 text-sm">
                   <div className="flex justify-between">
                     <span>Module:</span>
-                    <span className="font-bold text-orange-600">{log.module}</span>
+                    <span className="font-bold text-gray-700">{log.module}</span>
                   </div>
                   <div className="flex justify-between">
                     <span>Usage Count:</span>

@@ -47,7 +47,7 @@ export function AiFeedbackTagLogsPanel(): JSX.Element {
   const getTagColor = (tag: string) => {
     switch (tag) {
       case 'confusing': return 'bg-red-100 text-red-700';
-      case 'not helpful': return 'bg-orange-100 text-orange-700';
+      case 'not helpful': return 'bg-gray-100 text-gray-700';
       case 'slow': return 'bg-yellow-100 text-yellow-700';
       case 'helpful': return 'bg-green-100 text-green-700';
       default: return 'bg-gray-100 text-gray-700';
@@ -100,7 +100,7 @@ export function AiFeedbackTagLogsPanel(): JSX.Element {
                 <div className="space-y-2 text-sm">
                   <div className="flex justify-between">
                     <span>Feature:</span>
-                    <span className="font-bold text-orange-600">{log.feature_used}</span>
+                    <span className="font-bold text-gray-700">{log.feature_used}</span>
                   </div>
                   {log.context_snippet && (
                     <div className="bg-blue-50 p-3 rounded">

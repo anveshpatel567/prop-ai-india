@@ -124,7 +124,7 @@ export default function AdminPage() {
           <AiOutputQualityRatingsPanel />
           <div className="bg-white p-6 rounded-lg shadow-sm border">
             <div className="flex items-center gap-2 mb-4">
-              <BarChart className="h-5 w-5 text-orange-500" />
+              <BarChart className="h-5 w-5 text-gray-500" />
               <h2 className="text-xl font-semibold">Campaign Insights</h2>
             </div>
             <p className="text-gray-600 mb-4">
@@ -133,7 +133,7 @@ export default function AdminPage() {
             <div className="flex flex-wrap gap-2">
               <a
                 href="/admin/campaign-insights"
-                className="px-4 py-2 bg-orange-50 text-orange-700 rounded-md hover:bg-orange-100 transition"
+                className="px-4 py-2 bg-gray-50 text-gray-700 rounded-md hover:bg-gray-100 transition"
               >
                 View Insights
               </a>
