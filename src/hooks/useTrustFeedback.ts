@@ -44,7 +44,7 @@ export const useTrustFeedback = () => {
 
       if (error) throw error;
 
-      const feedbackData = data || [];
+      const feedbackData = (data || []) as TrustFeedback[];
       setFeedback(feedbackData);
 
       // Calculate stats
