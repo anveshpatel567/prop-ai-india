@@ -181,6 +181,33 @@ export type Database = {
         }
         Relationships: []
       }
+      ai_admin_decision_logs: {
+        Row: {
+          action: string
+          decided_at: string | null
+          decided_by: string | null
+          decision: string
+          id: string
+          module: string
+        }
+        Insert: {
+          action: string
+          decided_at?: string | null
+          decided_by?: string | null
+          decision: string
+          id?: string
+          module: string
+        }
+        Update: {
+          action?: string
+          decided_at?: string | null
+          decided_by?: string | null
+          decision?: string
+          id?: string
+          module?: string
+        }
+        Relationships: []
+      }
       ai_autoresponse_feedback: {
         Row: {
           created_at: string | null
@@ -215,6 +242,33 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      ai_behavior_exceptions: {
+        Row: {
+          approved_by: string | null
+          context: string
+          created_at: string | null
+          id: string
+          notes: string | null
+          override_behavior: string
+        }
+        Insert: {
+          approved_by?: string | null
+          context: string
+          created_at?: string | null
+          id?: string
+          notes?: string | null
+          override_behavior: string
+        }
+        Update: {
+          approved_by?: string | null
+          context?: string
+          created_at?: string | null
+          id?: string
+          notes?: string | null
+          override_behavior?: string
+        }
+        Relationships: []
       }
       ai_bias_detection_logs: {
         Row: {
@@ -629,6 +683,30 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      ai_flagged_prompt_logs: {
+        Row: {
+          flagged_at: string | null
+          id: string
+          prompt: string
+          reason: string
+          severity: string
+        }
+        Insert: {
+          flagged_at?: string | null
+          id?: string
+          prompt: string
+          reason: string
+          severity: string
+        }
+        Update: {
+          flagged_at?: string | null
+          id?: string
+          prompt?: string
+          reason?: string
+          severity?: string
+        }
+        Relationships: []
       }
       ai_followup_reminders: {
         Row: {
@@ -1700,6 +1778,33 @@ export type Database = {
           tagged_at?: string | null
           tagged_by?: string | null
           tags?: string[]
+        }
+        Relationships: []
+      }
+      ai_prompt_templates: {
+        Row: {
+          category: string | null
+          created_at: string | null
+          created_by: string | null
+          id: string
+          template: string
+          title: string
+        }
+        Insert: {
+          category?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          id?: string
+          template: string
+          title: string
+        }
+        Update: {
+          category?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          id?: string
+          template?: string
+          title?: string
         }
         Relationships: []
       }

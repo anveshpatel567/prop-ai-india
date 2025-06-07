@@ -33,6 +33,10 @@ import { AiCooldownMonitorPanel } from '@/components/admin/AiCooldownMonitorPane
 import { AiToolAttributionPanel } from '@/components/admin/AiToolAttributionPanel';
 import { AiSentimentReviewPanel } from '@/components/admin/AiSentimentReviewPanel';
 import { AiUsageFrequencyPanel } from '@/components/admin/AiUsageFrequencyPanel';
+import { PromptTemplateManager } from '@/components/admin/PromptTemplateManager';
+import { FlaggedPromptLogsPanel } from '@/components/admin/FlaggedPromptLogsPanel';
+import { AiBehaviorOverridePanel } from '@/components/admin/AiBehaviorOverridePanel';
+import { AdminDecisionLogPanel } from '@/components/admin/AdminDecisionLogPanel';
 
 export default function AdminPage() {
   return (
@@ -172,6 +176,16 @@ export default function AdminPage() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
           <AiSentimentReviewPanel />
           <AiUsageFrequencyPanel />
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+          <PromptTemplateManager />
+          <FlaggedPromptLogsPanel />
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+          <AiBehaviorOverridePanel />
+          <AdminDecisionLogPanel />
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
