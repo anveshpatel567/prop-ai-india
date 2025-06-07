@@ -20,6 +20,7 @@ import Search from "./pages/search";
 import Compare from "./pages/compare";
 import AiTools from "./pages/ai/index";
 import Admin from "./pages/admin/index";
+import AdminAnalytics from "./pages/admin/analytics";
 import NotFound from "./pages/404";
 
 const queryClient = new QueryClient();
@@ -47,6 +48,7 @@ const App = () => (
                 <Route path="/compare" element={<Compare />} />
                 <Route path="/ai" element={<AiTools />} />
                 <Route path="/admin" element={<Admin />} />
+                <Route path="/admin/analytics" element={<AdminAnalytics />} />
                 <Route path="/404" element={<NotFound />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
