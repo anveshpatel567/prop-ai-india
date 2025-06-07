@@ -12,6 +12,18 @@ export interface TitleChainData {
   created_at: string;
 }
 
+export interface TitleChainInput {
+  listing_id: string;
+  legal_summary: string;
+}
+
+export interface TitleChainEvent {
+  date: string;
+  title_holder: string;
+  notes?: string;
+  event_type?: string;
+}
+
 export function useTitleChain() {
   const { user } = useAuth();
   const [chains, setChains] = useState<TitleChainData[]>([]);
@@ -60,11 +72,30 @@ export function useTitleChain() {
     }
   };
 
+  const generateChain = async (input: TitleChainInput) => {
+    try {
+      setLoading(true);
+      const { data, error } = await supabase.functions.invoke('generateTitleChainFromDocs', {
+        body: input
+      });
+
+      if (error) throw error;
+      await fetchChains();
+      return data;
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to generate title chain');
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return {
     chains,
     loading,
     error,
     generateTitleChain,
+    generateChain,
     refetch: fetchChains
   };
 }

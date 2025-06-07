@@ -68,18 +68,11 @@ export const Navbar: React.FC = () => {
                 </Button>
               </>
             ) : (
-              <div className="flex items-center space-x-4">
-                <Link to="/login">
-                  <Button variant="outline" className="border-orange-200 text-orange-600 hover:bg-orange-50">
-                    Login
-                  </Button>
-                </Link>
-                <Link to="/register">
-                  <Button className="bg-gradient-to-r from-orange-500 to-red-500 text-white hover:from-orange-600 hover:to-red-600">
-                    Register
-                  </Button>
-                </Link>
-              </div>
+              <Link to="/login">
+                <button className="bg-gradient-to-r from-orange-500 to-red-500 text-white font-semibold px-6 py-2 rounded-xl shadow-md hover:shadow-lg hover:shadow-orange-400/30 transition-all duration-300 transform hover:scale-105">
+                  Start Now
+                </button>
+              </Link>
             )}
           </div>
         </div>

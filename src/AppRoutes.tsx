@@ -1,110 +1,74 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
-import { Navbar } from '@/components/layout/Navbar';
-import { Footer } from '@/components/layout/Footer';
-import { Toaster } from '@/components/ui/toaster';
+import Home from './pages/index';
+import Login from './pages/login';
+import Dashboard from './pages/dashboard';
+import Profile from './pages/profile';
+import MyAiUsagePage from './pages/my-ai-usage';
+import AiToolsIndex from './pages/ai/index';
+import AiPricingPage from './pages/tools/ai-pricing';
+import AiVideoPage from './pages/tools/ai-video';
+import LocalityReportPage from './pages/tools/locality-report';
+import LoanOptimizerPage from './pages/tools/loan-optimizer';
+import SeoSchemaPage from './pages/tools/seo-schema';
+import AiFraudDetectionPage from './pages/tools/ai-fraud-detection';
+import BrochureMatcherPage from './pages/tools/brochure-matcher';
+import TitleChainPage from './pages/tools/title-chain';
+import AdminDashboard from './pages/admin/index';
+import AdminToolsOverviewPage from './pages/admin/tools-overview';
+import AdminUsageMetricsPage from './pages/admin/usage-metrics';
+import AgentResumePage from './pages/agent/resume';
+import SeekerAgentMatchPage from './pages/seeker/agent-match';
+import SeekerSmartMatchesPage from './pages/seeker/smart-matches';
+import SearchPage from './pages/search';
+import ListPropertyPage from './pages/list-property';
+import CreateListingPage from './pages/listing/create';
+import AllListingsPage from './pages/listing/all';
+import ComparePage from './pages/compare';
+import NotFound from './pages/404';
 
-// Pages
-import HomePage from '@/pages/index';
-import AuthPage from '@/pages/auth';
-import LoginPage from '@/pages/login';
-import RegisterPage from '@/pages/register';
-import DashboardPage from '@/pages/dashboard/index';
-import ProfilePage from '@/pages/profile';
-import ListPropertyPage from '@/pages/list-property';
-import ListingCreatePage from '@/pages/listing/create';
-import AllListingsPage from '@/pages/listing/all';
-import SearchPage from '@/pages/search';
-import ComparePage from '@/pages/compare';
-import NotFoundPage from '@/pages/NotFound';
-
-// AI Tools
-import AiToolsPage from '@/pages/ai/index';
-import MyAiUsagePage from '@/pages/my-ai-usage';
-import LoanOptimizerPage from '@/pages/tools/loan-optimizer';
-import LocalityReportPage from '@/pages/tools/locality-report';
-import SeoSchemaPage from '@/pages/tools/seo-schema';
-import TitleChainPage from '@/pages/tools/title-chain';
-import AiPricingPage from '@/pages/tools/ai-pricing';
-import AiVideoPage from '@/pages/tools/ai-video';
-
-// Seeker Tools
-import AgentMatchPage from '@/pages/seeker/agent-match';
-import SmartMatchesPage from '@/pages/seeker/smart-matches';
-
-// Agent Tools
-import AgentResumePage from '@/pages/agent/resume';
-
-// Admin Pages
-import AdminIndexPage from '@/pages/admin/index';
-import AdminAnalyticsPage from '@/pages/admin/analytics';
-import AdminAiInsightsPage from '@/pages/admin/ai-insights';
-import AdminAiOversightPage from '@/pages/admin/ai-oversight/index';
-import AdminCampaignInsightsPage from '@/pages/admin/campaign-insights';
-import AdminCreditPacksPage from '@/pages/admin/credit-packs';
-import AdminListingOffersPage from '@/pages/admin/listing-offers';
-import AdminPropertyMatchesPage from '@/pages/admin/property-matches';
-import AdminDeveloperAiSummaryPage from '@/pages/admin/developer-ai-summary';
-import AdminQAToolsPage from '@/pages/admin/qa-tools';
-import AdminToolsOverviewPage from '@/pages/admin/tools-overview';
-
-export const AppRoutes: React.FC = () => {
+export const AppRoutes = () => {
   return (
-    <div className="min-h-screen flex flex-col">
-      <Navbar />
-      <main className="flex-grow">
-        <Routes>
-          {/* Public Routes */}
-          <Route path="/" element={<HomePage />} />
-          <Route path="/auth" element={<AuthPage />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/register" element={<RegisterPage />} />
-          <Route path="/search" element={<SearchPage />} />
-          <Route path="/listing/all" element={<AllListingsPage />} />
-          <Route path="/compare" element={<ComparePage />} />
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Login />} />
+      <Route path="/dashboard" element={<Dashboard />} />
+      <Route path="/profile" element={<Profile />} />
+      <Route path="/my-ai-usage" element={<MyAiUsagePage />} />
+      
+      {/* AI Tools */}
+      <Route path="/ai" element={<AiToolsIndex />} />
+      <Route path="/tools/ai-pricing" element={<AiPricingPage />} />
+      <Route path="/tools/ai-video" element={<AiVideoPage />} />
+      <Route path="/tools/locality-report" element={<LocalityReportPage />} />
+      <Route path="/tools/loan-optimizer" element={<LoanOptimizerPage />} />
+      <Route path="/tools/seo-schema" element={<SeoSchemaPage />} />
+      <Route path="/tools/ai-fraud-detection" element={<AiFraudDetectionPage />} />
+      <Route path="/tools/brochure-matcher" element={<BrochureMatcherPage />} />
+      <Route path="/tools/title-chain" element={<TitleChainPage />} />
 
-          {/* Protected Routes */}
-          <Route path="/dashboard" element={<DashboardPage />} />
-          <Route path="/profile" element={<ProfilePage />} />
-          <Route path="/list-property" element={<ListPropertyPage />} />
-          <Route path="/listing/create" element={<ListingCreatePage />} />
-
-          {/* AI Tools */}
-          <Route path="/ai" element={<AiToolsPage />} />
-          <Route path="/my-ai-usage" element={<MyAiUsagePage />} />
-          <Route path="/tools/loan-optimizer" element={<LoanOptimizerPage />} />
-          <Route path="/tools/locality-report" element={<LocalityReportPage />} />
-          <Route path="/tools/seo-schema" element={<SeoSchemaPage />} />
-          <Route path="/tools/title-chain" element={<TitleChainPage />} />
-          <Route path="/tools/ai-pricing" element={<AiPricingPage />} />
-          <Route path="/tools/ai-video" element={<AiVideoPage />} />
-
-          {/* Seeker Tools */}
-          <Route path="/seeker/agent-match" element={<AgentMatchPage />} />
-          <Route path="/seeker/smart-matches" element={<SmartMatchesPage />} />
-
-          {/* Agent Tools */}
-          <Route path="/agent/resume" element={<AgentResumePage />} />
-
-          {/* Admin Routes */}
-          <Route path="/admin" element={<AdminIndexPage />} />
-          <Route path="/admin/analytics" element={<AdminAnalyticsPage />} />
-          <Route path="/admin/ai-insights" element={<AdminAiInsightsPage />} />
-          <Route path="/admin/ai-oversight" element={<AdminAiOversightPage />} />
-          <Route path="/admin/qa-tools" element={<AdminQAToolsPage />} />
-          <Route path="/admin/campaign-insights" element={<AdminCampaignInsightsPage />} />
-          <Route path="/admin/credit-packs" element={<AdminCreditPacksPage />} />
-          <Route path="/admin/listing-offers" element={<AdminListingOffersPage />} />
-          <Route path="/admin/property-matches" element={<AdminPropertyMatchesPage />} />
-          <Route path="/admin/developer-ai-summary" element={<AdminDeveloperAiSummaryPage />} />
-          <Route path="/admin/tools-overview" element={<AdminToolsOverviewPage />} />
-
-          {/* Catch all */}
-          <Route path="*" element={<NotFoundPage />} />
-        </Routes>
-      </main>
-      <Footer />
-      <Toaster />
-    </div>
+      {/* Admin Routes */}
+      <Route path="/admin" element={<AdminDashboard />} />
+      <Route path="/admin/tools-overview" element={<AdminToolsOverviewPage />} />
+      <Route path="/admin/usage-metrics" element={<AdminUsageMetricsPage />} />
+      
+      {/* Agent Routes */}
+      <Route path="/agent/resume" element={<AgentResumePage />} />
+      
+      {/* Seeker Routes */}
+      <Route path="/seeker/agent-match" element={<SeekerAgentMatchPage />} />
+      <Route path="/seeker/smart-matches" element={<SeekerSmartMatchesPage />} />
+      
+      {/* Property Routes */}
+      <Route path="/search" element={<SearchPage />} />
+      <Route path="/list-property" element={<ListPropertyPage />} />
+      <Route path="/listing/create" element={<CreateListingPage />} />
+      <Route path="/listing/all" element={<AllListingsPage />} />
+      <Route path="/compare" element={<ComparePage />} />
+      
+      {/* Catch all */}
+      <Route path="*" element={<NotFound />} />
+    </Routes>
   );
 };
