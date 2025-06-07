@@ -64,7 +64,7 @@ export const HeroSection: React.FC = () => {
                 </ButtonPrimary>
               </Link>
               <Link to="/list-property">
-                <ButtonGradient variant="glass" className="w-full sm:w-auto">
+                <ButtonGradient variant="glass" page="HeroSection" className="w-full sm:w-auto">
                   List Your Property
                 </ButtonGradient>
               </Link>

@@ -4,6 +4,7 @@ import { Navbar } from '../../components/layout/Navbar';
 import { Footer } from '../../components/layout/Footer';
 import { GlassCard } from '../../components/layout/GlassCard';
 import { useAuth } from '../../context/AuthContext';
+import AdminButtonControlsPanel from '../../components/admin/AdminButtonControlsPanel';
 
 const Admin: React.FC = () => {
   const { user } = useAuth();
@@ -53,7 +54,7 @@ const Admin: React.FC = () => {
           </GlassCard>
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-8">
+        <div className="grid lg:grid-cols-2 gap-8 mb-8">
           <GlassCard>
             <h2 className="text-xl font-semibold mb-4">Pending Approvals</h2>
             <div className="space-y-3">
@@ -107,6 +108,9 @@ const Admin: React.FC = () => {
             </div>
           </GlassCard>
         </div>
+
+        {/* Button Controls Panel */}
+        <AdminButtonControlsPanel />
       </div>
       <Footer />
     </div>

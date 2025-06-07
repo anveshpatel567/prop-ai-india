@@ -99,12 +99,12 @@ export const Navbar: React.FC = () => {
             ) : (
               <div className="flex items-center space-x-3">
                 <Link to="/login">
-                  <ButtonGradient variant="glass" size="sm">
+                  <ButtonGradient variant="glass" size="sm" page="Navbar">
                     Login
                   </ButtonGradient>
                 </Link>
                 <Link to="/register">
-                  <ButtonGradient variant="primary" size="sm">
+                  <ButtonGradient variant="primary" size="sm" page="Navbar">
                     Register
                   </ButtonGradient>
                 </Link>

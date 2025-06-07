@@ -1,6 +1,7 @@
 
-import React from 'react';
-import { ButtonVariant, getValidVariant } from '../../utils/buttonVariants';
+import React, { useEffect } from 'react';
+import { ButtonVariant, getValidVariantWithConfig } from '../../utils/buttonVariants';
+import { useButtonControl, logButtonUsage } from '../../hooks/useButtonControl';
 
 interface ButtonGradientProps {
   children: React.ReactNode;
@@ -8,6 +9,7 @@ interface ButtonGradientProps {
   variant?: ButtonVariant;
   size?: 'sm' | 'md' | 'lg';
   className?: string;
+  page?: string;
 }
 
 export const ButtonGradient: React.FC<ButtonGradientProps> = ({
@@ -15,9 +17,15 @@ export const ButtonGradient: React.FC<ButtonGradientProps> = ({
   onClick,
   variant = 'primary',
   size = 'md',
-  className = ''
+  className = '',
+  page = 'default'
 }) => {
-  const validVariant = getValidVariant(variant);
+  const { data: buttonConfig } = useButtonControl(page);
+  
+  const validVariant = buttonConfig 
+    ? getValidVariantWithConfig(variant, buttonConfig.allowed_variants, buttonConfig.fallback_variant)
+    : variant;
+
   const baseClasses = 'font-rajdhani font-medium rounded-xl transition-all duration-300 glow-hover border';
   
   const variantClasses = {
@@ -32,9 +40,18 @@ export const ButtonGradient: React.FC<ButtonGradientProps> = ({
     lg: 'py-4 px-8 text-lg'
   };
 
+  const handleClick = () => {
+    // Log button usage
+    logButtonUsage(page, validVariant);
+    
+    if (onClick) {
+      onClick();
+    }
+  };
+
   return (
     <button
-      onClick={onClick}
+      onClick={handleClick}
       className={`${baseClasses} ${variantClasses[validVariant]} ${sizeClasses[size]} ${className}`}
     >
       {children}
