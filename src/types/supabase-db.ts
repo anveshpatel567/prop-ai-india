@@ -1,4 +1,3 @@
-
 import { UserRole } from './global';
 
 export interface Database {
@@ -661,6 +660,212 @@ export interface Database {
           reward_type?: string;
           is_claimed?: boolean;
           created_at?: string;
+        };
+      };
+      property_listings_extended: {
+        Row: {
+          id: string;
+          listing_id: string;
+          user_id: string;
+          possession_date: string | null;
+          carpet_area: number | null;
+          builtup_area: number | null;
+          furnishing: 'unfurnished' | 'semi-furnished' | 'furnished' | null;
+          balconies: number;
+          parking: number;
+          brochure_url: string | null;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          listing_id: string;
+          user_id: string;
+          possession_date?: string | null;
+          carpet_area?: number | null;
+          builtup_area?: number | null;
+          furnishing?: 'unfurnished' | 'semi-furnished' | 'furnished' | null;
+          balconies?: number;
+          parking?: number;
+          brochure_url?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          listing_id?: string;
+          user_id?: string;
+          possession_date?: string | null;
+          carpet_area?: number | null;
+          builtup_area?: number | null;
+          furnishing?: 'unfurnished' | 'semi-furnished' | 'furnished' | null;
+          balconies?: number;
+          parking?: number;
+          brochure_url?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+      };
+      communication_logs: {
+        Row: {
+          id: string;
+          user_id: string;
+          type: string;
+          payload: string | null;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          user_id: string;
+          type: string;
+          payload?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          user_id?: string;
+          type?: string;
+          payload?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+      };
+      ai_video_previews: {
+        Row: {
+          id: string;
+          listing_id: string;
+          video_url: string | null;
+          preview_image_url: string | null;
+          status: 'generating' | 'completed' | 'failed';
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          listing_id: string;
+          video_url?: string | null;
+          preview_image_url?: string | null;
+          status?: 'generating' | 'completed' | 'failed';
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          listing_id?: string;
+          video_url?: string | null;
+          preview_image_url?: string | null;
+          status?: 'generating' | 'completed' | 'failed';
+          created_at?: string;
+          updated_at?: string;
+        };
+      };
+      ai_tool_flags: {
+        Row: {
+          id: string;
+          tool_name: string;
+          is_enabled: boolean;
+          last_updated_by: string | null;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          tool_name: string;
+          is_enabled?: boolean;
+          last_updated_by?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          tool_name?: string;
+          is_enabled?: boolean;
+          last_updated_by?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+      };
+      ai_resume_profiles: {
+        Row: {
+          id: string;
+          user_id: string;
+          resume_text: string | null;
+          extracted_skills: string | null;
+          matched_score: number | null;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          user_id: string;
+          resume_text?: string | null;
+          extracted_skills?: string | null;
+          matched_score?: number | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          user_id?: string;
+          resume_text?: string | null;
+          extracted_skills?: string | null;
+          matched_score?: number | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+      };
+      seo_jsonld_schemas: {
+        Row: {
+          id: string;
+          listing_id: string;
+          jsonld: string;
+          generated_at: string;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          listing_id: string;
+          jsonld: string;
+          generated_at?: string;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          listing_id?: string;
+          jsonld?: string;
+          generated_at?: string;
+          created_at?: string;
+          updated_at?: string;
+        };
+      };
+      agent_heatmaps: {
+        Row: {
+          id: string;
+          agent_id: string;
+          city: string;
+          activity_score: number;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          agent_id: string;
+          city: string;
+          activity_score?: number;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          agent_id?: string;
+          city?: string;
+          activity_score?: number;
+          created_at?: string;
+          updated_at?: string;
         };
       };
     };

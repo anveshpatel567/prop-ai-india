@@ -9,6 +9,41 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      agent_heatmaps: {
+        Row: {
+          activity_score: number | null
+          agent_id: string | null
+          city: string
+          created_at: string | null
+          id: string
+          updated_at: string | null
+        }
+        Insert: {
+          activity_score?: number | null
+          agent_id?: string | null
+          city: string
+          created_at?: string | null
+          id?: string
+          updated_at?: string | null
+        }
+        Update: {
+          activity_score?: number | null
+          agent_id?: string | null
+          city?: string
+          created_at?: string | null
+          id?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "agent_heatmaps_agent_id_fkey"
+            columns: ["agent_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       ai_followups: {
         Row: {
           agent_id: string | null
@@ -159,6 +194,44 @@ export type Database = {
           },
         ]
       }
+      ai_resume_profiles: {
+        Row: {
+          created_at: string | null
+          extracted_skills: string | null
+          id: string
+          matched_score: number | null
+          resume_text: string | null
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          extracted_skills?: string | null
+          id?: string
+          matched_score?: number | null
+          resume_text?: string | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          extracted_skills?: string | null
+          id?: string
+          matched_score?: number | null
+          resume_text?: string | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_resume_profiles_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       ai_search_history: {
         Row: {
           ai_interpretation: Json | null
@@ -194,6 +267,41 @@ export type Database = {
           {
             foreignKeyName: "ai_search_history_user_id_fkey"
             columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ai_tool_flags: {
+        Row: {
+          created_at: string | null
+          id: string
+          is_enabled: boolean | null
+          last_updated_by: string | null
+          tool_name: string
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          is_enabled?: boolean | null
+          last_updated_by?: string | null
+          tool_name: string
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          is_enabled?: boolean | null
+          last_updated_by?: string | null
+          tool_name?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_tool_flags_last_updated_by_fkey"
+            columns: ["last_updated_by"]
             isOneToOne: false
             referencedRelation: "users"
             referencedColumns: ["id"]
@@ -243,6 +351,44 @@ export type Database = {
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ai_video_previews: {
+        Row: {
+          created_at: string | null
+          id: string
+          listing_id: string | null
+          preview_image_url: string | null
+          status: string | null
+          updated_at: string | null
+          video_url: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          listing_id?: string | null
+          preview_image_url?: string | null
+          status?: string | null
+          updated_at?: string | null
+          video_url?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          listing_id?: string | null
+          preview_image_url?: string | null
+          status?: string | null
+          updated_at?: string | null
+          video_url?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_video_previews_listing_id_fkey"
+            columns: ["listing_id"]
+            isOneToOne: false
+            referencedRelation: "listings"
             referencedColumns: ["id"]
           },
         ]
@@ -361,6 +507,41 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "auth_sessions_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      communication_logs: {
+        Row: {
+          created_at: string | null
+          id: string
+          payload: string | null
+          type: string
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          payload?: string | null
+          type: string
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          payload?: string | null
+          type?: string
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "communication_logs_user_id_fkey"
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "users"
@@ -911,6 +1092,66 @@ export type Database = {
           },
         ]
       }
+      property_listings_extended: {
+        Row: {
+          balconies: number | null
+          brochure_url: string | null
+          builtup_area: number | null
+          carpet_area: number | null
+          created_at: string | null
+          furnishing: string | null
+          id: string
+          listing_id: string | null
+          parking: number | null
+          possession_date: string | null
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          balconies?: number | null
+          brochure_url?: string | null
+          builtup_area?: number | null
+          carpet_area?: number | null
+          created_at?: string | null
+          furnishing?: string | null
+          id?: string
+          listing_id?: string | null
+          parking?: number | null
+          possession_date?: string | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          balconies?: number | null
+          brochure_url?: string | null
+          builtup_area?: number | null
+          carpet_area?: number | null
+          created_at?: string | null
+          furnishing?: string | null
+          id?: string
+          listing_id?: string | null
+          parking?: number | null
+          possession_date?: string | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "property_listings_extended_listing_id_fkey"
+            columns: ["listing_id"]
+            isOneToOne: false
+            referencedRelation: "listings"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "property_listings_extended_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       property_views: {
         Row: {
           created_at: string | null
@@ -1100,6 +1341,41 @@ export type Database = {
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      seo_jsonld_schemas: {
+        Row: {
+          created_at: string | null
+          generated_at: string | null
+          id: string
+          jsonld: string
+          listing_id: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          generated_at?: string | null
+          id?: string
+          jsonld: string
+          listing_id?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          generated_at?: string | null
+          id?: string
+          jsonld?: string
+          listing_id?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "seo_jsonld_schemas_listing_id_fkey"
+            columns: ["listing_id"]
+            isOneToOne: false
+            referencedRelation: "listings"
             referencedColumns: ["id"]
           },
         ]
