@@ -23,8 +23,9 @@ export const ListingForm: React.FC = () => {
     area_sqft: 0,
     bedrooms: 0,
     bathrooms: 0,
-    location: '',
-    address: '',
+    city: '',
+    locality: '',
+    google_maps_pin: '',
     amenities: [] as string[],
   });
 
@@ -39,9 +40,30 @@ export const ListingForm: React.FC = () => {
       return;
     }
 
+    // Validate required fields
+    if (!formData.city.trim()) {
+      alert('Please enter a city');
+      return;
+    }
+
+    if (!formData.google_maps_pin.trim()) {
+      alert('Please enter a Google Maps location or address');
+      return;
+    }
+
     const listing = await createListing({
-      ...formData,
       user_id: user.id,
+      title: formData.title,
+      description: formData.description,
+      property_type: formData.property_type as 'residential' | 'commercial' | 'plot',
+      listing_type: formData.listing_type,
+      price: formData.price,
+      area_sqft: formData.area_sqft || null,
+      bedrooms: formData.bedrooms || null,
+      bathrooms: formData.bathrooms || null,
+      city: formData.city,
+      locality: formData.locality || null,
+      google_maps_pin: formData.google_maps_pin,
       amenities: formData.amenities,
       photos: ['/placeholder.svg']
     });
@@ -84,15 +106,25 @@ export const ListingForm: React.FC = () => {
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="location">Location</Label>
+          <Label htmlFor="city">City</Label>
           <Input
-            id="location"
-            value={formData.location}
-            onChange={(e) => setFormData({ ...formData, location: e.target.value })}
+            id="city"
+            value={formData.city}
+            onChange={(e) => setFormData({ ...formData, city: e.target.value })}
             required
             placeholder="e.g., Mumbai, Delhi"
           />
         </div>
+      </div>
+
+      <div className="space-y-2">
+        <Label htmlFor="locality">Locality/Area</Label>
+        <Input
+          id="locality"
+          value={formData.locality}
+          onChange={(e) => setFormData({ ...formData, locality: e.target.value })}
+          placeholder="e.g., Bandra West, CP"
+        />
       </div>
 
       <div className="space-y-2">
@@ -117,9 +149,7 @@ export const ListingForm: React.FC = () => {
               <SelectValue placeholder="Select type" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="apartment">Apartment</SelectItem>
-              <SelectItem value="house">House</SelectItem>
-              <SelectItem value="villa">Villa</SelectItem>
+              <SelectItem value="residential">Residential</SelectItem>
               <SelectItem value="commercial">Commercial</SelectItem>
               <SelectItem value="plot">Plot</SelectItem>
             </SelectContent>
@@ -187,13 +217,14 @@ export const ListingForm: React.FC = () => {
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="address">Full Address</Label>
+        <Label htmlFor="google_maps_pin">Address/Google Maps Location</Label>
         <Textarea
-          id="address"
-          value={formData.address}
-          onChange={(e) => setFormData({ ...formData, address: e.target.value })}
-          placeholder="Complete address with landmarks"
+          id="google_maps_pin"
+          value={formData.google_maps_pin}
+          onChange={(e) => setFormData({ ...formData, google_maps_pin: e.target.value })}
+          placeholder="Complete address or Google Maps link/coordinates"
           rows={3}
+          required
         />
       </div>
 
@@ -214,13 +245,13 @@ export const ListingForm: React.FC = () => {
           {formData.amenities.map((amenity, index) => (
             <span
               key={index}
-              className="bg-orange-100 text-orange-800 px-3 py-1 rounded-full text-sm flex items-center gap-2"
+              className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm flex items-center gap-2"
             >
               {amenity}
               <button
                 type="button"
                 onClick={() => removeAmenity(amenity)}
-                className="text-orange-600 hover:text-orange-800"
+                className="text-blue-600 hover:text-blue-800"
               >
                 ×
               </button>
