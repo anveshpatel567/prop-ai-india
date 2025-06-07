@@ -8,6 +8,11 @@ import AiPerformanceEvaluationPanel from '@/components/ai-tools/AiPerformanceEva
 import AiFeatureAdoptionPanel from '@/components/admin/AiFeatureAdoptionPanel';
 import AiErrorLogsPanel from '@/components/admin/AiErrorLogsPanel';
 import AiAutoresponseFeedbackPanel from '@/components/admin/AiAutoresponseFeedbackPanel';
+import AiPromptTuningLogPanel from '@/components/admin/AiPromptTuningLogPanel';
+import AiVisibilityTrackingPanel from '@/components/admin/AiVisibilityTrackingPanel';
+import AiEdgeLogsPanel from '@/components/admin/AiEdgeLogsPanel';
+import AiLearningFeedbackPanel from '@/components/admin/AiLearningFeedbackPanel';
+import AiFailureEventsPanel from '@/components/admin/AiFailureEventsPanel';
 
 export default function AdminPage() {
   return (
@@ -85,6 +90,17 @@ export default function AdminPage() {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+          <AiPromptTuningLogPanel />
+          <AiVisibilityTrackingPanel />
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+          <AiEdgeLogsPanel />
+          <AiLearningFeedbackPanel />
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+          <AiFailureEventsPanel />
           <div className="bg-white p-6 rounded-lg shadow-sm border">
             <div className="flex items-center gap-2 mb-4">
               <BarChart className="h-5 w-5 text-orange-500" />
@@ -102,7 +118,9 @@ export default function AdminPage() {
               </a>
             </div>
           </div>
+        </div>
 
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
           <div className="bg-white p-6 rounded-lg shadow-sm border">
             <div className="flex items-center gap-2 mb-4">
               <Zap className="h-5 w-5 text-amber-500" />
@@ -126,23 +144,23 @@ export default function AdminPage() {
               </a>
             </div>
           </div>
-        </div>
 
-        <div className="bg-white p-6 rounded-lg shadow-sm border mb-8">
-          <div className="flex items-center gap-2 mb-4">
-            <Lightbulb className="h-5 w-5 text-cyan-500" />
-            <h2 className="text-xl font-semibold">Developer AI Summary</h2>
-          </div>
-          <p className="text-gray-600 mb-4">
-            Get a comprehensive overview of AI system performance, usage patterns, and technical metrics.
-          </p>
-          <div className="flex flex-wrap gap-2">
-            <a
-              href="/admin/developer-ai-summary"
-              className="px-4 py-2 bg-cyan-50 text-cyan-700 rounded-md hover:bg-cyan-100 transition"
-            >
-              View Summary
-            </a>
+          <div className="bg-white p-6 rounded-lg shadow-sm border">
+            <div className="flex items-center gap-2 mb-4">
+              <Lightbulb className="h-5 w-5 text-cyan-500" />
+              <h2 className="text-xl font-semibold">Developer AI Summary</h2>
+            </div>
+            <p className="text-gray-600 mb-4">
+              Get a comprehensive overview of AI system performance, usage patterns, and technical metrics.
+            </p>
+            <div className="flex flex-wrap gap-2">
+              <a
+                href="/admin/developer-ai-summary"
+                className="px-4 py-2 bg-cyan-50 text-cyan-700 rounded-md hover:bg-cyan-100 transition"
+              >
+                View Summary
+              </a>
+            </div>
           </div>
         </div>
       </div>

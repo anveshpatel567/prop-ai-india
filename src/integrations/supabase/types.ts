@@ -186,6 +186,44 @@ export type Database = {
           },
         ]
       }
+      ai_edge_invocation_logs: {
+        Row: {
+          created_at: string | null
+          edge_function: string
+          id: string
+          invocation_time: string | null
+          response_time_ms: number | null
+          status_code: number | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          edge_function: string
+          id?: string
+          invocation_time?: string | null
+          response_time_ms?: number | null
+          status_code?: number | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          edge_function?: string
+          id?: string
+          invocation_time?: string | null
+          response_time_ms?: number | null
+          status_code?: number | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_edge_invocation_logs_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       ai_engagement_audit: {
         Row: {
           action_type: string
@@ -230,6 +268,44 @@ export type Database = {
           },
           {
             foreignKeyName: "ai_engagement_audit_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ai_failure_event_logs: {
+        Row: {
+          created_at: string | null
+          description: string | null
+          failure_type: string
+          id: string
+          module: string
+          occurred_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          description?: string | null
+          failure_type: string
+          id?: string
+          module: string
+          occurred_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          description?: string | null
+          failure_type?: string
+          id?: string
+          module?: string
+          occurred_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_failure_event_logs_user_id_fkey"
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "users"
@@ -504,6 +580,47 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "ai_interaction_logs_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ai_learning_feedback: {
+        Row: {
+          answer: string | null
+          created_at: string | null
+          helpful: boolean | null
+          id: string
+          module_name: string
+          question: string | null
+          submitted_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          answer?: string | null
+          created_at?: string | null
+          helpful?: boolean | null
+          id?: string
+          module_name: string
+          question?: string | null
+          submitted_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          answer?: string | null
+          created_at?: string | null
+          helpful?: boolean | null
+          id?: string
+          module_name?: string
+          question?: string | null
+          submitted_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_learning_feedback_user_id_fkey"
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "users"
