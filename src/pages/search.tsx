@@ -8,6 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Textarea } from '@/components/ui/textarea';
 import { useListings } from '@/hooks/useListings';
 import { useNavigate } from 'react-router-dom';
+import { getSafeSelectValue, isValidSelectOption } from '@/utils/selectUtils';
 
 const Search: React.FC = () => {
   const { fetchListings } = useListings();
@@ -62,6 +63,27 @@ const Search: React.FC = () => {
     setManualFilters({ ...manualFilters, [key]: safeValue });
   };
 
+  const cities = [
+    { value: 'Mumbai', label: 'Mumbai' },
+    { value: 'Delhi', label: 'Delhi' },
+    { value: 'Bangalore', label: 'Bangalore' },
+    { value: 'Pune', label: 'Pune' },
+    { value: 'Chennai', label: 'Chennai' }
+  ];
+
+  const propertyTypes = [
+    { value: 'apartment', label: 'Apartment' },
+    { value: 'house', label: 'House' },
+    { value: 'villa', label: 'Villa' },
+    { value: 'commercial', label: 'Commercial' },
+    { value: 'plot', label: 'Plot' }
+  ];
+
+  const listingTypes = [
+    { value: 'sale', label: 'For Sale' },
+    { value: 'rent', label: 'For Rent' }
+  ];
+
   return (
     <div className="min-h-screen bg-global-bg">
       <Navbar />
@@ -79,34 +101,34 @@ const Search: React.FC = () => {
                 <div className="space-y-4">
                   <div className="grid grid-cols-2 gap-4">
                     <Select
-                      value={manualFilters.location}
+                      value={getSafeSelectValue(manualFilters.location)}
                       onValueChange={(value) => handleFilterChange('location', value)}
                     >
                       <SelectTrigger>
                         <SelectValue placeholder="Select City" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="Mumbai">Mumbai</SelectItem>
-                        <SelectItem value="Delhi">Delhi</SelectItem>
-                        <SelectItem value="Bangalore">Bangalore</SelectItem>
-                        <SelectItem value="Pune">Pune</SelectItem>
-                        <SelectItem value="Chennai">Chennai</SelectItem>
+                        {cities.filter(isValidSelectOption).map((city) => (
+                          <SelectItem key={city.value} value={city.value}>
+                            {city.label}
+                          </SelectItem>
+                        ))}
                       </SelectContent>
                     </Select>
                     
                     <Select
-                      value={manualFilters.property_type}
+                      value={getSafeSelectValue(manualFilters.property_type)}
                       onValueChange={(value) => handleFilterChange('property_type', value)}
                     >
                       <SelectTrigger>
                         <SelectValue placeholder="Property Type" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="apartment">Apartment</SelectItem>
-                        <SelectItem value="house">House</SelectItem>
-                        <SelectItem value="villa">Villa</SelectItem>
-                        <SelectItem value="commercial">Commercial</SelectItem>
-                        <SelectItem value="plot">Plot</SelectItem>
+                        {propertyTypes.filter(isValidSelectOption).map((type) => (
+                          <SelectItem key={type.value} value={type.value}>
+                            {type.label}
+                          </SelectItem>
+                        ))}
                       </SelectContent>
                     </Select>
                   </div>
@@ -127,15 +149,18 @@ const Search: React.FC = () => {
                   </div>
                   
                   <Select
-                    value={manualFilters.listing_type}
+                    value={getSafeSelectValue(manualFilters.listing_type)}
                     onValueChange={(value) => handleFilterChange('listing_type', value)}
                   >
                     <SelectTrigger>
                       <SelectValue placeholder="Listing Type" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="sale">For Sale</SelectItem>
-                      <SelectItem value="rent">For Rent</SelectItem>
+                      {listingTypes.filter(isValidSelectOption).map((type) => (
+                        <SelectItem key={type.value} value={type.value}>
+                          {type.label}
+                        </SelectItem>
+                      ))}
                     </SelectContent>
                   </Select>
                   
@@ -203,17 +228,6 @@ const Search: React.FC = () => {
                   {search}
                 </button>
               ))}
-            </div>
-          </div>
-
-          {/* Contact Information Block */}
-          <div className="mt-16 flex justify-center">
-            <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 md:p-8 max-w-md mx-auto shadow-lg text-center">
-              <div className="space-y-2 text-sm md:text-base text-white/90">
-                <p className="font-dmsans">info@freeproplist.com</p>
-                <p className="font-dmsans">9512901356</p>
-                <p className="font-dmsans">Ahmedabad, Gujarat, India</p>
-              </div>
             </div>
           </div>
         </div>
