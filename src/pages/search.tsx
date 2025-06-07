@@ -164,27 +164,14 @@ const Search: React.FC = () => {
             </GlassCard>
           </div>
 
-          <div className="mt-12">
-            <h2 className="font-rajdhani text-2xl font-bold text-text-primary mb-6">Popular Searches</h2>
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
-              {[
-                '3BHK in Mumbai',
-                '2BHK for rent Delhi',
-                'Commercial space Bangalore',
-                'Villa in Pune'
-              ].map((search, index) => (
-                <GlowButton
-                  key={index}
-                  variant="outline"
-                  onClick={() => {
-                    setAiQuery(search);
-                    handleAiSearch();
-                  }}
-                  className="text-left justify-start"
-                >
-                  {search}
-                </GlowButton>
-              ))}
+          {/* Contact Information Block */}
+          <div className="mt-12 flex justify-center">
+            <div className="bg-white/10 backdrop-blur-md rounded-2xl p-4 md:p-6 max-w-md mx-auto shadow-lg text-center animate-fade-in">
+              <div className="text-sm md:text-base text-text-primary space-y-2">
+                <p className="font-dmsans">info@freeproplist.com</p>
+                <p className="font-dmsans">95129 01356</p>
+                <p className="font-dmsans">Ahmedabad - Gujarat, India</p>
+              </div>
             </div>
           </div>
         </div>
