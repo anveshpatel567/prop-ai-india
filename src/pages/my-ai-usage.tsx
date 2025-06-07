@@ -1,156 +1,165 @@
 
 import React from 'react';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { UserAiToolUsagePanel } from '@/components/user/UserAiToolUsagePanel';
-import { AiUsageSummaryCard } from '@/components/user/AiUsageSummaryCard';
-import { AiResumeCard } from '@/components/resume/AiResumeCard';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { AiResumeCard } from '@/components/resume/AiResumeCard';
 import { Badge } from '@/components/ui/badge';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { MessageSquare, FileText, Zap } from 'lucide-react';
+import { Calendar, Zap, TrendingUp, Clock } from 'lucide-react';
+import { useMyToolSummary } from '@/hooks/useMyToolSummary';
+import { useMyToolAttempts } from '@/hooks/useMyToolAttempts';
 import { useNegotiationThreads } from '@/hooks/useNegotiationThreads';
-import { useMyResume } from '@/hooks/useMyResume';
+import { MobileCardSpacing, MobileCardGrid, MobileResponsiveCard } from '@/components/mobile/MobileCardSpacingFix';
+import { StickyWalletBadge } from '@/components/mobile/StickyWalletBadge';
 
 export default function MyAiUsagePage() {
+  const { summary, loading: summaryLoading } = useMyToolSummary();
+  const { attempts, loading: attemptsLoading } = useMyToolAttempts();
   const { threads } = useNegotiationThreads();
-  const { resume } = useMyResume();
 
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'accepted': case 'ready': return 'default';
-      case 'rejected': case 'error': return 'destructive';
-      case 'countered': case 'generating': return 'secondary';
-      default: return 'outline';
-    }
-  };
+  const recentActivity = attempts?.slice(0, 10) || [];
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <div className="max-w-6xl mx-auto space-y-6">
+      <StickyWalletBadge />
+      
+      <MobileCardSpacing>
         <div>
-          <h1 className="text-3xl font-bold mb-2">My AI Tool Usage</h1>
-          <p className="text-gray-600">
-            View your AI tool usage history, negotiations, and generated content
+          <h1 className="text-2xl md:text-3xl font-bold mb-2">My AI Usage</h1>
+          <p className="text-gray-600 text-sm md:text-base">
+            Track your AI tool usage, credits spent, and generated content
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <div className="lg:col-span-1">
-            <AiUsageSummaryCard />
-          </div>
-          
-          <div className="lg:col-span-2">
-            <Tabs defaultValue="overview" className="space-y-6">
-              <TabsList className="grid w-full grid-cols-4">
-                <TabsTrigger value="overview">Overview</TabsTrigger>
-                <TabsTrigger value="negotiations">Negotiations</TabsTrigger>
-                <TabsTrigger value="resume">Resume</TabsTrigger>
-                <TabsTrigger value="history">History</TabsTrigger>
-              </TabsList>
+        <MobileCardGrid>
+          <MobileResponsiveCard>
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-primary/10 rounded-lg">
+                <Zap className="h-5 w-5 text-primary" />
+              </div>
+              <div>
+                <p className="text-lg md:text-2xl font-bold">
+                  {summaryLoading ? '...' : summary?.total_credits_used || 0}
+                </p>
+                <p className="text-xs md:text-sm text-muted-foreground">Total Credits Used</p>
+              </div>
+            </div>
+          </MobileResponsiveCard>
 
-              <TabsContent value="overview" className="space-y-4">
-                <UserAiToolUsagePanel />
-              </TabsContent>
+          <MobileResponsiveCard>
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-green-100 rounded-lg">
+                <TrendingUp className="h-5 w-5 text-green-600" />
+              </div>
+              <div>
+                <p className="text-lg md:text-2xl font-bold">
+                  {summaryLoading ? '...' : summary?.tools_used || 0}
+                </p>
+                <p className="text-xs md:text-sm text-muted-foreground">Tools Used</p>
+              </div>
+            </div>
+          </MobileResponsiveCard>
 
-              <TabsContent value="negotiations" className="space-y-4">
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      <MessageSquare className="h-5 w-5" />
-                      My Negotiations
-                      <Badge variant="secondary">{threads.length}</Badge>
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <ScrollArea className="h-[400px]">
-                      {threads.length === 0 ? (
-                        <div className="text-center text-muted-foreground py-8">
-                          No negotiations started yet
-                        </div>
-                      ) : (
-                        <div className="space-y-3">
-                          {threads.map((thread) => (
-                            <div key={thread.id} className="p-3 border rounded-lg space-y-2">
-                              <div className="flex items-center justify-between">
-                                <span className="font-medium text-sm">
-                                  Listing {thread.listing_id.slice(0, 8)}...
-                                </span>
-                                <Badge variant={getStatusColor(thread.status)}>
-                                  {thread.status}
-                                </Badge>
-                              </div>
-                              <div className="text-xs text-muted-foreground">
-                                <p>Started: {new Date(thread.created_at).toLocaleDateString()}</p>
-                                <p>Updated: {new Date(thread.updated_at).toLocaleDateString()}</p>
-                              </div>
-                              <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                                <Zap className="h-3 w-3" />
-                                <span>50 credits used</span>
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      )}
-                    </ScrollArea>
-                  </CardContent>
-                </Card>
-              </TabsContent>
+          <MobileResponsiveCard>
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-blue-100 rounded-lg">
+                <Calendar className="h-5 w-5 text-blue-600" />
+              </div>
+              <div>
+                <p className="text-lg md:text-2xl font-bold">
+                  {summaryLoading ? '...' : summary?.last_used_days_ago || 0}
+                </p>
+                <p className="text-xs md:text-sm text-muted-foreground">Days Since Last Use</p>
+              </div>
+            </div>
+          </MobileResponsiveCard>
+        </MobileCardGrid>
 
-              <TabsContent value="resume" className="space-y-4">
-                <AiResumeCard />
-                
-                {resume && (
-                  <Card>
-                    <CardHeader>
-                      <CardTitle className="flex items-center gap-2">
-                        <FileText className="h-5 w-5" />
-                        Resume Details
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent className="space-y-3">
-                      <div className="grid grid-cols-2 gap-4 text-sm">
-                        <div>
-                          <span className="font-medium">Status:</span>
-                          <Badge variant={getStatusColor(resume.status)} className="ml-2">
-                            {resume.status}
-                          </Badge>
-                        </div>
-                        <div>
-                          <span className="font-medium">Credits Used:</span>
-                          <span className="ml-2">{resume.credits_used}</span>
-                        </div>
-                        <div>
-                          <span className="font-medium">Created:</span>
-                          <span className="ml-2">{new Date(resume.created_at).toLocaleDateString()}</span>
-                        </div>
-                        <div>
-                          <span className="font-medium">Updated:</span>
-                          <span className="ml-2">{new Date(resume.updated_at).toLocaleDateString()}</span>
-                        </div>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-lg md:text-xl">AI Resume Builder</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <AiResumeCard />
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-lg md:text-xl">Negotiation Threads</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-3">
+                {threads.length === 0 ? (
+                  <p className="text-sm text-muted-foreground">
+                    No active negotiations yet
+                  </p>
+                ) : (
+                  threads.slice(0, 5).map((thread) => (
+                    <div key={thread.id} className="flex items-center justify-between p-2 border rounded">
+                      <div>
+                        <p className="text-sm font-medium">Thread #{thread.id.slice(0, 8)}</p>
+                        <p className="text-xs text-muted-foreground">
+                          {new Date(thread.created_at).toLocaleDateString()}
+                        </p>
                       </div>
-                      
-                      {resume.resume_data && (
-                        <div className="border-t pt-3">
-                          <span className="font-medium text-sm">Resume Data:</span>
-                          <div className="mt-2 text-xs text-muted-foreground space-y-1">
-                            <p>Experience: {resume.resume_data.experience_years} years</p>
-                            <p>Regions: {resume.resume_data.regions_covered}</p>
-                            <p>RERA ID: {resume.resume_data.rera_id}</p>
-                          </div>
-                        </div>
-                      )}
-                    </CardContent>
-                  </Card>
+                      <Badge variant={
+                        thread.status === 'accepted' ? 'default' :
+                        thread.status === 'rejected' ? 'destructive' :
+                        'secondary'
+                      }>
+                        {thread.status}
+                      </Badge>
+                    </div>
+                  ))
                 )}
-              </TabsContent>
-
-              <TabsContent value="history" className="space-y-4">
-                <UserAiToolUsagePanel />
-              </TabsContent>
-            </Tabs>
-          </div>
+              </div>
+            </CardContent>
+          </Card>
         </div>
-      </div>
+
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-lg md:text-xl">Recent Activity</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-3">
+              {attemptsLoading ? (
+                <p className="text-sm text-muted-foreground">Loading...</p>
+              ) : recentActivity.length === 0 ? (
+                <p className="text-sm text-muted-foreground">
+                  No recent activity
+                </p>
+              ) : (
+                recentActivity.map((attempt) => (
+                  <div key={attempt.id} className="flex items-center justify-between p-3 border rounded">
+                    <div className="flex items-center gap-3">
+                      <div className="p-1.5 bg-primary/10 rounded">
+                        <Clock className="h-3 w-3 text-primary" />
+                      </div>
+                      <div>
+                        <p className="text-sm font-medium">{attempt.tool_name}</p>
+                        <p className="text-xs text-muted-foreground">
+                          {new Date(attempt.attempted_at).toLocaleString()}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <Badge variant={attempt.was_allowed ? 'default' : 'destructive'}>
+                        {attempt.was_allowed ? 'Success' : 'Failed'}
+                      </Badge>
+                      {attempt.credits_required && (
+                        <p className="text-xs text-muted-foreground mt-1">
+                          {attempt.credits_required} credits
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                ))
+              )}
+            </div>
+          </CardContent>
+        </Card>
+      </MobileCardSpacing>
     </div>
   );
 }
