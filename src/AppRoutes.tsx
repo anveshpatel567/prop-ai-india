@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Home from './pages/index';
@@ -17,6 +18,13 @@ import TitleChainPage from './pages/tools/title-chain';
 import AdminDashboard from './pages/admin/index';
 import AdminToolsOverviewPage from './pages/admin/tools-overview';
 import AdminUsageMetricsPage from './pages/admin/usage-metrics';
+import LaunchChecklistPage from './pages/admin/launch-checklist';
+import AiToolHealthPage from './pages/admin/ai-tool-health';
+import CardsTestPage from './pages/test/cards';
+import ButtonsTestPage from './pages/test/buttons';
+import ModalsTestPage from './pages/test/modals';
+import AiPanelsTestPage from './pages/test/ai-panels';
+import DevToolsPage from './pages/devtools';
 import AgentResumePage from './pages/agent/resume';
 import SeekerAgentMatchPage from './pages/seeker/agent-match';
 import SeekerSmartMatchesPage from './pages/seeker/smart-matches';
@@ -52,6 +60,15 @@ export const AppRoutes = () => {
       <Route path="/admin" element={<AdminDashboard />} />
       <Route path="/admin/tools-overview" element={<AdminToolsOverviewPage />} />
       <Route path="/admin/usage-metrics" element={<AdminUsageMetricsPage />} />
+      <Route path="/admin/launch-checklist" element={<LaunchChecklistPage />} />
+      <Route path="/admin/ai-tool-health" element={<AiToolHealthPage />} />
+      
+      {/* Test Routes */}
+      <Route path="/test/cards" element={<CardsTestPage />} />
+      <Route path="/test/buttons" element={<ButtonsTestPage />} />
+      <Route path="/test/modals" element={<ModalsTestPage />} />
+      <Route path="/test/ai-panels" element={<AiPanelsTestPage />} />
+      <Route path="/devtools" element={<DevToolsPage />} />
       
       {/* Agent Routes */}
       <Route path="/agent/resume" element={<AgentResumePage />} />
