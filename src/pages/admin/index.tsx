@@ -13,6 +13,12 @@ import { AiVisibilityTrackingPanel } from '@/components/admin/AiVisibilityTracki
 import AiEdgeLogsPanel from '@/components/admin/AiEdgeLogsPanel';
 import AiLearningFeedbackPanel from '@/components/admin/AiLearningFeedbackPanel';
 import AiFailureEventsPanel from '@/components/admin/AiFailureEventsPanel';
+import { AiAbuseLogsPanel } from '@/components/admin/AiAbuseLogsPanel';
+import { UserTrustLogsPanel } from '@/components/admin/UserTrustLogsPanel';
+import { DeactivationLogsPanel } from '@/components/admin/DeactivationLogsPanel';
+import { AiUsageAnomalyLogsPanel } from '@/components/admin/AiUsageAnomalyLogsPanel';
+import { AiFeedbackTagLogsPanel } from '@/components/admin/AiFeedbackTagLogsPanel';
+import { AiOutputQualityRatingsPanel } from '@/components/admin/AiOutputQualityRatingsPanel';
 
 export default function AdminPage() {
   return (
@@ -101,6 +107,21 @@ export default function AdminPage() {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
           <AiFailureEventsPanel />
+          <AiAbuseLogsPanel />
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+          <UserTrustLogsPanel />
+          <DeactivationLogsPanel />
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+          <AiUsageAnomalyLogsPanel />
+          <AiFeedbackTagLogsPanel />
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+          <AiOutputQualityRatingsPanel />
           <div className="bg-white p-6 rounded-lg shadow-sm border">
             <div className="flex items-center gap-2 mb-4">
               <BarChart className="h-5 w-5 text-orange-500" />

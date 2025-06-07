@@ -418,6 +418,41 @@ export type Database = {
           },
         ]
       }
+      ai_feedback_tag_logs: {
+        Row: {
+          context_snippet: string | null
+          feature_used: string
+          id: string
+          submitted_at: string | null
+          tag: string
+          user_id: string | null
+        }
+        Insert: {
+          context_snippet?: string | null
+          feature_used: string
+          id?: string
+          submitted_at?: string | null
+          tag: string
+          user_id?: string | null
+        }
+        Update: {
+          context_snippet?: string | null
+          feature_used?: string
+          id?: string
+          submitted_at?: string | null
+          tag?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_feedback_tag_logs_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       ai_followup_reminders: {
         Row: {
           agent_id: string | null
@@ -1053,6 +1088,41 @@ export type Database = {
           },
         ]
       }
+      ai_output_quality_ratings: {
+        Row: {
+          comments: string | null
+          feature_name: string
+          id: string
+          rated_at: string | null
+          rating: number
+          user_id: string | null
+        }
+        Insert: {
+          comments?: string | null
+          feature_name: string
+          id?: string
+          rated_at?: string | null
+          rating: number
+          user_id?: string | null
+        }
+        Update: {
+          comments?: string | null
+          feature_name?: string
+          id?: string
+          rated_at?: string | null
+          rating?: number
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_output_quality_ratings_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       ai_performance_evaluations: {
         Row: {
           ai_module: string
@@ -1677,6 +1747,44 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "ai_ui_attention_heatmaps_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ai_usage_anomaly_logs: {
+        Row: {
+          anomaly_type: string
+          created_at: string | null
+          id: string
+          module: string
+          observed_at: string
+          usage_count: number
+          user_id: string | null
+        }
+        Insert: {
+          anomaly_type: string
+          created_at?: string | null
+          id?: string
+          module: string
+          observed_at: string
+          usage_count: number
+          user_id?: string | null
+        }
+        Update: {
+          anomaly_type?: string
+          created_at?: string | null
+          id?: string
+          module?: string
+          observed_at?: string
+          usage_count?: number
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_usage_anomaly_logs_user_id_fkey"
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "users"
