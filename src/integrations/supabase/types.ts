@@ -234,6 +234,51 @@ export type Database = {
           },
         ]
       }
+      ai_followup_reminders: {
+        Row: {
+          agent_id: string | null
+          created_at: string | null
+          id: string
+          lead_id: string | null
+          recommended_time: string
+          reminder_text: string
+          urgency_level: string
+        }
+        Insert: {
+          agent_id?: string | null
+          created_at?: string | null
+          id?: string
+          lead_id?: string | null
+          recommended_time: string
+          reminder_text: string
+          urgency_level: string
+        }
+        Update: {
+          agent_id?: string | null
+          created_at?: string | null
+          id?: string
+          lead_id?: string | null
+          recommended_time?: string
+          reminder_text?: string
+          urgency_level?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_followup_reminders_agent_id_fkey"
+            columns: ["agent_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ai_followup_reminders_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "leads"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       ai_followups: {
         Row: {
           agent_id: string | null
@@ -352,6 +397,41 @@ export type Database = {
           {
             foreignKeyName: "ai_learning_iterations_triggered_by_fkey"
             columns: ["triggered_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ai_lister_chat_summaries: {
+        Row: {
+          chat_thread_id: string
+          created_at: string | null
+          id: string
+          lister_id: string | null
+          summary_markdown: string
+          summary_type: string
+        }
+        Insert: {
+          chat_thread_id: string
+          created_at?: string | null
+          id?: string
+          lister_id?: string | null
+          summary_markdown: string
+          summary_type: string
+        }
+        Update: {
+          chat_thread_id?: string
+          created_at?: string | null
+          id?: string
+          lister_id?: string | null
+          summary_markdown?: string
+          summary_type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_lister_chat_summaries_lister_id_fkey"
+            columns: ["lister_id"]
             isOneToOne: false
             referencedRelation: "users"
             referencedColumns: ["id"]
@@ -794,6 +874,44 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "ai_recommender_optimizations_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ai_response_quality_logs: {
+        Row: {
+          critique: string | null
+          evaluated_at: string | null
+          feature_context: string
+          id: string
+          quality_score: number
+          response_text: string
+          user_id: string | null
+        }
+        Insert: {
+          critique?: string | null
+          evaluated_at?: string | null
+          feature_context: string
+          id?: string
+          quality_score: number
+          response_text: string
+          user_id?: string | null
+        }
+        Update: {
+          critique?: string | null
+          evaluated_at?: string | null
+          feature_context?: string
+          id?: string
+          quality_score?: number
+          response_text?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_response_quality_logs_user_id_fkey"
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "users"
