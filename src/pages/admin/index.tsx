@@ -1,140 +1,157 @@
-
 import React from 'react';
-import { Navbar } from '../../components/layout/Navbar';
-import { Footer } from '../../components/layout/Footer';
-import { GlassCard } from '../../components/layout/GlassCard';
-import { useAuth } from '../../context/AuthContext';
-import AdminButtonControlsPanel from '../../components/admin/AdminButtonControlsPanel';
-import RecommendationOverridePanel from '../../components/ai-tools/RecommendationOverridePanel';
-import PricingFeedbackPanel from '../../components/ai-tools/PricingFeedbackPanel';
-import MarketPressurePanel from '../../components/ai-tools/MarketPressurePanel';
-import AiPromptTuningLogPanel from '../../components/ai-tools/AiPromptTuningLogPanel';
-import AiVisibilityTrackingPanel from '../../components/ai-tools/AiVisibilityTrackingPanel';
-import AiPerformanceEvaluationPanel from '../../components/ai-tools/AiPerformanceEvaluationPanel';
+import { Shield, Users, CreditCard, BarChart, Zap, Lightbulb } from 'lucide-react';
+import Navbar from '@/components/layout/Navbar';
+import AdminAnalyticsPanel from '@/components/admin/AdminAnalyticsPanel';
+import DeveloperAiUsagePanel from '@/components/admin/DeveloperAiUsagePanel';
+import AiPerformanceEvaluationPanel from '@/components/ai-tools/AiPerformanceEvaluationPanel';
+import AiPromptTuningLogPanel from '@/components/admin/AiPromptTuningLogPanel';
+import AiVisibilityTrackingPanel from '@/components/admin/AiVisibilityTrackingPanel';
+import AiFeatureAdoptionPanel from '@/components/admin/AiFeatureAdoptionPanel';
+import AiErrorLogsPanel from '@/components/admin/AiErrorLogsPanel';
+import AiAutoresponseFeedbackPanel from '@/components/admin/AiAutoresponseFeedbackPanel';
 
-const Admin: React.FC = () => {
-  const { user } = useAuth();
-
-  if (!user || user.role !== 'admin') {
-    return (
-      <div className="min-h-screen warm-gradient">
-        <Navbar />
-        <div className="flex items-center justify-center min-h-[50vh]">
-          <GlassCard>
-            <div className="text-center py-8">
-              <h2 className="text-2xl font-bold text-red-600 mb-4">Access Denied</h2>
-              <p className="text-gray-600">You do not have permission to access the admin panel.</p>
-            </div>
-          </GlassCard>
-        </div>
-        <Footer />
-      </div>
-    );
-  }
-
+export default function AdminPage() {
   return (
-    <div className="min-h-screen warm-gradient">
+    <div className="min-h-screen bg-background">
       <Navbar />
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-800 mb-2">Admin Dashboard</h1>
-          <p className="text-gray-600">Manage users, payments, and AI tool configurations</p>
+      <div className="container mx-auto px-4 py-8">
+        <div className="flex items-center gap-2 mb-8">
+          <Shield className="h-6 w-6" />
+          <h1 className="text-3xl font-bold">Admin Dashboard</h1>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          <GlassCard className="text-center">
-            <div className="text-2xl font-bold text-blue-600">1,250</div>
-            <div className="text-sm text-gray-600">Total Users</div>
-          </GlassCard>
-          <GlassCard className="text-center">
-            <div className="text-2xl font-bold text-green-600">850</div>
-            <div className="text-sm text-gray-600">Active Listings</div>
-          </GlassCard>
-          <GlassCard className="text-center">
-            <div className="text-2xl font-bold text-orange-600">25,000</div>
-            <div className="text-sm text-gray-600">AI Tool Uses</div>
-          </GlassCard>
-          <GlassCard className="text-center">
-            <div className="text-2xl font-bold text-purple-600">₹2.5L</div>
-            <div className="text-sm text-gray-600">Revenue</div>
-          </GlassCard>
-        </div>
-
-        <div className="grid lg:grid-cols-2 gap-8 mb-8">
-          <GlassCard>
-            <h2 className="text-xl font-semibold mb-4">Pending Approvals</h2>
-            <div className="space-y-3">
-              <div className="flex justify-between items-center p-3 bg-yellow-50 rounded">
-                <div>
-                  <div className="font-medium">Payment Verification</div>
-                  <div className="text-sm text-gray-600">₹5,000 - John Doe</div>
-                </div>
-                <div className="space-x-2">
-                  <button className="text-green-600 text-sm">Approve</button>
-                  <button className="text-red-600 text-sm">Reject</button>
-                </div>
-              </div>
-              <div className="flex justify-between items-center p-3 bg-yellow-50 rounded">
-                <div>
-                  <div className="font-medium">RERA Verification</div>
-                  <div className="text-sm text-gray-600">RERA123456 - Agent Name</div>
-                </div>
-                <div className="space-x-2">
-                  <button className="text-green-600 text-sm">Approve</button>
-                  <button className="text-red-600 text-sm">Reject</button>
-                </div>
-              </div>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+          <div className="bg-white p-6 rounded-lg shadow-sm border">
+            <div className="flex items-center gap-2 mb-4">
+              <Users className="h-5 w-5 text-blue-500" />
+              <h2 className="text-xl font-semibold">User Management</h2>
             </div>
-          </GlassCard>
-
-          <GlassCard>
-            <h2 className="text-xl font-semibold mb-4">AI Tool Controls</h2>
-            <div className="space-y-3">
-              <div className="flex justify-between items-center">
-                <span>Brochure Parser</span>
-                <div className="flex items-center space-x-2">
-                  <span className="text-sm">10 credits</span>
-                  <button className="text-green-600 text-sm">Enabled</button>
-                </div>
-              </div>
-              <div className="flex justify-between items-center">
-                <span>Smart Search</span>
-                <div className="flex items-center space-x-2">
-                  <span className="text-sm">8 credits</span>
-                  <button className="text-green-600 text-sm">Enabled</button>
-                </div>
-              </div>
-              <div className="flex justify-between items-center">
-                <span>Video Generator</span>
-                <div className="flex items-center space-x-2">
-                  <span className="text-sm">20 credits</span>
-                  <button className="text-red-600 text-sm">Disabled</button>
-                </div>
-              </div>
+            <p className="text-gray-600 mb-4">
+              Manage users, verify RERA credentials, and handle user permissions.
+            </p>
+            <div className="flex flex-wrap gap-2">
+              <a
+                href="/admin/users"
+                className="px-4 py-2 bg-blue-50 text-blue-700 rounded-md hover:bg-blue-100 transition"
+              >
+                Manage Users
+              </a>
+              <a
+                href="/admin/rera-verification"
+                className="px-4 py-2 bg-green-50 text-green-700 rounded-md hover:bg-green-100 transition"
+              >
+                RERA Verification
+              </a>
             </div>
-          </GlassCard>
+          </div>
+
+          <div className="bg-white p-6 rounded-lg shadow-sm border">
+            <div className="flex items-center gap-2 mb-4">
+              <CreditCard className="h-5 w-5 text-purple-500" />
+              <h2 className="text-xl font-semibold">Credit Management</h2>
+            </div>
+            <p className="text-gray-600 mb-4">
+              Manage credit packs, approve payment receipts, and monitor credit usage.
+            </p>
+            <div className="flex flex-wrap gap-2">
+              <a
+                href="/admin/credit-packs"
+                className="px-4 py-2 bg-purple-50 text-purple-700 rounded-md hover:bg-purple-100 transition"
+              >
+                Credit Packs
+              </a>
+              <a
+                href="/admin/payment-receipts"
+                className="px-4 py-2 bg-indigo-50 text-indigo-700 rounded-md hover:bg-indigo-100 transition"
+              >
+                Payment Receipts
+              </a>
+            </div>
+          </div>
         </div>
 
-        {/* Button Controls Panel */}
-        <AdminButtonControlsPanel />
-
-        {/* AI Analytics Panels - Batches 28-30 */}
-        <div className="grid lg:grid-cols-3 gap-8 mt-8">
-          <RecommendationOverridePanel />
-          <PricingFeedbackPanel />
-          <MarketPressurePanel />
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+          <AdminAnalyticsPanel />
+          <DeveloperAiUsagePanel />
         </div>
 
-        {/* AI Visibility & Performance Panels - Batches 31-33 */}
-        <div className="grid lg:grid-cols-3 gap-8 mt-8">
-          <AiPromptTuningLogPanel />
-          <AiVisibilityTrackingPanel />
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
           <AiPerformanceEvaluationPanel />
+          <AiPromptTuningLogPanel />
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+          <AiVisibilityTrackingPanel />
+          <AiFeatureAdoptionPanel />
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+          <AiErrorLogsPanel />
+          <AiAutoresponseFeedbackPanel />
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+          <div className="bg-white p-6 rounded-lg shadow-sm border">
+            <div className="flex items-center gap-2 mb-4">
+              <BarChart className="h-5 w-5 text-orange-500" />
+              <h2 className="text-xl font-semibold">Campaign Insights</h2>
+            </div>
+            <p className="text-gray-600 mb-4">
+              Monitor agent campaigns, analyze performance, and optimize strategies.
+            </p>
+            <div className="flex flex-wrap gap-2">
+              <a
+                href="/admin/campaign-insights"
+                className="px-4 py-2 bg-orange-50 text-orange-700 rounded-md hover:bg-orange-100 transition"
+              >
+                View Insights
+              </a>
+            </div>
+          </div>
+
+          <div className="bg-white p-6 rounded-lg shadow-sm border">
+            <div className="flex items-center gap-2 mb-4">
+              <Zap className="h-5 w-5 text-amber-500" />
+              <h2 className="text-xl font-semibold">AI Tools Management</h2>
+            </div>
+            <p className="text-gray-600 mb-4">
+              Configure AI tools, manage feature flags, and monitor usage patterns.
+            </p>
+            <div className="flex flex-wrap gap-2">
+              <a
+                href="/admin/ai-tools"
+                className="px-4 py-2 bg-amber-50 text-amber-700 rounded-md hover:bg-amber-100 transition"
+              >
+                Manage AI Tools
+              </a>
+              <a
+                href="/admin/feature-flags"
+                className="px-4 py-2 bg-yellow-50 text-yellow-700 rounded-md hover:bg-yellow-100 transition"
+              >
+                Feature Flags
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-white p-6 rounded-lg shadow-sm border mb-8">
+          <div className="flex items-center gap-2 mb-4">
+            <Lightbulb className="h-5 w-5 text-cyan-500" />
+            <h2 className="text-xl font-semibold">Developer AI Summary</h2>
+          </div>
+          <p className="text-gray-600 mb-4">
+            Get a comprehensive overview of AI system performance, usage patterns, and technical metrics.
+          </p>
+          <div className="flex flex-wrap gap-2">
+            <a
+              href="/admin/developer-ai-summary"
+              className="px-4 py-2 bg-cyan-50 text-cyan-700 rounded-md hover:bg-cyan-100 transition"
+            >
+              View Summary
+            </a>
+          </div>
         </div>
       </div>
-      <Footer />
     </div>
   );
-};
-
-export default Admin;
+}

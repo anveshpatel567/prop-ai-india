@@ -151,6 +151,41 @@ export type Database = {
           },
         ]
       }
+      ai_autoresponse_feedback: {
+        Row: {
+          created_at: string | null
+          feedback: string | null
+          id: string
+          message_id: string | null
+          user_id: string | null
+          was_helpful: boolean | null
+        }
+        Insert: {
+          created_at?: string | null
+          feedback?: string | null
+          id?: string
+          message_id?: string | null
+          user_id?: string | null
+          was_helpful?: boolean | null
+        }
+        Update: {
+          created_at?: string | null
+          feedback?: string | null
+          id?: string
+          message_id?: string | null
+          user_id?: string | null
+          was_helpful?: boolean | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_autoresponse_feedback_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       ai_engagement_audit: {
         Row: {
           action_type: string
@@ -228,6 +263,79 @@ export type Database = {
           {
             foreignKeyName: "ai_faq_generations_generated_by_fkey"
             columns: ["generated_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ai_feature_adoption_logs: {
+        Row: {
+          adopted_at: string | null
+          adoption_status: string | null
+          feature_name: string
+          id: string
+          reason: string | null
+          user_id: string | null
+        }
+        Insert: {
+          adopted_at?: string | null
+          adoption_status?: string | null
+          feature_name: string
+          id?: string
+          reason?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          adopted_at?: string | null
+          adoption_status?: string | null
+          feature_name?: string
+          id?: string
+          reason?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_feature_adoption_logs_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ai_feature_error_logs: {
+        Row: {
+          context: string | null
+          created_at: string | null
+          error_message: string | null
+          id: string
+          stack_trace: string | null
+          tool_name: string
+          user_id: string | null
+        }
+        Insert: {
+          context?: string | null
+          created_at?: string | null
+          error_message?: string | null
+          id?: string
+          stack_trace?: string | null
+          tool_name: string
+          user_id?: string | null
+        }
+        Update: {
+          context?: string | null
+          created_at?: string | null
+          error_message?: string | null
+          id?: string
+          stack_trace?: string | null
+          tool_name?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_feature_error_logs_user_id_fkey"
+            columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "users"
             referencedColumns: ["id"]
