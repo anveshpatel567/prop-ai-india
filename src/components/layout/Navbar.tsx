@@ -1,9 +1,9 @@
-
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { useWallet } from '../../context/WalletContext';
 import { Building2 } from 'lucide-react';
+import { UserWalletBadge } from '@/components/common/UserWalletBadge';
 
 export const Navbar: React.FC = () => {
   const { user, logout } = useAuth();
@@ -55,11 +55,7 @@ export const Navbar: React.FC = () => {
           <div className="flex items-center space-x-4">
             {user ? (
               <>
-                {balance && (
-                  <div className="glass-card-subtle border border-accent-lime/30 rounded-xl px-4 py-2 text-sm">
-                    <span className="font-rajdhani font-semibold text-accent-lime">{balance.balance} Credits</span>
-                  </div>
-                )}
+                <UserWalletBadge />
                 <div className="relative">
                   <button
                     onClick={() => setIsMenuOpen(!isMenuOpen)}
