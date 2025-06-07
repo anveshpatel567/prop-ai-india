@@ -97,6 +97,60 @@ export type Database = {
           },
         ]
       }
+      agent_match_requests: {
+        Row: {
+          ai_comment: string | null
+          budget: number | null
+          created_at: string | null
+          id: string
+          matched_agent_id: string | null
+          notes: string | null
+          preferred_city: string | null
+          property_type: string | null
+          seeker_id: string | null
+          urgency_level: string | null
+        }
+        Insert: {
+          ai_comment?: string | null
+          budget?: number | null
+          created_at?: string | null
+          id?: string
+          matched_agent_id?: string | null
+          notes?: string | null
+          preferred_city?: string | null
+          property_type?: string | null
+          seeker_id?: string | null
+          urgency_level?: string | null
+        }
+        Update: {
+          ai_comment?: string | null
+          budget?: number | null
+          created_at?: string | null
+          id?: string
+          matched_agent_id?: string | null
+          notes?: string | null
+          preferred_city?: string | null
+          property_type?: string | null
+          seeker_id?: string | null
+          urgency_level?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "agent_match_requests_matched_agent_id_fkey"
+            columns: ["matched_agent_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "agent_match_requests_seeker_id_fkey"
+            columns: ["seeker_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       ai_engagement_audit: {
         Row: {
           action_type: string
@@ -475,6 +529,53 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "ai_resume_profiles_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ai_resumes: {
+        Row: {
+          city: string | null
+          created_at: string | null
+          experience_years: number | null
+          id: string
+          name: string
+          past_projects: string | null
+          resume_markdown: string | null
+          specialization: string | null
+          strengths: string | null
+          user_id: string | null
+        }
+        Insert: {
+          city?: string | null
+          created_at?: string | null
+          experience_years?: number | null
+          id?: string
+          name: string
+          past_projects?: string | null
+          resume_markdown?: string | null
+          specialization?: string | null
+          strengths?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          city?: string | null
+          created_at?: string | null
+          experience_years?: number | null
+          id?: string
+          name?: string
+          past_projects?: string | null
+          resume_markdown?: string | null
+          specialization?: string | null
+          strengths?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_resumes_user_id_fkey"
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "users"

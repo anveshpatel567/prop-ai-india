@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -20,6 +19,8 @@ import Search from "./pages/search";
 import Compare from "./pages/compare";
 import AiTools from "./pages/ai/index";
 import LoanOptimizerPage from "./pages/tools/loan-optimizer";
+import AgentResumePage from "./pages/agent/resume";
+import AgentMatchPage from "./pages/seeker/agent-match";
 import Admin from "./pages/admin/index";
 import AdminAnalytics from "./pages/admin/analytics";
 import DeveloperAiSummary from "./pages/admin/developer-ai-summary";
@@ -52,6 +53,9 @@ const App = () => (
                 <Route path="/search" element={<Search />} />
                 <Route path="/compare" element={<Compare />} />
                 <Route path="/ai" element={<AiTools />} />
+                <Route path="/tools/loan-optimizer" element={<LoanOptimizerPage />} />
+                <Route path="/agent/resume" element={<AgentResumePage />} />
+                <Route path="/seeker/agent-match" element={<AgentMatchPage />} />
                 <Route path="/admin" element={<Admin />} />
                 <Route path="/admin/analytics" element={<AdminAnalytics />} />
                 <Route path="/admin/developer-ai-summary" element={<DeveloperAiSummary />} />
