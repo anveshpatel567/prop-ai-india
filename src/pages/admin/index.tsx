@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Shield, Users, CreditCard, BarChart, Zap, Lightbulb } from 'lucide-react';
 import { Navbar } from '@/components/layout/Navbar';
