@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { AdminRoleGate } from '@/components/admin/AdminRoleGate';
 import { AdminAiPanelLayout } from '@/components/admin/AdminAiPanelLayout';
@@ -67,6 +66,11 @@ import { FeatureSummaryPanel } from '@/components/admin/FeatureSummaryPanel';
 import { AdminNotesPanel } from '@/components/admin/AdminNotesPanel';
 import { DailySnapshotPanel } from '@/components/admin/DailySnapshotPanel';
 
+// New imports for tool usage logging and analytics
+import { ToolAttemptLogPanel } from '@/components/admin/ToolAttemptLogPanel';
+import { ToolMisusePanel } from '@/components/admin/ToolMisusePanel';
+import { AdminToolAnalyticsPanel } from '@/components/admin/AdminToolAnalyticsPanel';
+
 import { FileText, Activity, Shield, Settings, AlertTriangle, BarChart3, Users, Cog } from 'lucide-react';
 
 export default function AiOversightPage() {
@@ -109,6 +113,19 @@ export default function AiOversightPage() {
             <div className="col-span-full">
               <AdminAiControlPanel />
             </div>
+          </AiOversightSectionGroup>
+
+          {/* Usage Analytics Section */}
+          <AiOversightSectionGroup
+            title="📊 Usage Analytics & Logging"
+            icon={BarChart3}
+            description="Tool usage analytics, attempt logs, and misuse detection"
+          >
+            <div className="col-span-full">
+              <AdminToolAnalyticsPanel />
+            </div>
+            <ToolAttemptLogPanel />
+            <ToolMisusePanel />
           </AiOversightSectionGroup>
 
           {/* System Logs Section */}

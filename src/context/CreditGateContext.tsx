@@ -2,6 +2,8 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 import { useWallet } from './WalletContext';
 import { useToolCreditRequirements } from '@/hooks/useToolCreditRequirements';
+import { ToolUsageLogger } from '@/utils/toolUsageLog';
+import { useAuth } from './AuthContext';
 
 interface CreditGateContextType {
   checkToolAccess: (toolName: string) => {
@@ -17,6 +19,7 @@ interface CreditGateContextType {
 const CreditGateContext = createContext<CreditGateContextType | null>(null);
 
 export const CreditGateProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+  const { user } = useAuth();
   const { balance } = useWallet();
   const { getRequiredCredits } = useToolCreditRequirements();
   const [isLoading, setIsLoading] = useState(false);
@@ -43,11 +46,20 @@ export const CreditGateProvider: React.FC<{ children: ReactNode }> = ({ children
 
   const logToolAttempt = async (toolName: string, hasCredits: boolean) => {
     try {
-      // Log the attempt for admin visibility
-      console.log(`Tool attempt logged: ${toolName}, hasCredits: ${hasCredits}`);
+      const creditsRequired = getRequiredCredits(toolName);
+      const currentCredits = balance?.balance || 0;
       
-      // In a real implementation, this would send to an analytics service
-      // or create a database entry for admin dashboard visibility
+      // Log using the ToolUsageLogger which will handle both local and backend logging
+      await ToolUsageLogger.logAttempt({
+        tool_name: toolName,
+        user_id: user?.id || null,
+        has_credits: hasCredits,
+        credits_required: creditsRequired,
+        current_credits: currentCredits,
+        access_granted: hasCredits && currentCredits >= creditsRequired
+      });
+      
+      console.log(`Tool attempt logged: ${toolName}, hasCredits: ${hasCredits}`);
     } catch (error) {
       console.error('Failed to log tool attempt:', error);
     }

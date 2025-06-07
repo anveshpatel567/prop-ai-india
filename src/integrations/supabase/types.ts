@@ -2674,6 +2674,39 @@ export type Database = {
         }
         Relationships: []
       }
+      ai_tool_attempt_logs: {
+        Row: {
+          attempted_at: string | null
+          credits_required: number | null
+          id: string
+          reason: string | null
+          tool_name: string
+          user_credits: number | null
+          user_id: string | null
+          was_allowed: boolean | null
+        }
+        Insert: {
+          attempted_at?: string | null
+          credits_required?: number | null
+          id?: string
+          reason?: string | null
+          tool_name: string
+          user_credits?: number | null
+          user_id?: string | null
+          was_allowed?: boolean | null
+        }
+        Update: {
+          attempted_at?: string | null
+          credits_required?: number | null
+          id?: string
+          reason?: string | null
+          tool_name?: string
+          user_credits?: number | null
+          user_id?: string | null
+          was_allowed?: boolean | null
+        }
+        Relationships: []
+      }
       ai_tool_attribution_logs: {
         Row: {
           context_info: string | null
@@ -2735,6 +2768,78 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      ai_tool_insight_snapshots: {
+        Row: {
+          blocked_attempts: number | null
+          created_at: string | null
+          id: string
+          snapshot_date: string | null
+          tool_name: string
+          total_attempts: number | null
+          total_credits_used: number | null
+          unique_users: number | null
+        }
+        Insert: {
+          blocked_attempts?: number | null
+          created_at?: string | null
+          id?: string
+          snapshot_date?: string | null
+          tool_name: string
+          total_attempts?: number | null
+          total_credits_used?: number | null
+          unique_users?: number | null
+        }
+        Update: {
+          blocked_attempts?: number | null
+          created_at?: string | null
+          id?: string
+          snapshot_date?: string | null
+          tool_name?: string
+          total_attempts?: number | null
+          total_credits_used?: number | null
+          unique_users?: number | null
+        }
+        Relationships: []
+      }
+      ai_tool_misuse_flags: {
+        Row: {
+          flag_type: string | null
+          flagged_at: string | null
+          flagged_by: string | null
+          id: string
+          notes: string | null
+          resolved: boolean | null
+          resolved_at: string | null
+          resolved_by: string | null
+          tool_name: string
+          user_id: string | null
+        }
+        Insert: {
+          flag_type?: string | null
+          flagged_at?: string | null
+          flagged_by?: string | null
+          id?: string
+          notes?: string | null
+          resolved?: boolean | null
+          resolved_at?: string | null
+          resolved_by?: string | null
+          tool_name: string
+          user_id?: string | null
+        }
+        Update: {
+          flag_type?: string | null
+          flagged_at?: string | null
+          flagged_by?: string | null
+          id?: string
+          notes?: string | null
+          resolved?: boolean | null
+          resolved_at?: string | null
+          resolved_by?: string | null
+          tool_name?: string
+          user_id?: string | null
+        }
+        Relationships: []
       }
       ai_tool_transactions: {
         Row: {

@@ -1,3 +1,4 @@
+
 export interface ToolUsageAttempt {
   tool_name: string;
   user_id: string | null;
@@ -11,7 +12,7 @@ export interface ToolUsageAttempt {
 export class ToolUsageLogger {
   private static attempts: ToolUsageAttempt[] = [];
 
-  static logAttempt(attempt: Omit<ToolUsageAttempt, 'timestamp'>) {
+  static async logAttempt(attempt: Omit<ToolUsageAttempt, 'timestamp'>) {
     const logEntry: ToolUsageAttempt = {
       ...attempt,
       timestamp: new Date().toISOString()
@@ -27,8 +28,29 @@ export class ToolUsageLogger {
     // Log to console for debugging
     console.log('Tool usage attempt:', logEntry);
 
-    // In a real implementation, this would be sent to the backend
-    // for admin dashboard visibility and analytics
+    // Send to backend logging system
+    if (attempt.user_id) {
+      try {
+        const { supabase } = await import('@/integrations/supabase/client');
+        
+        await supabase.functions.invoke('logToolAttempt', {
+          body: {
+            user_id: attempt.user_id,
+            tool_name: attempt.tool_name,
+            was_allowed: attempt.access_granted,
+            reason: attempt.access_granted 
+              ? 'Access granted' 
+              : attempt.has_credits 
+                ? 'Tool disabled by admin'
+                : `Insufficient credits (${attempt.current_credits}/${attempt.credits_required})`,
+            credits_required: attempt.credits_required,
+            user_credits: attempt.current_credits
+          }
+        });
+      } catch (error) {
+        console.error('Failed to log tool attempt to backend:', error);
+      }
+    }
   }
 
   static getAttempts(): ToolUsageAttempt[] {

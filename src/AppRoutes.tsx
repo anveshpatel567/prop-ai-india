@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Home from '@/pages/index';
@@ -28,6 +27,7 @@ import AdminPropertyMatches from '@/pages/admin/property-matches';
 import AdminDeveloperAiSummary from '@/pages/admin/developer-ai-summary';
 import AdminAiInsights from '@/pages/admin/ai-insights';
 import AiOversightPage from '@/pages/admin/ai-oversight/index';
+import MyAiUsagePage from './pages/my-ai-usage';
 
 export default function AppRoutes() {
   return (
@@ -60,6 +60,7 @@ export default function AppRoutes() {
       <Route path="/admin/developer-ai-summary" element={<AdminDeveloperAiSummary />} />
       <Route path="/admin/ai-insights" element={<AdminAiInsights />} />
       <Route path="/admin/ai-oversight" element={<AiOversightPage />} />
+      <Route path="/my-ai-usage" element={<MyAiUsagePage />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
   );
