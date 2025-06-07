@@ -9,7 +9,7 @@ import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useThrottleZones } from '@/hooks/useThrottleZones';
 import { format } from 'date-fns';
-import { Gauge } from 'lucide-react';
+import { Timer } from 'lucide-react';
 
 export function ThrottleZonePanel() {
   const { zones, loading, applyThrottleZone } = useThrottleZones();
@@ -28,49 +28,22 @@ export function ThrottleZonePanel() {
 
   const getLevelColor = (level: string) => {
     switch (level) {
-      case 'low': return 'secondary';
-      case 'medium': return 'default';
-      case 'high': return 'destructive';
-      default: return 'secondary';
+      case 'low': return 'bg-yellow-100 text-yellow-800';
+      case 'medium': return 'bg-orange-100 text-orange-800';
+      case 'high': return 'bg-red-100 text-red-800';
+      default: return 'bg-gray-100 text-gray-800';
     }
   };
-
-  const getLevelCounts = () => {
-    const counts = { low: 0, medium: 0, high: 0 };
-    zones.forEach(zone => {
-      if (zone.throttle_level) {
-        counts[zone.throttle_level]++;
-      }
-    });
-    return counts;
-  };
-
-  const counts = getLevelCounts();
 
   return (
     <Card className="w-full">
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
-          <Gauge className="h-5 w-5" />
+          <Timer className="h-5 w-5" />
           Throttle Zone Manager
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-6">
-        <div className="grid grid-cols-3 gap-4">
-          <div className="text-center p-3 bg-muted/50 rounded-lg">
-            <div className="text-2xl font-bold">{counts.low}</div>
-            <div className="text-sm text-muted-foreground">Low Throttle</div>
-          </div>
-          <div className="text-center p-3 bg-muted/50 rounded-lg">
-            <div className="text-2xl font-bold">{counts.medium}</div>
-            <div className="text-sm text-muted-foreground">Medium Throttle</div>
-          </div>
-          <div className="text-center p-3 bg-muted/50 rounded-lg">
-            <div className="text-2xl font-bold">{counts.high}</div>
-            <div className="text-sm text-muted-foreground">High Throttle</div>
-          </div>
-        </div>
-
         <div className="grid grid-cols-1 gap-4 p-4 bg-muted/50 rounded-lg">
           <div>
             <Label htmlFor="userId">User ID</Label>
@@ -82,7 +55,7 @@ export function ThrottleZonePanel() {
             />
           </div>
           <div>
-            <Label htmlFor="reason">Throttle Reason</Label>
+            <Label htmlFor="reason">Reason</Label>
             <Textarea
               id="reason"
               value={reason}
@@ -118,7 +91,7 @@ export function ThrottleZonePanel() {
                 <div key={zone.id} className="p-3 border rounded-lg">
                   <div className="flex items-center justify-between mb-2">
                     <span className="font-medium">User: {zone.user_id}</span>
-                    <Badge variant={getLevelColor(zone.throttle_level || '')}>
+                    <Badge className={getLevelColor(zone.throttle_level || 'low')}>
                       {zone.throttle_level?.toUpperCase()}
                     </Badge>
                   </div>

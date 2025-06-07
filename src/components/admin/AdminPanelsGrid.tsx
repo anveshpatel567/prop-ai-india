@@ -1,4 +1,3 @@
-
 import React from 'react';
 import AdminAnalyticsPanel from '@/components/admin/AdminAnalyticsPanel';
 import DeveloperAiUsagePanel from '@/components/admin/DeveloperAiUsagePanel';
@@ -52,6 +51,11 @@ import { ShadowbanManagerPanel } from '@/components/admin/ShadowbanManagerPanel'
 import { ThrottleZonePanel } from '@/components/admin/ThrottleZonePanel';
 import { FlaggedUserPanel } from '@/components/admin/FlaggedUserPanel';
 import { UserRestorationPanel } from '@/components/admin/UserRestorationPanel';
+import { KillSwitchLogPanel } from '@/components/admin/KillSwitchLogPanel';
+import { ModuleHealthPanel } from '@/components/admin/ModuleHealthPanel';
+import { FeatureSummaryPanel } from '@/components/admin/FeatureSummaryPanel';
+import { AdminNotesPanel } from '@/components/admin/AdminNotesPanel';
+import { DailySnapshotPanel } from '@/components/admin/DailySnapshotPanel';
 
 export function AdminPanelsGrid(): JSX.Element {
   return (
@@ -184,6 +188,20 @@ export function AdminPanelsGrid(): JSX.Element {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
         <FlaggedUserPanel />
         <UserRestorationPanel />
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+        <KillSwitchLogPanel />
+        <ModuleHealthPanel />
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+        <FeatureSummaryPanel />
+        <AdminNotesPanel />
+      </div>
+
+      <div className="grid grid-cols-1 gap-6 mb-8">
+        <DailySnapshotPanel />
       </div>
     </>
   );

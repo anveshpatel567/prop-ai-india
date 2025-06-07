@@ -208,6 +208,30 @@ export type Database = {
         }
         Relationships: []
       }
+      ai_admin_notes: {
+        Row: {
+          author_id: string | null
+          context: string
+          created_at: string | null
+          id: string
+          note: string
+        }
+        Insert: {
+          author_id?: string | null
+          context: string
+          created_at?: string | null
+          id?: string
+          note: string
+        }
+        Update: {
+          author_id?: string | null
+          context?: string
+          created_at?: string | null
+          id?: string
+          note?: string
+        }
+        Relationships: []
+      }
       ai_agent_behavior_logs: {
         Row: {
           agent_id: string
@@ -375,6 +399,36 @@ export type Database = {
           notes?: string | null
           prompt?: string
           result?: string
+        }
+        Relationships: []
+      }
+      ai_daily_snapshot_logs: {
+        Row: {
+          avg_latency_ms: number | null
+          created_at: string | null
+          id: string
+          snapshot_date: string
+          top_feature: string | null
+          total_flags: number | null
+          total_prompts: number | null
+        }
+        Insert: {
+          avg_latency_ms?: number | null
+          created_at?: string | null
+          id?: string
+          snapshot_date?: string
+          top_feature?: string | null
+          total_flags?: number | null
+          total_prompts?: number | null
+        }
+        Update: {
+          avg_latency_ms?: number | null
+          created_at?: string | null
+          id?: string
+          snapshot_date?: string
+          top_feature?: string | null
+          total_flags?: number | null
+          total_prompts?: number | null
         }
         Relationships: []
       }
@@ -757,6 +811,33 @@ export type Database = {
         }
         Relationships: []
       }
+      ai_feature_summary_metrics: {
+        Row: {
+          feature: string
+          flagged_count: number
+          id: string
+          last_synced: string | null
+          shadowban_count: number
+          usage_count: number
+        }
+        Insert: {
+          feature: string
+          flagged_count?: number
+          id?: string
+          last_synced?: string | null
+          shadowban_count?: number
+          usage_count?: number
+        }
+        Update: {
+          feature?: string
+          flagged_count?: number
+          id?: string
+          last_synced?: string | null
+          shadowban_count?: number
+          usage_count?: number
+        }
+        Relationships: []
+      }
       ai_feature_usage_heatmap: {
         Row: {
           feature: string
@@ -1125,6 +1206,30 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      ai_kill_switch_logs: {
+        Row: {
+          id: string
+          module: string
+          reason: string
+          triggered_at: string | null
+          triggered_by: string | null
+        }
+        Insert: {
+          id?: string
+          module: string
+          reason: string
+          triggered_at?: string | null
+          triggered_by?: string | null
+        }
+        Update: {
+          id?: string
+          module?: string
+          reason?: string
+          triggered_at?: string | null
+          triggered_by?: string | null
+        }
+        Relationships: []
       }
       ai_latency_incident_logs: {
         Row: {
@@ -1693,6 +1798,30 @@ export type Database = {
           notes?: string | null
           target_id?: string
           target_table?: string
+        }
+        Relationships: []
+      }
+      ai_module_health_metrics: {
+        Row: {
+          average_latency_ms: number | null
+          id: string
+          last_updated: string | null
+          module: string
+          uptime_percentage: number
+        }
+        Insert: {
+          average_latency_ms?: number | null
+          id?: string
+          last_updated?: string | null
+          module: string
+          uptime_percentage: number
+        }
+        Update: {
+          average_latency_ms?: number | null
+          id?: string
+          last_updated?: string | null
+          module?: string
+          uptime_percentage?: number
         }
         Relationships: []
       }

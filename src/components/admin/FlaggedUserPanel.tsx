@@ -6,7 +6,6 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useFlaggedUsers } from '@/hooks/useFlaggedUsers';
 import { format } from 'date-fns';
 import { Flag } from 'lucide-react';
@@ -16,7 +15,6 @@ export function FlaggedUserPanel() {
   const [userId, setUserId] = useState('');
   const [flagType, setFlagType] = useState('');
   const [flagReason, setFlagReason] = useState('');
-  const [filterType, setFilterType] = useState('all');
 
   const handleFlagUser = async () => {
     if (!userId || !flagType || !flagReason) return;
@@ -27,12 +25,13 @@ export function FlaggedUserPanel() {
     setFlagReason('');
   };
 
-  const filteredUsers = filterType === 'all' 
-    ? flaggedUsers 
-    : flaggedUsers.filter(user => user.flag_type === filterType);
-
-  const flagTypes = ['abuse', 'spam', 'exploit', 'harassment', 'other'];
-  const uniqueFlagTypes = [...new Set(flaggedUsers.map(user => user.flag_type))];
+  const getFlagTypeColor = (type: string) => {
+    const lowerType = type.toLowerCase();
+    if (lowerType.includes('abuse')) return 'bg-red-100 text-red-800';
+    if (lowerType.includes('spam')) return 'bg-orange-100 text-orange-800';
+    if (lowerType.includes('exploit')) return 'bg-purple-100 text-purple-800';
+    return 'bg-gray-100 text-gray-800';
+  };
 
   return (
     <Card className="w-full">
@@ -55,18 +54,12 @@ export function FlaggedUserPanel() {
           </div>
           <div>
             <Label htmlFor="flagType">Flag Type</Label>
-            <Select value={flagType} onValueChange={setFlagType}>
-              <SelectTrigger>
-                <SelectValue placeholder="Select flag type" />
-              </SelectTrigger>
-              <SelectContent>
-                {flagTypes.map(type => (
-                  <SelectItem key={type} value={type}>
-                    {type.charAt(0).toUpperCase() + type.slice(1)}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+            <Input
+              id="flagType"
+              value={flagType}
+              onChange={(e) => setFlagType(e.target.value)}
+              placeholder="e.g., abuse, spam, exploit"
+            />
           </div>
           <div>
             <Label htmlFor="flagReason">Flag Reason</Label>
@@ -83,40 +76,24 @@ export function FlaggedUserPanel() {
         </div>
 
         <div>
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-semibold">Flagged Users</h3>
-            <Select value={filterType} onValueChange={setFilterType}>
-              <SelectTrigger className="w-48">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All Types</SelectItem>
-                {uniqueFlagTypes.map(type => (
-                  <SelectItem key={type} value={type}>
-                    {type.charAt(0).toUpperCase() + type.slice(1)}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-          
+          <h3 className="text-lg font-semibold mb-4">Flagged Users History</h3>
           {loading ? (
             <p className="text-muted-foreground">Loading flagged users...</p>
           ) : (
             <div className="space-y-2">
-              {filteredUsers.map((user) => (
-                <div key={user.id} className="p-3 border rounded-lg">
+              {flaggedUsers.map((flag) => (
+                <div key={flag.id} className="p-3 border rounded-lg">
                   <div className="flex items-center justify-between mb-2">
-                    <span className="font-medium">User: {user.user_id}</span>
-                    <Badge variant="destructive">
-                      {user.flag_type.toUpperCase()}
+                    <span className="font-medium">User: {flag.user_id}</span>
+                    <Badge className={getFlagTypeColor(flag.flag_type)}>
+                      {flag.flag_type}
                     </Badge>
                   </div>
                   <p className="text-sm text-muted-foreground mb-1">
-                    Reason: {user.flag_reason}
+                    Reason: {flag.flag_reason}
                   </p>
                   <div className="text-xs text-muted-foreground">
-                    Flagged: {format(new Date(user.flagged_at), 'PPp')}
+                    Flagged: {format(new Date(flag.flagged_at), 'PPp')}
                   </div>
                 </div>
               ))}

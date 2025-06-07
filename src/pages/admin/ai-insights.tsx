@@ -27,6 +27,11 @@ import { ShadowbanManagerPanel } from '@/components/admin/ShadowbanManagerPanel'
 import { ThrottleZonePanel } from '@/components/admin/ThrottleZonePanel';
 import { FlaggedUserPanel } from '@/components/admin/FlaggedUserPanel';
 import { UserRestorationPanel } from '@/components/admin/UserRestorationPanel';
+import { KillSwitchLogPanel } from '@/components/admin/KillSwitchLogPanel';
+import { ModuleHealthPanel } from '@/components/admin/ModuleHealthPanel';
+import { FeatureSummaryPanel } from '@/components/admin/FeatureSummaryPanel';
+import { AdminNotesPanel } from '@/components/admin/AdminNotesPanel';
+import { DailySnapshotPanel } from '@/components/admin/DailySnapshotPanel';
 
 export default function AiInsightsPage() {
   return (
@@ -98,6 +103,20 @@ export default function AiInsightsPage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <FlaggedUserPanel />
             <UserRestorationPanel />
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <KillSwitchLogPanel />
+            <ModuleHealthPanel />
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <FeatureSummaryPanel />
+            <AdminNotesPanel />
+          </div>
+
+          <div className="grid grid-cols-1 gap-6">
+            <DailySnapshotPanel />
           </div>
 
           <div className="grid grid-cols-1 gap-6">
