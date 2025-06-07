@@ -186,6 +186,36 @@ export type Database = {
           },
         ]
       }
+      ai_bias_detection_logs: {
+        Row: {
+          bias_detected: boolean | null
+          detected_at: string | null
+          detected_by: string | null
+          id: string
+          notes: string | null
+          prompt: string
+          result: string
+        }
+        Insert: {
+          bias_detected?: boolean | null
+          detected_at?: string | null
+          detected_by?: string | null
+          id?: string
+          notes?: string | null
+          prompt: string
+          result: string
+        }
+        Update: {
+          bias_detected?: boolean | null
+          detected_at?: string | null
+          detected_by?: string | null
+          id?: string
+          notes?: string | null
+          prompt?: string
+          result?: string
+        }
+        Relationships: []
+      }
       ai_edge_invocation_logs: {
         Row: {
           created_at: string | null
@@ -1505,6 +1535,36 @@ export type Database = {
           },
         ]
       }
+      ai_prompt_drift_logs: {
+        Row: {
+          drift_detected_at: string | null
+          expected_behavior: string
+          feature: string
+          id: string
+          observed_behavior: string
+          reported_by: string | null
+          resolved: boolean | null
+        }
+        Insert: {
+          drift_detected_at?: string | null
+          expected_behavior: string
+          feature: string
+          id?: string
+          observed_behavior: string
+          reported_by?: string | null
+          resolved?: boolean | null
+        }
+        Update: {
+          drift_detected_at?: string | null
+          expected_behavior?: string
+          feature?: string
+          id?: string
+          observed_behavior?: string
+          reported_by?: string | null
+          resolved?: boolean | null
+        }
+        Relationships: []
+      }
       ai_prompt_regen_logs: {
         Row: {
           feature: string
@@ -2081,6 +2141,36 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      ai_toxicity_flags: {
+        Row: {
+          content_snippet: string
+          flagged_at: string | null
+          id: string
+          reviewed: boolean | null
+          reviewer_notes: string | null
+          severity: string | null
+          user_id: string | null
+        }
+        Insert: {
+          content_snippet: string
+          flagged_at?: string | null
+          id?: string
+          reviewed?: boolean | null
+          reviewer_notes?: string | null
+          severity?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          content_snippet?: string
+          flagged_at?: string | null
+          id?: string
+          reviewed?: boolean | null
+          reviewer_notes?: string | null
+          severity?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
       }
       ai_ui_attention_heatmaps: {
         Row: {
