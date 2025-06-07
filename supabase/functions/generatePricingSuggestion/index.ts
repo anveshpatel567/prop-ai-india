@@ -25,7 +25,7 @@ serve(async (req) => {
     const { data: { user } } = await supabaseClient.auth.getUser();
     if (!user) throw new Error('Unauthorized');
 
-    const { locality, city } = await req.json();
+    const { listing_id, property_details } = await req.json();
 
     // Check wallet balance
     const { data: wallet } = await supabaseClient
@@ -34,24 +34,30 @@ serve(async (req) => {
       .eq('user_id', user.id)
       .single();
 
-    if (!wallet || wallet.balance < 30) {
+    if (!wallet || wallet.balance < 25) {
       return new Response(JSON.stringify({ error: 'Insufficient credits' }), {
         status: 400,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       });
     }
 
-    const prompt = `Generate a comprehensive locality report for ${locality}, ${city}. Include:
-    1. Demographics and population insights
-    2. Real estate market trends
-    3. Infrastructure and amenities
-    4. Safety and crime statistics
-    5. Educational institutions
-    6. Transportation connectivity
-    7. Future development projects
-    8. Investment potential
+    const prompt = `Analyze this property and suggest optimal pricing:
+    Property Details: ${JSON.stringify(property_details)}
     
-    Format as detailed markdown report.`;
+    Consider:
+    1. Property type, size, and location
+    2. Current market conditions
+    3. Comparable properties in area
+    4. Property condition and amenities
+    5. Market demand trends
+    
+    Provide:
+    - Suggested price range
+    - Confidence level (0-1)
+    - Market analysis reasoning
+    - Pricing strategy recommendations
+    
+    Return as valid JSON with fields: suggested_price, confidence_score, market_analysis, recommendations`;
 
     const response = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
@@ -62,24 +68,26 @@ serve(async (req) => {
       body: JSON.stringify({
         model: 'gpt-4o-mini',
         messages: [
-          { role: 'system', content: 'You are a real estate market analyst generating detailed locality reports.' },
+          { role: 'system', content: 'You are a real estate pricing expert. Always respond with valid JSON.' },
           { role: 'user', content: prompt }
         ],
-        max_tokens: 2000,
+        max_tokens: 1000,
       }),
     });
 
     const data = await response.json();
-    const report = data.choices[0].message.content;
+    const analysis = JSON.parse(data.choices[0].message.content);
 
-    // Save report
-    const { data: savedReport, error } = await supabaseClient
-      .from('ai_locality_reports')
+    // Save pricing suggestion
+    const { data: suggestion, error } = await supabaseClient
+      .from('ai_pricing_suggestions')
       .insert({
         user_id: user.id,
-        locality,
-        city,
-        report_markdown: report
+        listing_id,
+        suggested_price: analysis.suggested_price,
+        market_analysis: analysis,
+        confidence_score: analysis.confidence_score,
+        status: 'completed'
       })
       .select()
       .single();
@@ -89,10 +97,10 @@ serve(async (req) => {
     // Deduct credits
     await supabaseClient
       .from('wallets')
-      .update({ balance: wallet.balance - 30 })
+      .update({ balance: wallet.balance - 25 })
       .eq('user_id', user.id);
 
-    return new Response(JSON.stringify({ report: savedReport }), {
+    return new Response(JSON.stringify({ suggestion }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });
   } catch (error) {

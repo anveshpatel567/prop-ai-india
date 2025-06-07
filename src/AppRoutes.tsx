@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { Navbar } from '@/components/layout/Navbar';
@@ -26,6 +25,8 @@ import LoanOptimizerPage from '@/pages/tools/loan-optimizer';
 import LocalityReportPage from '@/pages/tools/locality-report';
 import SeoSchemaPage from '@/pages/tools/seo-schema';
 import TitleChainPage from '@/pages/tools/title-chain';
+import AiPricingPage from '@/pages/tools/ai-pricing';
+import AiVideoPage from '@/pages/tools/ai-video';
 
 // Seeker Tools
 import AgentMatchPage from '@/pages/seeker/agent-match';
@@ -45,6 +46,7 @@ import AdminListingOffersPage from '@/pages/admin/listing-offers';
 import AdminPropertyMatchesPage from '@/pages/admin/property-matches';
 import AdminDeveloperAiSummaryPage from '@/pages/admin/developer-ai-summary';
 import AdminQAToolsPage from '@/pages/admin/qa-tools';
+import AdminToolsOverviewPage from '@/pages/admin/tools-overview';
 
 export const AppRoutes: React.FC = () => {
   return (
@@ -74,6 +76,8 @@ export const AppRoutes: React.FC = () => {
           <Route path="/tools/locality-report" element={<LocalityReportPage />} />
           <Route path="/tools/seo-schema" element={<SeoSchemaPage />} />
           <Route path="/tools/title-chain" element={<TitleChainPage />} />
+          <Route path="/tools/ai-pricing" element={<AiPricingPage />} />
+          <Route path="/tools/ai-video" element={<AiVideoPage />} />
 
           {/* Seeker Tools */}
           <Route path="/seeker/agent-match" element={<AgentMatchPage />} />
@@ -93,6 +97,7 @@ export const AppRoutes: React.FC = () => {
           <Route path="/admin/listing-offers" element={<AdminListingOffersPage />} />
           <Route path="/admin/property-matches" element={<AdminPropertyMatchesPage />} />
           <Route path="/admin/developer-ai-summary" element={<AdminDeveloperAiSummaryPage />} />
+          <Route path="/admin/tools-overview" element={<AdminToolsOverviewPage />} />
 
           {/* Catch all */}
           <Route path="*" element={<NotFoundPage />} />

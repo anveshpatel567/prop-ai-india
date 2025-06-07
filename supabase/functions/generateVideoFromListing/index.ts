@@ -3,8 +3,6 @@ import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.50.0';
 
-const openAIApiKey = Deno.env.get('OPENAI_API_KEY');
-
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
@@ -25,7 +23,7 @@ serve(async (req) => {
     const { data: { user } } = await supabaseClient.auth.getUser();
     if (!user) throw new Error('Unauthorized');
 
-    const { locality, city } = await req.json();
+    const { listing_id } = await req.json();
 
     // Check wallet balance
     const { data: wallet } = await supabaseClient
@@ -34,52 +32,21 @@ serve(async (req) => {
       .eq('user_id', user.id)
       .single();
 
-    if (!wallet || wallet.balance < 30) {
+    if (!wallet || wallet.balance < 15) {
       return new Response(JSON.stringify({ error: 'Insufficient credits' }), {
         status: 400,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       });
     }
 
-    const prompt = `Generate a comprehensive locality report for ${locality}, ${city}. Include:
-    1. Demographics and population insights
-    2. Real estate market trends
-    3. Infrastructure and amenities
-    4. Safety and crime statistics
-    5. Educational institutions
-    6. Transportation connectivity
-    7. Future development projects
-    8. Investment potential
-    
-    Format as detailed markdown report.`;
-
-    const response = await fetch('https://api.openai.com/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${openAIApiKey}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        model: 'gpt-4o-mini',
-        messages: [
-          { role: 'system', content: 'You are a real estate market analyst generating detailed locality reports.' },
-          { role: 'user', content: prompt }
-        ],
-        max_tokens: 2000,
-      }),
-    });
-
-    const data = await response.json();
-    const report = data.choices[0].message.content;
-
-    // Save report
-    const { data: savedReport, error } = await supabaseClient
-      .from('ai_locality_reports')
+    // Create video job
+    const { data: videoJob, error } = await supabaseClient
+      .from('ai_video_jobs')
       .insert({
         user_id: user.id,
-        locality,
-        city,
-        report_markdown: report
+        listing_id,
+        generation_prompt: 'Generate promotional video for real estate listing',
+        status: 'processing'
       })
       .select()
       .single();
@@ -89,10 +56,32 @@ serve(async (req) => {
     // Deduct credits
     await supabaseClient
       .from('wallets')
-      .update({ balance: wallet.balance - 30 })
+      .update({ balance: wallet.balance - 15 })
       .eq('user_id', user.id);
 
-    return new Response(JSON.stringify({ report: savedReport }), {
+    // Log transaction
+    await supabaseClient
+      .from('wallet_transactions')
+      .insert({
+        user_id: user.id,
+        amount: -15,
+        transaction_type: 'debit',
+        description: 'AI Video Generation'
+      });
+
+    // Simulate video generation (in real implementation, integrate with video AI service)
+    setTimeout(async () => {
+      await supabaseClient
+        .from('ai_video_jobs')
+        .update({
+          status: 'completed',
+          video_url: `https://example.com/video/${videoJob.id}`,
+          thumbnail_url: `https://example.com/thumb/${videoJob.id}`
+        })
+        .eq('id', videoJob.id);
+    }, 5000);
+
+    return new Response(JSON.stringify({ video_job: videoJob }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });
   } catch (error) {

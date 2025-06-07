@@ -9,6 +9,36 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      admin_credit_actions: {
+        Row: {
+          action_type: string | null
+          admin_id: string | null
+          amount: number | null
+          created_at: string | null
+          id: string
+          reason: string | null
+          target_user_id: string | null
+        }
+        Insert: {
+          action_type?: string | null
+          admin_id?: string | null
+          amount?: number | null
+          created_at?: string | null
+          id?: string
+          reason?: string | null
+          target_user_id?: string | null
+        }
+        Update: {
+          action_type?: string | null
+          admin_id?: string | null
+          amount?: number | null
+          created_at?: string | null
+          id?: string
+          reason?: string | null
+          target_user_id?: string | null
+        }
+        Relationships: []
+      }
       agent_campaign_logs: {
         Row: {
           agent_id: string | null
@@ -399,6 +429,36 @@ export type Database = {
           notes?: string | null
           prompt?: string
           result?: string
+        }
+        Relationships: []
+      }
+      ai_brochure_match_links: {
+        Row: {
+          created_at: string | null
+          id: string
+          matched_listings: Json | null
+          similarity_scores: Json | null
+          status: string | null
+          uploaded_brochure_url: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          matched_listings?: Json | null
+          similarity_scores?: Json | null
+          status?: string | null
+          uploaded_brochure_url?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          matched_listings?: Json | null
+          similarity_scores?: Json | null
+          status?: string | null
+          uploaded_brochure_url?: string | null
+          user_id?: string | null
         }
         Relationships: []
       }
@@ -1081,6 +1141,42 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      ai_fraud_flags: {
+        Row: {
+          admin_reviewed: boolean | null
+          confidence_score: number | null
+          created_at: string | null
+          flagged_by: string | null
+          fraud_indicators: Json | null
+          id: string
+          listing_id: string | null
+          status: string | null
+          user_id: string | null
+        }
+        Insert: {
+          admin_reviewed?: boolean | null
+          confidence_score?: number | null
+          created_at?: string | null
+          flagged_by?: string | null
+          fraud_indicators?: Json | null
+          id?: string
+          listing_id?: string | null
+          status?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          admin_reviewed?: boolean | null
+          confidence_score?: number | null
+          created_at?: string | null
+          flagged_by?: string | null
+          fraud_indicators?: Json | null
+          id?: string
+          listing_id?: string | null
+          status?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
       }
       ai_hallucination_reports: {
         Row: {
@@ -2139,6 +2235,39 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      ai_pricing_suggestions: {
+        Row: {
+          confidence_score: number | null
+          created_at: string | null
+          id: string
+          listing_id: string | null
+          market_analysis: Json | null
+          status: string | null
+          suggested_price: number | null
+          user_id: string | null
+        }
+        Insert: {
+          confidence_score?: number | null
+          created_at?: string | null
+          id?: string
+          listing_id?: string | null
+          market_analysis?: Json | null
+          status?: string | null
+          suggested_price?: number | null
+          user_id?: string | null
+        }
+        Update: {
+          confidence_score?: number | null
+          created_at?: string | null
+          id?: string
+          listing_id?: string | null
+          market_analysis?: Json | null
+          status?: string | null
+          suggested_price?: number | null
+          user_id?: string | null
+        }
+        Relationships: []
       }
       ai_prompt_drift_logs: {
         Row: {
@@ -3256,6 +3385,42 @@ export type Database = {
         }
         Relationships: []
       }
+      ai_video_jobs: {
+        Row: {
+          created_at: string | null
+          credits_used: number | null
+          generation_prompt: string | null
+          id: string
+          listing_id: string | null
+          status: string | null
+          thumbnail_url: string | null
+          user_id: string | null
+          video_url: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          credits_used?: number | null
+          generation_prompt?: string | null
+          id?: string
+          listing_id?: string | null
+          status?: string | null
+          thumbnail_url?: string | null
+          user_id?: string | null
+          video_url?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          credits_used?: number | null
+          generation_prompt?: string | null
+          id?: string
+          listing_id?: string | null
+          status?: string | null
+          thumbnail_url?: string | null
+          user_id?: string | null
+          video_url?: string | null
+        }
+        Relationships: []
+      }
       ai_video_previews: {
         Row: {
           created_at: string | null
@@ -4075,6 +4240,36 @@ export type Database = {
           },
         ]
       }
+      notification_logs: {
+        Row: {
+          body: string | null
+          created_at: string | null
+          id: string
+          status: string | null
+          title: string | null
+          type: string | null
+          user_id: string | null
+        }
+        Insert: {
+          body?: string | null
+          created_at?: string | null
+          id?: string
+          status?: string | null
+          title?: string | null
+          type?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          body?: string | null
+          created_at?: string | null
+          id?: string
+          status?: string | null
+          title?: string | null
+          type?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       notifications: {
         Row: {
           created_at: string | null
@@ -4504,6 +4699,30 @@ export type Database = {
           },
         ]
       }
+      resume_download_logs: {
+        Row: {
+          created_at: string | null
+          download_source: string | null
+          downloaded_by: string | null
+          id: string
+          resume_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          download_source?: string | null
+          downloaded_by?: string | null
+          id?: string
+          resume_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          download_source?: string | null
+          downloaded_by?: string | null
+          id?: string
+          resume_id?: string | null
+        }
+        Relationships: []
+      }
       saved_properties: {
         Row: {
           created_at: string | null
@@ -4798,6 +5017,36 @@ export type Database = {
           rera_number?: string | null
           role?: string | null
           updated_at?: string | null
+        }
+        Relationships: []
+      }
+      visit_logs: {
+        Row: {
+          created_at: string | null
+          id: string
+          landing_page: string | null
+          session_id: string | null
+          user_id: string | null
+          utm_campaign: string | null
+          utm_source: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          landing_page?: string | null
+          session_id?: string | null
+          user_id?: string | null
+          utm_campaign?: string | null
+          utm_source?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          landing_page?: string | null
+          session_id?: string | null
+          user_id?: string | null
+          utm_campaign?: string | null
+          utm_source?: string | null
         }
         Relationships: []
       }
