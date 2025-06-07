@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { GlowButton } from '@/components/common/GlowButton';
 import { Input } from '@/components/ui/input';
@@ -8,11 +7,13 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { useListings } from '@/hooks/useListings';
 import { useSupabaseUser } from '@/hooks/useSupabaseUser';
 import { useNavigate } from 'react-router-dom';
+import { useToast } from '@/hooks/use-toast';
 
 export const ListingForm: React.FC = () => {
   const { createListing, loading } = useListings();
   const { user } = useSupabaseUser();
   const navigate = useNavigate();
+  const { toast } = useToast();
   
   const [formData, setFormData] = useState({
     title: '',
@@ -35,19 +36,31 @@ export const ListingForm: React.FC = () => {
     e.preventDefault();
     
     if (!user) {
-      alert('Please log in to create a listing');
+      toast({
+        title: "Authentication required",
+        description: "Please log in to create a listing",
+        variant: "destructive"
+      });
       navigate('/auth');
       return;
     }
 
     // Validate required fields
     if (!formData.city.trim()) {
-      alert('Please enter a city');
+      toast({
+        title: "City required",
+        description: "Please enter a city",
+        variant: "destructive"
+      });
       return;
     }
 
     if (!formData.google_maps_pin.trim()) {
-      alert('Please enter a Google Maps location or address');
+      toast({
+        title: "Location required",
+        description: "Please enter a Google Maps location or address",
+        variant: "destructive"
+      });
       return;
     }
 
@@ -69,8 +82,18 @@ export const ListingForm: React.FC = () => {
     });
 
     if (listing) {
-      alert('Listing created successfully!');
+      toast({
+        title: "Listing created successfully!",
+        description: "Your property has been listed and is now live",
+        variant: "default"
+      });
       navigate('/listing/all');
+    } else {
+      toast({
+        title: "Failed to create listing",
+        description: "Please check your data and try again",
+        variant: "destructive"
+      });
     }
   };
 

@@ -7,7 +7,9 @@ import { GlowButton } from '@/components/common/GlowButton';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useListings } from '@/hooks/useListings';
+import { ListingCard } from '@/components/listing/ListingCard';
 import { Link } from 'react-router-dom';
+import { getSafeSelectValue } from '@/utils/selectUtils';
 
 const AllListings: React.FC = () => {
   const { listings, fetchListings, loading } = useListings();
@@ -36,26 +38,6 @@ const AllListings: React.FC = () => {
       max_price: filters.max_price ? Number(filters.max_price) : undefined,
     };
     fetchListings(filterObj);
-  };
-
-  const formatPrice = (price: number) => {
-    if (price >= 10000000) {
-      return `₹${(price / 10000000).toFixed(1)}Cr`;
-    } else if (price >= 100000) {
-      return `₹${(price / 100000).toFixed(1)}L`;
-    } else {
-      return `₹${price.toLocaleString()}`;
-    }
-  };
-
-  const getLocationDisplay = (listing: any) => {
-    if (listing.locality && listing.city) {
-      return `${listing.locality}, ${listing.city}`;
-    } else if (listing.city) {
-      return listing.city;
-    } else {
-      return 'Location not specified';
-    }
   };
 
   return (
@@ -157,68 +139,7 @@ const AllListings: React.FC = () => {
               </div>
             ) : (
               listings.map((listing) => (
-                <GlassCard key={listing.id} className="overflow-hidden">
-                  <div className="aspect-video bg-gradient-to-br from-blue-100 to-purple-100"></div>
-                  <div className="p-4">
-                    <div className="flex justify-between items-start mb-2">
-                      <h3 className="font-semibold text-lg line-clamp-2 font-['Rajdhani']">{listing.title}</h3>
-                      <span className={`px-2 py-1 rounded text-xs font-medium font-['DM_Sans'] ${
-                        listing.listing_type === 'sale' 
-                          ? 'bg-green-100 text-green-700' 
-                          : 'bg-blue-100 text-blue-700'
-                      }`}>
-                        {listing.listing_type === 'sale' ? 'For Sale' : 'For Rent'}
-                      </span>
-                    </div>
-                    
-                    <p className="text-gray-600 text-sm mb-3 line-clamp-2 font-['DM_Sans']">
-                      {listing.description || 'No description available'}
-                    </p>
-                    
-                    <div className="flex items-center text-sm text-gray-500 mb-3 font-['DM_Sans']">
-                      <span>{getLocationDisplay(listing)}</span>
-                      {listing.area_sqft && (
-                        <>
-                          <span className="mx-2">•</span>
-                          <span>{listing.area_sqft} sq ft</span>
-                        </>
-                      )}
-                      {listing.bedrooms && (
-                        <>
-                          <span className="mx-2">•</span>
-                          <span>{listing.bedrooms}BHK</span>
-                        </>
-                      )}
-                    </div>
-                    
-                    <div className="flex justify-between items-center">
-                      <span className="text-xl font-bold bg-gradient-to-r from-[#FDBA74] to-[#60A5FA] bg-clip-text text-transparent font-['Rajdhani']">
-                        {formatPrice(listing.price)}
-                      </span>
-                      <span className="text-xs text-gray-500 capitalize font-['DM_Sans']">
-                        {listing.property_type}
-                      </span>
-                    </div>
-                    
-                    {listing.amenities && Array.isArray(listing.amenities) && listing.amenities.length > 0 && (
-                      <div className="mt-3 flex flex-wrap gap-1">
-                        {listing.amenities.slice(0, 3).map((amenity, index) => (
-                          <span 
-                            key={index}
-                            className="bg-gray-100 text-gray-600 px-2 py-1 rounded text-xs font-['DM_Sans']"
-                          >
-                            {amenity}
-                          </span>
-                        ))}
-                        {listing.amenities.length > 3 && (
-                          <span className="text-xs text-gray-500 font-['DM_Sans']">
-                            +{listing.amenities.length - 3} more
-                          </span>
-                        )}
-                      </div>
-                    )}
-                  </div>
-                </GlassCard>
+                <ListingCard key={listing.id} listing={listing} />
               ))
             )}
           </div>
