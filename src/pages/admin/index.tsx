@@ -1,11 +1,10 @@
+
 import React from 'react';
 import { Shield, Users, CreditCard, BarChart, Zap, Lightbulb } from 'lucide-react';
-import Navbar from '@/components/layout/Navbar';
+import { Navbar } from '@/components/layout/Navbar';
 import AdminAnalyticsPanel from '@/components/admin/AdminAnalyticsPanel';
 import DeveloperAiUsagePanel from '@/components/admin/DeveloperAiUsagePanel';
 import AiPerformanceEvaluationPanel from '@/components/ai-tools/AiPerformanceEvaluationPanel';
-import AiPromptTuningLogPanel from '@/components/admin/AiPromptTuningLogPanel';
-import AiVisibilityTrackingPanel from '@/components/admin/AiVisibilityTrackingPanel';
 import AiFeatureAdoptionPanel from '@/components/admin/AiFeatureAdoptionPanel';
 import AiErrorLogsPanel from '@/components/admin/AiErrorLogsPanel';
 import AiAutoresponseFeedbackPanel from '@/components/admin/AiAutoresponseFeedbackPanel';
@@ -77,11 +76,6 @@ export default function AdminPage() {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
           <AiPerformanceEvaluationPanel />
-          <AiPromptTuningLogPanel />
-        </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-          <AiVisibilityTrackingPanel />
           <AiFeatureAdoptionPanel />
         </div>
 
