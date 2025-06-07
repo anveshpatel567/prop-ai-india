@@ -1,3 +1,4 @@
+import { UserRole } from './global';
 
 export interface Database {
   public: {
@@ -8,7 +9,7 @@ export interface Database {
           email: string;
           full_name: string;
           phone: string | null;
-          role: 'seeker' | 'owner' | 'agent' | 'rera_agent' | 'builder' | 'admin';
+          role: UserRole;
           rera_number: string | null;
           is_rera_verified: boolean;
           created_at: string;
@@ -19,7 +20,7 @@ export interface Database {
           email: string;
           full_name: string;
           phone?: string | null;
-          role?: 'seeker' | 'owner' | 'agent' | 'rera_agent' | 'builder' | 'admin';
+          role?: UserRole;
           rera_number?: string | null;
           is_rera_verified?: boolean;
           created_at?: string;
@@ -30,7 +31,7 @@ export interface Database {
           email?: string;
           full_name?: string;
           phone?: string | null;
-          role?: 'seeker' | 'owner' | 'agent' | 'rera_agent' | 'builder' | 'admin';
+          role?: UserRole;
           rera_number?: string | null;
           is_rera_verified?: boolean;
           created_at?: string;

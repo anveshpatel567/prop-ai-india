@@ -1,7 +1,7 @@
-
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import type { Database } from '@/types/supabase-db';
+import type { UserRole } from '@/types/global';
 
 type User = Database['public']['Tables']['users']['Row'];
 
@@ -29,7 +29,12 @@ export const useSupabaseUser = () => {
           console.error('Error fetching user:', userError);
           setError(userError.message);
         } else {
-          setUser(userData);
+          // Safely cast the role to UserRole
+          const userWithRole = {
+            ...userData,
+            role: (userData.role || 'seeker') as UserRole
+          };
+          setUser(userWithRole);
         }
       }
     } catch (err) {
@@ -90,7 +95,7 @@ export const useSupabaseUser = () => {
             id: data.user.id,
             email: data.user.email!,
             full_name: fullName,
-            role: 'seeker'
+            role: 'seeker' as UserRole
           });
 
         if (profileError) {

@@ -9,6 +9,7 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useSupabaseUser } from '@/hooks/useSupabaseUser';
 import { useNavigate } from 'react-router-dom';
+import { UserRole, ROLE_OPTIONS } from '@/types/global';
 
 const Profile: React.FC = () => {
   const { user, updateProfile, signOut, loading } = useSupabaseUser();
@@ -16,7 +17,7 @@ const Profile: React.FC = () => {
   const [formData, setFormData] = useState({
     full_name: '',
     phone: '',
-    role: 'seeker' as const
+    role: 'seeker' as UserRole
   });
 
   useEffect(() => {
@@ -112,17 +113,17 @@ const Profile: React.FC = () => {
                 <Label htmlFor="role">Role</Label>
                 <Select
                   value={formData.role}
-                  onValueChange={(value) => setFormData({ ...formData, role: value as any })}
+                  onValueChange={(value) => setFormData({ ...formData, role: value as UserRole })}
                 >
                   <SelectTrigger>
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="seeker">Property Seeker</SelectItem>
-                    <SelectItem value="owner">Property Owner</SelectItem>
-                    <SelectItem value="agent">Real Estate Agent</SelectItem>
-                    <SelectItem value="rera_agent">RERA Certified Agent</SelectItem>
-                    <SelectItem value="builder">Builder/Developer</SelectItem>
+                    {ROLE_OPTIONS.map((option) => (
+                      <SelectItem key={option.value} value={option.value}>
+                        {option.label}
+                      </SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
               </div>
