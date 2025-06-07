@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import { Navbar } from '../components/layout/Navbar';
 import { Footer } from '../components/layout/Footer';
 import { GlassCard } from '../components/layout/GlassCard';
-import { GlowButton } from '../components/common/GlowButton';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
@@ -38,8 +37,6 @@ const Search: React.FC = () => {
   };
 
   const handleAiSearch = () => {
-    // For now, redirect to listings page with AI query as a basic search
-    // In a real implementation, this would call an AI service to parse the query
     const basicLocation = extractLocationFromQuery(aiQuery);
     if (basicLocation) {
       fetchListings({ location: basicLocation });
@@ -138,7 +135,7 @@ const Search: React.FC = () => {
                   
                   <button
                     onClick={handleManualSearch}
-                    className="w-full bg-gradient-to-r from-accent-blue to-accent-cyan text-white font-rajdhani font-semibold 
+                    className="w-full bg-gradient-to-r from-[#FDBA74] to-[#60A5FA] text-white font-rajdhani font-semibold 
                              py-3 px-6 rounded-xl shadow-lg hover:shadow-glow-blue 
                              transition-all duration-300 ease-in-out transform hover:scale-105"
                   >
@@ -191,15 +188,26 @@ const Search: React.FC = () => {
                     setAiQuery(search);
                     handleAiSearch();
                   }}
-                  className="bg-white/80 backdrop-blur-md text-text-primary font-dmsans font-medium
+                  className="bg-white/80 backdrop-blur-md text-slate-900 font-dmsans font-medium
                            px-4 py-2 rounded-xl border border-white/30 shadow-soft
-                           hover:bg-white/90 hover:shadow-glow-blue hover:border-accent-blue/30
+                           hover:bg-white/90 hover:shadow-lg hover:border-accent-blue/30
                            transition-all duration-300 ease-in-out transform hover:scale-105
                            text-left"
                 >
                   {search}
                 </button>
               ))}
+            </div>
+          </div>
+
+          {/* Contact Information Block */}
+          <div className="mt-16 flex justify-center">
+            <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 md:p-8 max-w-md mx-auto shadow-lg text-center">
+              <div className="space-y-2 text-sm md:text-base text-white/90">
+                <p className="font-dmsans">info@freeproplist.com</p>
+                <p className="font-dmsans">9512901356</p>
+                <p className="font-dmsans">Ahmedabad, Gujarat, India</p>
+              </div>
             </div>
           </div>
         </div>

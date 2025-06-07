@@ -10,10 +10,9 @@ export const Footer: React.FC = () => {
           {/* Brand */}
           <div className="space-y-4">
             <div className="flex items-center space-x-2">
-              <div className="w-8 h-8 bg-gradient-to-r from-accent-blue to-accent-cyan rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold">F</span>
-              </div>
-              <span className="text-accent-blue font-rajdhani font-bold text-lg">FreePropList</span>
+              <span className="text-accent-blue font-rajdhani font-bold text-2xl bg-gradient-to-r from-accent-blue to-accent-cyan bg-clip-text text-transparent">
+                FreePropList
+              </span>
             </div>
             <p className="text-text-muted text-sm font-dmsans">
               India's premier AI-enhanced real estate platform. Find your dream property with smart search and verified listings.
@@ -51,10 +50,10 @@ export const Footer: React.FC = () => {
           <div className="space-y-4">
             <h3 className="font-rajdhani font-semibold text-text-primary">Contact</h3>
             <div className="space-y-2">
-              <p className="text-text-muted text-sm font-dmsans">Email: support@freeproplist.com</p>
-              <p className="text-text-muted text-sm font-dmsans">Phone: +91 8888-999-000</p>
+              <p className="text-text-muted text-sm font-dmsans">info@freeproplist.com</p>
+              <p className="text-text-muted text-sm font-dmsans">9512901356</p>
               <p className="text-text-muted text-sm font-dmsans">
-                Address: Mumbai, Maharashtra, India
+                Ahmedabad, Gujarat, India
               </p>
             </div>
           </div>
