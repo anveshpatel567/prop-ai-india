@@ -584,6 +584,36 @@ export type Database = {
           },
         ]
       }
+      ai_hallucination_reports: {
+        Row: {
+          feature: string
+          id: string
+          report_text: string
+          reported_at: string | null
+          review_notes: string | null
+          reviewed: boolean | null
+          user_id: string | null
+        }
+        Insert: {
+          feature: string
+          id?: string
+          report_text: string
+          reported_at?: string | null
+          review_notes?: string | null
+          reviewed?: boolean | null
+          user_id?: string | null
+        }
+        Update: {
+          feature?: string
+          id?: string
+          report_text?: string
+          reported_at?: string | null
+          review_notes?: string | null
+          reviewed?: boolean | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       ai_interaction_logs: {
         Row: {
           action_type: string
@@ -621,6 +651,33 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      ai_latency_incident_logs: {
+        Row: {
+          created_at: string | null
+          duration_ms: number
+          feature_name: string
+          id: string
+          triggered_at: string
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          duration_ms: number
+          feature_name: string
+          id?: string
+          triggered_at: string
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          duration_ms?: number
+          feature_name?: string
+          id?: string
+          triggered_at?: string
+          user_id?: string | null
+        }
+        Relationships: []
       }
       ai_learning_feedback: {
         Row: {
@@ -1243,6 +1300,30 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      ai_prompt_regen_logs: {
+        Row: {
+          feature: string
+          id: string
+          regenerated_at: string | null
+          regenerated_from_prompt: string | null
+          user_id: string | null
+        }
+        Insert: {
+          feature: string
+          id?: string
+          regenerated_at?: string | null
+          regenerated_from_prompt?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          feature?: string
+          id?: string
+          regenerated_at?: string | null
+          regenerated_from_prompt?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
       }
       ai_prompt_tuning_logs: {
         Row: {
