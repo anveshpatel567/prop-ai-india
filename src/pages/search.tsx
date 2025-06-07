@@ -136,9 +136,14 @@ const Search: React.FC = () => {
                     </SelectContent>
                   </Select>
                   
-                  <GlowButton onClick={handleManualSearch} className="w-full">
+                  <button
+                    onClick={handleManualSearch}
+                    className="w-full bg-gradient-to-r from-accent-blue to-accent-cyan text-white font-rajdhani font-semibold 
+                             py-3 px-6 rounded-xl shadow-lg hover:shadow-glow-blue 
+                             transition-all duration-300 ease-in-out transform hover:scale-105"
+                  >
                     Search Properties
-                  </GlowButton>
+                  </button>
                 </div>
               </div>
             </GlassCard>
@@ -153,9 +158,16 @@ const Search: React.FC = () => {
                     onChange={(e) => setAiQuery(e.target.value)}
                     className="h-32 resize-none"
                   />
-                  <GlowButton onClick={handleAiSearch} className="w-full" disabled={!aiQuery.trim()}>
+                  <button
+                    onClick={handleAiSearch}
+                    disabled={!aiQuery.trim()}
+                    className="w-full bg-gradient-to-r from-accent-violet to-accent-cyan text-white font-rajdhani font-semibold 
+                             py-3 px-6 rounded-xl shadow-lg hover:shadow-glow-cyan 
+                             transition-all duration-300 ease-in-out transform hover:scale-105
+                             disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+                  >
                     Search with AI
-                  </GlowButton>
+                  </button>
                   <div className="text-sm font-dmsans text-text-muted text-center">
                     AI will understand your requirements and find matching properties
                   </div>
@@ -173,17 +185,20 @@ const Search: React.FC = () => {
                 'Commercial space Bangalore',
                 'Villa in Pune'
               ].map((search, index) => (
-                <GlowButton
+                <button
                   key={index}
-                  variant="outline"
                   onClick={() => {
                     setAiQuery(search);
                     handleAiSearch();
                   }}
-                  className="text-left justify-start"
+                  className="bg-white/80 backdrop-blur-md text-text-primary font-dmsans font-medium
+                           px-4 py-2 rounded-xl border border-white/30 shadow-soft
+                           hover:bg-white/90 hover:shadow-glow-blue hover:border-accent-blue/30
+                           transition-all duration-300 ease-in-out transform hover:scale-105
+                           text-left"
                 >
                   {search}
-                </GlowButton>
+                </button>
               ))}
             </div>
           </div>
