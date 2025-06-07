@@ -5,6 +5,7 @@ import { AdminAiPanelLayout } from '@/components/admin/AdminAiPanelLayout';
 import { AdminAiSummaryCards } from '@/components/admin/AdminAiSummaryCards';
 import { AiOversightSectionGroup } from '@/components/admin/AiOversightSectionGroup';
 import { AiPanelSearch } from '@/components/admin/AiPanelSearch';
+import { AdminAiControlPanel } from '@/components/admin/AdminAiControlPanel';
 import { aiPanelRegistry } from '@/utils/aiPanelRegistry';
 
 // Import all panels with lazy loading for heavy ones
@@ -98,6 +99,17 @@ export default function AiOversightPage() {
             
             <AdminAiSummaryCards />
           </div>
+
+          {/* AI Control Panel Section */}
+          <AiOversightSectionGroup
+            title="⚙️ AI System Control"
+            icon={Settings}
+            description="Manage AI tools, credit limits, and system alerts"
+          >
+            <div className="col-span-full">
+              <AdminAiControlPanel />
+            </div>
+          </AiOversightSectionGroup>
 
           {/* System Logs Section */}
           <AiOversightSectionGroup
