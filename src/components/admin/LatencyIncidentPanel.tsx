@@ -59,7 +59,7 @@ export function LatencyIncidentPanel(): JSX.Element {
                 <strong>Total Incidents:</strong> {incidents.length}
               </div>
               <div className="p-3 bg-yellow-50 rounded-lg">
-                <strong>Slow Responses (>5s):</strong> {slowIncidents.length}
+                <strong>Slow Responses (&gt;5s):</strong> {slowIncidents.length}
               </div>
             </div>
 
