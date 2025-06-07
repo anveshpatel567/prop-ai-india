@@ -86,14 +86,14 @@ export const useAiPerformanceEvaluations = () => {
   };
 
   const getEvaluationsByModule = (aiModule: string): AiPerformanceEvaluation[] => {
-    return evaluations.filter(eval => eval.ai_module === aiModule);
+    return evaluations.filter(evaluation => evaluation.ai_module === aiModule);
   };
 
   const getAverageScore = (aiModule?: string): number => {
     const targetEvaluations = aiModule ? getEvaluationsByModule(aiModule) : evaluations;
     if (targetEvaluations.length === 0) return 0;
     
-    const totalScore = targetEvaluations.reduce((sum, eval) => sum + eval.quality_score, 0);
+    const totalScore = targetEvaluations.reduce((sum, evaluation) => sum + evaluation.quality_score, 0);
     return totalScore / targetEvaluations.length;
   };
 
