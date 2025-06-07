@@ -18,9 +18,10 @@ export interface TitleChainInput {
 }
 
 export interface TitleChainEvent {
-  date: string;
-  title_holder: string;
-  notes?: string;
+  id: string;
+  event_label: string;
+  event_date: string;
+  description?: string;
   event_type?: string;
 }
 
