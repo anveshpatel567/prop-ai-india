@@ -380,6 +380,33 @@ export type Database = {
           },
         ]
       }
+      ai_feature_cooldowns: {
+        Row: {
+          cooldown_triggered_at: string | null
+          duration_minutes: number
+          feature: string
+          id: string
+          resolved: boolean | null
+          user_id: string | null
+        }
+        Insert: {
+          cooldown_triggered_at?: string | null
+          duration_minutes: number
+          feature: string
+          id?: string
+          resolved?: boolean | null
+          user_id?: string | null
+        }
+        Update: {
+          cooldown_triggered_at?: string | null
+          duration_minutes?: number
+          feature?: string
+          id?: string
+          resolved?: boolean | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       ai_feature_error_logs: {
         Row: {
           context: string | null
@@ -1144,6 +1171,33 @@ export type Database = {
         }
         Relationships: []
       }
+      ai_model_downtime_logs: {
+        Row: {
+          created_by: string | null
+          downtime_reason: string | null
+          id: string
+          model_name: string
+          resolved_at: string | null
+          started_at: string
+        }
+        Insert: {
+          created_by?: string | null
+          downtime_reason?: string | null
+          id?: string
+          model_name: string
+          resolved_at?: string | null
+          started_at: string
+        }
+        Update: {
+          created_by?: string | null
+          downtime_reason?: string | null
+          id?: string
+          model_name?: string
+          resolved_at?: string | null
+          started_at?: string
+        }
+        Relationships: []
+      }
       ai_model_version_logs: {
         Row: {
           feature_area: string
@@ -1472,6 +1526,33 @@ export type Database = {
           regenerated_at?: string | null
           regenerated_from_prompt?: string | null
           user_id?: string | null
+        }
+        Relationships: []
+      }
+      ai_prompt_tags: {
+        Row: {
+          feature_area: string
+          id: string
+          prompt_id: string
+          tagged_at: string | null
+          tagged_by: string | null
+          tags: string[]
+        }
+        Insert: {
+          feature_area: string
+          id?: string
+          prompt_id: string
+          tagged_at?: string | null
+          tagged_by?: string | null
+          tags: string[]
+        }
+        Update: {
+          feature_area?: string
+          id?: string
+          prompt_id?: string
+          tagged_at?: string | null
+          tagged_by?: string | null
+          tags?: string[]
         }
         Relationships: []
       }

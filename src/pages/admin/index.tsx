@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Shield, Users, CreditCard, BarChart, Zap, Lightbulb } from 'lucide-react';
 import { Navbar } from '@/components/layout/Navbar';
@@ -28,6 +27,9 @@ import { ModelVersionTrackerPanel } from '@/components/admin/ModelVersionTracker
 import { AiFeatureReviewPanel } from '@/components/admin/AiFeatureReviewPanel';
 import { UserCorrectionReviewPanel } from '@/components/admin/UserCorrectionReviewPanel';
 import { ModeratorDecisionTrailPanel } from '@/components/admin/ModeratorDecisionTrailPanel';
+import { AiPromptTaggingPanel } from '@/components/admin/AiPromptTaggingPanel';
+import { AiModelDowntimePanel } from '@/components/admin/AiModelDowntimePanel';
+import { AiCooldownMonitorPanel } from '@/components/admin/AiCooldownMonitorPanel';
 
 export default function AdminPage() {
   return (
@@ -155,52 +157,12 @@ export default function AdminPage() {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-          <div className="bg-white p-6 rounded-lg shadow-sm border">
-            <div className="flex items-center gap-2 mb-4">
-              <BarChart className="h-5 w-5 text-gray-500" />
-              <h2 className="text-xl font-semibold">Campaign Insights</h2>
-            </div>
-            <p className="text-gray-600 mb-4">
-              Monitor agent campaigns, analyze performance, and optimize strategies.
-            </p>
-            <div className="flex flex-wrap gap-2">
-              <a
-                href="/admin/campaign-insights"
-                className="px-4 py-2 bg-gray-50 text-gray-700 rounded-md hover:bg-gray-100 transition"
-              >
-                View Insights
-              </a>
-            </div>
-          </div>
+          <AiPromptTaggingPanel />
+          <AiModelDowntimePanel />
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-          <div className="bg-white p-6 rounded-lg shadow-sm border">
-            <div className="flex items-center gap-2 mb-4">
-              <Zap className="h-5 w-5 text-blue-500" />
-              <h2 className="text-xl font-semibold">AI Tools Management</h2>
-            </div>
-            <p className="text-gray-600 mb-4">
-              Configure AI tools, manage feature flags, and monitor usage patterns.
-            </p>
-            <div className="flex flex-wrap gap-2">
-              <a
-                href="/admin/ai-tools"
-                className="px-4 py-2 bg-blue-50 text-blue-700 rounded-md hover:bg-blue-100 transition"
-              >
-                Manage AI Tools
-              </a>
-              <a
-                href="/admin/feature-flags"
-                className="px-4 py-2 bg-yellow-50 text-yellow-700 rounded-md hover:bg-yellow-100 transition"
-              >
-                Feature Flags
-              </a>
-            </div>
-          </div>
-        </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+          <AiCooldownMonitorPanel />
           <div className="bg-white p-6 rounded-lg shadow-sm border">
             <div className="flex items-center gap-2 mb-4">
               <Lightbulb className="h-5 w-5 text-cyan-500" />
