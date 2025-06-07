@@ -330,6 +330,41 @@ export type Database = {
           },
         ]
       }
+      ai_form_fill_logs: {
+        Row: {
+          confidence_score: number | null
+          created_at: string | null
+          fields_auto_filled: Json
+          form_context: string
+          id: string
+          user_id: string | null
+        }
+        Insert: {
+          confidence_score?: number | null
+          created_at?: string | null
+          fields_auto_filled: Json
+          form_context: string
+          id?: string
+          user_id?: string | null
+        }
+        Update: {
+          confidence_score?: number | null
+          created_at?: string | null
+          fields_auto_filled?: Json
+          form_context?: string
+          id?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_form_fill_logs_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       ai_interaction_logs: {
         Row: {
           action_type: string
@@ -1080,6 +1115,41 @@ export type Database = {
           },
         ]
       }
+      ai_seeker_behavior_logs: {
+        Row: {
+          behavior_data: Json
+          behavior_type: string
+          created_at: string | null
+          id: string
+          inferred_preference: string | null
+          seeker_id: string | null
+        }
+        Insert: {
+          behavior_data: Json
+          behavior_type: string
+          created_at?: string | null
+          id?: string
+          inferred_preference?: string | null
+          seeker_id?: string | null
+        }
+        Update: {
+          behavior_data?: Json
+          behavior_type?: string
+          created_at?: string | null
+          id?: string
+          inferred_preference?: string | null
+          seeker_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_seeker_behavior_logs_seeker_id_fkey"
+            columns: ["seeker_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       ai_tool_flags: {
         Row: {
           created_at: string | null
@@ -1155,6 +1225,44 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "ai_tool_transactions_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ai_ui_attention_heatmaps: {
+        Row: {
+          attention_map: Json
+          created_at: string | null
+          device_type: string
+          id: string
+          page_path: string
+          session_id: string
+          user_id: string | null
+        }
+        Insert: {
+          attention_map: Json
+          created_at?: string | null
+          device_type: string
+          id?: string
+          page_path: string
+          session_id: string
+          user_id?: string | null
+        }
+        Update: {
+          attention_map?: Json
+          created_at?: string | null
+          device_type?: string
+          id?: string
+          page_path?: string
+          session_id?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_ui_attention_heatmaps_user_id_fkey"
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "users"
