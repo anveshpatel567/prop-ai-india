@@ -26,7 +26,9 @@ const AllListings: React.FC = () => {
   }, []);
 
   const handleFilterChange = (key: string, value: string) => {
-    setFilters({ ...filters, [key]: value });
+    // Ensure we don't set empty values
+    const safeValue = value && value.trim() !== '' ? value : '';
+    setFilters({ ...filters, [key]: safeValue });
   };
 
   const applyFilters = () => {
@@ -66,7 +68,7 @@ const AllListings: React.FC = () => {
                   <SelectValue placeholder="Property Type" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">All Types</SelectItem>
+                  <SelectItem value="all">All Types</SelectItem>
                   <SelectItem value="residential">Residential</SelectItem>
                   <SelectItem value="commercial">Commercial</SelectItem>
                   <SelectItem value="plot">Plot</SelectItem>
@@ -78,7 +80,7 @@ const AllListings: React.FC = () => {
                   <SelectValue placeholder="Listing Type" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">All</SelectItem>
+                  <SelectItem value="all">All</SelectItem>
                   <SelectItem value="sale">For Sale</SelectItem>
                   <SelectItem value="rent">For Rent</SelectItem>
                 </SelectContent>

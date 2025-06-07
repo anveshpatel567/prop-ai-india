@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { ListingCondition } from '../../types';
-import { getSafeSelectValue, getSafeSelectLabel } from '../../utils/selectUtils';
+import { getSafeSelectValue, getSafeSelectLabel, getSafeOptions } from '../../utils/selectUtils';
 
 interface DynamicConditionFieldsProps {
   conditions: ListingCondition[];
@@ -21,6 +21,8 @@ export const DynamicConditionFields: React.FC<DynamicConditionFieldsProps> = ({
     
     switch (condition.input_type) {
       case 'dropdown':
+        const safeOptions = getSafeOptions(condition.options);
+        
         return (
           <select
             value={getSafeSelectValue(value)}
@@ -29,11 +31,22 @@ export const DynamicConditionFields: React.FC<DynamicConditionFieldsProps> = ({
               glow-focus transition-all duration-200 font-inter"
           >
             <option value="-">Select {condition.label}</option>
-            {condition.options?.map((option, index) => (
-              <option key={index} value={getSafeSelectValue(option)}>
-                {getSafeSelectLabel(option)}
-              </option>
-            ))}
+            {safeOptions.map((option, index) => {
+              const optionValue = typeof option === 'string' ? option : option?.value || '';
+              const optionLabel = typeof option === 'string' ? option : option?.label || optionValue;
+              
+              // Skip if value is empty
+              if (!optionValue || optionValue.trim() === '') {
+                console.warn('Skipping empty option for condition:', condition.label, option);
+                return null;
+              }
+              
+              return (
+                <option key={`${condition.id}-${index}-${optionValue}`} value={optionValue}>
+                  {getSafeSelectLabel(optionLabel)}
+                </option>
+              );
+            })}
           </select>
         );
         

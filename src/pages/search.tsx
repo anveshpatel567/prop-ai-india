@@ -56,6 +56,12 @@ const Search: React.FC = () => {
     return '';
   };
 
+  const handleFilterChange = (key: string, value: string) => {
+    // Ensure we don't set empty values that could cause Select.Item issues
+    const safeValue = value && value.trim() !== '' && value !== 'all' ? value : '';
+    setManualFilters({ ...manualFilters, [key]: safeValue });
+  };
+
   return (
     <div className="min-h-screen bg-global-bg">
       <Navbar />
@@ -74,7 +80,7 @@ const Search: React.FC = () => {
                   <div className="grid grid-cols-2 gap-4">
                     <Select
                       value={manualFilters.location}
-                      onValueChange={(value) => setManualFilters({ ...manualFilters, location: value })}
+                      onValueChange={(value) => handleFilterChange('location', value)}
                     >
                       <SelectTrigger>
                         <SelectValue placeholder="Select City" />
@@ -90,7 +96,7 @@ const Search: React.FC = () => {
                     
                     <Select
                       value={manualFilters.property_type}
-                      onValueChange={(value) => setManualFilters({ ...manualFilters, property_type: value })}
+                      onValueChange={(value) => handleFilterChange('property_type', value)}
                     >
                       <SelectTrigger>
                         <SelectValue placeholder="Property Type" />
@@ -110,19 +116,19 @@ const Search: React.FC = () => {
                       type="number"
                       placeholder="Min Price"
                       value={manualFilters.min_price}
-                      onChange={(e) => setManualFilters({ ...manualFilters, min_price: e.target.value })}
+                      onChange={(e) => handleFilterChange('min_price', e.target.value)}
                     />
                     <Input
                       type="number"
                       placeholder="Max Price"
                       value={manualFilters.max_price}
-                      onChange={(e) => setManualFilters({ ...manualFilters, max_price: e.target.value })}
+                      onChange={(e) => handleFilterChange('max_price', e.target.value)}
                     />
                   </div>
                   
                   <Select
                     value={manualFilters.listing_type}
-                    onValueChange={(value) => setManualFilters({ ...manualFilters, listing_type: value })}
+                    onValueChange={(value) => handleFilterChange('listing_type', value)}
                   >
                     <SelectTrigger>
                       <SelectValue placeholder="Listing Type" />
