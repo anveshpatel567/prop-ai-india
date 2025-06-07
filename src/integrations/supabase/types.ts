@@ -533,6 +533,48 @@ export type Database = {
           },
         ]
       }
+      ai_property_matches: {
+        Row: {
+          created_at: string | null
+          explanation: string | null
+          id: string
+          listing_id: string | null
+          match_score: number
+          seeker_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          explanation?: string | null
+          id?: string
+          listing_id?: string | null
+          match_score: number
+          seeker_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          explanation?: string | null
+          id?: string
+          listing_id?: string | null
+          match_score?: number
+          seeker_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_property_matches_listing_id_fkey"
+            columns: ["listing_id"]
+            isOneToOne: false
+            referencedRelation: "listings"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ai_property_matches_seeker_id_fkey"
+            columns: ["seeker_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       ai_resume_profiles: {
         Row: {
           created_at: string | null

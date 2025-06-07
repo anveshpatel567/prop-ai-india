@@ -16,6 +16,7 @@ import AdminCreditPacksPage from './pages/admin/credit-packs';
 import AdminCampaignInsightsPage from './pages/admin/campaign-insights';
 import AdminListingOffersPage from './pages/admin/listing-offers';
 import AdminDeveloperAiSummaryPage from './pages/admin/developer-ai-summary';
+import AdminPropertyMatchesPage from './pages/admin/property-matches';
 import AiToolsPage from './pages/ai/index';
 import LoanOptimizerPage from './pages/tools/loan-optimizer';
 import AgentResumePage from './pages/agent/resume';
@@ -23,6 +24,7 @@ import AgentMatchPage from './pages/seeker/agent-match';
 import SeoSchemaPage from './pages/tools/seo-schema';
 import LocalityReportPage from './pages/tools/locality-report';
 import TitleChainPage from './pages/tools/title-chain';
+import SmartMatchesPage from './pages/seeker/smart-matches';
 import NotFound from './pages/NotFound';
 import { AuthProvider } from './context/AuthContext';
 import { WalletProvider } from './context/WalletContext';
@@ -52,10 +54,12 @@ function App() {
                 <Route path="/admin/campaign-insights" element={<AdminCampaignInsightsPage />} />
                 <Route path="/admin/listing-offers" element={<AdminListingOffersPage />} />
                 <Route path="/admin/developer-ai-summary" element={<AdminDeveloperAiSummaryPage />} />
+                <Route path="/admin/property-matches" element={<AdminPropertyMatchesPage />} />
                 <Route path="/ai" element={<AiToolsPage />} />
                 <Route path="/tools/loan-optimizer" element={<LoanOptimizerPage />} />
                 <Route path="/agent/resume" element={<AgentResumePage />} />
                 <Route path="/seeker/agent-match" element={<AgentMatchPage />} />
+                <Route path="/seeker/smart-matches" element={<SmartMatchesPage />} />
                 <Route path="/tools/seo-schema" element={<SeoSchemaPage />} />
                 <Route path="/tools/locality-report" element={<LocalityReportPage />} />
                 <Route path="/tools/title-chain" element={<TitleChainPage />} />
