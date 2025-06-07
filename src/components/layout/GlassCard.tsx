@@ -13,7 +13,7 @@ export const GlassCard: React.FC<GlassCardProps> = ({
   hover = true 
 }) => {
   return (
-    <div className={`glass-card p-6 ${hover ? 'glow-hover' : ''} ${className}`}>
+    <div className={`glass-card p-6 ${hover ? 'glow-hover' : ''} ${className} fade-in`}>
       {children}
     </div>
   );

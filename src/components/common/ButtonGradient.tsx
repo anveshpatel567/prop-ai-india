@@ -4,7 +4,7 @@ import React from 'react';
 interface ButtonGradientProps {
   children: React.ReactNode;
   onClick?: () => void;
-  variant?: 'primary' | 'secondary' | 'outline';
+  variant?: 'primary' | 'secondary' | 'glass';
   size?: 'sm' | 'md' | 'lg';
   className?: string;
 }
@@ -16,12 +16,12 @@ export const ButtonGradient: React.FC<ButtonGradientProps> = ({
   size = 'md',
   className = ''
 }) => {
-  const baseClasses = 'font-medium rounded-lg transition-all duration-300 glow-hover';
+  const baseClasses = 'font-rajdhani font-medium rounded-xl transition-all duration-300 glow-hover border';
   
   const variantClasses = {
-    primary: 'fire-gradient text-white',
-    secondary: 'bg-gradient-to-r from-gray-100 to-gray-200 text-gray-800',
-    outline: 'border-2 border-orange-500 text-orange-500 hover:bg-orange-500 hover:text-white'
+    primary: 'fire-gradient text-white border-orange-400/30 fire-glow',
+    secondary: 'bg-gradient-to-r from-gray-50 to-gray-100 text-gray-800 border-gray-200 hover:shadow-md',
+    glass: 'glass-button text-fire-primary border-fire-gold hover:bg-white/30 hover:shadow-lg'
   };
   
   const sizeClasses = {

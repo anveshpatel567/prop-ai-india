@@ -41,6 +41,23 @@ export interface PropertyListing {
   updated_at: string;
 }
 
+export interface ListingCategory {
+  id: string;
+  slug: string;
+  label: string;
+  parent_id: string | null;
+  is_active: boolean;
+}
+
+export interface ListingCondition {
+  id: string;
+  label: string;
+  applies_to_category_id: string;
+  input_type: 'dropdown' | 'input' | 'checkbox' | 'date' | 'number';
+  options: string[] | null;
+  is_required: boolean;
+}
+
 export interface SearchFilter {
   city: string;
   property_type: string;

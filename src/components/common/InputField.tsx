@@ -26,9 +26,9 @@ export const InputField: React.FC<InputFieldProps> = ({
 }) => {
   return (
     <div className={`space-y-2 ${className}`}>
-      <label className="block text-sm font-medium text-gray-700">
+      <label className="block text-sm font-rajdhani font-medium text-gray-700">
         {label}
-        {required && <span className="text-red-500 ml-1">*</span>}
+        {required && <span className="text-fire-secondary ml-1">*</span>}
       </label>
       <input
         type={type}
@@ -36,14 +36,14 @@ export const InputField: React.FC<InputFieldProps> = ({
         value={value}
         onChange={(e) => onChange(e.target.value)}
         disabled={disabled}
-        className={`w-full px-4 py-3 border border-gray-300 rounded-lg 
-          focus:ring-2 focus:ring-orange-500 focus:border-transparent 
-          transition-colors duration-200 ${
-            error ? 'border-red-500' : ''
-          } ${disabled ? 'bg-gray-100 cursor-not-allowed' : ''}`}
+        className={`w-full px-4 py-3 bg-white border border-gray-200 rounded-xl 
+          glow-focus transition-all duration-200 font-inter text-gray-700
+          placeholder:text-gray-400 ${
+            error ? 'border-red-400 focus:ring-red-500/50' : ''
+          } ${disabled ? 'bg-gray-50 cursor-not-allowed' : ''}`}
       />
       {error && (
-        <p className="text-sm text-red-500">{error}</p>
+        <p className="text-sm text-fire-secondary font-inter">{error}</p>
       )}
     </div>
   );
