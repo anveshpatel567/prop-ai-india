@@ -21,8 +21,7 @@ export default {
     extend: {
       fontFamily: {
         'rajdhani': ['Rajdhani', 'sans-serif'],
-        'inter': ['Inter', 'sans-serif'],
-        'orbitron': ['Orbitron', 'monospace'],
+        'dmsans': ['DM Sans', 'sans-serif'],
       },
       colors: {
         border: 'hsl(var(--border))',
@@ -109,6 +108,10 @@ export default {
         'ai-scan': {
           '0%': { transform: 'translateX(-100%)' },
           '100%': { transform: 'translateX(100%)' }
+        },
+        'float-slow': {
+          '0%, 100%': { transform: 'translateY(0px)' },
+          '50%': { transform: 'translateY(-8px)' }
         }
       },
       animation: {
@@ -118,7 +121,8 @@ export default {
         'scale-up': 'scale-up 0.4s ease-out',
         'pulse-border': 'pulse-border 2s ease-in-out infinite',
         'text-glow': 'text-glow 2s ease-in-out infinite',
-        'ai-scan': 'ai-scan 2s ease-in-out infinite'
+        'ai-scan': 'ai-scan 2s ease-in-out infinite',
+        'float-slow': 'float-slow 3s ease-in-out infinite'
       },
       boxShadow: {
         'soft': '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',

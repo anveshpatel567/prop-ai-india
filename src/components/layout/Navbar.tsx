@@ -26,25 +26,25 @@ export const Navbar: React.FC = () => {
                            shadow-card group-hover:shadow-glow-blue group-hover:scale-105 transition-all duration-300">
               <Building2 className="w-7 h-7 text-white" />
             </div>
-            <span className="font-orbitron font-bold text-2xl bg-gradient-to-r from-accent-blue to-accent-cyan bg-clip-text text-transparent">
+            <span className="font-rajdhani font-bold text-2xl bg-gradient-to-r from-accent-blue to-accent-cyan bg-clip-text text-transparent">
               FreePropList
             </span>
           </Link>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
-            <Link to="/search" className="text-text-secondary hover:text-accent-blue transition-colors font-rajdhani font-medium">
+            <Link to="/search" className="text-text-secondary hover:text-accent-blue transition-colors font-dmsans font-medium">
               Search
             </Link>
-            <Link to="/list-property" className="text-text-secondary hover:text-accent-blue transition-colors font-rajdhani font-medium">
+            <Link to="/list-property" className="text-text-secondary hover:text-accent-blue transition-colors font-dmsans font-medium">
               List Property
             </Link>
             {user && (
               <>
-                <Link to="/dashboard" className="text-text-secondary hover:text-accent-blue transition-colors font-rajdhani font-medium">
+                <Link to="/dashboard" className="text-text-secondary hover:text-accent-blue transition-colors font-dmsans font-medium">
                   Dashboard
                 </Link>
-                <Link to="/ai" className="text-text-secondary hover:text-accent-blue transition-colors font-rajdhani font-medium">
+                <Link to="/ai" className="text-text-secondary hover:text-accent-blue transition-colors font-dmsans font-medium">
                   AI Tools
                 </Link>
               </>
@@ -70,28 +70,28 @@ export const Navbar: React.FC = () => {
                         {user.full_name?.charAt(0) || 'U'}
                       </span>
                     </div>
-                    <span className="hidden md:block font-rajdhani font-medium">{user.full_name}</span>
+                    <span className="hidden md:block font-dmsans font-medium">{user.full_name}</span>
                   </button>
                   
                   {isMenuOpen && (
                     <div className="absolute right-0 mt-2 w-48 glass-card-light border border-gray-200 rounded-xl z-50 shadow-card">
                       <Link
                         to="/dashboard"
-                        className="block px-4 py-3 text-sm text-text-secondary hover:bg-gray-50 hover:text-accent-blue rounded-xl font-rajdhani"
+                        className="block px-4 py-3 text-sm text-text-secondary hover:bg-gray-50 hover:text-accent-blue rounded-xl font-dmsans"
                         onClick={() => setIsMenuOpen(false)}
                       >
                         Dashboard
                       </Link>
                       <Link
                         to="/ai"
-                        className="block px-4 py-3 text-sm text-text-secondary hover:bg-gray-50 hover:text-accent-blue rounded-xl font-rajdhani"
+                        className="block px-4 py-3 text-sm text-text-secondary hover:bg-gray-50 hover:text-accent-blue rounded-xl font-dmsans"
                         onClick={() => setIsMenuOpen(false)}
                       >
                         AI Tools
                       </Link>
                       <button
                         onClick={handleLogout}
-                        className="w-full text-left px-4 py-3 text-sm text-red-500 hover:bg-red-50 rounded-xl font-rajdhani"
+                        className="w-full text-left px-4 py-3 text-sm text-red-500 hover:bg-red-50 rounded-xl font-dmsans"
                       >
                         Logout
                       </button>
@@ -102,7 +102,7 @@ export const Navbar: React.FC = () => {
             ) : (
               <div className="flex items-center space-x-3">
                 <Link to="/login">
-                  <button className="glass-card-subtle text-text-primary font-rajdhani font-medium 
+                  <button className="glass-card-subtle text-text-primary font-dmsans font-medium 
                                    py-2 px-6 rounded-xl border border-gray-200
                                    hover:bg-gray-50 hover:border-accent-blue/50 transition-all duration-300">
                     Login

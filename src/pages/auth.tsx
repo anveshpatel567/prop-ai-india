@@ -6,9 +6,11 @@ import { AuthToggleWindow } from '@/components/auth/AuthToggleWindow';
 
 const Auth: React.FC = () => {
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-global-bg">
       <Navbar />
-      <AuthToggleWindow />
+      <section className="section-hero py-16">
+        <AuthToggleWindow />
+      </section>
       <Footer />
     </div>
   );

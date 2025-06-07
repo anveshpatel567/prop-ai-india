@@ -1,5 +1,6 @@
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -69,7 +70,7 @@
     @apply border-border;
   }
   body {
-    @apply bg-global-bg text-text-primary font-rajdhani;
+    @apply bg-global-bg text-text-primary font-dmsans;
   }
 }
 
@@ -101,7 +102,7 @@
 
 /* Typography utilities */
 .heading-primary {
-  @apply font-orbitron text-5xl lg:text-6xl font-bold tracking-wide text-text-primary;
+  @apply font-rajdhani text-5xl lg:text-6xl font-bold tracking-wide text-text-primary;
 }
 
 .heading-secondary {
@@ -109,18 +110,18 @@
 }
 
 .body-text {
-  @apply font-rajdhani text-base md:text-lg text-text-primary;
+  @apply font-dmsans text-base md:text-lg text-text-primary;
 }
 
 .cta-text {
-  @apply font-orbitron uppercase tracking-wide text-white;
+  @apply font-rajdhani uppercase tracking-wide text-white;
 }
 
 /* Button utilities */
 .btn-primary {
-  @apply bg-gradient-to-r from-accent-blue to-accent-cyan text-white font-orbitron font-bold px-6 py-3 rounded-lg shadow-card transition-all duration-300 hover:shadow-glow-blue hover:animate-text-glow;
+  @apply bg-gradient-to-r from-accent-blue to-accent-cyan text-white font-rajdhani font-bold px-6 py-3 rounded-lg shadow-card transition-all duration-300 hover:shadow-glow-blue hover:animate-text-glow;
 }
 
 .btn-secondary {
-  @apply bg-gradient-to-r from-accent-lime to-accent-green text-white font-orbitron font-bold px-6 py-3 rounded-lg shadow-card transition-all duration-300 hover:shadow-glow-cyan;
+  @apply bg-gradient-to-r from-accent-lime to-accent-green text-white font-rajdhani font-bold px-6 py-3 rounded-lg shadow-card transition-all duration-300 hover:shadow-glow-cyan;
 }

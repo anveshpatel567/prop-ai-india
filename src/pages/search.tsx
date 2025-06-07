@@ -60,133 +60,135 @@ const Search: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen warm-gradient">
+    <div className="min-h-screen bg-global-bg">
       <Navbar />
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-800 mb-2">Property Search</h1>
-          <p className="text-gray-600">Find your perfect property with manual filters or AI search</p>
-        </div>
+      <section className="section-hero py-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-8">
+            <h1 className="font-rajdhani text-3xl font-bold text-text-primary mb-2">Property Search</h1>
+            <p className="font-dmsans text-text-secondary">Find your perfect property with manual filters or AI search</p>
+          </div>
 
-        <div className="grid lg:grid-cols-2 gap-8">
-          <GlassCard>
-            <div className="p-6">
-              <h2 className="text-xl font-semibold mb-4">Manual Search (Free)</h2>
-              <div className="space-y-4">
-                <div className="grid grid-cols-2 gap-4">
+          <div className="grid lg:grid-cols-2 gap-8">
+            <GlassCard>
+              <div className="p-6">
+                <h2 className="font-rajdhani text-xl font-semibold mb-4 text-text-primary">Manual Search (Free)</h2>
+                <div className="space-y-4">
+                  <div className="grid grid-cols-2 gap-4">
+                    <Select
+                      value={manualFilters.location}
+                      onValueChange={(value) => setManualFilters({ ...manualFilters, location: value })}
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select City" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="Mumbai">Mumbai</SelectItem>
+                        <SelectItem value="Delhi">Delhi</SelectItem>
+                        <SelectItem value="Bangalore">Bangalore</SelectItem>
+                        <SelectItem value="Pune">Pune</SelectItem>
+                        <SelectItem value="Chennai">Chennai</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    
+                    <Select
+                      value={manualFilters.property_type}
+                      onValueChange={(value) => setManualFilters({ ...manualFilters, property_type: value })}
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Property Type" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="apartment">Apartment</SelectItem>
+                        <SelectItem value="house">House</SelectItem>
+                        <SelectItem value="villa">Villa</SelectItem>
+                        <SelectItem value="commercial">Commercial</SelectItem>
+                        <SelectItem value="plot">Plot</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  
+                  <div className="grid grid-cols-2 gap-4">
+                    <Input
+                      type="number"
+                      placeholder="Min Price"
+                      value={manualFilters.min_price}
+                      onChange={(e) => setManualFilters({ ...manualFilters, min_price: e.target.value })}
+                    />
+                    <Input
+                      type="number"
+                      placeholder="Max Price"
+                      value={manualFilters.max_price}
+                      onChange={(e) => setManualFilters({ ...manualFilters, max_price: e.target.value })}
+                    />
+                  </div>
+                  
                   <Select
-                    value={manualFilters.location}
-                    onValueChange={(value) => setManualFilters({ ...manualFilters, location: value })}
+                    value={manualFilters.listing_type}
+                    onValueChange={(value) => setManualFilters({ ...manualFilters, listing_type: value })}
                   >
                     <SelectTrigger>
-                      <SelectValue placeholder="Select City" />
+                      <SelectValue placeholder="Listing Type" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="Mumbai">Mumbai</SelectItem>
-                      <SelectItem value="Delhi">Delhi</SelectItem>
-                      <SelectItem value="Bangalore">Bangalore</SelectItem>
-                      <SelectItem value="Pune">Pune</SelectItem>
-                      <SelectItem value="Chennai">Chennai</SelectItem>
+                      <SelectItem value="sale">For Sale</SelectItem>
+                      <SelectItem value="rent">For Rent</SelectItem>
                     </SelectContent>
                   </Select>
                   
-                  <Select
-                    value={manualFilters.property_type}
-                    onValueChange={(value) => setManualFilters({ ...manualFilters, property_type: value })}
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder="Property Type" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="apartment">Apartment</SelectItem>
-                      <SelectItem value="house">House</SelectItem>
-                      <SelectItem value="villa">Villa</SelectItem>
-                      <SelectItem value="commercial">Commercial</SelectItem>
-                      <SelectItem value="plot">Plot</SelectItem>
-                    </SelectContent>
-                  </Select>
+                  <GlowButton onClick={handleManualSearch} className="w-full">
+                    Search Properties
+                  </GlowButton>
                 </div>
-                
-                <div className="grid grid-cols-2 gap-4">
-                  <Input
-                    type="number"
-                    placeholder="Min Price"
-                    value={manualFilters.min_price}
-                    onChange={(e) => setManualFilters({ ...manualFilters, min_price: e.target.value })}
+              </div>
+            </GlassCard>
+
+            <GlassCard>
+              <div className="p-6">
+                <h2 className="font-rajdhani text-xl font-semibold mb-4 text-text-primary">AI Smart Search (8 Credits)</h2>
+                <div className="space-y-4">
+                  <Textarea
+                    placeholder="Describe what you're looking for... e.g., '3BHK apartment near metro station in Mumbai under 2 crores'"
+                    value={aiQuery}
+                    onChange={(e) => setAiQuery(e.target.value)}
+                    className="h-32 resize-none"
                   />
-                  <Input
-                    type="number"
-                    placeholder="Max Price"
-                    value={manualFilters.max_price}
-                    onChange={(e) => setManualFilters({ ...manualFilters, max_price: e.target.value })}
-                  />
+                  <GlowButton onClick={handleAiSearch} className="w-full" disabled={!aiQuery.trim()}>
+                    Search with AI
+                  </GlowButton>
+                  <div className="text-sm font-dmsans text-text-muted text-center">
+                    AI will understand your requirements and find matching properties
+                  </div>
                 </div>
-                
-                <Select
-                  value={manualFilters.listing_type}
-                  onValueChange={(value) => setManualFilters({ ...manualFilters, listing_type: value })}
+              </div>
+            </GlassCard>
+          </div>
+
+          <div className="mt-12">
+            <h2 className="font-rajdhani text-2xl font-bold text-text-primary mb-6">Popular Searches</h2>
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+              {[
+                '3BHK in Mumbai',
+                '2BHK for rent Delhi',
+                'Commercial space Bangalore',
+                'Villa in Pune'
+              ].map((search, index) => (
+                <GlowButton
+                  key={index}
+                  variant="outline"
+                  onClick={() => {
+                    setAiQuery(search);
+                    handleAiSearch();
+                  }}
+                  className="text-left justify-start"
                 >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Listing Type" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="sale">For Sale</SelectItem>
-                    <SelectItem value="rent">For Rent</SelectItem>
-                  </SelectContent>
-                </Select>
-                
-                <GlowButton onClick={handleManualSearch} className="w-full">
-                  Search Properties
+                  {search}
                 </GlowButton>
-              </div>
+              ))}
             </div>
-          </GlassCard>
-
-          <GlassCard>
-            <div className="p-6">
-              <h2 className="text-xl font-semibold mb-4">AI Smart Search (8 Credits)</h2>
-              <div className="space-y-4">
-                <Textarea
-                  placeholder="Describe what you're looking for... e.g., '3BHK apartment near metro station in Mumbai under 2 crores'"
-                  value={aiQuery}
-                  onChange={(e) => setAiQuery(e.target.value)}
-                  className="h-32 resize-none"
-                />
-                <GlowButton onClick={handleAiSearch} className="w-full" disabled={!aiQuery.trim()}>
-                  Search with AI
-                </GlowButton>
-                <div className="text-sm text-gray-600 text-center">
-                  AI will understand your requirements and find matching properties
-                </div>
-              </div>
-            </div>
-          </GlassCard>
-        </div>
-
-        <div className="mt-12">
-          <h2 className="text-2xl font-bold text-gray-800 mb-6">Popular Searches</h2>
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
-            {[
-              '3BHK in Mumbai',
-              '2BHK for rent Delhi',
-              'Commercial space Bangalore',
-              'Villa in Pune'
-            ].map((search, index) => (
-              <GlowButton
-                key={index}
-                variant="outline"
-                onClick={() => {
-                  setAiQuery(search);
-                  handleAiSearch();
-                }}
-                className="text-left justify-start"
-              >
-                {search}
-              </GlowButton>
-            ))}
           </div>
         </div>
-      </div>
+      </section>
       <Footer />
     </div>
   );
