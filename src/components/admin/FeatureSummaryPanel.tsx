@@ -10,13 +10,14 @@ export function FeatureSummaryPanel() {
   const { summaries, loading } = useFeatureSummaries();
 
   const getFlagRatio = (flagged: number, total: number) => {
-    if (total === 0) return 0;
+    if (total === 0) return "0";
     return ((flagged / total) * 100).toFixed(1);
   };
 
-  const getFlagStatus = (ratio: number) => {
-    if (ratio < 5) return { label: 'Low', variant: 'default' as const };
-    if (ratio < 15) return { label: 'Medium', variant: 'secondary' as const };
+  const getFlagStatus = (ratio: string) => {
+    const ratioNum = parseFloat(ratio);
+    if (ratioNum < 5) return { label: 'Low', variant: 'default' as const };
+    if (ratioNum < 15) return { label: 'Medium', variant: 'secondary' as const };
     return { label: 'High', variant: 'destructive' as const };
   };
 
@@ -34,7 +35,7 @@ export function FeatureSummaryPanel() {
         ) : (
           <div className="space-y-4">
             {summaries.map((summary) => {
-              const flagRatio = parseFloat(getFlagRatio(summary.flagged_count, summary.usage_count));
+              const flagRatio = getFlagRatio(summary.flagged_count, summary.usage_count);
               const status = getFlagStatus(flagRatio);
               return (
                 <div key={summary.id} className="p-3 border rounded-lg">
