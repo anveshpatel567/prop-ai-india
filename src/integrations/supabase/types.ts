@@ -755,6 +755,39 @@ export type Database = {
           },
         ]
       }
+      credit_packs: {
+        Row: {
+          created_at: string | null
+          credits: number
+          description: string | null
+          id: string
+          is_active: boolean | null
+          name: string
+          price_inr: number
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          credits: number
+          description?: string | null
+          id?: string
+          is_active?: boolean | null
+          name: string
+          price_inr: number
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          credits?: number
+          description?: string | null
+          id?: string
+          is_active?: boolean | null
+          name?: string
+          price_inr?: number
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       crm_ai_trails: {
         Row: {
           ai_tool: string
