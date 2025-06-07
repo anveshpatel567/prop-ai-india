@@ -192,6 +192,24 @@ export default function AdminPage() {
               </a>
             </div>
           </div>
+
+          <div className="bg-white p-6 rounded-lg shadow-sm border">
+            <div className="flex items-center gap-2 mb-4">
+              <BarChart className="h-5 w-5 text-slate-500" />
+              <h2 className="text-xl font-semibold">AI Insights & Oversight</h2>
+            </div>
+            <p className="text-gray-600 mb-4">
+              Monitor AI system health, debug logs, and trust feedback in real-time.
+            </p>
+            <div className="flex flex-wrap gap-2">
+              <a
+                href="/admin/ai-insights"
+                className="px-4 py-2 bg-slate-50 text-slate-700 rounded-md hover:bg-slate-100 transition"
+              >
+                View AI Insights
+              </a>
+            </div>
+          </div>
         </div>
       </div>
     </div>
