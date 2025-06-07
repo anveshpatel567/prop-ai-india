@@ -24,6 +24,7 @@ import AdminAnalytics from "./pages/admin/analytics";
 import DeveloperAiSummary from "./pages/admin/developer-ai-summary";
 import CreditPacks from "./pages/admin/credit-packs";
 import ListingOffers from "./pages/admin/listing-offers";
+import CampaignInsights from "./pages/admin/campaign-insights";
 import NotFound from "./pages/404";
 
 const queryClient = new QueryClient();
@@ -55,6 +56,7 @@ const App = () => (
                 <Route path="/admin/developer-ai-summary" element={<DeveloperAiSummary />} />
                 <Route path="/admin/credit-packs" element={<CreditPacks />} />
                 <Route path="/admin/listing-offers" element={<ListingOffers />} />
+                <Route path="/admin/campaign-insights" element={<CampaignInsights />} />
                 <Route path="/404" element={<NotFound />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
