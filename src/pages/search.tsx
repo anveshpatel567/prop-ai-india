@@ -137,7 +137,7 @@ const Search: React.FC = () => {
                   </Select>
                   
                   <GlowButton onClick={handleManualSearch} className="w-full">
-                    Find Properties
+                    Search Properties
                   </GlowButton>
                 </div>
               </div>
@@ -154,7 +154,7 @@ const Search: React.FC = () => {
                     className="h-32 resize-none"
                   />
                   <GlowButton onClick={handleAiSearch} className="w-full" disabled={!aiQuery.trim()}>
-                    Analyze with AI
+                    Search with AI
                   </GlowButton>
                   <div className="text-sm font-dmsans text-text-muted text-center">
                     AI will understand your requirements and find matching properties
@@ -165,18 +165,26 @@ const Search: React.FC = () => {
           </div>
 
           <div className="mt-12">
-            <div className="max-w-md mx-auto">
-              <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-6 md:p-8 text-center shadow-lg hover:shadow-xl transition-all duration-300 animate-fade-in">
-                <div className="space-y-3 font-dmsans text-sm md:text-base text-text-primary">
-                  <div>info@freeproplist.com</div>
-                  <div>95129 01356</div>
-                  <div>Ahmedabad, Gujarat, India</div>
-                  <div className="border-t border-white/20 pt-3 mt-4">
-                    <div>© 2024 FreePropList. All rights reserved.</div>
-                    <div className="text-xs text-text-muted mt-1">Privacy Policy | Terms of Service</div>
-                  </div>
-                </div>
-              </div>
+            <h2 className="font-rajdhani text-2xl font-bold text-text-primary mb-6">Popular Searches</h2>
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+              {[
+                '3BHK in Mumbai',
+                '2BHK for rent Delhi',
+                'Commercial space Bangalore',
+                'Villa in Pune'
+              ].map((search, index) => (
+                <GlowButton
+                  key={index}
+                  variant="outline"
+                  onClick={() => {
+                    setAiQuery(search);
+                    handleAiSearch();
+                  }}
+                  className="text-left justify-start"
+                >
+                  {search}
+                </GlowButton>
+              ))}
             </div>
           </div>
         </div>
