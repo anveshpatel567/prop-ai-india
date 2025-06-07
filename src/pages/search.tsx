@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Navbar } from '../components/layout/Navbar';
 import { Footer } from '../components/layout/Footer';
@@ -7,11 +6,13 @@ import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import { useListings } from '@/hooks/useListings';
+import { useAiSearchHistory } from '@/hooks/useAiSearchHistory';
 import { useNavigate } from 'react-router-dom';
 import { getSafeSelectValue, isValidSelectOption } from '@/utils/selectUtils';
 
 const Search: React.FC = () => {
   const { fetchListings } = useListings();
+  const { recordAiSearch } = useAiSearchHistory();
   const navigate = useNavigate();
   
   const [manualFilters, setManualFilters] = useState({
@@ -37,10 +38,26 @@ const Search: React.FC = () => {
     navigate('/listing/all');
   };
 
-  const handleAiSearch = () => {
+  const handleAiSearch = async () => {
     const basicLocation = extractLocationFromQuery(aiQuery);
+    const filters = basicLocation ? { location: basicLocation } : {};
+    
+    // Record the AI search in database
+    try {
+      await recordAiSearch({
+        user_id: '', // This will be set by RLS to auth.uid()
+        search_query: aiQuery,
+        ai_interpretation: { extracted_location: basicLocation },
+        results_count: null, // Will be updated after search
+        filters_applied: filters,
+        credits_used: 8
+      });
+    } catch (error) {
+      console.error('Failed to record AI search:', error);
+    }
+
     if (basicLocation) {
-      fetchListings({ location: basicLocation });
+      await fetchListings(filters);
     }
     navigate('/listing/all');
   };

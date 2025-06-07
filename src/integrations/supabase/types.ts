@@ -159,6 +159,47 @@ export type Database = {
           },
         ]
       }
+      ai_search_history: {
+        Row: {
+          ai_interpretation: Json | null
+          created_at: string | null
+          credits_used: number | null
+          filters_applied: Json | null
+          id: string
+          results_count: number | null
+          search_query: string
+          user_id: string | null
+        }
+        Insert: {
+          ai_interpretation?: Json | null
+          created_at?: string | null
+          credits_used?: number | null
+          filters_applied?: Json | null
+          id?: string
+          results_count?: number | null
+          search_query: string
+          user_id?: string | null
+        }
+        Update: {
+          ai_interpretation?: Json | null
+          created_at?: string | null
+          credits_used?: number | null
+          filters_applied?: Json | null
+          id?: string
+          results_count?: number | null
+          search_query?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_search_history_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       ai_tool_transactions: {
         Row: {
           created_at: string | null
@@ -257,6 +298,41 @@ export type Database = {
           },
         ]
       }
+      api_rate_limits: {
+        Row: {
+          created_at: string | null
+          endpoint: string
+          id: string
+          requests_count: number | null
+          user_id: string | null
+          window_start: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          endpoint: string
+          id?: string
+          requests_count?: number | null
+          user_id?: string | null
+          window_start?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          endpoint?: string
+          id?: string
+          requests_count?: number | null
+          user_id?: string | null
+          window_start?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "api_rate_limits_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       auth_sessions: {
         Row: {
           created_at: string | null
@@ -288,6 +364,57 @@ export type Database = {
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      crm_interactions: {
+        Row: {
+          created_at: string | null
+          created_by: string | null
+          description: string | null
+          id: string
+          interaction_date: string | null
+          interaction_type: string
+          lead_id: string | null
+          next_action: string | null
+          outcome: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          interaction_date?: string | null
+          interaction_type: string
+          lead_id?: string | null
+          next_action?: string | null
+          outcome?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          interaction_date?: string | null
+          interaction_type?: string
+          lead_id?: string | null
+          next_action?: string | null
+          outcome?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "crm_interactions_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "crm_interactions_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "leads"
             referencedColumns: ["id"]
           },
         ]
@@ -610,6 +737,66 @@ export type Database = {
           },
         ]
       }
+      parsed_brochures: {
+        Row: {
+          ai_model_used: string | null
+          confidence_score: number | null
+          created_at: string | null
+          credits_used: number | null
+          error_message: string | null
+          id: string
+          listing_id: string | null
+          original_file_url: string
+          parsed_data: Json | null
+          processing_time_ms: number | null
+          status: string | null
+          user_id: string | null
+        }
+        Insert: {
+          ai_model_used?: string | null
+          confidence_score?: number | null
+          created_at?: string | null
+          credits_used?: number | null
+          error_message?: string | null
+          id?: string
+          listing_id?: string | null
+          original_file_url: string
+          parsed_data?: Json | null
+          processing_time_ms?: number | null
+          status?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          ai_model_used?: string | null
+          confidence_score?: number | null
+          created_at?: string | null
+          credits_used?: number | null
+          error_message?: string | null
+          id?: string
+          listing_id?: string | null
+          original_file_url?: string
+          parsed_data?: Json | null
+          processing_time_ms?: number | null
+          status?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "parsed_brochures_listing_id_fkey"
+            columns: ["listing_id"]
+            isOneToOne: false
+            referencedRelation: "listings"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "parsed_brochures_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       payment_receipts: {
         Row: {
           admin_notes: string | null
@@ -661,6 +848,111 @@ export type Database = {
           {
             foreignKeyName: "payment_receipts_user_id_fkey"
             columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      property_inquiries: {
+        Row: {
+          created_at: string | null
+          email: string | null
+          id: string
+          inquirer_id: string | null
+          listing_id: string | null
+          message: string
+          phone: string | null
+          preferred_contact_time: string | null
+          responded_at: string | null
+          response: string | null
+          status: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          email?: string | null
+          id?: string
+          inquirer_id?: string | null
+          listing_id?: string | null
+          message: string
+          phone?: string | null
+          preferred_contact_time?: string | null
+          responded_at?: string | null
+          response?: string | null
+          status?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          email?: string | null
+          id?: string
+          inquirer_id?: string | null
+          listing_id?: string | null
+          message?: string
+          phone?: string | null
+          preferred_contact_time?: string | null
+          responded_at?: string | null
+          response?: string | null
+          status?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "property_inquiries_inquirer_id_fkey"
+            columns: ["inquirer_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "property_inquiries_listing_id_fkey"
+            columns: ["listing_id"]
+            isOneToOne: false
+            referencedRelation: "listings"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      property_views: {
+        Row: {
+          created_at: string | null
+          id: string
+          listing_id: string | null
+          referrer: string | null
+          user_agent: string | null
+          view_duration: number | null
+          viewer_id: string | null
+          viewer_ip: unknown | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          listing_id?: string | null
+          referrer?: string | null
+          user_agent?: string | null
+          view_duration?: number | null
+          viewer_id?: string | null
+          viewer_ip?: unknown | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          listing_id?: string | null
+          referrer?: string | null
+          user_agent?: string | null
+          view_duration?: number | null
+          viewer_id?: string | null
+          viewer_ip?: unknown | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "property_views_listing_id_fkey"
+            columns: ["listing_id"]
+            isOneToOne: false
+            referencedRelation: "listings"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "property_views_viewer_id_fkey"
+            columns: ["viewer_id"]
             isOneToOne: false
             referencedRelation: "users"
             referencedColumns: ["id"]
@@ -773,6 +1065,45 @@ export type Database = {
           },
         ]
       }
+      saved_properties: {
+        Row: {
+          created_at: string | null
+          id: string
+          listing_id: string | null
+          notes: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          listing_id?: string | null
+          notes?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          listing_id?: string | null
+          notes?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "saved_properties_listing_id_fkey"
+            columns: ["listing_id"]
+            isOneToOne: false
+            referencedRelation: "listings"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "saved_properties_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       ui_button_controls: {
         Row: {
           allowed_variants: string[]
@@ -829,6 +1160,53 @@ export type Database = {
           },
         ]
       }
+      user_profiles: {
+        Row: {
+          avatar_url: string | null
+          bio: string | null
+          company_name: string | null
+          created_at: string | null
+          id: string
+          linkedin_url: string | null
+          updated_at: string | null
+          user_id: string | null
+          verification_documents: Json | null
+          website_url: string | null
+        }
+        Insert: {
+          avatar_url?: string | null
+          bio?: string | null
+          company_name?: string | null
+          created_at?: string | null
+          id?: string
+          linkedin_url?: string | null
+          updated_at?: string | null
+          user_id?: string | null
+          verification_documents?: Json | null
+          website_url?: string | null
+        }
+        Update: {
+          avatar_url?: string | null
+          bio?: string | null
+          company_name?: string | null
+          created_at?: string | null
+          id?: string
+          linkedin_url?: string | null
+          updated_at?: string | null
+          user_id?: string | null
+          verification_documents?: Json | null
+          website_url?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_profiles_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: true
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       users: {
         Row: {
           created_at: string | null
@@ -864,6 +1242,60 @@ export type Database = {
           updated_at?: string | null
         }
         Relationships: []
+      }
+      wallet_transactions: {
+        Row: {
+          amount: number
+          created_at: string | null
+          description: string | null
+          id: string
+          reference_id: string | null
+          reference_type: string | null
+          status: string | null
+          transaction_type: string
+          user_id: string | null
+          wallet_id: string | null
+        }
+        Insert: {
+          amount: number
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          reference_id?: string | null
+          reference_type?: string | null
+          status?: string | null
+          transaction_type: string
+          user_id?: string | null
+          wallet_id?: string | null
+        }
+        Update: {
+          amount?: number
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          reference_id?: string | null
+          reference_type?: string | null
+          status?: string | null
+          transaction_type?: string
+          user_id?: string | null
+          wallet_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "wallet_transactions_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "wallet_transactions_wallet_id_fkey"
+            columns: ["wallet_id"]
+            isOneToOne: false
+            referencedRelation: "wallets"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       wallets: {
         Row: {

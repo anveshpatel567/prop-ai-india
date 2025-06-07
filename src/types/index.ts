@@ -1,4 +1,3 @@
-
 // Flat Type Architecture - No nested or recursive types
 
 export interface UserProfile {
@@ -12,12 +11,38 @@ export interface UserProfile {
   updated_at: string;
 }
 
+export interface ExtendedUserProfile {
+  id: string;
+  user_id: string;
+  avatar_url: string | null;
+  bio: string | null;
+  company_name: string | null;
+  website_url: string | null;
+  linkedin_url: string | null;
+  verification_documents: any;
+  created_at: string;
+  updated_at: string;
+}
+
 export interface WalletBalance {
   id: string;
   user_id: string;
   balance: number;
   last_updated: string;
   status: 'active' | 'suspended';
+}
+
+export interface WalletTransaction {
+  id: string;
+  user_id: string;
+  wallet_id: string;
+  transaction_type: 'debit' | 'credit' | 'refund';
+  amount: number;
+  description: string | null;
+  reference_id: string | null;
+  reference_type: string | null;
+  status: 'pending' | 'completed' | 'failed';
+  created_at: string;
 }
 
 export interface PropertyListing {
@@ -39,6 +64,77 @@ export interface PropertyListing {
   status: 'active' | 'sold' | 'rented' | 'draft';
   created_at: string;
   updated_at: string;
+}
+
+export interface ParsedBrochure {
+  id: string;
+  user_id: string;
+  listing_id: string;
+  original_file_url: string;
+  parsed_data: any;
+  confidence_score: number | null;
+  status: 'processing' | 'completed' | 'failed';
+  ai_model_used: string | null;
+  processing_time_ms: number | null;
+  credits_used: number;
+  error_message: string | null;
+  created_at: string;
+}
+
+export interface PropertyView {
+  id: string;
+  listing_id: string;
+  viewer_id: string | null;
+  viewer_ip: string | null;
+  user_agent: string | null;
+  referrer: string | null;
+  view_duration: number | null;
+  created_at: string;
+}
+
+export interface SavedProperty {
+  id: string;
+  user_id: string;
+  listing_id: string;
+  notes: string | null;
+  created_at: string;
+}
+
+export interface PropertyInquiry {
+  id: string;
+  listing_id: string;
+  inquirer_id: string;
+  message: string;
+  phone: string | null;
+  email: string | null;
+  preferred_contact_time: string | null;
+  status: 'new' | 'responded' | 'closed';
+  response: string | null;
+  responded_at: string | null;
+  created_at: string;
+}
+
+export interface AiSearchRecord {
+  id: string;
+  user_id: string;
+  search_query: string;
+  ai_interpretation: any;
+  results_count: number | null;
+  filters_applied: any;
+  credits_used: number;
+  created_at: string;
+}
+
+export interface CrmInteraction {
+  id: string;
+  lead_id: string;
+  interaction_type: string;
+  interaction_date: string;
+  description: string | null;
+  outcome: string | null;
+  next_action: string | null;
+  created_by: string | null;
+  created_at: string;
 }
 
 export interface ListingCategory {
@@ -158,12 +254,5 @@ export interface PropertyComparison {
   user_id: string;
   property_ids: string[];
   comparison_data: string;
-  created_at: string;
-}
-
-export interface SavedProperty {
-  id: string;
-  user_id: string;
-  property_id: string;
   created_at: string;
 }
