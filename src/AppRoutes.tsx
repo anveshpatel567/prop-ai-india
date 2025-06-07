@@ -1,8 +1,8 @@
-
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Home from './pages/index';
 import Login from './pages/login';
+import Join from './pages/join';
 import Dashboard from './pages/dashboard';
 import Profile from './pages/profile';
 import MyAiUsagePage from './pages/my-ai-usage';
@@ -41,6 +41,7 @@ export const AppRoutes = () => {
       <Route path="/" element={<Home />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Login />} />
+      <Route path="/join" element={<Join />} />
       <Route path="/dashboard" element={<Dashboard />} />
       <Route path="/profile" element={<Profile />} />
       <Route path="/my-ai-usage" element={<MyAiUsagePage />} />

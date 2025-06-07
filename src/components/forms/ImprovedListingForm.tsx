@@ -1,203 +1,265 @@
 
 import React, { useState } from 'react';
-import { GlowButton } from '@/components/common/GlowButton';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+import { Button } from '@/components/ui/button';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
-import { Upload, CheckCircle, XCircle } from 'lucide-react';
-import { useParsedBrochure } from '@/hooks/useParsedBrochure';
-import { useToast } from '@/hooks/use-toast';
+import { Upload, FileText, Zap } from 'lucide-react';
 
 export const ImprovedListingForm: React.FC = () => {
-  const [file, setFile] = useState<File | null>(null);
-  const { parseBrochure, parsing, parsedData, submitParsedListing, submitting } = useParsedBrochure();
-  const { toast } = useToast();
+  const [propertyType, setPropertyType] = useState('');
+  const [listingType, setListingType] = useState('');
+  const [areaUnit, setAreaUnit] = useState('sqft');
+  const [reraListed, setReraListed] = useState(false);
 
-  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const uploadedFile = event.target.files?.[0];
-    if (uploadedFile) {
-      if (uploadedFile.size > 50 * 1024 * 1024) {
-        toast({
-          title: "File too large",
-          description: "Please upload a file smaller than 50MB",
-          variant: "destructive"
-        });
-        return;
-      }
-      setFile(uploadedFile);
-    }
-  };
+  const propertyTypes = [
+    { value: 'residential', label: 'Residential' },
+    { value: 'commercial', label: 'Commercial' },
+    { value: 'plot', label: 'Plot/Land' }
+  ];
 
-  const handleParseFile = async () => {
-    if (!file) return;
-    
-    try {
-      const text = await file.text();
-      await parseBrochure(text);
-      toast({
-        title: "Brochure parsed successfully!",
-        description: "Review the extracted data below and make any necessary edits.",
-        variant: "default"
-      });
-    } catch (error) {
-      toast({
-        title: "Parsing failed",
-        description: "Unable to parse the brochure. Please try manual entry.",
-        variant: "destructive"
-      });
-    }
-  };
+  const areaUnits = [
+    { value: 'sqft', label: 'sq.ft' },
+    { value: 'sqm', label: 'sq.m' },
+    { value: 'acres', label: 'Acres' },
+    { value: 'gaj', label: 'Gaj' },
+    { value: 'bigha', label: 'Bigha' },
+    { value: 'hectare', label: 'Hectare' },
+    { value: 'kanal', label: 'Kanal' },
+    { value: 'marla', label: 'Marla' }
+  ];
 
-  const handleSubmitParsed = async () => {
-    if (!parsedData) return;
-    
-    const success = await submitParsedListing(parsedData);
-    if (success) {
-      toast({
-        title: "Listing created successfully!",
-        description: "Your property has been listed.",
-        variant: "default"
-      });
-    } else {
-      toast({
-        title: "Failed to create listing",
-        description: "Please check your data and try again.",
-        variant: "destructive"
-      });
-    }
-  };
-
-  if (!parsedData) {
-    return (
-      <div className="space-y-6">
-        <div className="text-center">
-          <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 hover:border-orange-400 transition-colors">
-            <input
-              type="file"
-              accept=".pdf,.txt,.doc,.docx"
-              onChange={handleFileUpload}
-              className="hidden"
-              id="brochure-upload"
-            />
-            <label htmlFor="brochure-upload" className="cursor-pointer">
-              <div className="flex flex-col items-center">
-                <Upload className="h-12 w-12 text-gray-400 mb-4" />
-                <h3 className="text-lg font-medium text-gray-900 mb-2 font-['Rajdhani']">Upload Property Brochure</h3>
-                <p className="text-gray-500 font-['DM_Sans']">Drop your file here or click to browse</p>
-                <p className="text-sm text-gray-400 mt-2 font-['DM_Sans']">Supports PDF, TXT, DOC, DOCX (max 50MB)</p>
-              </div>
-            </label>
-          </div>
-          
-          {file && (
-            <div className="mt-4 p-4 bg-blue-50 rounded-lg">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center">
-                  <CheckCircle className="h-5 w-5 text-green-500 mr-2" />
-                  <span className="font-medium font-['DM_Sans']">{file.name}</span>
-                </div>
-                <GlowButton onClick={handleParseFile} disabled={parsing} size="sm">
-                  {parsing ? 'Parsing...' : 'Parse with AI'}
-                </GlowButton>
-              </div>
-            </div>
-          )}
-        </div>
+  const renderResidentialFields = () => (
+    <div className="grid grid-cols-2 gap-4">
+      <div>
+        <label className="block text-sm font-medium text-gray-700 mb-2">Bedrooms</label>
+        <Select>
+          <SelectTrigger>
+            <SelectValue placeholder="Select bedrooms" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="1">1 BHK</SelectItem>
+            <SelectItem value="2">2 BHK</SelectItem>
+            <SelectItem value="3">3 BHK</SelectItem>
+            <SelectItem value="4">4 BHK</SelectItem>
+            <SelectItem value="5">5+ BHK</SelectItem>
+          </SelectContent>
+        </Select>
       </div>
-    );
-  }
+      <div>
+        <label className="block text-sm font-medium text-gray-700 mb-2">Bathrooms</label>
+        <Select>
+          <SelectTrigger>
+            <SelectValue placeholder="Select bathrooms" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="1">1</SelectItem>
+            <SelectItem value="2">2</SelectItem>
+            <SelectItem value="3">3</SelectItem>
+            <SelectItem value="4">4+</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
+      <div>
+        <label className="block text-sm font-medium text-gray-700 mb-2">Balcony</label>
+        <Select>
+          <SelectTrigger>
+            <SelectValue placeholder="Select balcony" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="0">No Balcony</SelectItem>
+            <SelectItem value="1">1 Balcony</SelectItem>
+            <SelectItem value="2">2 Balcony</SelectItem>
+            <SelectItem value="3">3+ Balcony</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
+    </div>
+  );
+
+  const renderCommercialFields = () => (
+    <div className="grid grid-cols-2 gap-4">
+      <div>
+        <label className="block text-sm font-medium text-gray-700 mb-2">Parking Spaces</label>
+        <Select>
+          <SelectTrigger>
+            <SelectValue placeholder="Select parking" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="0">No Parking</SelectItem>
+            <SelectItem value="1">1 Space</SelectItem>
+            <SelectItem value="2">2 Spaces</SelectItem>
+            <SelectItem value="3">3+ Spaces</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
+    </div>
+  );
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between mb-6">
-        <h2 className="text-xl font-semibold font-['Rajdhani']">Review Parsed Data</h2>
-        <div className="flex items-center text-green-600">
-          <CheckCircle className="h-5 w-5 mr-2" />
-          <span className="text-sm font-['DM_Sans']">AI parsing completed</span>
-        </div>
-      </div>
+      {/* Brochure Upload Section */}
+      <Card className="border-orange-200">
+        <CardHeader>
+          <CardTitle className="flex items-center text-orange-600">
+            <Upload className="mr-2 h-5 w-5" />
+            Upload Property Brochure (AI Parsing - 10 Credits)
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="border-2 border-dashed border-orange-300 rounded-lg p-6 text-center hover:border-orange-400 transition-colors">
+            <FileText className="mx-auto h-12 w-12 text-orange-400 mb-4" />
+            <p className="text-gray-600 mb-4">
+              Drop your property brochure here or click to browse
+            </p>
+            <Button className="bg-gradient-to-r from-orange-500 to-red-500 text-white hover:shadow-lg hover:shadow-orange-500/30">
+              <Zap className="mr-2 h-4 w-4" />
+              Parse with AI (10₹)
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div className="space-y-2">
-          <Label htmlFor="title">Property Title</Label>
-          <Input
-            id="title"
-            value={parsedData.title || ''}
-            onChange={(e) => parsedData && (parsedData.title = e.target.value)}
-            placeholder="e.g., Luxury 3BHK Apartment"
-          />
-        </div>
+      {/* Manual Entry Form */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Property Details</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          {/* Basic Information */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Property Type</label>
+              <Select value={propertyType} onValueChange={setPropertyType}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select property type" />
+                </SelectTrigger>
+                <SelectContent>
+                  {propertyTypes.map(type => (
+                    <SelectItem key={type.value} value={type.value}>
+                      {type.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
 
-        <div className="space-y-2">
-          <Label htmlFor="city">City</Label>
-          <Input
-            id="city"
-            value={parsedData.city || ''}
-            onChange={(e) => parsedData && (parsedData.city = e.target.value)}
-            placeholder="e.g., Mumbai, Delhi"
-          />
-        </div>
-      </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Listing Type</label>
+              <Select value={listingType} onValueChange={setListingType}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select listing type" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="sale">For Sale</SelectItem>
+                  <SelectItem value="rent">For Rent</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
 
-      <div className="space-y-2">
-        <Label htmlFor="description">Description</Label>
-        <Textarea
-          id="description"
-          value={parsedData.description || ''}
-          onChange={(e) => parsedData && (parsedData.description = e.target.value)}
-          placeholder="Property description..."
-          rows={4}
-        />
-      </div>
+          {/* Location */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Property Title</label>
+            <Input placeholder="Enter property title" />
+          </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div className="space-y-2">
-          <Label htmlFor="price">Price (₹)</Label>
-          <Input
-            id="price"
-            type="number"
-            value={parsedData.price || ''}
-            onChange={(e) => parsedData && (parsedData.price = Number(e.target.value))}
-          />
-        </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Location</label>
+            <Input placeholder="Enter complete address" />
+          </div>
 
-        <div className="space-y-2">
-          <Label htmlFor="area_sqft">Area (sq ft)</Label>
-          <Input
-            id="area_sqft"
-            type="number"
-            value={parsedData.area_sqft || ''}
-            onChange={(e) => parsedData && (parsedData.area_sqft = Number(e.target.value))}
-          />
-        </div>
+          {/* Property Type Specific Fields */}
+          {propertyType === 'residential' && renderResidentialFields()}
+          {propertyType === 'commercial' && renderCommercialFields()}
 
-        <div className="space-y-2">
-          <Label htmlFor="bedrooms">Bedrooms</Label>
-          <Input
-            id="bedrooms"
-            type="number"
-            value={parsedData.bedrooms || ''}
-            onChange={(e) => parsedData && (parsedData.bedrooms = Number(e.target.value))}
-          />
-        </div>
-      </div>
+          {/* Area Information */}
+          <div className="space-y-4">
+            <div className="flex items-center space-x-2">
+              <input
+                type="checkbox"
+                id="rera-listed"
+                checked={reraListed}
+                onChange={(e) => setReraListed(e.target.checked)}
+                className="rounded border-gray-300"
+              />
+              <label htmlFor="rera-listed" className="text-sm font-medium text-gray-700">
+                RERA Listed Property
+              </label>
+            </div>
 
-      <div className="flex gap-4">
-        <GlowButton 
-          onClick={handleSubmitParsed} 
-          disabled={submitting}
-          className="flex-1"
-        >
-          {submitting ? 'Creating Listing...' : 'Create Listing'}
-        </GlowButton>
-        <GlowButton 
-          variant="outline"
-          onClick={() => window.location.reload()}
-          className="px-8"
-        >
-          Start Over
-        </GlowButton>
-      </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Area Unit</label>
+                <Select value={areaUnit} onValueChange={setAreaUnit}>
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {areaUnits.map(unit => (
+                      <SelectItem key={unit.value} value={unit.value}>
+                        {unit.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+
+            {propertyType !== 'plot' && (
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Carpet Area</label>
+                  <Input 
+                    type="number" 
+                    placeholder={`Enter area in ${areaUnit}`}
+                    disabled={reraListed}
+                  />
+                  {reraListed && (
+                    <p className="text-xs text-orange-600 mt-1">Auto-filled from RERA data</p>
+                  )}
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Built-up Area</label>
+                  <Input type="number" placeholder={`Enter area in ${areaUnit}`} />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Super Built-up Area</label>
+                  <Input type="number" placeholder={`Enter area in ${areaUnit}`} />
+                </div>
+              </div>
+            )}
+
+            {propertyType === 'plot' && (
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Plot Area</label>
+                <Input type="number" placeholder={`Enter area in ${areaUnit}`} />
+              </div>
+            )}
+          </div>
+
+          {/* Price */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Price (₹)</label>
+            <Input type="number" placeholder="Enter price in Indian Rupees" />
+          </div>
+
+          {/* Description */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Description</label>
+            <Textarea 
+              placeholder="Describe your property..." 
+              className="h-32"
+            />
+          </div>
+
+          {/* Submit Button */}
+          <Button className="w-full bg-gradient-to-r from-orange-500 to-red-500 text-white hover:shadow-lg hover:shadow-orange-500/30 transition-all duration-300 transform hover:scale-105">
+            Create Listing
+          </Button>
+        </CardContent>
+      </Card>
     </div>
   );
 };

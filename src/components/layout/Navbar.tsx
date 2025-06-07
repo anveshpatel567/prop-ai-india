@@ -16,7 +16,7 @@ export const Navbar: React.FC = () => {
   };
 
   return (
-    <nav className="bg-white shadow-lg border-b border-orange-100 sticky top-0 z-40">
+    <nav className="bg-white shadow-lg border-b border-orange-100 sticky top-0 z-50">
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center h-16">
           <Link to="/" className="flex items-center space-x-2">
@@ -59,11 +59,10 @@ export const Navbar: React.FC = () => {
 
                 <Button
                   onClick={handleLogout}
-                  variant="outline"
+                  className="bg-gradient-to-r from-red-500 to-orange-500 text-white hover:shadow-lg hover:shadow-red-500/30 transition-all duration-300 transform hover:scale-105"
                   size="sm"
-                  className="flex items-center space-x-1 border-orange-200 text-orange-600 hover:bg-orange-50"
                 >
-                  <LogOut className="h-4 w-4" />
+                  <LogOut className="h-4 w-4 mr-2" />
                   <span className="hidden sm:inline">Logout</span>
                 </Button>
               </>

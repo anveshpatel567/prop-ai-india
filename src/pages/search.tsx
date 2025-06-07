@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Navbar } from '../components/layout/Navbar';
 import { Footer } from '../components/layout/Footer';
@@ -9,6 +10,7 @@ import { useListings } from '@/hooks/useListings';
 import { useAiSearchHistory } from '@/hooks/useAiSearchHistory';
 import { useNavigate } from 'react-router-dom';
 import { getSafeSelectValue, isValidSelectOption } from '@/utils/selectUtils';
+import { GoBackHomeButton } from '@/components/ui/GoBackHomeButton';
 
 const Search: React.FC = () => {
   const { fetchListings } = useListings();
@@ -42,13 +44,12 @@ const Search: React.FC = () => {
     const basicLocation = extractLocationFromQuery(aiQuery);
     const filters = basicLocation ? { location: basicLocation } : {};
     
-    // Record the AI search in database
     try {
       await recordAiSearch({
-        user_id: '', // This will be set by RLS to auth.uid()
+        user_id: '',
         search_query: aiQuery,
         ai_interpretation: { extracted_location: basicLocation },
-        results_count: null, // Will be updated after search
+        results_count: null,
         filters_applied: filters,
         credits_used: 8
       });
@@ -75,7 +76,6 @@ const Search: React.FC = () => {
   };
 
   const handleFilterChange = (key: string, value: string) => {
-    // Ensure we don't set empty values that could cause Select.Item issues
     const safeValue = value && value.trim() !== '' && value !== 'all' ? value : '';
     setManualFilters({ ...manualFilters, [key]: safeValue });
   };
@@ -102,19 +102,22 @@ const Search: React.FC = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-global-bg">
+    <div className="min-h-screen bg-gradient-to-br from-orange-50 to-red-50">
       <Navbar />
-      <section className="section-hero py-16">
+      <section className="py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-8">
-            <h1 className="font-rajdhani text-3xl font-bold text-text-primary mb-2">Property Search</h1>
-            <p className="font-dmsans text-text-secondary">Find your perfect property with manual filters or AI search</p>
+          <div className="flex justify-between items-center mb-8">
+            <div className="text-center flex-1">
+              <h1 className="text-3xl font-bold text-gray-900 mb-2">Property Search</h1>
+              <p className="text-gray-600">Find your perfect property with manual filters or AI search</p>
+            </div>
+            <GoBackHomeButton />
           </div>
 
           <div className="grid lg:grid-cols-2 gap-8">
             <GlassCard>
               <div className="p-6">
-                <h2 className="font-rajdhani text-xl font-semibold mb-4 text-text-primary">Manual Search (Free)</h2>
+                <h2 className="text-xl font-semibold mb-4 text-gray-900">Manual Search (Free)</h2>
                 <div className="space-y-4">
                   <div className="grid grid-cols-2 gap-4">
                     <Select
@@ -183,9 +186,7 @@ const Search: React.FC = () => {
                   
                   <button
                     onClick={handleManualSearch}
-                    className="w-full bg-gradient-to-r from-[#FDBA74] to-[#60A5FA] text-white font-rajdhani font-semibold 
-                             py-3 px-6 rounded-xl shadow-lg hover:shadow-glow-blue 
-                             transition-all duration-300 ease-in-out transform hover:scale-105"
+                    className="w-full bg-gradient-to-r from-orange-500 to-red-500 text-white font-semibold py-3 px-6 rounded-xl shadow-lg hover:shadow-lg hover:shadow-orange-500/30 transition-all duration-300 ease-in-out transform hover:scale-105"
                   >
                     Search Properties
                   </button>
@@ -195,7 +196,7 @@ const Search: React.FC = () => {
 
             <GlassCard>
               <div className="p-6">
-                <h2 className="font-rajdhani text-xl font-semibold mb-4 text-text-primary">AI Smart Search (8 Credits)</h2>
+                <h2 className="text-xl font-semibold mb-4 text-gray-900">AI Smart Search (8 Credits)</h2>
                 <div className="space-y-4">
                   <Textarea
                     placeholder="Describe what you're looking for... e.g., '3BHK apartment near metro station in Mumbai under 2 crores'"
@@ -206,14 +207,11 @@ const Search: React.FC = () => {
                   <button
                     onClick={handleAiSearch}
                     disabled={!aiQuery.trim()}
-                    className="w-full bg-gradient-to-r from-accent-violet to-accent-cyan text-white font-rajdhani font-semibold 
-                             py-3 px-6 rounded-xl shadow-lg hover:shadow-glow-cyan 
-                             transition-all duration-300 ease-in-out transform hover:scale-105
-                             disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+                    className="w-full bg-gradient-to-r from-red-500 to-orange-500 text-white font-semibold py-3 px-6 rounded-xl shadow-lg hover:shadow-lg hover:shadow-red-500/30 transition-all duration-300 ease-in-out transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
                   >
                     Search with AI
                   </button>
-                  <div className="text-sm font-dmsans text-text-muted text-center">
+                  <div className="text-sm text-gray-600 text-center">
                     AI will understand your requirements and find matching properties
                   </div>
                 </div>
@@ -222,7 +220,7 @@ const Search: React.FC = () => {
           </div>
 
           <div className="mt-12">
-            <h2 className="font-rajdhani text-2xl font-bold text-text-primary mb-6">Popular Searches</h2>
+            <h2 className="text-2xl font-bold text-gray-900 mb-6">Popular Searches</h2>
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
               {[
                 '3BHK in Mumbai',
@@ -236,11 +234,7 @@ const Search: React.FC = () => {
                     setAiQuery(search);
                     handleAiSearch();
                   }}
-                  className="bg-white/80 backdrop-blur-md text-slate-900 font-dmsans font-medium
-                           px-4 py-2 rounded-xl border border-white/30 shadow-soft
-                           hover:bg-white/90 hover:shadow-lg hover:border-accent-blue/30
-                           transition-all duration-300 ease-in-out transform hover:scale-105
-                           text-left"
+                  className="bg-white text-gray-900 font-medium px-4 py-2 rounded-xl border border-orange-200 shadow-md hover:bg-orange-50 hover:shadow-lg hover:border-orange-300 transition-all duration-300 ease-in-out transform hover:scale-105 text-left"
                 >
                   {search}
                 </button>
