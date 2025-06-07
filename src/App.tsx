@@ -1,76 +1,73 @@
-import { Toaster } from "@/components/ui/toaster";
-import { Toaster as Sonner } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Index from './pages/index';
+import AuthPage from './pages/auth';
+import DashboardPage from './pages/dashboard/index';
+import ListPropertyPage from './pages/list-property';
+import SearchPage from './pages/search';
+import ComparePage from './pages/compare';
+import ProfilePage from './pages/profile';
+import AllListingsPage from './pages/listing/all';
+import CreateListingPage from './pages/listing/create';
+import AdminPage from './pages/admin/index';
+import AdminAnalyticsPage from './pages/admin/analytics';
+import AdminCreditPacksPage from './pages/admin/credit-packs';
+import AdminCampaignInsightsPage from './pages/admin/campaign-insights';
+import AdminListingOffersPage from './pages/admin/listing-offers';
+import AdminDeveloperAiSummaryPage from './pages/admin/developer-ai-summary';
+import AiToolsPage from './pages/ai/index';
+import LoanOptimizerPage from './pages/tools/loan-optimizer';
+import AgentResumePage from './pages/agent/resume';
+import AgentMatchPage from './pages/seeker/agent-match';
+import SeoSchemaPage from './pages/tools/seo-schema';
+import LocalityReportPage from './pages/tools/locality-report';
+import TitleChainPage from './pages/tools/title-chain';
+import NotFound from './pages/NotFound';
 import { AuthProvider } from './context/AuthContext';
 import { WalletProvider } from './context/WalletContext';
 import { AiToolProvider } from './context/AiToolContext';
-import Index from "./pages/index";
-import Auth from "./pages/auth";
-import Profile from "./pages/profile";
-import Login from "./pages/login";
-import Register from "./pages/register";
-import Dashboard from "./pages/dashboard/index";
-import ListProperty from "./pages/list-property";
-import CreateListing from "./pages/listing/create";
-import AllListings from "./pages/listing/all";
-import Search from "./pages/search";
-import Compare from "./pages/compare";
-import AiTools from "./pages/ai/index";
-import LoanOptimizerPage from "./pages/tools/loan-optimizer";
-import AgentResumePage from "./pages/agent/resume";
-import AgentMatchPage from "./pages/seeker/agent-match";
-import Admin from "./pages/admin/index";
-import AdminAnalytics from "./pages/admin/analytics";
-import DeveloperAiSummary from "./pages/admin/developer-ai-summary";
-import CreditPacks from "./pages/admin/credit-packs";
-import ListingOffers from "./pages/admin/listing-offers";
-import CampaignInsights from "./pages/admin/campaign-insights";
-import NotFound from "./pages/404";
+import { Toaster } from './components/ui/toaster';
 
-const queryClient = new QueryClient();
-
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <AuthProvider>
-        <WalletProvider>
-          <AiToolProvider>
-            <Toaster />
-            <Sonner />
-            <BrowserRouter>
+function App() {
+  return (
+    <AuthProvider>
+      <WalletProvider>
+        <AiToolProvider>
+          <Router>
+            <div className="min-h-screen bg-background">
               <Routes>
                 <Route path="/" element={<Index />} />
-                <Route path="/auth" element={<Auth />} />
-                <Route path="/profile" element={<Profile />} />
-                <Route path="/login" element={<Login />} />
-                <Route path="/register" element={<Register />} />
-                <Route path="/dashboard" element={<Dashboard />} />
-                <Route path="/list-property" element={<ListProperty />} />
-                <Route path="/listing/create" element={<CreateListing />} />
-                <Route path="/listing/all" element={<AllListings />} />
-                <Route path="/search" element={<Search />} />
-                <Route path="/compare" element={<Compare />} />
-                <Route path="/ai" element={<AiTools />} />
+                <Route path="/auth" element={<AuthPage />} />
+                <Route path="/dashboard" element={<DashboardPage />} />
+                <Route path="/list-property" element={<ListPropertyPage />} />
+                <Route path="/search" element={<SearchPage />} />
+                <Route path="/compare" element={<ComparePage />} />
+                <Route path="/profile" element={<ProfilePage />} />
+                <Route path="/listing/all" element={<AllListingsPage />} />
+                <Route path="/listing/create" element={<CreateListingPage />} />
+                <Route path="/admin" element={<AdminPage />} />
+                <Route path="/admin/analytics" element={<AdminAnalyticsPage />} />
+                <Route path="/admin/credit-packs" element={<AdminCreditPacksPage />} />
+                <Route path="/admin/campaign-insights" element={<AdminCampaignInsightsPage />} />
+                <Route path="/admin/listing-offers" element={<AdminListingOffersPage />} />
+                <Route path="/admin/developer-ai-summary" element={<AdminDeveloperAiSummaryPage />} />
+                <Route path="/ai" element={<AiToolsPage />} />
                 <Route path="/tools/loan-optimizer" element={<LoanOptimizerPage />} />
                 <Route path="/agent/resume" element={<AgentResumePage />} />
                 <Route path="/seeker/agent-match" element={<AgentMatchPage />} />
-                <Route path="/admin" element={<Admin />} />
-                <Route path="/admin/analytics" element={<AdminAnalytics />} />
-                <Route path="/admin/developer-ai-summary" element={<DeveloperAiSummary />} />
-                <Route path="/admin/credit-packs" element={<CreditPacks />} />
-                <Route path="/admin/listing-offers" element={<ListingOffers />} />
-                <Route path="/admin/campaign-insights" element={<CampaignInsights />} />
-                <Route path="/404" element={<NotFound />} />
+                <Route path="/tools/seo-schema" element={<SeoSchemaPage />} />
+                <Route path="/tools/locality-report" element={<LocalityReportPage />} />
+                <Route path="/tools/title-chain" element={<TitleChainPage />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
-            </BrowserRouter>
-          </AiToolProvider>
-        </WalletProvider>
-      </AuthProvider>
-    </TooltipProvider>
-  </QueryClientProvider>
-);
+              <Toaster />
+            </div>
+          </Router>
+        </AiToolProvider>
+      </WalletProvider>
+    </AuthProvider>
+  );
+}
 
 export default App;

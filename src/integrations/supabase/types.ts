@@ -437,6 +437,41 @@ export type Database = {
           },
         ]
       }
+      ai_locality_reports: {
+        Row: {
+          city: string | null
+          created_at: string | null
+          id: string
+          locality: string
+          report_markdown: string | null
+          user_id: string | null
+        }
+        Insert: {
+          city?: string | null
+          created_at?: string | null
+          id?: string
+          locality: string
+          report_markdown?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          city?: string | null
+          created_at?: string | null
+          id?: string
+          locality?: string
+          report_markdown?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_locality_reports_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       ai_negotiation_logs: {
         Row: {
           agent_id: string | null
@@ -1992,6 +2027,90 @@ export type Database = {
             columns: ["listing_id"]
             isOneToOne: false
             referencedRelation: "listings"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      seo_schemas: {
+        Row: {
+          created_at: string | null
+          generated_by: string | null
+          id: string
+          jsonld: string
+          listing_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          generated_by?: string | null
+          id?: string
+          jsonld: string
+          listing_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          generated_by?: string | null
+          id?: string
+          jsonld?: string
+          listing_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "seo_schemas_generated_by_fkey"
+            columns: ["generated_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "seo_schemas_listing_id_fkey"
+            columns: ["listing_id"]
+            isOneToOne: false
+            referencedRelation: "listings"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      title_chain_events: {
+        Row: {
+          created_at: string | null
+          description: string | null
+          event_date: string | null
+          event_label: string
+          id: string
+          listing_id: string | null
+          recorded_by: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          description?: string | null
+          event_date?: string | null
+          event_label: string
+          id?: string
+          listing_id?: string | null
+          recorded_by?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          description?: string | null
+          event_date?: string | null
+          event_label?: string
+          id?: string
+          listing_id?: string | null
+          recorded_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "title_chain_events_listing_id_fkey"
+            columns: ["listing_id"]
+            isOneToOne: false
+            referencedRelation: "listings"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "title_chain_events_recorded_by_fkey"
+            columns: ["recorded_by"]
+            isOneToOne: false
+            referencedRelation: "users"
             referencedColumns: ["id"]
           },
         ]
