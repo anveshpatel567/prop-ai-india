@@ -1,10 +1,11 @@
 
 import React from 'react';
+import { ButtonVariant, getValidVariant } from '../../utils/buttonVariants';
 
 interface ButtonGradientProps {
   children: React.ReactNode;
   onClick?: () => void;
-  variant?: 'primary' | 'secondary' | 'glass';
+  variant?: ButtonVariant;
   size?: 'sm' | 'md' | 'lg';
   className?: string;
 }
@@ -16,6 +17,7 @@ export const ButtonGradient: React.FC<ButtonGradientProps> = ({
   size = 'md',
   className = ''
 }) => {
+  const validVariant = getValidVariant(variant);
   const baseClasses = 'font-rajdhani font-medium rounded-xl transition-all duration-300 glow-hover border';
   
   const variantClasses = {
@@ -33,7 +35,7 @@ export const ButtonGradient: React.FC<ButtonGradientProps> = ({
   return (
     <button
       onClick={onClick}
-      className={`${baseClasses} ${variantClasses[variant]} ${sizeClasses[size]} ${className}`}
+      className={`${baseClasses} ${variantClasses[validVariant]} ${sizeClasses[size]} ${className}`}
     >
       {children}
     </button>
