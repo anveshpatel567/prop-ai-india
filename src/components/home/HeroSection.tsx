@@ -3,6 +3,8 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { ButtonPrimary } from '../common/ButtonPrimary';
 import { ButtonGradient } from '../common/ButtonGradient';
+import { AiFeatureCard } from './AiFeatureCard';
+import { SparklesIcon, MagnifyingGlassIcon, DocumentTextIcon, GlobeIcon, BoltIcon } from '../icons';
 
 export const HeroSection: React.FC = () => {
   return (
@@ -26,6 +28,45 @@ export const HeroSection: React.FC = () => {
                 India's first AI-enhanced real estate platform. Search smart, list faster, 
                 and discover properties that match your exact needs with our advanced AI tools.
               </p>
+            </div>
+
+            {/* AI Feature Cards */}
+            <div id="ai-section" className="py-8">
+              <h3 className="font-orbitron text-2xl font-bold text-center mb-6 text-fire-primary">
+                AI-Powered Features
+              </h3>
+              <div className="flex flex-wrap justify-center gap-6">
+                <AiFeatureCard
+                  icon={<SparklesIcon />}
+                  title="Smart Match"
+                  description="AI finds perfect properties matching your lifestyle"
+                  href="#search"
+                />
+                <AiFeatureCard
+                  icon={<MagnifyingGlassIcon />}
+                  title="Visual Search"
+                  description="Search using images and natural language"
+                  href="#search"
+                />
+                <AiFeatureCard
+                  icon={<DocumentTextIcon />}
+                  title="Auto Listings"
+                  description="Generate property descriptions instantly"
+                  href="#listing"
+                />
+                <AiFeatureCard
+                  icon={<BoltIcon />}
+                  title="Price Prediction"
+                  description="AI-powered market value analysis"
+                  href="#compare"
+                />
+                <AiFeatureCard
+                  icon={<GlobeIcon />}
+                  title="Virtual Tours"
+                  description="Immersive 3D property experiences"
+                  href="#ai-tools"
+                />
+              </div>
             </div>
 
             {/* Features */}
@@ -57,7 +98,7 @@ export const HeroSection: React.FC = () => {
             </div>
 
             {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row gap-4">
+            <div id="login" className="flex flex-col sm:flex-row gap-4">
               <Link to="/search">
                 <ButtonPrimary className="w-full sm:w-auto">
                   Start Smart Search

@@ -16,7 +16,7 @@ const Index: React.FC = () => {
       <HeroSection />
       
       {/* Quick Actions Section */}
-      <section className="py-16 px-4">
+      <section id="search" className="py-16 px-4">
         <div className="max-w-7xl mx-auto">
           <h2 className="text-3xl font-bold text-center mb-8">Quick Actions</h2>
           <div className="grid md:grid-cols-4 gap-6">
@@ -55,11 +55,16 @@ const Index: React.FC = () => {
         </div>
       </section>
 
-      <AiTeaserCards />
-      <RoleSelectorCards />
+      <div id="listing">
+        <AiTeaserCards />
+      </div>
+      
+      <div id="compare">
+        <RoleSelectorCards />
+      </div>
       
       {/* CTA Section */}
-      <section className="py-16 px-4 warm-gradient">
+      <section id="ai-tools" className="py-16 px-4 warm-gradient">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-3xl font-bold text-white mb-4">
             Ready to Find Your Perfect Property?
