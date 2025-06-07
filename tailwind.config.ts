@@ -58,27 +58,23 @@ export default {
           DEFAULT: 'hsl(var(--card))',
           foreground: 'hsl(var(--card-foreground))'
         },
-        // New futuristic color scheme
-        hero: {
-          from: '#0f2027',
-          via: '#203a43',
-          to: '#2c5364',
-        },
-        ai: {
-          purple: '#8A2387',
-          coral: '#E94057', 
-          orange: '#F27121',
-        },
-        neon: {
-          cyan: '#00FFFF',
-          lime: '#A6FF00',
-          blue: '#00d4ff',
-          purple: '#090979',
-        },
-        glass: {
-          white: 'hsl(var(--glass-white))',
-          border: 'hsl(var(--glass-border))',
-        }
+        // Huly-inspired clean design system
+        'global-bg': '#F5F7FA',
+        'section-light': '#FFFFFF',
+        'section-gradient-1': '#E0EAFC',
+        'section-gradient-2': '#CFDEF3',
+        'section-alt': '#F1F5F9',
+        'text-primary': '#1F2937',
+        'text-secondary': '#374151',
+        'text-muted': '#6B7280',
+        'accent-blue': '#3B82F6',
+        'accent-cyan': '#06B6D4',
+        'accent-sky': '#0EA5E9',
+        'accent-violet': '#7C3AED',
+        'accent-lime': '#84CC16',
+        'accent-green': '#10B981',
+        'cta-gradient-start': '#16A085',
+        'cta-gradient-end': '#F4D03F',
       },
       borderRadius: {
         lg: 'var(--radius)',
@@ -103,12 +99,12 @@ export default {
           '100%': { opacity: '1', transform: 'scale(1)' }
         },
         'pulse-border': {
-          '0%, 100%': { borderColor: '#00FFFF' },
-          '50%': { borderColor: '#A6FF00' }
+          '0%, 100%': { borderColor: '#06B6D4' },
+          '50%': { borderColor: '#3B82F6' }
         },
-        'radial-glow': {
-          '0%, 100%': { boxShadow: '0 0 20px rgba(138, 35, 135, 0.3)' },
-          '50%': { boxShadow: '0 0 40px rgba(233, 64, 87, 0.6), 0 0 60px rgba(242, 113, 33, 0.4)' }
+        'text-glow': {
+          '0%, 100%': { textShadow: '0 0 5px rgba(59, 130, 246, 0.3)' },
+          '50%': { textShadow: '0 0 15px rgba(59, 130, 246, 0.6)' }
         },
         'ai-scan': {
           '0%': { transform: 'translateX(-100%)' },
@@ -121,11 +117,14 @@ export default {
         'fade-in': 'fade-in 0.6s ease-out',
         'scale-up': 'scale-up 0.4s ease-out',
         'pulse-border': 'pulse-border 2s ease-in-out infinite',
-        'radial-glow': 'radial-glow 3s ease-in-out infinite',
+        'text-glow': 'text-glow 2s ease-in-out infinite',
         'ai-scan': 'ai-scan 2s ease-in-out infinite'
       },
-      dropShadow: {
-        'neon': '0 0 10px #00FFFF',
+      boxShadow: {
+        'soft': '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
+        'card': '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
+        'glow-blue': '0 0 20px rgba(59, 130, 246, 0.4)',
+        'glow-cyan': '0 0 20px rgba(6, 182, 212, 0.4)',
       }
     }
   },

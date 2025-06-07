@@ -34,15 +34,6 @@
     --chart-3: 197 37% 24%;
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
-
-    /* Fire theme colors */
-    --fire-primary: 15 100% 50%;
-    --fire-secondary: 9 100% 54%;
-    --fire-gold: 39 100% 60%;
-    
-    /* Glass theme colors */
-    --glass-white: 0 0% 100% / 0.1;
-    --glass-border: 0 0% 100% / 0.2;
   }
 
   .dark {
@@ -78,22 +69,58 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-global-bg text-text-primary font-rajdhani;
   }
 }
 
-/* Glassmorphism utilities */
-.glass-card {
-  @apply bg-white/10 backdrop-blur-lg border border-white/20;
+/* Clean glassmorphism utilities */
+.glass-card-light {
+  @apply bg-white/80 backdrop-blur-sm border border-white/40 shadow-card;
 }
 
-/* Fire gradient background */
-.warm-gradient {
-  background: linear-gradient(135deg, 
-    hsl(var(--fire-primary) / 0.15) 0%, 
-    hsl(var(--fire-secondary) / 0.15) 25%,
-    hsl(28 70% 25% / 0.15) 50%,
-    hsl(var(--fire-primary) / 0.15) 75%,
-    hsl(var(--fire-secondary) / 0.15) 100%
-  );
+.glass-card-subtle {
+  @apply bg-white/60 backdrop-blur-lg border border-gray-200/50 shadow-soft;
+}
+
+/* Section backgrounds following Huly.io structure */
+.section-hero {
+  background: linear-gradient(to bottom right, #E0EAFC, #CFDEF3);
+}
+
+.section-features {
+  @apply bg-section-light;
+}
+
+.section-alt {
+  @apply bg-section-alt;
+}
+
+.section-cta {
+  background: linear-gradient(to right, #16A085, #F4D03F);
+}
+
+/* Typography utilities */
+.heading-primary {
+  @apply font-orbitron text-5xl lg:text-6xl font-bold tracking-wide text-text-primary;
+}
+
+.heading-secondary {
+  @apply font-rajdhani text-2xl font-medium text-text-secondary;
+}
+
+.body-text {
+  @apply font-rajdhani text-base md:text-lg text-text-primary;
+}
+
+.cta-text {
+  @apply font-orbitron uppercase tracking-wide text-white;
+}
+
+/* Button utilities */
+.btn-primary {
+  @apply bg-gradient-to-r from-accent-blue to-accent-cyan text-white font-orbitron font-bold px-6 py-3 rounded-lg shadow-card transition-all duration-300 hover:shadow-glow-blue hover:animate-text-glow;
+}
+
+.btn-secondary {
+  @apply bg-gradient-to-r from-accent-lime to-accent-green text-white font-orbitron font-bold px-6 py-3 rounded-lg shadow-card transition-all duration-300 hover:shadow-glow-cyan;
 }

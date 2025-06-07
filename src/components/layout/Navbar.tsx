@@ -17,34 +17,34 @@ export const Navbar: React.FC = () => {
   };
 
   return (
-    <nav className="bg-white/10 backdrop-blur-lg border-b border-white/20 sticky top-0 z-50">
+    <nav className="bg-white/80 backdrop-blur-lg border-b border-gray-200/50 sticky top-0 z-50 shadow-soft">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center py-4">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-3 group">
-            <div className="w-12 h-12 bg-gradient-to-br from-neon-cyan to-neon-lime rounded-xl flex items-center justify-center 
-                           shadow-lg group-hover:shadow-neon group-hover:scale-105 transition-all duration-300">
+            <div className="w-12 h-12 bg-gradient-to-br from-accent-blue to-accent-cyan rounded-xl flex items-center justify-center 
+                           shadow-card group-hover:shadow-glow-blue group-hover:scale-105 transition-all duration-300">
               <Building2 className="w-7 h-7 text-white" />
             </div>
-            <span className="font-orbitron font-bold text-2xl bg-gradient-to-r from-neon-cyan to-neon-lime bg-clip-text text-transparent">
+            <span className="font-orbitron font-bold text-2xl bg-gradient-to-r from-accent-blue to-accent-cyan bg-clip-text text-transparent">
               FreePropList
             </span>
           </Link>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
-            <Link to="/search" className="text-gray-300 hover:text-neon-cyan transition-colors font-rajdhani font-medium">
+            <Link to="/search" className="text-text-secondary hover:text-accent-blue transition-colors font-rajdhani font-medium">
               Search
             </Link>
-            <Link to="/list-property" className="text-gray-300 hover:text-neon-cyan transition-colors font-rajdhani font-medium">
+            <Link to="/list-property" className="text-text-secondary hover:text-accent-blue transition-colors font-rajdhani font-medium">
               List Property
             </Link>
             {user && (
               <>
-                <Link to="/dashboard" className="text-gray-300 hover:text-neon-cyan transition-colors font-rajdhani font-medium">
+                <Link to="/dashboard" className="text-text-secondary hover:text-accent-blue transition-colors font-rajdhani font-medium">
                   Dashboard
                 </Link>
-                <Link to="/ai" className="text-gray-300 hover:text-neon-cyan transition-colors font-rajdhani font-medium">
+                <Link to="/ai" className="text-text-secondary hover:text-accent-blue transition-colors font-rajdhani font-medium">
                   AI Tools
                 </Link>
               </>
@@ -56,16 +56,16 @@ export const Navbar: React.FC = () => {
             {user ? (
               <>
                 {balance && (
-                  <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl px-4 py-2 text-sm">
-                    <span className="font-rajdhani font-semibold text-neon-lime">{balance.balance} Credits</span>
+                  <div className="glass-card-subtle border border-accent-lime/30 rounded-xl px-4 py-2 text-sm">
+                    <span className="font-rajdhani font-semibold text-accent-lime">{balance.balance} Credits</span>
                   </div>
                 )}
                 <div className="relative">
                   <button
                     onClick={() => setIsMenuOpen(!isMenuOpen)}
-                    className="flex items-center space-x-2 text-gray-300 hover:text-neon-cyan transition-colors"
+                    className="flex items-center space-x-2 text-text-secondary hover:text-accent-blue transition-colors"
                   >
-                    <div className="w-10 h-10 bg-gradient-to-br from-neon-cyan to-neon-lime rounded-full flex items-center justify-center">
+                    <div className="w-10 h-10 bg-gradient-to-br from-accent-blue to-accent-cyan rounded-full flex items-center justify-center shadow-card">
                       <span className="text-white text-sm font-rajdhani font-bold">
                         {user.full_name?.charAt(0) || 'U'}
                       </span>
@@ -74,24 +74,24 @@ export const Navbar: React.FC = () => {
                   </button>
                   
                   {isMenuOpen && (
-                    <div className="absolute right-0 mt-2 w-48 bg-white/10 backdrop-blur-lg border border-white/20 rounded-xl z-50">
+                    <div className="absolute right-0 mt-2 w-48 glass-card-light border border-gray-200 rounded-xl z-50 shadow-card">
                       <Link
                         to="/dashboard"
-                        className="block px-4 py-3 text-sm text-gray-300 hover:bg-white/10 hover:text-neon-cyan rounded-xl font-rajdhani"
+                        className="block px-4 py-3 text-sm text-text-secondary hover:bg-gray-50 hover:text-accent-blue rounded-xl font-rajdhani"
                         onClick={() => setIsMenuOpen(false)}
                       >
                         Dashboard
                       </Link>
                       <Link
                         to="/ai"
-                        className="block px-4 py-3 text-sm text-gray-300 hover:bg-white/10 hover:text-neon-cyan rounded-xl font-rajdhani"
+                        className="block px-4 py-3 text-sm text-text-secondary hover:bg-gray-50 hover:text-accent-blue rounded-xl font-rajdhani"
                         onClick={() => setIsMenuOpen(false)}
                       >
                         AI Tools
                       </Link>
                       <button
                         onClick={handleLogout}
-                        className="w-full text-left px-4 py-3 text-sm text-red-400 hover:bg-red-500/10 rounded-xl font-rajdhani"
+                        className="w-full text-left px-4 py-3 text-sm text-red-500 hover:bg-red-50 rounded-xl font-rajdhani"
                       >
                         Logout
                       </button>
@@ -102,16 +102,14 @@ export const Navbar: React.FC = () => {
             ) : (
               <div className="flex items-center space-x-3">
                 <Link to="/login">
-                  <button className="bg-white/10 backdrop-blur-sm text-white font-rajdhani font-medium 
-                                   py-2 px-6 rounded-xl border border-white/20
-                                   hover:bg-white/20 hover:border-neon-cyan/50 transition-all duration-300">
+                  <button className="glass-card-subtle text-text-primary font-rajdhani font-medium 
+                                   py-2 px-6 rounded-xl border border-gray-200
+                                   hover:bg-gray-50 hover:border-accent-blue/50 transition-all duration-300">
                     Login
                   </button>
                 </Link>
                 <Link to="/register">
-                  <button className="bg-gradient-to-r from-neon-blue to-neon-purple text-white font-rajdhani font-bold 
-                                   py-2 px-6 rounded-xl shadow-lg
-                                   hover:shadow-[0_0_20px_rgba(0,212,255,0.4)] transition-all duration-300">
+                  <button className="btn-primary">
                     Register
                   </button>
                 </Link>
