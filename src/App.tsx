@@ -21,6 +21,7 @@ import Compare from "./pages/compare";
 import AiTools from "./pages/ai/index";
 import Admin from "./pages/admin/index";
 import AdminAnalytics from "./pages/admin/analytics";
+import DeveloperAiSummary from "./pages/admin/developer-ai-summary";
 import NotFound from "./pages/404";
 
 const queryClient = new QueryClient();
@@ -49,6 +50,7 @@ const App = () => (
                 <Route path="/ai" element={<AiTools />} />
                 <Route path="/admin" element={<Admin />} />
                 <Route path="/admin/analytics" element={<AdminAnalytics />} />
+                <Route path="/admin/developer-ai-summary" element={<DeveloperAiSummary />} />
                 <Route path="/404" element={<NotFound />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
