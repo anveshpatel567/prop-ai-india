@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Shield, Users, CreditCard, BarChart, Zap, Lightbulb } from 'lucide-react';
 import { Navbar } from '@/components/layout/Navbar';
@@ -24,6 +25,9 @@ import { HallucinationReviewPanel } from '@/components/admin/HallucinationReview
 import { AiInputTracePanel } from '@/components/admin/AiInputTracePanel';
 import { AiInfluencePanel } from '@/components/admin/AiInfluencePanel';
 import { ModelVersionTrackerPanel } from '@/components/admin/ModelVersionTrackerPanel';
+import { AiFeatureReviewPanel } from '@/components/admin/AiFeatureReviewPanel';
+import { UserCorrectionReviewPanel } from '@/components/admin/UserCorrectionReviewPanel';
+import { ModeratorDecisionTrailPanel } from '@/components/admin/ModeratorDecisionTrailPanel';
 
 export default function AdminPage() {
   return (
@@ -142,6 +146,15 @@ export default function AdminPage() {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
           <ModelVersionTrackerPanel />
+          <AiFeatureReviewPanel />
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+          <UserCorrectionReviewPanel />
+          <ModeratorDecisionTrailPanel />
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
           <div className="bg-white p-6 rounded-lg shadow-sm border">
             <div className="flex items-center gap-2 mb-4">
               <BarChart className="h-5 w-5 text-gray-500" />

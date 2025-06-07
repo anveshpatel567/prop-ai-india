@@ -418,6 +418,39 @@ export type Database = {
           },
         ]
       }
+      ai_feature_review_queue: {
+        Row: {
+          feature_name: string
+          id: string
+          issue_description: string
+          review_notes: string | null
+          reviewed: boolean | null
+          severity: string
+          submitted_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          feature_name: string
+          id?: string
+          issue_description: string
+          review_notes?: string | null
+          reviewed?: boolean | null
+          severity: string
+          submitted_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          feature_name?: string
+          id?: string
+          issue_description?: string
+          review_notes?: string | null
+          reviewed?: boolean | null
+          severity?: string
+          submitted_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       ai_feedback_tag_logs: {
         Row: {
           context_snippet: string | null
@@ -1135,6 +1168,39 @@ export type Database = {
           notes?: string | null
           timestamp?: string | null
           version?: string
+        }
+        Relationships: []
+      }
+      ai_moderator_actions: {
+        Row: {
+          action_taken: string
+          decided_at: string | null
+          decision: string
+          id: string
+          moderator_id: string | null
+          notes: string | null
+          target_id: string
+          target_table: string
+        }
+        Insert: {
+          action_taken: string
+          decided_at?: string | null
+          decision: string
+          id?: string
+          moderator_id?: string | null
+          notes?: string | null
+          target_id: string
+          target_table: string
+        }
+        Update: {
+          action_taken?: string
+          decided_at?: string | null
+          decision?: string
+          id?: string
+          moderator_id?: string | null
+          notes?: string | null
+          target_id?: string
+          target_table?: string
         }
         Relationships: []
       }
@@ -1991,6 +2057,36 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      ai_user_correction_logs: {
+        Row: {
+          approved: boolean | null
+          created_at: string | null
+          feature: string
+          id: string
+          reviewed: boolean | null
+          suggested_text: string
+          user_id: string | null
+        }
+        Insert: {
+          approved?: boolean | null
+          created_at?: string | null
+          feature: string
+          id?: string
+          reviewed?: boolean | null
+          suggested_text: string
+          user_id?: string | null
+        }
+        Update: {
+          approved?: boolean | null
+          created_at?: string | null
+          feature?: string
+          id?: string
+          reviewed?: boolean | null
+          suggested_text?: string
+          user_id?: string | null
+        }
+        Relationships: []
       }
       ai_video_previews: {
         Row: {
