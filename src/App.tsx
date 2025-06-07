@@ -19,6 +19,7 @@ import AllListings from "./pages/listing/all";
 import Search from "./pages/search";
 import Compare from "./pages/compare";
 import AiTools from "./pages/ai/index";
+import LoanOptimizerPage from "./pages/tools/loan-optimizer";
 import Admin from "./pages/admin/index";
 import AdminAnalytics from "./pages/admin/analytics";
 import DeveloperAiSummary from "./pages/admin/developer-ai-summary";

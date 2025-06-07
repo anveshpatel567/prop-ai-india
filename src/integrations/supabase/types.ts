@@ -339,6 +339,50 @@ export type Database = {
           },
         ]
       }
+      ai_loan_queries: {
+        Row: {
+          created_at: string | null
+          emi: number | null
+          id: string
+          income_monthly: number
+          interest_rate: number
+          loan_amount: number | null
+          suggestion: string | null
+          tenure_years: number
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          emi?: number | null
+          id?: string
+          income_monthly: number
+          interest_rate: number
+          loan_amount?: number | null
+          suggestion?: string | null
+          tenure_years: number
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          emi?: number | null
+          id?: string
+          income_monthly?: number
+          interest_rate?: number
+          loan_amount?: number | null
+          suggestion?: string | null
+          tenure_years?: number
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_loan_queries_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       ai_negotiation_logs: {
         Row: {
           agent_id: string | null
