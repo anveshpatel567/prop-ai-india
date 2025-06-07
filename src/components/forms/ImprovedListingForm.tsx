@@ -4,7 +4,7 @@ import { GlowButton } from '@/components/common/GlowButton';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { FileUpload, Upload, CheckCircle, XCircle } from 'lucide-react';
+import { Upload, CheckCircle, XCircle } from 'lucide-react';
 import { useParsedBrochure } from '@/hooks/useParsedBrochure';
 import { useToast } from '@/hooks/use-toast';
 
@@ -81,7 +81,7 @@ export const ImprovedListingForm: React.FC = () => {
             />
             <label htmlFor="brochure-upload" className="cursor-pointer">
               <div className="flex flex-col items-center">
-                <FileUpload className="h-12 w-12 text-gray-400 mb-4" />
+                <Upload className="h-12 w-12 text-gray-400 mb-4" />
                 <h3 className="text-lg font-medium text-gray-900 mb-2 font-['Rajdhani']">Upload Property Brochure</h3>
                 <p className="text-gray-500 font-['DM_Sans']">Drop your file here or click to browse</p>
                 <p className="text-sm text-gray-400 mt-2 font-['DM_Sans']">Supports PDF, TXT, DOC, DOCX (max 50MB)</p>

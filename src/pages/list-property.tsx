@@ -6,7 +6,7 @@ import { GlassCard } from '../components/layout/GlassCard';
 import { GlowButton } from '../components/common/GlowButton';
 import { ListingForm } from '../components/forms/ListingForm';
 import { ImprovedListingForm } from '../components/forms/ImprovedListingForm';
-import { FileUpload } from 'lucide-react';
+import { Upload } from 'lucide-react';
 
 const ListProperty: React.FC = () => {
   const [activeMode, setActiveMode] = useState<'manual' | 'ai'>('manual');
