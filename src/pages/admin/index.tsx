@@ -1,10 +1,12 @@
-
 import React from 'react';
 import { Navbar } from '../../components/layout/Navbar';
 import { Footer } from '../../components/layout/Footer';
 import { GlassCard } from '../../components/layout/GlassCard';
 import { useAuth } from '../../context/AuthContext';
 import AdminButtonControlsPanel from '../../components/admin/AdminButtonControlsPanel';
+import RecommendationOverridePanel from '../../components/ai-tools/RecommendationOverridePanel';
+import PricingFeedbackPanel from '../../components/ai-tools/PricingFeedbackPanel';
+import MarketPressurePanel from '../../components/ai-tools/MarketPressurePanel';
 
 const Admin: React.FC = () => {
   const { user } = useAuth();
@@ -111,6 +113,13 @@ const Admin: React.FC = () => {
 
         {/* Button Controls Panel */}
         <AdminButtonControlsPanel />
+
+        {/* New AI Analytics Panels */}
+        <div className="grid lg:grid-cols-3 gap-8 mt-8">
+          <RecommendationOverridePanel />
+          <PricingFeedbackPanel />
+          <MarketPressurePanel />
+        </div>
       </div>
       <Footer />
     </div>

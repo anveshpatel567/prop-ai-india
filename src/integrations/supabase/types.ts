@@ -740,6 +740,33 @@ export type Database = {
           },
         ]
       }
+      ai_market_pressure_logs: {
+        Row: {
+          data_scope: string
+          generated_at: string | null
+          id: string
+          locality_id: string | null
+          pressure_type: string
+          reasoning: string
+        }
+        Insert: {
+          data_scope: string
+          generated_at?: string | null
+          id?: string
+          locality_id?: string | null
+          pressure_type: string
+          reasoning: string
+        }
+        Update: {
+          data_scope?: string
+          generated_at?: string | null
+          id?: string
+          locality_id?: string | null
+          pressure_type?: string
+          reasoning?: string
+        }
+        Relationships: []
+      }
       ai_negotiation_logs: {
         Row: {
           agent_id: string | null
@@ -836,6 +863,54 @@ export type Database = {
           },
         ]
       }
+      ai_pricing_feedback_logs: {
+        Row: {
+          ai_price_suggested: number | null
+          created_at: string | null
+          feedback_text: string | null
+          id: string
+          lister_id: string | null
+          listing_id: string | null
+          rejection_reason: string | null
+          user_accepted: boolean | null
+        }
+        Insert: {
+          ai_price_suggested?: number | null
+          created_at?: string | null
+          feedback_text?: string | null
+          id?: string
+          lister_id?: string | null
+          listing_id?: string | null
+          rejection_reason?: string | null
+          user_accepted?: boolean | null
+        }
+        Update: {
+          ai_price_suggested?: number | null
+          created_at?: string | null
+          feedback_text?: string | null
+          id?: string
+          lister_id?: string | null
+          listing_id?: string | null
+          rejection_reason?: string | null
+          user_accepted?: boolean | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_pricing_feedback_logs_lister_id_fkey"
+            columns: ["lister_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ai_pricing_feedback_logs_listing_id_fkey"
+            columns: ["listing_id"]
+            isOneToOne: false
+            referencedRelation: "listings"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       ai_property_matches: {
         Row: {
           created_at: string | null
@@ -872,6 +947,44 @@ export type Database = {
           {
             foreignKeyName: "ai_property_matches_seeker_id_fkey"
             columns: ["seeker_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ai_recommendation_override_logs: {
+        Row: {
+          created_at: string | null
+          feature_area: string
+          final_user_input: string
+          id: string
+          original_ai_suggestion: string
+          override_reason: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          feature_area: string
+          final_user_input: string
+          id?: string
+          original_ai_suggestion: string
+          override_reason?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          feature_area?: string
+          final_user_input?: string
+          id?: string
+          original_ai_suggestion?: string
+          override_reason?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_recommendation_override_logs_user_id_fkey"
+            columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "users"
             referencedColumns: ["id"]
