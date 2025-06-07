@@ -9,6 +9,254 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      ai_followups: {
+        Row: {
+          agent_id: string | null
+          created_at: string | null
+          credits_used: number | null
+          followup_message: string
+          followup_type: string | null
+          id: string
+          is_sent: boolean | null
+          lead_id: string | null
+          scheduled_date: string | null
+        }
+        Insert: {
+          agent_id?: string | null
+          created_at?: string | null
+          credits_used?: number | null
+          followup_message: string
+          followup_type?: string | null
+          id?: string
+          is_sent?: boolean | null
+          lead_id?: string | null
+          scheduled_date?: string | null
+        }
+        Update: {
+          agent_id?: string | null
+          created_at?: string | null
+          credits_used?: number | null
+          followup_message?: string
+          followup_type?: string | null
+          id?: string
+          is_sent?: boolean | null
+          lead_id?: string | null
+          scheduled_date?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_followups_agent_id_fkey"
+            columns: ["agent_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ai_followups_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "leads"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ai_listing_suggestions: {
+        Row: {
+          created_at: string | null
+          credits_used: number | null
+          id: string
+          is_applied: boolean | null
+          listing_id: string | null
+          original_content: string | null
+          suggested_content: string
+          suggestion_type: string
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          credits_used?: number | null
+          id?: string
+          is_applied?: boolean | null
+          listing_id?: string | null
+          original_content?: string | null
+          suggested_content: string
+          suggestion_type: string
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          credits_used?: number | null
+          id?: string
+          is_applied?: boolean | null
+          listing_id?: string | null
+          original_content?: string | null
+          suggested_content?: string
+          suggestion_type?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_listing_suggestions_listing_id_fkey"
+            columns: ["listing_id"]
+            isOneToOne: false
+            referencedRelation: "listings"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ai_listing_suggestions_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ai_listing_videos: {
+        Row: {
+          created_at: string | null
+          credits_used: number | null
+          id: string
+          listing_id: string | null
+          status: string | null
+          thumbnail_url: string | null
+          user_id: string | null
+          video_url: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          credits_used?: number | null
+          id?: string
+          listing_id?: string | null
+          status?: string | null
+          thumbnail_url?: string | null
+          user_id?: string | null
+          video_url?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          credits_used?: number | null
+          id?: string
+          listing_id?: string | null
+          status?: string | null
+          thumbnail_url?: string | null
+          user_id?: string | null
+          video_url?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_listing_videos_listing_id_fkey"
+            columns: ["listing_id"]
+            isOneToOne: false
+            referencedRelation: "listings"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ai_listing_videos_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ai_tool_transactions: {
+        Row: {
+          created_at: string | null
+          credit_cost: number
+          error_message: string | null
+          id: string
+          input_data: Json | null
+          output_data: Json | null
+          processing_time_ms: number | null
+          status: string | null
+          tool_name: string
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          credit_cost: number
+          error_message?: string | null
+          id?: string
+          input_data?: Json | null
+          output_data?: Json | null
+          processing_time_ms?: number | null
+          status?: string | null
+          tool_name: string
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          credit_cost?: number
+          error_message?: string | null
+          id?: string
+          input_data?: Json | null
+          output_data?: Json | null
+          processing_time_ms?: number | null
+          status?: string | null
+          tool_name?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_tool_transactions_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ai_whatsapp_responses: {
+        Row: {
+          ai_response: string
+          created_at: string | null
+          credits_used: number | null
+          id: string
+          lead_id: string | null
+          message_content: string
+          phone_number: string
+          response_type: string | null
+          user_id: string | null
+        }
+        Insert: {
+          ai_response: string
+          created_at?: string | null
+          credits_used?: number | null
+          id?: string
+          lead_id?: string | null
+          message_content: string
+          phone_number: string
+          response_type?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          ai_response?: string
+          created_at?: string | null
+          credits_used?: number | null
+          id?: string
+          lead_id?: string | null
+          message_content?: string
+          phone_number?: string
+          response_type?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_whatsapp_responses_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "leads"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ai_whatsapp_responses_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       auth_sessions: {
         Row: {
           created_at: string | null
@@ -37,6 +285,543 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "auth_sessions_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      crm_lead_audit_logs: {
+        Row: {
+          action: string
+          admin_id: string | null
+          created_at: string | null
+          id: string
+          lead_id: string | null
+          new_values: Json | null
+          notes: string | null
+          old_values: Json | null
+        }
+        Insert: {
+          action: string
+          admin_id?: string | null
+          created_at?: string | null
+          id?: string
+          lead_id?: string | null
+          new_values?: Json | null
+          notes?: string | null
+          old_values?: Json | null
+        }
+        Update: {
+          action?: string
+          admin_id?: string | null
+          created_at?: string | null
+          id?: string
+          lead_id?: string | null
+          new_values?: Json | null
+          notes?: string | null
+          old_values?: Json | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "crm_lead_audit_logs_admin_id_fkey"
+            columns: ["admin_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "crm_lead_audit_logs_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "leads"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      leads: {
+        Row: {
+          agent_id: string | null
+          ai_insights: Json | null
+          created_at: string | null
+          follow_up_date: string | null
+          id: string
+          lead_score: number | null
+          notes: string | null
+          property_id: string | null
+          seeker_id: string | null
+          status: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          agent_id?: string | null
+          ai_insights?: Json | null
+          created_at?: string | null
+          follow_up_date?: string | null
+          id?: string
+          lead_score?: number | null
+          notes?: string | null
+          property_id?: string | null
+          seeker_id?: string | null
+          status?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          agent_id?: string | null
+          ai_insights?: Json | null
+          created_at?: string | null
+          follow_up_date?: string | null
+          id?: string
+          lead_score?: number | null
+          notes?: string | null
+          property_id?: string | null
+          seeker_id?: string | null
+          status?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "leads_agent_id_fkey"
+            columns: ["agent_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "leads_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "listings"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "leads_seeker_id_fkey"
+            columns: ["seeker_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      listing_categories: {
+        Row: {
+          created_at: string | null
+          id: string
+          is_active: boolean | null
+          label: string
+          parent_id: string | null
+          slug: string
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          is_active?: boolean | null
+          label: string
+          parent_id?: string | null
+          slug: string
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          is_active?: boolean | null
+          label?: string
+          parent_id?: string | null
+          slug?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "listing_categories_parent_id_fkey"
+            columns: ["parent_id"]
+            isOneToOne: false
+            referencedRelation: "listing_categories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      listing_conditions: {
+        Row: {
+          applies_to_category_id: string | null
+          created_at: string | null
+          display_order: number | null
+          id: string
+          input_type: string
+          is_required: boolean | null
+          label: string
+          options: Json | null
+          updated_at: string | null
+        }
+        Insert: {
+          applies_to_category_id?: string | null
+          created_at?: string | null
+          display_order?: number | null
+          id?: string
+          input_type: string
+          is_required?: boolean | null
+          label: string
+          options?: Json | null
+          updated_at?: string | null
+        }
+        Update: {
+          applies_to_category_id?: string | null
+          created_at?: string | null
+          display_order?: number | null
+          id?: string
+          input_type?: string
+          is_required?: boolean | null
+          label?: string
+          options?: Json | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "listing_conditions_applies_to_category_id_fkey"
+            columns: ["applies_to_category_id"]
+            isOneToOne: false
+            referencedRelation: "listing_categories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      listings: {
+        Row: {
+          ai_generated_title: boolean | null
+          ai_parsed_data: Json | null
+          amenities: Json | null
+          area_sqft: number | null
+          bathrooms: number | null
+          bedrooms: number | null
+          city: string
+          created_at: string | null
+          description: string | null
+          google_maps_pin: string
+          id: string
+          is_rera_verified: boolean | null
+          listing_type: string
+          locality: string | null
+          photos: Json | null
+          price: number
+          property_type: string
+          rera_number: string | null
+          status: string | null
+          title: string
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          ai_generated_title?: boolean | null
+          ai_parsed_data?: Json | null
+          amenities?: Json | null
+          area_sqft?: number | null
+          bathrooms?: number | null
+          bedrooms?: number | null
+          city: string
+          created_at?: string | null
+          description?: string | null
+          google_maps_pin: string
+          id?: string
+          is_rera_verified?: boolean | null
+          listing_type: string
+          locality?: string | null
+          photos?: Json | null
+          price: number
+          property_type: string
+          rera_number?: string | null
+          status?: string | null
+          title: string
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          ai_generated_title?: boolean | null
+          ai_parsed_data?: Json | null
+          amenities?: Json | null
+          area_sqft?: number | null
+          bathrooms?: number | null
+          bedrooms?: number | null
+          city?: string
+          created_at?: string | null
+          description?: string | null
+          google_maps_pin?: string
+          id?: string
+          is_rera_verified?: boolean | null
+          listing_type?: string
+          locality?: string | null
+          photos?: Json | null
+          price?: number
+          property_type?: string
+          rera_number?: string | null
+          status?: string | null
+          title?: string
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "listings_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      notifications: {
+        Row: {
+          created_at: string | null
+          id: string
+          is_read: boolean | null
+          message: string
+          metadata: Json | null
+          title: string
+          type: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          is_read?: boolean | null
+          message: string
+          metadata?: Json | null
+          title: string
+          type?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          is_read?: boolean | null
+          message?: string
+          metadata?: Json | null
+          title?: string
+          type?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "notifications_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      payment_receipts: {
+        Row: {
+          admin_notes: string | null
+          amount: number
+          approved_at: string | null
+          approved_by: string | null
+          created_at: string | null
+          id: string
+          payment_method: string | null
+          receipt_url: string
+          status: string | null
+          transaction_id: string | null
+          user_id: string | null
+        }
+        Insert: {
+          admin_notes?: string | null
+          amount: number
+          approved_at?: string | null
+          approved_by?: string | null
+          created_at?: string | null
+          id?: string
+          payment_method?: string | null
+          receipt_url: string
+          status?: string | null
+          transaction_id?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          admin_notes?: string | null
+          amount?: number
+          approved_at?: string | null
+          approved_by?: string | null
+          created_at?: string | null
+          id?: string
+          payment_method?: string | null
+          receipt_url?: string
+          status?: string | null
+          transaction_id?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "payment_receipts_approved_by_fkey"
+            columns: ["approved_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "payment_receipts_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      referral_invites: {
+        Row: {
+          completed_at: string | null
+          created_at: string | null
+          id: string
+          invited_email: string
+          invited_phone: string | null
+          invited_user_id: string | null
+          inviter_id: string | null
+          referral_code: string
+          status: string | null
+        }
+        Insert: {
+          completed_at?: string | null
+          created_at?: string | null
+          id?: string
+          invited_email: string
+          invited_phone?: string | null
+          invited_user_id?: string | null
+          inviter_id?: string | null
+          referral_code: string
+          status?: string | null
+        }
+        Update: {
+          completed_at?: string | null
+          created_at?: string | null
+          id?: string
+          invited_email?: string
+          invited_phone?: string | null
+          invited_user_id?: string | null
+          inviter_id?: string | null
+          referral_code?: string
+          status?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "referral_invites_invited_user_id_fkey"
+            columns: ["invited_user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "referral_invites_inviter_id_fkey"
+            columns: ["inviter_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      referral_rewards: {
+        Row: {
+          created_at: string | null
+          credits_awarded: number
+          id: string
+          invited_user_id: string | null
+          inviter_id: string | null
+          is_claimed: boolean | null
+          referral_invite_id: string | null
+          reward_type: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          credits_awarded: number
+          id?: string
+          invited_user_id?: string | null
+          inviter_id?: string | null
+          is_claimed?: boolean | null
+          referral_invite_id?: string | null
+          reward_type?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          credits_awarded?: number
+          id?: string
+          invited_user_id?: string | null
+          inviter_id?: string | null
+          is_claimed?: boolean | null
+          referral_invite_id?: string | null
+          reward_type?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "referral_rewards_invited_user_id_fkey"
+            columns: ["invited_user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "referral_rewards_inviter_id_fkey"
+            columns: ["inviter_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "referral_rewards_referral_invite_id_fkey"
+            columns: ["referral_invite_id"]
+            isOneToOne: false
+            referencedRelation: "referral_invites"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ui_button_controls: {
+        Row: {
+          allowed_variants: string[]
+          fallback_variant: string
+          id: string
+          page_slug: string
+          updated_at: string | null
+        }
+        Insert: {
+          allowed_variants?: string[]
+          fallback_variant?: string
+          id?: string
+          page_slug: string
+          updated_at?: string | null
+        }
+        Update: {
+          allowed_variants?: string[]
+          fallback_variant?: string
+          id?: string
+          page_slug?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      ui_button_logs: {
+        Row: {
+          created_at: string | null
+          id: string
+          page: string
+          user_id: string | null
+          variant: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          page: string
+          user_id?: string | null
+          variant: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          page?: string
+          user_id?: string | null
+          variant?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ui_button_logs_user_id_fkey"
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "users"

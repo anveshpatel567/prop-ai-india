@@ -1,3 +1,4 @@
+
 import { UserRole } from './global';
 
 export interface Database {
@@ -45,6 +46,7 @@ export interface Database {
           balance: number;
           last_updated: string;
           status: 'active' | 'suspended';
+          created_at: string;
         };
         Insert: {
           id?: string;
@@ -52,6 +54,7 @@ export interface Database {
           balance?: number;
           last_updated?: string;
           status?: 'active' | 'suspended';
+          created_at?: string;
         };
         Update: {
           id?: string;
@@ -59,32 +62,297 @@ export interface Database {
           balance?: number;
           last_updated?: string;
           status?: 'active' | 'suspended';
+          created_at?: string;
         };
       };
-      auth_sessions: {
+      listings: {
         Row: {
           id: string;
           user_id: string;
-          session_token: string;
+          title: string;
+          description: string | null;
+          property_type: 'residential' | 'commercial' | 'plot';
+          listing_type: 'sale' | 'rent';
+          price: number;
+          area_sqft: number | null;
+          bedrooms: number | null;
+          bathrooms: number | null;
+          city: string;
+          locality: string | null;
+          google_maps_pin: string;
+          rera_number: string | null;
+          is_rera_verified: boolean;
+          amenities: any | null;
+          photos: any | null;
+          status: 'active' | 'sold' | 'rented' | 'draft';
+          ai_generated_title: boolean;
+          ai_parsed_data: any | null;
           created_at: string;
-          expires_at: string;
-          is_active: boolean;
+          updated_at: string;
         };
         Insert: {
           id?: string;
           user_id: string;
-          session_token: string;
+          title: string;
+          description?: string | null;
+          property_type: 'residential' | 'commercial' | 'plot';
+          listing_type: 'sale' | 'rent';
+          price: number;
+          area_sqft?: number | null;
+          bedrooms?: number | null;
+          bathrooms?: number | null;
+          city: string;
+          locality?: string | null;
+          google_maps_pin: string;
+          rera_number?: string | null;
+          is_rera_verified?: boolean;
+          amenities?: any | null;
+          photos?: any | null;
+          status?: 'active' | 'sold' | 'rented' | 'draft';
+          ai_generated_title?: boolean;
+          ai_parsed_data?: any | null;
           created_at?: string;
-          expires_at: string;
-          is_active?: boolean;
+          updated_at?: string;
         };
         Update: {
           id?: string;
           user_id?: string;
-          session_token?: string;
+          title?: string;
+          description?: string | null;
+          property_type?: 'residential' | 'commercial' | 'plot';
+          listing_type?: 'sale' | 'rent';
+          price?: number;
+          area_sqft?: number | null;
+          bedrooms?: number | null;
+          bathrooms?: number | null;
+          city?: string;
+          locality?: string | null;
+          google_maps_pin?: string;
+          rera_number?: string | null;
+          is_rera_verified?: boolean;
+          amenities?: any | null;
+          photos?: any | null;
+          status?: 'active' | 'sold' | 'rented' | 'draft';
+          ai_generated_title?: boolean;
+          ai_parsed_data?: any | null;
           created_at?: string;
-          expires_at?: string;
+          updated_at?: string;
+        };
+      };
+      listing_categories: {
+        Row: {
+          id: string;
+          slug: string;
+          label: string;
+          parent_id: string | null;
+          is_active: boolean;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          slug: string;
+          label: string;
+          parent_id?: string | null;
           is_active?: boolean;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          slug?: string;
+          label?: string;
+          parent_id?: string | null;
+          is_active?: boolean;
+          created_at?: string;
+          updated_at?: string;
+        };
+      };
+      listing_conditions: {
+        Row: {
+          id: string;
+          label: string;
+          applies_to_category_id: string | null;
+          input_type: 'dropdown' | 'input' | 'checkbox' | 'date' | 'number';
+          options: any | null;
+          is_required: boolean;
+          display_order: number;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          label: string;
+          applies_to_category_id?: string | null;
+          input_type: 'dropdown' | 'input' | 'checkbox' | 'date' | 'number';
+          options?: any | null;
+          is_required?: boolean;
+          display_order?: number;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          label?: string;
+          applies_to_category_id?: string | null;
+          input_type?: 'dropdown' | 'input' | 'checkbox' | 'date' | 'number';
+          options?: any | null;
+          is_required?: boolean;
+          display_order?: number;
+          created_at?: string;
+          updated_at?: string;
+        };
+      };
+      ai_tool_transactions: {
+        Row: {
+          id: string;
+          user_id: string;
+          tool_name: string;
+          credit_cost: number;
+          input_data: any | null;
+          output_data: any | null;
+          status: 'pending' | 'success' | 'failed';
+          processing_time_ms: number | null;
+          error_message: string | null;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          user_id: string;
+          tool_name: string;
+          credit_cost: number;
+          input_data?: any | null;
+          output_data?: any | null;
+          status?: 'pending' | 'success' | 'failed';
+          processing_time_ms?: number | null;
+          error_message?: string | null;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          user_id?: string;
+          tool_name?: string;
+          credit_cost?: number;
+          input_data?: any | null;
+          output_data?: any | null;
+          status?: 'pending' | 'success' | 'failed';
+          processing_time_ms?: number | null;
+          error_message?: string | null;
+          created_at?: string;
+        };
+      };
+      notifications: {
+        Row: {
+          id: string;
+          user_id: string;
+          title: string;
+          message: string;
+          type: 'info' | 'success' | 'warning' | 'error';
+          is_read: boolean;
+          metadata: any | null;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          user_id: string;
+          title: string;
+          message: string;
+          type?: 'info' | 'success' | 'warning' | 'error';
+          is_read?: boolean;
+          metadata?: any | null;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          user_id?: string;
+          title?: string;
+          message?: string;
+          type?: 'info' | 'success' | 'warning' | 'error';
+          is_read?: boolean;
+          metadata?: any | null;
+          created_at?: string;
+        };
+      };
+      leads: {
+        Row: {
+          id: string;
+          agent_id: string;
+          seeker_id: string;
+          property_id: string;
+          lead_score: number;
+          status: 'new' | 'contacted' | 'qualified' | 'converted' | 'lost';
+          notes: string | null;
+          follow_up_date: string | null;
+          ai_insights: any | null;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          agent_id: string;
+          seeker_id: string;
+          property_id: string;
+          lead_score?: number;
+          status?: 'new' | 'contacted' | 'qualified' | 'converted' | 'lost';
+          notes?: string | null;
+          follow_up_date?: string | null;
+          ai_insights?: any | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          agent_id?: string;
+          seeker_id?: string;
+          property_id?: string;
+          lead_score?: number;
+          status?: 'new' | 'contacted' | 'qualified' | 'converted' | 'lost';
+          notes?: string | null;
+          follow_up_date?: string | null;
+          ai_insights?: any | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+      };
+      payment_receipts: {
+        Row: {
+          id: string;
+          user_id: string;
+          amount: number;
+          receipt_url: string;
+          payment_method: string | null;
+          transaction_id: string | null;
+          status: 'pending' | 'approved' | 'rejected';
+          admin_notes: string | null;
+          approved_by: string | null;
+          approved_at: string | null;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          user_id: string;
+          amount: number;
+          receipt_url: string;
+          payment_method?: string | null;
+          transaction_id?: string | null;
+          status?: 'pending' | 'approved' | 'rejected';
+          admin_notes?: string | null;
+          approved_by?: string | null;
+          approved_at?: string | null;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          user_id?: string;
+          amount?: number;
+          receipt_url?: string;
+          payment_method?: string | null;
+          transaction_id?: string | null;
+          status?: 'pending' | 'approved' | 'rejected';
+          admin_notes?: string | null;
+          approved_by?: string | null;
+          approved_at?: string | null;
+          created_at?: string;
         };
       };
       ui_button_controls: {
@@ -133,66 +401,266 @@ export interface Database {
           created_at?: string;
         };
       };
-      property_listings: {
+      auth_sessions: {
         Row: {
           id: string;
           user_id: string;
-          title: string;
-          description: string | null;
-          property_type: string;
-          listing_type: 'sale' | 'rent';
-          price: number;
-          area_sqft: number | null;
-          bedrooms: number | null;
-          bathrooms: number | null;
-          location: string;
-          address: string | null;
-          amenities: string[] | null;
-          photos: string[] | null;
-          status: 'active' | 'draft' | 'sold' | 'rented';
-          featured: boolean;
+          session_token: string;
           created_at: string;
-          updated_at: string;
+          expires_at: string;
+          is_active: boolean;
         };
         Insert: {
           id?: string;
           user_id: string;
-          title: string;
-          description?: string | null;
-          property_type: string;
-          listing_type: 'sale' | 'rent';
-          price: number;
-          area_sqft?: number | null;
-          bedrooms?: number | null;
-          bathrooms?: number | null;
-          location: string;
-          address?: string | null;
-          amenities?: string[] | null;
-          photos?: string[] | null;
-          status?: 'active' | 'draft' | 'sold' | 'rented';
-          featured?: boolean;
+          session_token: string;
           created_at?: string;
-          updated_at?: string;
+          expires_at: string;
+          is_active?: boolean;
         };
         Update: {
           id?: string;
           user_id?: string;
-          title?: string;
-          description?: string | null;
-          property_type?: string;
-          listing_type?: 'sale' | 'rent';
-          price?: number;
-          area_sqft?: number | null;
-          bedrooms?: number | null;
-          bathrooms?: number | null;
-          location?: string;
-          address?: string | null;
-          amenities?: string[] | null;
-          photos?: string[] | null;
-          status?: 'active' | 'draft' | 'sold' | 'rented';
-          featured?: boolean;
+          session_token?: string;
           created_at?: string;
-          updated_at?: string;
+          expires_at?: string;
+          is_active?: boolean;
+        };
+      };
+      ai_whatsapp_responses: {
+        Row: {
+          id: string;
+          lead_id: string;
+          user_id: string;
+          phone_number: string;
+          message_content: string;
+          ai_response: string;
+          response_type: string;
+          credits_used: number;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          lead_id: string;
+          user_id: string;
+          phone_number: string;
+          message_content: string;
+          ai_response: string;
+          response_type?: string;
+          credits_used?: number;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          lead_id?: string;
+          user_id?: string;
+          phone_number?: string;
+          message_content?: string;
+          ai_response?: string;
+          response_type?: string;
+          credits_used?: number;
+          created_at?: string;
+        };
+      };
+      ai_followups: {
+        Row: {
+          id: string;
+          lead_id: string;
+          agent_id: string;
+          followup_message: string;
+          followup_type: string;
+          scheduled_date: string | null;
+          is_sent: boolean;
+          credits_used: number;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          lead_id: string;
+          agent_id: string;
+          followup_message: string;
+          followup_type?: string;
+          scheduled_date?: string | null;
+          is_sent?: boolean;
+          credits_used?: number;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          lead_id?: string;
+          agent_id?: string;
+          followup_message?: string;
+          followup_type?: string;
+          scheduled_date?: string | null;
+          is_sent?: boolean;
+          credits_used?: number;
+          created_at?: string;
+        };
+      };
+      ai_listing_suggestions: {
+        Row: {
+          id: string;
+          listing_id: string;
+          user_id: string;
+          suggestion_type: string;
+          original_content: string | null;
+          suggested_content: string;
+          is_applied: boolean;
+          credits_used: number;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          listing_id: string;
+          user_id: string;
+          suggestion_type: string;
+          original_content?: string | null;
+          suggested_content: string;
+          is_applied?: boolean;
+          credits_used?: number;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          listing_id?: string;
+          user_id?: string;
+          suggestion_type?: string;
+          original_content?: string | null;
+          suggested_content?: string;
+          is_applied?: boolean;
+          credits_used?: number;
+          created_at?: string;
+        };
+      };
+      ai_listing_videos: {
+        Row: {
+          id: string;
+          listing_id: string;
+          user_id: string;
+          video_url: string | null;
+          thumbnail_url: string | null;
+          status: 'generating' | 'completed' | 'failed';
+          credits_used: number;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          listing_id: string;
+          user_id: string;
+          video_url?: string | null;
+          thumbnail_url?: string | null;
+          status?: 'generating' | 'completed' | 'failed';
+          credits_used?: number;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          listing_id?: string;
+          user_id?: string;
+          video_url?: string | null;
+          thumbnail_url?: string | null;
+          status?: 'generating' | 'completed' | 'failed';
+          credits_used?: number;
+          created_at?: string;
+        };
+      };
+      crm_lead_audit_logs: {
+        Row: {
+          id: string;
+          lead_id: string;
+          admin_id: string;
+          action: string;
+          old_values: any | null;
+          new_values: any | null;
+          notes: string | null;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          lead_id: string;
+          admin_id: string;
+          action: string;
+          old_values?: any | null;
+          new_values?: any | null;
+          notes?: string | null;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          lead_id?: string;
+          admin_id?: string;
+          action?: string;
+          old_values?: any | null;
+          new_values?: any | null;
+          notes?: string | null;
+          created_at?: string;
+        };
+      };
+      referral_invites: {
+        Row: {
+          id: string;
+          inviter_id: string;
+          invited_email: string;
+          invited_phone: string | null;
+          referral_code: string;
+          status: 'pending' | 'completed' | 'expired';
+          invited_user_id: string | null;
+          created_at: string;
+          completed_at: string | null;
+        };
+        Insert: {
+          id?: string;
+          inviter_id: string;
+          invited_email: string;
+          invited_phone?: string | null;
+          referral_code: string;
+          status?: 'pending' | 'completed' | 'expired';
+          invited_user_id?: string | null;
+          created_at?: string;
+          completed_at?: string | null;
+        };
+        Update: {
+          id?: string;
+          inviter_id?: string;
+          invited_email?: string;
+          invited_phone?: string | null;
+          referral_code?: string;
+          status?: 'pending' | 'completed' | 'expired';
+          invited_user_id?: string | null;
+          created_at?: string;
+          completed_at?: string | null;
+        };
+      };
+      referral_rewards: {
+        Row: {
+          id: string;
+          inviter_id: string;
+          invited_user_id: string;
+          referral_invite_id: string;
+          credits_awarded: number;
+          reward_type: string;
+          is_claimed: boolean;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          inviter_id: string;
+          invited_user_id: string;
+          referral_invite_id: string;
+          credits_awarded: number;
+          reward_type?: string;
+          is_claimed?: boolean;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          inviter_id?: string;
+          invited_user_id?: string;
+          referral_invite_id?: string;
+          credits_awarded?: number;
+          reward_type?: string;
+          is_claimed?: boolean;
+          created_at?: string;
         };
       };
     };

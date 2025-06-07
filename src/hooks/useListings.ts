@@ -3,11 +3,11 @@ import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import type { Database } from '@/types/supabase-db';
 
-type PropertyListing = Database['public']['Tables']['property_listings']['Row'];
-type PropertyListingInsert = Database['public']['Tables']['property_listings']['Insert'];
+type Listing = Database['public']['Tables']['listings']['Row'];
+type ListingInsert = Database['public']['Tables']['listings']['Insert'];
 
 export const useListings = () => {
-  const [listings, setListings] = useState<PropertyListing[]>([]);
+  const [listings, setListings] = useState<Listing[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -21,12 +21,12 @@ export const useListings = () => {
     try {
       setLoading(true);
       let query = supabase
-        .from('property_listings')
+        .from('listings')
         .select('*')
         .eq('status', 'active');
 
       if (filters?.location) {
-        query = query.ilike('location', `%${filters.location}%`);
+        query = query.or(`city.ilike.%${filters.location}%,locality.ilike.%${filters.location}%`);
       }
       if (filters?.property_type) {
         query = query.eq('property_type', filters.property_type);
@@ -59,11 +59,11 @@ export const useListings = () => {
     }
   };
 
-  const createListing = async (listingData: PropertyListingInsert) => {
+  const createListing = async (listingData: ListingInsert) => {
     try {
       setLoading(true);
       const { data, error: createError } = await supabase
-        .from('property_listings')
+        .from('listings')
         .insert(listingData)
         .select()
         .single();
@@ -87,7 +87,7 @@ export const useListings = () => {
     try {
       setLoading(true);
       const { data, error: fetchError } = await supabase
-        .from('property_listings')
+        .from('listings')
         .select('*')
         .eq('user_id', userId)
         .order('created_at', { ascending: false });
@@ -107,6 +107,31 @@ export const useListings = () => {
     }
   };
 
+  const updateListing = async (id: string, updates: Partial<ListingInsert>) => {
+    try {
+      setLoading(true);
+      const { data, error: updateError } = await supabase
+        .from('listings')
+        .update(updates)
+        .eq('id', id)
+        .select()
+        .single();
+
+      if (updateError) {
+        setError(updateError.message);
+        return null;
+      }
+
+      return data;
+    } catch (err) {
+      console.error('Error updating listing:', err);
+      setError('Failed to update listing');
+      return null;
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     fetchListings();
   }, []);
@@ -117,6 +142,7 @@ export const useListings = () => {
     error,
     fetchListings,
     createListing,
-    getUserListings
+    getUserListings,
+    updateListing
   };
 };

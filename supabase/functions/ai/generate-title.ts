@@ -1,68 +1,62 @@
 
-import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
+import "https://deno.land/x/xhr@0.1.0/mod.ts";
+import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+
+const openAIApiKey = Deno.env.get('OPENAI_API_KEY');
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
-}
+};
 
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
-    return new Response('ok', { headers: corsHeaders })
+    return new Response(null, { headers: corsHeaders });
   }
 
   try {
-    const { property_data } = await req.json()
+    const { property_data } = await req.json();
 
-    // Mock GPT-4o Mini API call for title generation
-    const mockTitles = [
-      "Luxurious 3BHK Ready-to-Move Apartment in Prime Bandra West",
-      "Stunning Sea-Facing 3BHK with Premium Amenities - Bandra West",
-      "Modern 3BHK Apartment Near Metro Station - Bandra West Mumbai",
-      "Elegant 3BHK with Gym & Pool - Premium Bandra Location",
-      "Spacious 3BHK Apartment in Upscale Bandra West - Ready Possession"
-    ]
-
-    const response = {
-      generated_titles: mockTitles,
-      recommended_title: mockTitles[0],
-      seo_score: 85,
-      title_analysis: {
-        keywords_included: ["3BHK", "Bandra West", "Ready-to-Move", "Luxurious"],
-        character_count: mockTitles[0].length,
-        readability_score: 92,
-        appeal_rating: "High"
+    const response = await fetch('https://api.openai.com/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${openAIApiKey}`,
+        'Content-Type': 'application/json',
       },
-      suggestions: [
-        "Include price range for better visibility",
-        "Add unique selling points",
-        "Consider location-specific keywords"
-      ]
-    }
+      body: JSON.stringify({
+        model: 'gpt-4o-mini',
+        messages: [
+          {
+            role: 'system',
+            content: 'Generate an attractive, SEO-friendly property title for Indian real estate. Make it compelling and include key details like BHK, location, and property type. Keep it under 80 characters.'
+          },
+          {
+            role: 'user',
+            content: `Property details: ${JSON.stringify(property_data)}`
+          }
+        ],
+        temperature: 0.7,
+      }),
+    });
 
-    // Simulate processing delay
-    await new Promise(resolve => setTimeout(resolve, 1000))
+    const data = await response.json();
+    const generatedTitle = data.choices[0].message.content.trim();
 
-    return new Response(
-      JSON.stringify(response),
-      { 
-        headers: { 
-          ...corsHeaders, 
-          'Content-Type': 'application/json' 
-        } 
-      }
-    )
-
+    return new Response(JSON.stringify({ 
+      success: true, 
+      title: generatedTitle,
+      credits_used: 3
+    }), {
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+    });
   } catch (error) {
-    return new Response(
-      JSON.stringify({ error: error.message }),
-      { 
-        status: 400,
-        headers: { 
-          ...corsHeaders, 
-          'Content-Type': 'application/json' 
-        } 
-      }
-    )
+    console.error('Error in generate-title function:', error);
+    return new Response(JSON.stringify({ 
+      success: false, 
+      error: error.message 
+    }), {
+      status: 500,
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+    });
   }
-})
+});

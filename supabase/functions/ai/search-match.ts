@@ -1,83 +1,70 @@
 
-import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
+import "https://deno.land/x/xhr@0.1.0/mod.ts";
+import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+
+const openAIApiKey = Deno.env.get('OPENAI_API_KEY');
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
-}
+};
 
 serve(async (req) => {
-  // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
-    return new Response('ok', { headers: corsHeaders })
+    return new Response(null, { headers: corsHeaders });
   }
 
   try {
-    const { query, max_results = 10 } = await req.json()
+    const { search_query } = await req.json();
 
-    // Mock GPT-4o Mini API call for property matching
-    const mockResponse = {
-      matches: [
-        {
-          property_id: "prop-1",
-          title: "Luxury 3BHK in Bandra West",
-          match_percentage: 92,
-          match_reasons: [
-            "Exact bedroom count match",
-            "Location preference satisfied",
-            "Budget range compatible"
-          ],
-          price: 25000000,
-          area_sqft: 1200,
-          location: "Bandra West, Mumbai"
-        },
-        {
-          property_id: "prop-2", 
-          title: "Modern 3BHK Near Metro",
-          match_percentage: 87,
-          match_reasons: [
-            "Good connectivity match",
-            "Similar price range",
-            "Ready to move"
-          ],
-          price: 23000000,
-          area_sqft: 1100,
-          location: "Andheri East, Mumbai"
-        }
-      ],
-      total_matches: 15,
-      search_query_parsed: {
-        property_type: "apartment",
-        bedrooms: 3,
-        location: "Mumbai",
-        max_budget: 30000000,
-        preferences: ["metro connectivity", "ready to move"]
-      }
-    }
+    const response = await fetch('https://api.openai.com/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${openAIApiKey}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        model: 'gpt-4o-mini',
+        messages: [
+          {
+            role: 'system',
+            content: `Parse the real estate search query and extract structured filters. Return ONLY valid JSON:
+            {
+              "location": "city or area name",
+              "property_type": "residential|commercial|plot",
+              "listing_type": "sale|rent",
+              "min_price": number,
+              "max_price": number,
+              "bedrooms": number,
+              "bathrooms": number,
+              "amenities": ["amenity1", "amenity2"]
+            }
+            Only include fields that are clearly mentioned in the query.`
+          },
+          { role: 'user', content: search_query }
+        ],
+        temperature: 0.1,
+      }),
+    });
 
-    // Simulate processing delay
-    await new Promise(resolve => setTimeout(resolve, 1500))
+    const data = await response.json();
+    const searchFilters = JSON.parse(data.choices[0].message.content);
 
-    return new Response(
-      JSON.stringify(mockResponse),
-      { 
-        headers: { 
-          ...corsHeaders, 
-          'Content-Type': 'application/json' 
-        } 
-      }
-    )
-
+    return new Response(JSON.stringify({ 
+      success: true, 
+      filters: searchFilters,
+      credits_used: 8
+    }), {
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+    });
   } catch (error) {
-    return new Response(
-      JSON.stringify({ error: error.message }),
-      { 
-        status: 400,
-        headers: { 
-          ...corsHeaders, 
-          'Content-Type': 'application/json' 
-        } 
-      }
-    )
+    console.error('Error in search-match function:', error);
+    return new Response(JSON.stringify({ 
+      success: false, 
+      error: error.message 
+    }), {
+      status: 500,
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+    });
   }
-})
+});
