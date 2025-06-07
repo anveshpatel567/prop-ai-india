@@ -1,130 +1,170 @@
 
-import React from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
+import React, { useState } from 'react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Switch } from '@/components/ui/switch';
 import { Badge } from '@/components/ui/badge';
-import { Brain, Video, DollarSign, Shield, FileText, Users } from 'lucide-react';
+import { Zap, Video, FileText, Shield, GitBranch, Download, Target } from 'lucide-react';
+
+interface AiTool {
+  id: string;
+  name: string;
+  icon: React.ReactNode;
+  enabled: boolean;
+  creditCost: number;
+  usage: number;
+  description: string;
+}
 
 export const AdminToolsOverviewPanel: React.FC = () => {
-  const aiTools = [
+  const [tools, setTools] = useState<AiTool[]>([
     {
-      name: 'AI Resume Generator',
-      icon: FileText,
-      status: 'active',
-      usage: 1247,
-      credits: 100,
-      color: 'bg-blue-500'
-    },
-    {
-      name: 'AI Negotiation',
-      icon: Users,
-      status: 'active',
-      usage: 892,
-      credits: 50,
-      color: 'bg-green-500'
-    },
-    {
+      id: 'video-generator',
       name: 'AI Video Generator',
-      icon: Video,
-      status: 'active',
-      usage: 156,
-      credits: 15,
-      color: 'bg-red-500'
+      icon: <Video className="h-5 w-5" />,
+      enabled: true,
+      creditCost: 15,
+      usage: 145,
+      description: 'Generate property videos from listings'
     },
     {
-      name: 'AI Smart Pricing',
-      icon: DollarSign,
-      status: 'active',
-      usage: 334,
-      credits: 25,
-      color: 'bg-orange-500'
+      id: 'pricing-suggestions',
+      name: 'Smart Pricing Engine',
+      icon: <Target className="h-5 w-5" />,
+      enabled: true,
+      creditCost: 25,
+      usage: 98,
+      description: 'AI-powered property pricing recommendations'
     },
     {
-      name: 'AI Fraud Detection',
-      icon: Shield,
-      status: 'active',
-      usage: 67,
-      credits: 0,
-      color: 'bg-purple-500'
-    },
-    {
+      id: 'locality-reports',
       name: 'Locality Reports',
-      icon: Brain,
-      status: 'active',
-      usage: 289,
-      credits: 30,
-      color: 'bg-indigo-500'
+      icon: <FileText className="h-5 w-5" />,
+      enabled: true,
+      creditCost: 30,
+      usage: 67,
+      description: 'Generate detailed locality market insights'
+    },
+    {
+      id: 'fraud-detection',
+      name: 'Fraud Detection',
+      icon: <Shield className="h-5 w-5" />,
+      enabled: true,
+      creditCost: 10,
+      usage: 23,
+      description: 'Automated listing fraud detection'
+    },
+    {
+      id: 'brochure-matcher',
+      name: 'Brochure Matcher',
+      icon: <FileText className="h-5 w-5" />,
+      enabled: true,
+      creditCost: 25,
+      usage: 34,
+      description: 'Match properties from brochure uploads'
+    },
+    {
+      id: 'title-chain',
+      name: 'Title Chain Visualizer',
+      icon: <GitBranch className="h-5 w-5" />,
+      enabled: false,
+      creditCost: 20,
+      usage: 12,
+      description: 'Generate property title chain visualization'
+    },
+    {
+      id: 'resume-tracker',
+      name: 'Resume Download Tracker',
+      icon: <Download className="h-5 w-5" />,
+      enabled: true,
+      creditCost: 0,
+      usage: 156,
+      description: 'Track agent resume downloads and analytics'
     }
-  ];
+  ]);
+
+  const toggleTool = (toolId: string) => {
+    setTools(tools.map(tool => 
+      tool.id === toolId ? { ...tool, enabled: !tool.enabled } : tool
+    ));
+  };
+
+  const totalCreditsUsed = tools.reduce((sum, tool) => sum + (tool.usage * tool.creditCost), 0);
+  const enabledTools = tools.filter(tool => tool.enabled).length;
 
   return (
     <div className="space-y-6">
-      <Card>
-        <CardHeader>
-          <CardTitle>AI Tools Overview</CardTitle>
-          <CardDescription>Manage and monitor all AI-powered features</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {aiTools.map((tool) => {
-              const IconComponent = tool.icon;
-              return (
-                <Card key={tool.name} className="relative">
-                  <CardContent className="p-4">
-                    <div className="flex items-center justify-between mb-3">
-                      <div className={`p-2 rounded-lg ${tool.color}`}>
-                        <IconComponent className="h-4 w-4 text-white" />
-                      </div>
-                      <Switch defaultChecked={tool.status === 'active'} />
-                    </div>
-                    
-                    <h3 className="font-semibold text-sm mb-2">{tool.name}</h3>
-                    
-                    <div className="space-y-2 text-xs text-gray-600">
-                      <div className="flex justify-between">
-                        <span>Usage this month:</span>
-                        <Badge variant="secondary">{tool.usage}</Badge>
-                      </div>
-                      <div className="flex justify-between">
-                        <span>Credit cost:</span>
-                        <Badge variant="outline">{tool.credits} credits</Badge>
-                      </div>
-                    </div>
-                    
-                    <Button size="sm" variant="outline" className="w-full mt-3">
-                      View Details
-                    </Button>
-                  </CardContent>
-                </Card>
-              );
-            })}
-          </div>
-        </CardContent>
-      </Card>
-
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <Card>
-          <CardContent className="p-4">
-            <div className="text-2xl font-bold text-green-600">₹2,34,567</div>
-            <p className="text-sm text-gray-600">Total Credits Sold</p>
+        <Card className="border-orange-200">
+          <CardContent className="p-6">
+            <div className="flex items-center space-x-3">
+              <Zap className="h-8 w-8 text-orange-600" />
+              <div>
+                <div className="text-2xl font-bold text-orange-600">{enabledTools}</div>
+                <div className="text-sm text-gray-600">Active AI Tools</div>
+              </div>
+            </div>
           </CardContent>
         </Card>
-        
-        <Card>
-          <CardContent className="p-4">
-            <div className="text-2xl font-bold text-blue-600">3,421</div>
-            <p className="text-sm text-gray-600">Active AI Sessions</p>
+
+        <Card className="border-green-200">
+          <CardContent className="p-6">
+            <div className="flex items-center space-x-3">
+              <Target className="h-8 w-8 text-green-600" />
+              <div>
+                <div className="text-2xl font-bold text-green-600">{totalCreditsUsed}</div>
+                <div className="text-sm text-gray-600">Credits Consumed</div>
+              </div>
+            </div>
           </CardContent>
         </Card>
-        
-        <Card>
-          <CardContent className="p-4">
-            <div className="text-2xl font-bold text-purple-600">98.5%</div>
-            <p className="text-sm text-gray-600">AI Uptime</p>
+
+        <Card className="border-blue-200">
+          <CardContent className="p-6">
+            <div className="flex items-center space-x-3">
+              <Video className="h-8 w-8 text-blue-600" />
+              <div>
+                <div className="text-2xl font-bold text-blue-600">{tools.reduce((sum, tool) => sum + tool.usage, 0)}</div>
+                <div className="text-sm text-gray-600">Total Usage</div>
+              </div>
+            </div>
           </CardContent>
         </Card>
       </div>
+
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-gray-700">AI Tools Management</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-4">
+            {tools.map((tool) => (
+              <div key={tool.id} className="flex items-center justify-between p-4 border rounded-lg">
+                <div className="flex items-center space-x-4">
+                  <div className="text-orange-600">{tool.icon}</div>
+                  <div>
+                    <div className="font-medium">{tool.name}</div>
+                    <div className="text-sm text-gray-600">{tool.description}</div>
+                  </div>
+                </div>
+                
+                <div className="flex items-center space-x-4">
+                  <div className="text-center">
+                    <div className="text-sm font-medium">{tool.creditCost} credits</div>
+                    <div className="text-xs text-gray-500">per use</div>
+                  </div>
+                  
+                  <Badge variant="secondary">{tool.usage} uses</Badge>
+                  
+                  <Switch
+                    checked={tool.enabled}
+                    onCheckedChange={() => toggleTool(tool.id)}
+                  />
+                </div>
+              </div>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 };

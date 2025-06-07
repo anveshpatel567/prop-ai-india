@@ -2871,6 +2871,33 @@ export type Database = {
         }
         Relationships: []
       }
+      ai_title_chain_data: {
+        Row: {
+          chain_json: Json | null
+          confidence_score: number | null
+          created_at: string | null
+          id: string
+          property_id: string | null
+          user_id: string | null
+        }
+        Insert: {
+          chain_json?: Json | null
+          confidence_score?: number | null
+          created_at?: string | null
+          id?: string
+          property_id?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          chain_json?: Json | null
+          confidence_score?: number | null
+          created_at?: string | null
+          id?: string
+          property_id?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       ai_tool_attempt_logs: {
         Row: {
           attempted_at: string | null
@@ -3541,6 +3568,30 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      analytics_events: {
+        Row: {
+          created_at: string | null
+          event_data: Json | null
+          event_type: string
+          id: string
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          event_data?: Json | null
+          event_type: string
+          id?: string
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          event_data?: Json | null
+          event_type?: string
+          id?: string
+          user_id?: string | null
+        }
+        Relationships: []
       }
       api_rate_limits: {
         Row: {

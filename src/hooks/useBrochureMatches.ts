@@ -3,57 +3,58 @@ import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/context/AuthContext';
 
-export interface TitleChainData {
+export interface BrochureMatch {
   id: string;
   user_id: string;
-  property_id: string;
-  chain_json: any;
-  confidence_score: number;
+  uploaded_brochure_url: string;
+  matched_listings: any;
+  similarity_scores: any;
+  status: string;
   created_at: string;
 }
 
-export function useTitleChain() {
+export function useBrochureMatches() {
   const { user } = useAuth();
-  const [chains, setChains] = useState<TitleChainData[]>([]);
+  const [matches, setMatches] = useState<BrochureMatch[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (user?.id) {
-      fetchChains();
+      fetchMatches();
     }
   }, [user?.id]);
 
-  const fetchChains = async () => {
+  const fetchMatches = async () => {
     try {
       setLoading(true);
       const { data, error } = await supabase
-        .from('ai_title_chain_data')
+        .from('ai_brochure_match_links')
         .select('*')
         .eq('user_id', user?.id)
         .order('created_at', { ascending: false });
 
       if (error) throw error;
-      setChains(data || []);
+      setMatches(data || []);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to fetch title chains');
+      setError(err instanceof Error ? err.message : 'Failed to fetch matches');
     } finally {
       setLoading(false);
     }
   };
 
-  const generateTitleChain = async (property_id: string) => {
+  const generateMatches = async (brochureFile: File) => {
     try {
       setLoading(true);
-      const { data, error } = await supabase.functions.invoke('generateTitleChain', {
-        body: { property_id }
+      const { data, error } = await supabase.functions.invoke('generateBrochureMatches', {
+        body: { brochure_data: await brochureFile.text() }
       });
 
       if (error) throw error;
-      await fetchChains();
+      await fetchMatches();
       return data;
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to generate title chain');
+      setError(err instanceof Error ? err.message : 'Failed to generate matches');
       throw err;
     } finally {
       setLoading(false);
@@ -61,10 +62,10 @@ export function useTitleChain() {
   };
 
   return {
-    chains,
+    matches,
     loading,
     error,
-    generateTitleChain,
-    refetch: fetchChains
+    generateMatches,
+    refetch: fetchMatches
   };
 }

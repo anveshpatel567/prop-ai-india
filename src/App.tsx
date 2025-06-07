@@ -9,8 +9,28 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { AiToolProvider } from './context/AiToolContext';
 import { CreditGateProvider } from './context/CreditGateContext';
 import { PwaInstallBanner } from '@/components/pwa/PwaInstallBanner';
+import { useVisitLogger } from '@/hooks/useVisitLogger';
+import { useAnalyticsLogger } from '@/hooks/useAnalyticsLogger';
 
 const queryClient = new QueryClient();
+
+function AppContent() {
+  useVisitLogger();
+  const { logEvent } = useAnalyticsLogger();
+
+  // Log page visits
+  React.useEffect(() => {
+    logEvent('page_visited', { path: window.location.pathname });
+  }, [logEvent]);
+
+  return (
+    <div className="App">
+      <AppRoutes />
+      <Toaster />
+      <PwaInstallBanner />
+    </div>
+  );
+}
 
 function App() {
   return (
@@ -20,11 +40,7 @@ function App() {
           <AiToolProvider>
             <CreditGateProvider>
               <BrowserRouter>
-                <div className="App">
-                  <AppRoutes />
-                  <Toaster />
-                  <PwaInstallBanner />
-                </div>
+                <AppContent />
               </BrowserRouter>
             </CreditGateProvider>
           </AiToolProvider>

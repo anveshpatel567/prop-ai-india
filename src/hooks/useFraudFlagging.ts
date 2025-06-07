@@ -3,57 +3,59 @@ import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/context/AuthContext';
 
-export interface TitleChainData {
+export interface FraudFlag {
   id: string;
   user_id: string;
-  property_id: string;
-  chain_json: any;
+  listing_id: string;
+  flagged_by: string;
+  fraud_indicators: any;
   confidence_score: number;
+  status: string;
+  admin_reviewed: boolean;
   created_at: string;
 }
 
-export function useTitleChain() {
+export function useFraudFlagging() {
   const { user } = useAuth();
-  const [chains, setChains] = useState<TitleChainData[]>([]);
+  const [flags, setFlags] = useState<FraudFlag[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (user?.id) {
-      fetchChains();
+      fetchFlags();
     }
   }, [user?.id]);
 
-  const fetchChains = async () => {
+  const fetchFlags = async () => {
     try {
       setLoading(true);
       const { data, error } = await supabase
-        .from('ai_title_chain_data')
+        .from('ai_fraud_flags')
         .select('*')
-        .eq('user_id', user?.id)
         .order('created_at', { ascending: false });
 
       if (error) throw error;
-      setChains(data || []);
+      setFlags(data || []);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to fetch title chains');
+      setError(err instanceof Error ? err.message : 'Failed to fetch fraud flags');
     } finally {
       setLoading(false);
     }
   };
 
-  const generateTitleChain = async (property_id: string) => {
+  const flagListing = async (listing_id: string, indicators: any) => {
     try {
       setLoading(true);
-      const { data, error } = await supabase.functions.invoke('generateTitleChain', {
-        body: { property_id }
+      const { data, error } = await supabase.functions.invoke('flagFraudulentListing', {
+        body: { listing_id, indicators }
       });
 
       if (error) throw error;
-      await fetchChains();
+      await fetchFlags();
       return data;
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to generate title chain');
+      setError(err instanceof Error ? err.message : 'Failed to flag listing');
       throw err;
     } finally {
       setLoading(false);
@@ -61,10 +63,10 @@ export function useTitleChain() {
   };
 
   return {
-    chains,
+    flags,
     loading,
     error,
-    generateTitleChain,
-    refetch: fetchChains
+    flagListing,
+    refetch: fetchFlags
   };
 }
