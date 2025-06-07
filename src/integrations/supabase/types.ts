@@ -300,6 +300,30 @@ export type Database = {
         }
         Relationships: []
       }
+      ai_drift_detection_logs: {
+        Row: {
+          detected_at: string | null
+          detection_method: string | null
+          drift_score: number
+          id: string
+          model_version: string
+        }
+        Insert: {
+          detected_at?: string | null
+          detection_method?: string | null
+          drift_score: number
+          id?: string
+          model_version: string
+        }
+        Update: {
+          detected_at?: string | null
+          detection_method?: string | null
+          drift_score?: number
+          id?: string
+          model_version?: string
+        }
+        Relationships: []
+      }
       ai_edge_invocation_logs: {
         Row: {
           created_at: string | null
@@ -1339,6 +1363,33 @@ export type Database = {
           },
         ]
       }
+      ai_manual_review_flags: {
+        Row: {
+          flagged_at: string | null
+          flagged_by: string | null
+          id: string
+          reason: string
+          source_id: string
+          source_table: string
+        }
+        Insert: {
+          flagged_at?: string | null
+          flagged_by?: string | null
+          id?: string
+          reason: string
+          source_id: string
+          source_table: string
+        }
+        Update: {
+          flagged_at?: string | null
+          flagged_by?: string | null
+          id?: string
+          reason?: string
+          source_id?: string
+          source_table?: string
+        }
+        Relationships: []
+      }
       ai_market_pressure_logs: {
         Row: {
           data_scope: string
@@ -2002,6 +2053,27 @@ export type Database = {
           },
         ]
       }
+      ai_restricted_input_logs: {
+        Row: {
+          id: string
+          input_text: string
+          rejected_at: string | null
+          restriction_reason: string
+        }
+        Insert: {
+          id?: string
+          input_text: string
+          rejected_at?: string | null
+          restriction_reason: string
+        }
+        Update: {
+          id?: string
+          input_text?: string
+          rejected_at?: string | null
+          restriction_reason?: string
+        }
+        Relationships: []
+      }
       ai_resume_profiles: {
         Row: {
           created_at: string | null
@@ -2333,6 +2405,30 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      ai_toxicity_detection_logs: {
+        Row: {
+          detected_at: string | null
+          flagged: boolean | null
+          id: string
+          prompt: string
+          toxicity_score: number
+        }
+        Insert: {
+          detected_at?: string | null
+          flagged?: boolean | null
+          id?: string
+          prompt: string
+          toxicity_score: number
+        }
+        Update: {
+          detected_at?: string | null
+          flagged?: boolean | null
+          id?: string
+          prompt?: string
+          toxicity_score?: number
+        }
+        Relationships: []
       }
       ai_toxicity_flags: {
         Row: {

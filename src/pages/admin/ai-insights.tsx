@@ -11,6 +11,10 @@ import { PromptDriftTrackerPanel } from '@/components/admin/PromptDriftTrackerPa
 import { AiFeatureHeatmapPanel } from '@/components/admin/AiFeatureHeatmapPanel';
 import { AiFailureLogsPanel } from '@/components/admin/AiFailureLogsPanel';
 import { AiAuditTrailPanel } from '@/components/admin/AiAuditTrailPanel';
+import { ToxicityDetectionPanel } from '@/components/admin/ToxicityDetectionPanel';
+import { DriftDetectionPanel } from '@/components/admin/DriftDetectionPanel';
+import { RestrictedInputLogsPanel } from '@/components/admin/RestrictedInputLogsPanel';
+import { ManualReviewFlagPanel } from '@/components/admin/ManualReviewFlagPanel';
 
 export default function AiInsightsPage() {
   return (
@@ -42,6 +46,16 @@ export default function AiInsightsPage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <AiFeatureHeatmapPanel />
             <AiFailureLogsPanel />
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <ToxicityDetectionPanel />
+            <DriftDetectionPanel />
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <RestrictedInputLogsPanel />
+            <ManualReviewFlagPanel />
           </div>
 
           <div className="grid grid-cols-1 gap-6">

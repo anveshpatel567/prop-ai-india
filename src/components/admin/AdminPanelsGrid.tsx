@@ -36,6 +36,10 @@ import { PromptTemplateManager } from '@/components/admin/PromptTemplateManager'
 import { FlaggedPromptLogsPanel } from '@/components/admin/FlaggedPromptLogsPanel';
 import { AiBehaviorOverridePanel } from '@/components/admin/AiBehaviorOverridePanel';
 import { AdminDecisionLogPanel } from '@/components/admin/AdminDecisionLogPanel';
+import { ToxicityDetectionPanel } from '@/components/admin/ToxicityDetectionPanel';
+import { DriftDetectionPanel } from '@/components/admin/DriftDetectionPanel';
+import { RestrictedInputLogsPanel } from '@/components/admin/RestrictedInputLogsPanel';
+import { ManualReviewFlagPanel } from '@/components/admin/ManualReviewFlagPanel';
 
 export function AdminPanelsGrid(): JSX.Element {
   return (
@@ -128,6 +132,16 @@ export function AdminPanelsGrid(): JSX.Element {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
         <AiBehaviorOverridePanel />
         <AdminDecisionLogPanel />
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+        <ToxicityDetectionPanel />
+        <DriftDetectionPanel />
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+        <RestrictedInputLogsPanel />
+        <ManualReviewFlagPanel />
       </div>
     </>
   );
