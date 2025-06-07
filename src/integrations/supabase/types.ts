@@ -1886,6 +1886,74 @@ export type Database = {
           },
         ]
       }
+      ai_negotiation_messages: {
+        Row: {
+          id: string
+          message: string
+          message_type: string | null
+          offer_amount: number | null
+          sender_id: string | null
+          sent_at: string | null
+          thread_id: string | null
+        }
+        Insert: {
+          id?: string
+          message: string
+          message_type?: string | null
+          offer_amount?: number | null
+          sender_id?: string | null
+          sent_at?: string | null
+          thread_id?: string | null
+        }
+        Update: {
+          id?: string
+          message?: string
+          message_type?: string | null
+          offer_amount?: number | null
+          sender_id?: string | null
+          sent_at?: string | null
+          thread_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_negotiation_messages_thread_id_fkey"
+            columns: ["thread_id"]
+            isOneToOne: false
+            referencedRelation: "ai_negotiation_threads"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ai_negotiation_threads: {
+        Row: {
+          created_at: string | null
+          id: string
+          lister_id: string | null
+          listing_id: string
+          seeker_id: string | null
+          status: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          lister_id?: string | null
+          listing_id: string
+          seeker_id?: string | null
+          status?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          lister_id?: string | null
+          listing_id?: string
+          seeker_id?: string | null
+          status?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       ai_output_influence_logs: {
         Row: {
           feature_name: string
