@@ -1,4 +1,3 @@
-
 import { UserRole } from './global';
 
 export interface Database {
@@ -1112,6 +1111,110 @@ export interface Database {
           completed_at?: string | null;
           created_at?: string;
           updated_at?: string;
+        };
+      };
+      ai_property_matches: {
+        Row: {
+          id: string;
+          seeker_id: string;
+          listing_id: string;
+          match_score: number;
+          explanation: string;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          seeker_id: string;
+          listing_id: string;
+          match_score: number;
+          explanation: string;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          seeker_id?: string;
+          listing_id?: string;
+          match_score?: number;
+          explanation?: string;
+          created_at?: string;
+        };
+      };
+      ai_user_badges: {
+        Row: {
+          id: string;
+          user_id: string;
+          badge_name: string;
+          badge_type: string;
+          badge_level: string;
+          unlocked_at: string;
+        };
+        Insert: {
+          id?: string;
+          user_id: string;
+          badge_name: string;
+          badge_type: string;
+          badge_level: string;
+          unlocked_at?: string;
+        };
+        Update: {
+          id?: string;
+          user_id?: string;
+          badge_name?: string;
+          badge_type?: string;
+          badge_level?: string;
+          unlocked_at?: string;
+        };
+      };
+      ai_personalization_feedback: {
+        Row: {
+          id: string;
+          user_id: string;
+          feature_name: string;
+          feedback_type: string;
+          feedback_notes: string | null;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          user_id: string;
+          feature_name: string;
+          feedback_type: string;
+          feedback_notes?: string | null;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          user_id?: string;
+          feature_name?: string;
+          feedback_type?: string;
+          feedback_notes?: string | null;
+          created_at?: string;
+        };
+      };
+      ai_learning_iterations: {
+        Row: {
+          id: string;
+          model_name: string;
+          domain: string;
+          improvement_summary: string | null;
+          triggered_by: string | null;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          model_name: string;
+          domain: string;
+          improvement_summary?: string | null;
+          triggered_by?: string | null;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          model_name?: string;
+          domain?: string;
+          improvement_summary?: string | null;
+          triggered_by?: string | null;
+          created_at?: string;
         };
       };
     };

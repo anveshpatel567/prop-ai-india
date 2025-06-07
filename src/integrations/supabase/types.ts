@@ -253,6 +253,79 @@ export type Database = {
           },
         ]
       }
+      ai_interaction_logs: {
+        Row: {
+          action_type: string
+          created_at: string | null
+          credit_used: number | null
+          id: string
+          result_summary: string | null
+          tool_name: string
+          user_id: string | null
+        }
+        Insert: {
+          action_type: string
+          created_at?: string | null
+          credit_used?: number | null
+          id?: string
+          result_summary?: string | null
+          tool_name: string
+          user_id?: string | null
+        }
+        Update: {
+          action_type?: string
+          created_at?: string | null
+          credit_used?: number | null
+          id?: string
+          result_summary?: string | null
+          tool_name?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_interaction_logs_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ai_learning_iterations: {
+        Row: {
+          created_at: string | null
+          domain: string
+          id: string
+          improvement_summary: string | null
+          model_name: string
+          triggered_by: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          domain: string
+          id?: string
+          improvement_summary?: string | null
+          model_name: string
+          triggered_by?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          domain?: string
+          id?: string
+          improvement_summary?: string | null
+          model_name?: string
+          triggered_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_learning_iterations_triggered_by_fkey"
+            columns: ["triggered_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       ai_listing_heatmaps: {
         Row: {
           created_at: string | null
@@ -341,6 +414,54 @@ export type Database = {
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ai_listing_uplift_logs: {
+        Row: {
+          action_taken: string | null
+          created_at: string | null
+          created_by: string | null
+          id: string
+          listing_id: string | null
+          new_score: number | null
+          old_score: number | null
+          uplift_comment: string | null
+        }
+        Insert: {
+          action_taken?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          id?: string
+          listing_id?: string | null
+          new_score?: number | null
+          old_score?: number | null
+          uplift_comment?: string | null
+        }
+        Update: {
+          action_taken?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          id?: string
+          listing_id?: string | null
+          new_score?: number | null
+          old_score?: number | null
+          uplift_comment?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_listing_uplift_logs_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ai_listing_uplift_logs_listing_id_fkey"
+            columns: ["listing_id"]
+            isOneToOne: false
+            referencedRelation: "listings"
             referencedColumns: ["id"]
           },
         ]
@@ -527,6 +648,41 @@ export type Database = {
           {
             foreignKeyName: "ai_negotiation_logs_seeker_id_fkey"
             columns: ["seeker_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ai_personalization_feedback: {
+        Row: {
+          created_at: string | null
+          feature_name: string
+          feedback_notes: string | null
+          feedback_type: string
+          id: string
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          feature_name: string
+          feedback_notes?: string | null
+          feedback_type: string
+          id?: string
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          feature_name?: string
+          feedback_notes?: string | null
+          feedback_type?: string
+          id?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_personalization_feedback_user_id_fkey"
+            columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "users"
             referencedColumns: ["id"]
@@ -776,6 +932,41 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "ai_tool_transactions_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ai_user_badges: {
+        Row: {
+          badge_level: string
+          badge_name: string
+          badge_type: string
+          id: string
+          unlocked_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          badge_level: string
+          badge_name: string
+          badge_type: string
+          id?: string
+          unlocked_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          badge_level?: string
+          badge_name?: string
+          badge_type?: string
+          id?: string
+          unlocked_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_user_badges_user_id_fkey"
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "users"
