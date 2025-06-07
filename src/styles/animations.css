@@ -1,5 +1,5 @@
 
-/* Auth Window Animations */
+/* Futuristic AI Animations */
 @keyframes scale-up {
   0% {
     opacity: 0;
@@ -11,21 +11,30 @@
   }
 }
 
-@keyframes pulse-glow {
+@keyframes pulse-border {
   0%, 100% {
-    box-shadow: 0 0 20px rgba(255, 106, 0, 0.3);
+    border-color: #00FFFF;
   }
   50% {
-    box-shadow: 0 0 30px rgba(255, 106, 0, 0.6), 0 0 40px rgba(255, 60, 56, 0.4);
+    border-color: #A6FF00;
   }
 }
 
-@keyframes float-slow {
+@keyframes radial-glow {
   0%, 100% {
-    transform: translateY(0px);
+    box-shadow: 0 0 20px rgba(138, 35, 135, 0.3);
   }
   50% {
-    transform: translateY(-8px);
+    box-shadow: 0 0 40px rgba(233, 64, 87, 0.6), 0 0 60px rgba(242, 113, 33, 0.4);
+  }
+}
+
+@keyframes ai-scan {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
   }
 }
 
@@ -44,46 +53,30 @@
   animation: scale-up 0.4s ease-out;
 }
 
-.animate-pulse-glow {
-  animation: pulse-glow 2s ease-in-out infinite;
+.animate-pulse-border {
+  animation: pulse-border 2s ease-in-out infinite;
 }
 
-.animate-float-slow {
-  animation: float-slow 6s ease-in-out infinite;
+.animate-radial-glow {
+  animation: radial-glow 3s ease-in-out infinite;
+}
+
+.animate-ai-scan {
+  animation: ai-scan 2s ease-in-out infinite;
 }
 
 .animate-fadein {
   animation: fadein 0.8s ease-out;
 }
 
-/* Fire gradient background for auth */
-.warm-gradient {
-  background: linear-gradient(135deg, 
-    rgba(255, 106, 0, 0.1) 0%, 
-    rgba(255, 60, 56, 0.1) 25%,
-    rgba(139, 69, 19, 0.1) 50%,
-    rgba(255, 106, 0, 0.1) 75%,
-    rgba(255, 60, 56, 0.1) 100%
-  );
-}
-
-/* Premium glassmorphic effects */
+/* Glassmorphic effects */
 .glass-card {
   background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(16px);
   border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-.glow-hover:hover {
-  box-shadow: 0 0 12px rgba(255, 106, 0, 0.4);
-  transition: box-shadow 0.3s ease-in-out;
-}
-
-/* Hero background smoke effect */
-.hero-smoke {
-  background-image: radial-gradient(circle at center, rgba(255,255,255,0.05), transparent);
-}
-
-.hero-gradient {
-  background: linear-gradient(135deg, rgba(255, 218, 185, 0.1) 0%, transparent 50%, transparent 100%);
+/* Neon glow effects */
+.shadow-neon {
+  box-shadow: 0 0 20px #00FFFF;
 }

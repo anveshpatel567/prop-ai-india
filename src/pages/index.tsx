@@ -6,50 +6,62 @@ import { Footer } from '../components/layout/Footer';
 import { HeroSection } from '../components/home/HeroSection';
 import { AiTeaserCards } from '../components/home/AiTeaserCards';
 import { RoleSelectorCards } from '../components/home/RoleSelectorCards';
-import { GlowButton } from '../components/common/GlowButton';
 import { GlassCard } from '../components/layout/GlassCard';
+import { SearchIcon, Building2, FileText, Users } from 'lucide-react';
 
 const Index: React.FC = () => {
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-gradient-to-br from-hero-from via-hero-via to-hero-to">
       <Navbar />
       <HeroSection />
       
       {/* Quick Actions Section */}
       <section id="search" className="py-16 px-4">
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-3xl font-bold text-center mb-8">Quick Actions</h2>
+          <h2 className="text-3xl font-orbitron font-bold text-center mb-4 text-white">Quick Actions</h2>
+          <p className="text-center text-gray-300 font-rajdhani text-lg mb-12">
+            Get started with our most popular features
+          </p>
+          
           <div className="grid md:grid-cols-4 gap-6">
             <Link to="/search">
-              <GlassCard className="p-6 text-center hover:shadow-lg transition-shadow cursor-pointer">
-                <div className="text-4xl mb-4">🔍</div>
-                <h3 className="font-semibold mb-2">Search Properties</h3>
-                <p className="text-sm text-gray-600">Find your dream property</p>
-              </GlassCard>
+              <div className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-2xl p-6 text-center 
+                             hover:bg-white/20 hover:border-neon-cyan/50 hover:shadow-[0_0_30px_rgba(0,255,255,0.3)]
+                             transition-all duration-300 cursor-pointer group">
+                <SearchIcon className="w-12 h-12 mx-auto mb-4 text-neon-cyan group-hover:scale-110 transition-transform" />
+                <h3 className="font-orbitron font-semibold mb-2 text-white">Search Properties</h3>
+                <p className="text-sm text-gray-300 font-rajdhani">AI-powered property discovery</p>
+              </div>
             </Link>
             
             <Link to="/listing/create">
-              <GlassCard className="p-6 text-center hover:shadow-lg transition-shadow cursor-pointer">
-                <div className="text-4xl mb-4">🏠</div>
-                <h3 className="font-semibold mb-2">List Property</h3>
-                <p className="text-sm text-gray-600">Sell or rent your property</p>
-              </GlassCard>
+              <div className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-2xl p-6 text-center 
+                             hover:bg-white/20 hover:border-neon-lime/50 hover:shadow-[0_0_30px_rgba(166,255,0,0.3)]
+                             transition-all duration-300 cursor-pointer group">
+                <Building2 className="w-12 h-12 mx-auto mb-4 text-neon-lime group-hover:scale-110 transition-transform" />
+                <h3 className="font-orbitron font-semibold mb-2 text-white">List Property</h3>
+                <p className="text-sm text-gray-300 font-rajdhani">Sell or rent your property</p>
+              </div>
             </Link>
             
             <Link to="/listing/all">
-              <GlassCard className="p-6 text-center hover:shadow-lg transition-shadow cursor-pointer">
-                <div className="text-4xl mb-4">📋</div>
-                <h3 className="font-semibold mb-2">Browse All</h3>
-                <p className="text-sm text-gray-600">Explore all listings</p>
-              </GlassCard>
+              <div className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-2xl p-6 text-center 
+                             hover:bg-white/20 hover:border-purple-400/50 hover:shadow-[0_0_30px_rgba(138,35,135,0.3)]
+                             transition-all duration-300 cursor-pointer group">
+                <FileText className="w-12 h-12 mx-auto mb-4 text-purple-400 group-hover:scale-110 transition-transform" />
+                <h3 className="font-orbitron font-semibold mb-2 text-white">Browse All</h3>
+                <p className="text-sm text-gray-300 font-rajdhani">Explore all listings</p>
+              </div>
             </Link>
             
             <Link to="/auth">
-              <GlassCard className="p-6 text-center hover:shadow-lg transition-shadow cursor-pointer">
-                <div className="text-4xl mb-4">👤</div>
-                <h3 className="font-semibold mb-2">Join Us</h3>
-                <p className="text-sm text-gray-600">Create your account</p>
-              </GlassCard>
+              <div className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-2xl p-6 text-center 
+                             hover:bg-white/20 hover:border-orange-400/50 hover:shadow-[0_0_30px_rgba(242,113,33,0.3)]
+                             transition-all duration-300 cursor-pointer group">
+                <Users className="w-12 h-12 mx-auto mb-4 text-orange-400 group-hover:scale-110 transition-transform" />
+                <h3 className="font-orbitron font-semibold mb-2 text-white">Join Us</h3>
+                <p className="text-sm text-gray-300 font-rajdhani">Create your account</p>
+              </div>
             </Link>
           </div>
         </div>
@@ -64,24 +76,30 @@ const Index: React.FC = () => {
       </div>
       
       {/* CTA Section */}
-      <section id="ai-tools" className="py-16 px-4 warm-gradient">
+      <section id="ai-tools" className="py-16 px-4 bg-gradient-to-r from-ai-purple/20 to-ai-coral/20">
         <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-3xl font-bold text-white mb-4">
-            Ready to Find Your Perfect Property?
+          <h2 className="text-3xl font-orbitron font-bold text-white mb-4">
+            Ready to Experience the Future of Real Estate?
           </h2>
-          <p className="text-white/90 mb-8 text-lg">
-            Join thousands of users who trust FreePropList for their real estate needs
+          <p className="text-gray-200 mb-8 text-lg font-rajdhani">
+            Join thousands of users who trust FreePropList's AI-powered platform for their property needs
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link to="/search">
-              <GlowButton size="lg" className="w-full sm:w-auto">
-                Start Searching
-              </GlowButton>
+              <button className="bg-gradient-to-r from-neon-blue to-neon-purple text-white font-orbitron font-bold 
+                               py-4 px-8 rounded-xl shadow-xl 
+                               hover:shadow-[0_0_30px_rgba(0,212,255,0.6)] 
+                               transition-all duration-300 ease-in-out transform hover:scale-105">
+                Start AI Search
+              </button>
             </Link>
             <Link to="/listing/create">
-              <GlowButton variant="outline" size="lg" className="w-full sm:w-auto text-white border-white hover:bg-white hover:text-orange-600">
+              <button className="bg-white/10 backdrop-blur-sm text-white font-rajdhani font-bold 
+                               py-4 px-8 rounded-xl border border-white/30
+                               hover:bg-white/20 hover:border-neon-lime/50 
+                               transition-all duration-300 ease-in-out">
                 List Your Property
-              </GlowButton>
+              </button>
             </Link>
           </div>
         </div>

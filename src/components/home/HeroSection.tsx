@@ -1,153 +1,171 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ButtonPrimary } from '../common/ButtonPrimary';
-import { ButtonGradient } from '../common/ButtonGradient';
 import { AiFeatureCard } from './AiFeatureCard';
-import { SparklesIcon, MagnifyingGlassIcon, DocumentTextIcon, GlobeIcon, BoltIcon } from '../icons';
+import { BuildingIcon, SearchIcon, DocumentIcon, ShieldIcon, ZapIcon, BrainIcon, ScanIcon, UsersIcon } from '../icons';
 
 export const HeroSection: React.FC = () => {
   return (
-    <section className="warm-gradient hero-smoke hero-gradient min-h-screen flex items-center relative overflow-hidden">
-      {/* Floating Elements */}
-      <div className="absolute top-20 left-10 w-20 h-20 bg-orange-200 rounded-full opacity-30 animate-float-slow"></div>
-      <div className="absolute top-40 right-20 w-16 h-16 bg-red-200 rounded-full opacity-25 animate-float-slow" style={{ animationDelay: '2s' }}></div>
-      <div className="absolute bottom-20 left-1/4 w-12 h-12 bg-orange-300 rounded-full opacity-20 animate-float-slow" style={{ animationDelay: '4s' }}></div>
+    <section className="min-h-screen bg-gradient-to-br from-hero-from via-hero-via to-hero-to relative overflow-hidden">
+      {/* Animated background elements */}
+      <div className="absolute top-20 left-10 w-32 h-32 bg-neon-cyan/10 rounded-full blur-xl animate-pulse"></div>
+      <div className="absolute bottom-20 right-20 w-40 h-40 bg-neon-lime/10 rounded-full blur-xl animate-pulse" style={{ animationDelay: '1s' }}></div>
+      <div className="absolute top-1/2 left-1/3 w-24 h-24 bg-ai-purple/10 rounded-full blur-xl animate-pulse" style={{ animationDelay: '2s' }}></div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
+        <div className="grid lg:grid-cols-2 gap-12 items-center min-h-screen">
+          
           {/* Left Content */}
           <div className="space-y-8">
-            <div className="space-y-4">
-              <h1 className="text-4xl md:text-6xl font-orbitron font-bold leading-tight text-white drop-shadow-md">
-                Find Your
-                <span className="block text-fire-primary drop-shadow-glow">Dream Property</span>
-                with AI Power
+            <div className="space-y-6">
+              <h1 className="text-5xl md:text-7xl font-orbitron font-bold leading-tight tracking-wide text-white drop-shadow-xl">
+                India's Most
+                <span className="block bg-gradient-to-r from-neon-cyan to-neon-lime bg-clip-text text-transparent">
+                  Intelligent
+                </span>
+                Property Platform
               </h1>
-              <p className="text-xl md:text-2xl font-rajdhani text-gray-100 leading-relaxed animate-fadein">
-                India's first AI-enhanced real estate platform. Search smart, list faster, 
-                and discover properties that match your exact needs with our advanced AI tools.
+              
+              <p className="text-xl md:text-2xl font-rajdhani text-gray-200 leading-relaxed animate-fade-in">
+                Powered by advanced AI algorithms, we revolutionize real estate discovery 
+                with smart matching, fraud detection, and predictive analytics for Indian markets.
               </p>
             </div>
 
-            {/* AI Feature Cards */}
-            <div id="ai-section" className="py-8">
-              <h3 className="font-orbitron text-2xl font-bold text-center mb-6 text-fire-primary drop-shadow-sm">
-                AI-Powered Features
-              </h3>
-              <div className="flex flex-wrap justify-center gap-6">
-                <AiFeatureCard
-                  icon={<SparklesIcon />}
-                  title="Smart Match"
-                  description="AI finds perfect properties matching your lifestyle"
-                  href="#search"
-                />
-                <AiFeatureCard
-                  icon={<MagnifyingGlassIcon />}
-                  title="Visual Search"
-                  description="Search using images and natural language"
-                  href="#search"
-                />
-                <AiFeatureCard
-                  icon={<DocumentTextIcon />}
-                  title="Auto Listings"
-                  description="Generate property descriptions instantly"
-                  href="#listing"
-                />
-                <AiFeatureCard
-                  icon={<BoltIcon />}
-                  title="Price Prediction"
-                  description="AI-powered market value analysis"
-                  href="#compare"
-                />
-                <AiFeatureCard
-                  icon={<GlobeIcon />}
-                  title="Virtual Tours"
-                  description="Immersive 3D property experiences"
-                  href="#ai-tools"
-                />
+            {/* Verified stats with premium styling */}
+            <div className="grid grid-cols-3 gap-6 py-6">
+              <div className="text-center">
+                <div className="text-3xl font-orbitron font-bold bg-gradient-to-r from-neon-cyan to-neon-lime bg-clip-text text-transparent">
+                  1M+
+                </div>
+                <div className="text-sm font-rajdhani text-gray-300">Verified Properties</div>
+              </div>
+              <div className="text-center">
+                <div className="text-3xl font-orbitron font-bold bg-gradient-to-r from-neon-cyan to-neon-lime bg-clip-text text-transparent">
+                  50K+
+                </div>
+                <div className="text-sm font-rajdhani text-gray-300">Active Users</div>
+              </div>
+              <div className="text-center">
+                <div className="text-3xl font-orbitron font-bold bg-gradient-to-r from-neon-cyan to-neon-lime bg-clip-text text-transparent">
+                  99.9%
+                </div>
+                <div className="text-sm font-rajdhani text-gray-300">AI Accuracy</div>
               </div>
             </div>
 
-            {/* Features */}
-            <div className="grid grid-cols-2 gap-4">
-              <div className="flex items-center space-x-3">
-                <div className="w-8 h-8 bg-gradient-to-r from-orange-500 to-red-600 rounded-full flex items-center justify-center shadow-lg">
-                  <span className="text-white text-sm font-bold">✓</span>
-                </div>
-                <span className="text-gray-100 font-rajdhani font-medium">AI Smart Search</span>
-              </div>
-              <div className="flex items-center space-x-3">
-                <div className="w-8 h-8 bg-gradient-to-r from-orange-500 to-red-600 rounded-full flex items-center justify-center shadow-lg">
-                  <span className="text-white text-sm font-bold">✓</span>
-                </div>
-                <span className="text-gray-100 font-rajdhani font-medium">Verified Listings</span>
-              </div>
-              <div className="flex items-center space-x-3">
-                <div className="w-8 h-8 bg-gradient-to-r from-orange-500 to-red-600 rounded-full flex items-center justify-center shadow-lg">
-                  <span className="text-white text-sm font-bold">✓</span>
-                </div>
-                <span className="text-gray-100 font-rajdhani font-medium">Expert Agents</span>
-              </div>
-              <div className="flex items-center space-x-3">
-                <div className="w-8 h-8 bg-gradient-to-r from-orange-500 to-red-600 rounded-full flex items-center justify-center shadow-lg">
-                  <span className="text-white text-sm font-bold">✓</span>
-                </div>
-                <span className="text-gray-100 font-rajdhani font-medium">RERA Certified</span>
-              </div>
-            </div>
-
-            {/* CTA Buttons with improved styling */}
-            <div id="login" className="flex flex-col sm:flex-row gap-4">
+            {/* CTA Buttons */}
+            <div className="flex flex-col sm:flex-row gap-4">
               <Link to="/search">
-                <button className="bg-gradient-to-r from-orange-500 to-red-600 text-white font-bold py-3 px-8 rounded-full shadow-xl hover:shadow-[0_0_12px_#ff6a00] transition duration-300 ease-in-out transform hover:scale-105">
-                  Start Smart Search
+                <button className="bg-gradient-to-r from-neon-blue to-neon-purple text-white font-orbitron font-bold 
+                                 py-4 px-8 rounded-xl shadow-xl 
+                                 hover:shadow-[0_0_30px_rgba(0,212,255,0.6)] 
+                                 transition-all duration-300 ease-in-out 
+                                 transform hover:scale-105 
+                                 border border-neon-cyan/30 animate-pulse-border">
+                  Explore Listings with AI
                 </button>
               </Link>
+              
               <Link to="/list-property">
-                <ButtonGradient variant="glass" page="HeroSection" className="w-full sm:w-auto font-bold py-3 px-8 rounded-full">
+                <button className="bg-white/10 backdrop-blur-sm text-white font-rajdhani font-bold 
+                                 py-4 px-8 rounded-xl border border-white/30
+                                 hover:bg-white/20 hover:border-neon-lime/50
+                                 transition-all duration-300 ease-in-out">
                   List Your Property
-                </ButtonGradient>
+                </button>
               </Link>
             </div>
 
-            {/* Stats with improved styling */}
-            <div className="flex gap-8 pt-8">
-              <div>
-                <div className="text-3xl font-bold text-fire-primary drop-shadow-sm">50K+</div>
-                <div className="text-sm text-gray-200 font-rajdhani">Properties Listed</div>
+            {/* Trust indicators */}
+            <div className="flex items-center space-x-6 pt-4">
+              <div className="flex items-center space-x-2">
+                <ShieldIcon className="w-5 h-5 text-green-400" />
+                <span className="bg-green-400 text-white px-2 py-1 text-xs rounded-full font-rajdhani">
+                  RERA Verified
+                </span>
               </div>
-              <div>
-                <div className="text-3xl font-bold text-fire-primary drop-shadow-sm">25K+</div>
-                <div className="text-sm text-gray-200 font-rajdhani">Happy Customers</div>
-              </div>
-              <div>
-                <div className="text-3xl font-bold text-fire-primary drop-shadow-sm">500+</div>
-                <div className="text-sm text-gray-200 font-rajdhani">Expert Agents</div>
+              <div className="flex items-center space-x-2">
+                <ZapIcon className="w-5 h-5 text-neon-cyan" />
+                <span className="text-gray-300 text-sm font-rajdhani">AI-Powered Analytics</span>
               </div>
             </div>
           </div>
 
-          {/* Right Content - Hero Image/Visual */}
+          {/* Right Content - AI Dashboard Mock */}
           <div className="relative">
-            <div className="glass-card p-8 glow-hover shadow-xl">
-              <div className="aspect-square bg-gradient-to-br from-orange-100/30 to-red-100/30 rounded-2xl flex items-center justify-center backdrop-blur-sm">
-                <div className="text-center space-y-4">
-                  <div className="w-32 h-32 bg-gradient-to-r from-orange-500 to-red-600 rounded-full mx-auto flex items-center justify-center shadow-2xl">
-                    <span className="text-4xl">🏠</span>
-                  </div>
-                  <h3 className="text-2xl font-orbitron font-bold text-white drop-shadow-sm">AI-Powered</h3>
-                  <p className="text-gray-100 font-rajdhani">Smart property matching with 95% accuracy</p>
-                  
-                  {/* AI Badge */}
-                  <div className="absolute bottom-4 right-4">
-                    <span className="text-xs text-orange-400 bg-white/10 px-3 py-1 rounded-xl backdrop-blur-sm border border-orange-300/20 font-rajdhani">
-                      AI-powered by GPT-4o Mini
-                    </span>
-                  </div>
+            <div className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-3xl p-8 
+                           shadow-[0_0_50px_rgba(138,35,135,0.3)]">
+              
+              {/* AI Dashboard Header */}
+              <div className="flex items-center justify-between mb-6">
+                <h3 className="font-orbitron text-xl font-bold text-white">AI Analytics Dashboard</h3>
+                <div className="w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
+              </div>
+
+              {/* Mock AI metrics */}
+              <div className="space-y-4 mb-8">
+                <div className="flex justify-between items-center p-3 bg-white/5 rounded-xl">
+                  <span className="font-rajdhani text-gray-300">Market Analysis</span>
+                  <span className="text-neon-cyan font-orbitron">98.5%</span>
+                </div>
+                <div className="flex justify-between items-center p-3 bg-white/5 rounded-xl">
+                  <span className="font-rajdhani text-gray-300">Price Prediction</span>
+                  <span className="text-neon-lime font-orbitron">₹47.2L</span>
+                </div>
+                <div className="flex justify-between items-center p-3 bg-white/5 rounded-xl">
+                  <span className="font-rajdhani text-gray-300">Investment Score</span>
+                  <span className="text-orange-400 font-orbitron">9.2/10</span>
                 </div>
               </div>
+
+              {/* AI scan animation */}
+              <div className="relative h-2 bg-gray-700 rounded-full overflow-hidden">
+                <div className="absolute h-full w-1/3 bg-gradient-to-r from-neon-cyan to-neon-lime rounded-full animate-ai-scan"></div>
+              </div>
+              <p className="text-center text-gray-400 text-sm font-rajdhani mt-2">AI Processing Real-time Data</p>
             </div>
+          </div>
+        </div>
+
+        {/* AI Features Section */}
+        <div id="ai-features" className="py-20">
+          <h2 className="text-3xl font-orbitron font-bold text-center mb-4 text-white">
+            Intelligent Real Estate Solutions
+          </h2>
+          <p className="text-center text-gray-300 font-rajdhani text-lg mb-12 max-w-2xl mx-auto">
+            Experience the future of property discovery with our AI-powered platform designed for Indian real estate markets
+          </p>
+          
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <AiFeatureCard
+              icon={<SearchIcon />}
+              title="Smart Search"
+              description="AI-powered property matching based on your preferences and behavior patterns"
+              category="intelligence"
+              href="#search"
+            />
+            <AiFeatureCard
+              icon={<ScanIcon />}
+              title="Document Verification"
+              description="Automated verification of property documents and legal compliance"
+              category="verification"
+              href="#listing"
+            />
+            <AiFeatureCard
+              icon={<BrainIcon />}
+              title="Price Prediction"
+              description="Machine learning algorithms predict accurate property valuations"
+              category="analysis"
+              href="#compare"
+            />
+            <AiFeatureCard
+              icon={<UsersIcon />}
+              title="Lead Intelligence"
+              description="Automated lead scoring and buyer-seller matching system"
+              category="automation"
+              href="#ai-tools"
+            />
           </div>
         </div>
       </div>
