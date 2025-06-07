@@ -41,21 +41,10 @@ export default function SmartMatchScore({ score, size = 'md' }: SmartMatchScoreP
       
       <div className="w-full bg-gray-200 rounded-full overflow-hidden">
         <div 
-          className={`${getScoreColor(score)} ${sizeClasses[size]} rounded-full transition-all duration-1000 ease-out glow-animation`}
+          className={`${getScoreColor(score)} ${sizeClasses[size]} rounded-full transition-all duration-1000 ease-out animate-pulse`}
           style={{ width: `${score}%` }}
         />
       </div>
-      
-      <style jsx>{`
-        @keyframes glow {
-          0%, 100% { box-shadow: 0 0 5px rgba(59, 130, 246, 0.5); }
-          50% { box-shadow: 0 0 20px rgba(59, 130, 246, 0.8), 0 0 30px rgba(59, 130, 246, 0.6); }
-        }
-        
-        .glow-animation {
-          animation: glow 2s ease-in-out infinite;
-        }
-      `}</style>
     </div>
   );
 }
