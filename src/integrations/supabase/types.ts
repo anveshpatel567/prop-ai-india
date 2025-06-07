@@ -208,6 +208,54 @@ export type Database = {
         }
         Relationships: []
       }
+      ai_agent_behavior_logs: {
+        Row: {
+          agent_id: string
+          behavior_snapshot: string
+          context: string
+          id: string
+          logged_at: string | null
+        }
+        Insert: {
+          agent_id: string
+          behavior_snapshot: string
+          context: string
+          id?: string
+          logged_at?: string | null
+        }
+        Update: {
+          agent_id?: string
+          behavior_snapshot?: string
+          context?: string
+          id?: string
+          logged_at?: string | null
+        }
+        Relationships: []
+      }
+      ai_anomaly_detection_logs: {
+        Row: {
+          anomaly_type: string
+          detected_at: string | null
+          id: string
+          metadata: string | null
+          severity: string | null
+        }
+        Insert: {
+          anomaly_type: string
+          detected_at?: string | null
+          id?: string
+          metadata?: string | null
+          severity?: string | null
+        }
+        Update: {
+          anomaly_type?: string
+          detected_at?: string | null
+          id?: string
+          metadata?: string | null
+          severity?: string | null
+        }
+        Relationships: []
+      }
       ai_autoresponse_feedback: {
         Row: {
           created_at: string | null
@@ -242,6 +290,36 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      ai_behavior_change_requests: {
+        Row: {
+          agent_id: string
+          id: string
+          proposed_change: string
+          reason: string | null
+          requested_at: string | null
+          requested_by: string | null
+          status: string | null
+        }
+        Insert: {
+          agent_id: string
+          id?: string
+          proposed_change: string
+          reason?: string | null
+          requested_at?: string | null
+          requested_by?: string | null
+          status?: string | null
+        }
+        Update: {
+          agent_id?: string
+          id?: string
+          proposed_change?: string
+          reason?: string | null
+          requested_at?: string | null
+          requested_by?: string | null
+          status?: string | null
+        }
+        Relationships: []
       }
       ai_behavior_exceptions: {
         Row: {
@@ -923,6 +1001,36 @@ export type Database = {
           review_notes?: string | null
           reviewed?: boolean | null
           user_id?: string | null
+        }
+        Relationships: []
+      }
+      ai_hallucination_risk_logs: {
+        Row: {
+          detected_at: string | null
+          feature: string
+          flagged: boolean | null
+          id: string
+          input: string
+          output: string
+          risk_score: number
+        }
+        Insert: {
+          detected_at?: string | null
+          feature: string
+          flagged?: boolean | null
+          id?: string
+          input: string
+          output: string
+          risk_score: number
+        }
+        Update: {
+          detected_at?: string | null
+          feature?: string
+          flagged?: boolean | null
+          id?: string
+          input?: string
+          output?: string
+          risk_score?: number
         }
         Relationships: []
       }

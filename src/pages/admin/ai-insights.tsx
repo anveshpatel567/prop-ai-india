@@ -18,6 +18,10 @@ import { AiRuleManagerPanel } from '@/components/admin/AiRuleManagerPanel';
 import { AiRuleViolationsPanel } from '@/components/admin/AiRuleViolationsPanel';
 import { ModelFreezePanel } from '@/components/admin/ModelFreezePanel';
 import { RetrainTriggerPanel } from '@/components/admin/RetrainTriggerPanel';
+import { HallucinationRiskPanel } from '@/components/admin/HallucinationRiskPanel';
+import { AnomalyLogPanel } from '@/components/admin/AnomalyLogPanel';
+import { AgentBehaviorLogPanel } from '@/components/admin/AgentBehaviorLogPanel';
+import { BehaviorChangeRequestPanel } from '@/components/admin/BehaviorChangeRequestPanel';
 
 export default function AiInsightsPage() {
   return (
@@ -69,6 +73,16 @@ export default function AiInsightsPage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <ModelFreezePanel />
             <RetrainTriggerPanel />
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <HallucinationRiskPanel />
+            <AnomalyLogPanel />
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <AgentBehaviorLogPanel />
+            <BehaviorChangeRequestPanel />
           </div>
 
           <div className="grid grid-cols-1 gap-6">
