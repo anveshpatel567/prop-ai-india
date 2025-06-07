@@ -14,9 +14,17 @@ export interface TitleChainData {
 
 export interface TitleChainEvent {
   id: string;
+  property_id: string;
+  confidence_score: number;
+  chain_json: Record<string, any>;
+  created_at: string;
   event_label: string;
   event_date: string;
   description?: string;
+}
+
+export interface TitleChainInput {
+  property_id: string;
 }
 
 interface UseTitleChain {
@@ -46,15 +54,19 @@ export function useTitleChain(): UseTitleChain {
 
       if (error) throw error;
       
-      // Extract events from chain_json and flatten them
-      const allEvents: TitleChainEvent[] = [];
-      data?.forEach(chain => {
-        if (chain.chain_json?.events) {
-          allEvents.push(...chain.chain_json.events);
-        }
-      });
+      // Transform the data to match TitleChainEvent interface
+      const transformedChains: TitleChainEvent[] = (data || []).map(chain => ({
+        id: chain.id,
+        property_id: chain.property_id,
+        confidence_score: chain.confidence_score,
+        chain_json: chain.chain_json || {},
+        created_at: chain.created_at,
+        event_label: chain.chain_json?.title || 'Property Transfer',
+        event_date: chain.created_at,
+        description: chain.chain_json?.description || 'Title chain event'
+      }));
       
-      setChains(allEvents);
+      setChains(transformedChains);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to fetch title chains');
     } finally {
@@ -73,10 +85,8 @@ export function useTitleChain(): UseTitleChain {
 
       if (error) throw error;
       
-      // Update local state with new events
-      if (data?.events) {
-        setChains(prev => [...data.events, ...prev]);
-      }
+      // Refresh the chains after generation
+      await fetchChains();
       
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Failed to generate title chain';

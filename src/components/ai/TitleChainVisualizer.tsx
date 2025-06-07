@@ -82,15 +82,27 @@ export const TitleChainVisualizer: React.FC = () => {
                   </Badge>
                 </div>
                 
-                {chain.chain_json && (
+                <div className="space-y-2">
+                  <div className="font-medium text-lg">{chain.event_label}</div>
+                  <div className="text-sm text-gray-600">{chain.description}</div>
+                  <div className="text-sm text-blue-600">
+                    Date: {new Date(chain.event_date).toLocaleDateString()}
+                  </div>
+                </div>
+                
+                {chain.chain_json && Object.keys(chain.chain_json).length > 0 && (
                   <div className="bg-gray-50 p-3 rounded text-sm">
-                    <div className="font-medium mb-2">Chain Steps:</div>
-                    {chain.chain_json.steps?.map((step: any, index: number) => (
+                    <div className="font-medium mb-2">Chain Details:</div>
+                    {chain.chain_json.events?.map((step: any, index: number) => (
                       <div key={index} className="flex items-center space-x-2 mb-1">
                         <CheckCircle className="h-3 w-3 text-green-500" />
-                        <span>{step.description}</span>
+                        <span>{step.description || step.event_label || `Step ${index + 1}`}</span>
                       </div>
-                    ))}
+                    )) || (
+                      <div className="text-gray-600">
+                        Additional chain data available
+                      </div>
+                    )}
                   </div>
                 )}
                 
@@ -99,6 +111,12 @@ export const TitleChainVisualizer: React.FC = () => {
                 </div>
               </div>
             ))}
+            
+            {chains.length === 0 && !loading && (
+              <div className="text-center py-8 text-gray-500">
+                No title chains generated yet. Enter a property ID above to get started.
+              </div>
+            )}
           </div>
         </CardContent>
       </Card>

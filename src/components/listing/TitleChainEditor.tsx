@@ -13,20 +13,20 @@ interface TitleChainEditorProps {
 }
 
 export default function TitleChainEditor({ listingId, onGenerated }: TitleChainEditorProps) {
-  const { generateChain, loading } = useTitleChain();
+  const { generateTitleChain, loading } = useTitleChain();
   const [legalSummary, setLegalSummary] = useState('');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!legalSummary.trim()) return;
 
-    const input: TitleChainInput = {
-      listing_id: listingId,
-      legal_summary: legalSummary
-    };
-
-    await generateChain(input);
-    if (onGenerated) onGenerated();
+    try {
+      await generateTitleChain(listingId);
+      if (onGenerated) onGenerated();
+      setLegalSummary('');
+    } catch (error) {
+      console.error('Error generating title chain:', error);
+    }
   };
 
   return (
