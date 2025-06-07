@@ -1946,6 +1946,60 @@ export type Database = {
           },
         ]
       }
+      ai_sentiment_feedback_logs: {
+        Row: {
+          feature: string
+          feedback: string | null
+          id: string
+          sentiment: string
+          submitted_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          feature: string
+          feedback?: string | null
+          id?: string
+          sentiment: string
+          submitted_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          feature?: string
+          feedback?: string | null
+          id?: string
+          sentiment?: string
+          submitted_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      ai_tool_attribution_logs: {
+        Row: {
+          context_info: string | null
+          feature_area: string
+          id: string
+          invoked_at: string | null
+          invoked_by: string | null
+          tool_name: string
+        }
+        Insert: {
+          context_info?: string | null
+          feature_area: string
+          id?: string
+          invoked_at?: string | null
+          invoked_by?: string | null
+          tool_name: string
+        }
+        Update: {
+          context_info?: string | null
+          feature_area?: string
+          id?: string
+          invoked_at?: string | null
+          invoked_by?: string | null
+          tool_name?: string
+        }
+        Relationships: []
+      }
       ai_tool_flags: {
         Row: {
           created_at: string | null
@@ -2103,6 +2157,30 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      ai_usage_frequency_logs: {
+        Row: {
+          feature: string
+          id: string
+          logged_date: string | null
+          usage_count: number | null
+          user_id: string | null
+        }
+        Insert: {
+          feature: string
+          id?: string
+          logged_date?: string | null
+          usage_count?: number | null
+          user_id?: string | null
+        }
+        Update: {
+          feature?: string
+          id?: string
+          logged_date?: string | null
+          usage_count?: number | null
+          user_id?: string | null
+        }
+        Relationships: []
       }
       ai_user_badges: {
         Row: {

@@ -30,6 +30,9 @@ import { ModeratorDecisionTrailPanel } from '@/components/admin/ModeratorDecisio
 import { AiPromptTaggingPanel } from '@/components/admin/AiPromptTaggingPanel';
 import { AiModelDowntimePanel } from '@/components/admin/AiModelDowntimePanel';
 import { AiCooldownMonitorPanel } from '@/components/admin/AiCooldownMonitorPanel';
+import { AiToolAttributionPanel } from '@/components/admin/AiToolAttributionPanel';
+import { AiSentimentReviewPanel } from '@/components/admin/AiSentimentReviewPanel';
+import { AiUsageFrequencyPanel } from '@/components/admin/AiUsageFrequencyPanel';
 
 export default function AdminPage() {
   return (
@@ -163,6 +166,15 @@ export default function AdminPage() {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
           <AiCooldownMonitorPanel />
+          <AiToolAttributionPanel />
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+          <AiSentimentReviewPanel />
+          <AiUsageFrequencyPanel />
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
           <div className="bg-white p-6 rounded-lg shadow-sm border">
             <div className="flex items-center gap-2 mb-4">
               <Lightbulb className="h-5 w-5 text-cyan-500" />
