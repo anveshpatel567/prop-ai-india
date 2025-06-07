@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Shield, Users, CreditCard, BarChart, Zap, Lightbulb } from 'lucide-react';
 import { Navbar } from '@/components/layout/Navbar';
@@ -7,8 +8,8 @@ import AiPerformanceEvaluationPanel from '@/components/ai-tools/AiPerformanceEva
 import AiFeatureAdoptionPanel from '@/components/admin/AiFeatureAdoptionPanel';
 import AiErrorLogsPanel from '@/components/admin/AiErrorLogsPanel';
 import AiAutoresponseFeedbackPanel from '@/components/admin/AiAutoresponseFeedbackPanel';
-import AiPromptTuningLogPanel from '@/components/admin/AiPromptTuningLogPanel';
-import AiVisibilityTrackingPanel from '@/components/admin/AiVisibilityTrackingPanel';
+import { AiPromptTuningLogPanel } from '@/components/admin/AiPromptTuningLogPanel';
+import { AiVisibilityTrackingPanel } from '@/components/admin/AiVisibilityTrackingPanel';
 import AiEdgeLogsPanel from '@/components/admin/AiEdgeLogsPanel';
 import AiLearningFeedbackPanel from '@/components/admin/AiLearningFeedbackPanel';
 import AiFailureEventsPanel from '@/components/admin/AiFailureEventsPanel';
