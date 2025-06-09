@@ -6,20 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { supabase } from '@/integrations/supabase/client';
 import { AlertTriangle, CheckCircle, XCircle, Eye } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
-
-interface FlaggedMessage {
-  id: string;
-  message: string;
-  ai_flagged: boolean;
-  created_at: string;
-  user?: {
-    full_name: string;
-    email: string;
-  };
-  community?: {
-    name: string;
-  };
-}
+import type { FlaggedMessage } from '@/types/community';
 
 export const CommunityModerationPanel: React.FC = () => {
   const [flaggedMessages, setFlaggedMessages] = useState<FlaggedMessage[]>([]);
@@ -48,7 +35,18 @@ export const CommunityModerationPanel: React.FC = () => {
       const { data, error } = await query;
       
       if (error) throw error;
-      setFlaggedMessages(data || []);
+      
+      // Transform the data to match FlaggedMessage type
+      const transformedData: FlaggedMessage[] = (data || []).map((msg: any) => ({
+        id: msg.id,
+        message: msg.message,
+        ai_flagged: msg.ai_flagged,
+        created_at: msg.created_at,
+        user: Array.isArray(msg.user) ? msg.user[0] : msg.user,
+        community: Array.isArray(msg.community) ? msg.community[0] : msg.community
+      }));
+      
+      setFlaggedMessages(transformedData);
     } catch (error) {
       console.error('Error fetching flagged messages:', error);
     } finally {

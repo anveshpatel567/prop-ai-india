@@ -1,28 +1,7 @@
 
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
-
-interface Community {
-  id: string;
-  name: string;
-  role_access: string;
-  city: string;
-  state: string;
-  monthly_fee: number;
-}
-
-interface CommunityMessage {
-  id: string;
-  community_id: string;
-  user_id: string;
-  message: string;
-  ai_flagged: boolean;
-  created_at: string;
-  user?: {
-    full_name: string;
-    role: string;
-  };
-}
+import type { Community, CommunityMessage } from '@/types/community';
 
 export const useCommunityChat = () => {
   const [communities, setCommunities] = useState<Community[]>([]);

@@ -7,6 +7,7 @@ import ListProperty from './pages/list-property';
 import CreateListing from './pages/listing/create';
 import AiTools from './pages/ai/index';
 import SeoPreview from './pages/admin/seo-preview';
+import AiEngagement from './pages/admin/ai-engagement';
 import CommunityIndex from './pages/community/index';
 
 export const AppRoutes: React.FC = () => {
@@ -18,6 +19,7 @@ export const AppRoutes: React.FC = () => {
       <Route path="/listing/create" element={<CreateListing />} />
       <Route path="/ai" element={<AiTools />} />
       <Route path="/admin/seo-preview" element={<SeoPreview />} />
+      <Route path="/admin/ai-engagement" element={<AiEngagement />} />
       <Route path="/community" element={<CommunityIndex />} />
     </Routes>
   );

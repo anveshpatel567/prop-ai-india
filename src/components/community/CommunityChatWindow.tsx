@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
 import { useCommunityChat } from '@/hooks/useCommunityChat';
+import { supabase } from '@/integrations/supabase/client';
 import { Send, AlertTriangle, Users } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
 

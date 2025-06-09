@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -11,7 +12,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
 import { Home, MapPin, DollarSign, Upload, CheckCircle } from 'lucide-react';
-import { StickyReviewSubmitBar } from '@/components/ui/sticky-review-submit-bar';
+import { StickyReviewSubmitBar } from '@/components/forms/StickyReviewSubmitBar';
 
 const listingSchema = z.object({
   title: z.string().min(10, 'Title must be at least 10 characters'),
