@@ -68,11 +68,17 @@ export const HeroSection: React.FC = () => {
               {/* Trust indicators */}
               <div className="flex items-center space-x-6 pt-4">
                 <div className="flex items-center space-x-2">
+                  <div className="w-6 h-6 bg-gradient-to-r from-[#ff6a00] to-[#ff0000] rounded-full flex items-center justify-center">
+                    <span className="text-white text-xs font-bold">R</span>
+                  </div>
                   <span className="bg-gradient-to-r from-[#ff6a00] to-[#ff0000] text-white px-3 py-1 text-sm rounded-full font-rajdhani font-medium">
                     RERA Verified
                   </span>
                 </div>
                 <div className="flex items-center space-x-2">
+                  <div className="w-6 h-6 bg-gradient-to-r from-[#ff6a00] to-[#ff0000] rounded-full flex items-center justify-center">
+                    <span className="text-white text-xs font-bold">AI</span>
+                  </div>
                   <span className="text-[#8b4513] text-sm font-rajdhani">AI-Powered Analytics</span>
                 </div>
               </div>
@@ -85,28 +91,30 @@ export const HeroSection: React.FC = () => {
                 {/* AI Dashboard Header */}
                 <div className="flex items-center justify-between mb-6">
                   <h3 className="font-orbitron text-xl font-bold text-[#2d0000]">AI Analytics Dashboard</h3>
-                  <div className="w-3 h-3 bg-gradient-to-r from-[#ff6a00] to-[#ff0000] rounded-full animate-pulse"></div>
+                  <div className="w-4 h-4 bg-gradient-to-br from-[#ff6a00] to-[#ff0000] rounded-full flex items-center justify-center">
+                    <div className="w-2 h-2 bg-white rounded-full animate-pulse"></div>
+                  </div>
                 </div>
 
                 {/* Mock AI metrics */}
                 <div className="space-y-4 mb-8">
-                  <div className="flex justify-between items-center p-3 bg-white/10 backdrop-blur-xl border border-white/20 rounded-xl">
+                  <div className="flex justify-between items-center p-3 bg-white/10 backdrop-blur-xl border border-[#ff4500]/30 rounded-xl">
                     <span className="font-rajdhani text-[#8b4513]">Market Analysis</span>
                     <span className="text-[#ff4500] font-orbitron font-bold">98.5%</span>
                   </div>
-                  <div className="flex justify-between items-center p-3 bg-white/10 backdrop-blur-xl border border-white/20 rounded-xl">
+                  <div className="flex justify-between items-center p-3 bg-white/10 backdrop-blur-xl border border-[#ff4500]/30 rounded-xl">
                     <span className="font-rajdhani text-[#8b4513]">Price Prediction</span>
                     <span className="text-[#ff4500] font-orbitron font-bold">₹47.2L</span>
                   </div>
-                  <div className="flex justify-between items-center p-3 bg-white/10 backdrop-blur-xl border border-white/20 rounded-xl">
+                  <div className="flex justify-between items-center p-3 bg-white/10 backdrop-blur-xl border border-[#ff4500]/30 rounded-xl">
                     <span className="font-rajdhani text-[#8b4513]">Investment Score</span>
                     <span className="text-[#ff4500] font-orbitron font-bold">9.2/10</span>
                   </div>
                 </div>
 
                 {/* AI scan animation */}
-                <div className="relative h-2 bg-[#fff7f0] rounded-full overflow-hidden">
-                  <div className="absolute h-full w-1/3 bg-gradient-to-r from-[#ff6a00] to-[#ff0000] rounded-full animate-pulse"></div>
+                <div className="relative h-3 bg-[#fff7f0]/50 rounded-full overflow-hidden">
+                  <div className="absolute h-full w-1/2 bg-gradient-to-r from-[#ff6a00] via-[#ff3c00] to-[#ff0000] rounded-full animate-pulse"></div>
                 </div>
                 <p className="text-center text-[#8b4513] text-sm font-rajdhani mt-2">AI Processing Real-time Data</p>
               </div>
