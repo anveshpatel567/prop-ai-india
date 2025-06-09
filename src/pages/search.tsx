@@ -11,6 +11,7 @@ import { useAiSearchHistory } from '@/hooks/useAiSearchHistory';
 import { useNavigate } from 'react-router-dom';
 import { getSafeSelectValue, isValidSelectOption } from '@/utils/selectUtils';
 import { GoBackHomeButton } from '@/components/ui/GoBackHomeButton';
+import { MobileCardSpacing } from '@/components/mobile/MobileCardSpacingFix';
 
 const Search: React.FC = () => {
   const { fetchListings } = useListings();
@@ -104,27 +105,29 @@ const Search: React.FC = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-orange-50 to-red-50">
       <Navbar />
-      <section className="py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center mb-8">
-            <div className="text-center flex-1">
-              <h1 className="text-3xl font-bold text-gray-900 mb-2">Property Search</h1>
-              <p className="text-gray-600">Find your perfect property with manual filters or AI search</p>
+      <section className="py-8 sm:py-16">
+        <div className="max-w-7xl mx-auto px-2 sm:px-4 lg:px-8">
+          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6 sm:mb-8 space-y-4 sm:space-y-0">
+            <div className="text-center sm:text-left flex-1">
+              <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">Property Search</h1>
+              <p className="text-sm sm:text-base text-gray-600">Find your perfect property with manual filters or AI search</p>
             </div>
-            <GoBackHomeButton />
+            <div className="flex justify-center sm:justify-end">
+              <GoBackHomeButton />
+            </div>
           </div>
 
-          <div className="grid lg:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-8">
             <GlassCard>
-              <div className="p-6">
-                <h2 className="text-xl font-semibold mb-4 text-gray-900">Manual Search (Free)</h2>
-                <div className="space-y-4">
-                  <div className="grid grid-cols-2 gap-4">
+              <div className="p-4 sm:p-6">
+                <h2 className="text-lg sm:text-xl font-semibold mb-4 text-gray-900">Manual Search (Free)</h2>
+                <div className="space-y-3 sm:space-y-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                     <Select
                       value={getSafeSelectValue(manualFilters.location)}
                       onValueChange={(value) => handleFilterChange('location', value)}
                     >
-                      <SelectTrigger>
+                      <SelectTrigger className="h-11 sm:h-12">
                         <SelectValue placeholder="Select City" />
                       </SelectTrigger>
                       <SelectContent>
@@ -140,7 +143,7 @@ const Search: React.FC = () => {
                       value={getSafeSelectValue(manualFilters.property_type)}
                       onValueChange={(value) => handleFilterChange('property_type', value)}
                     >
-                      <SelectTrigger>
+                      <SelectTrigger className="h-11 sm:h-12">
                         <SelectValue placeholder="Property Type" />
                       </SelectTrigger>
                       <SelectContent>
@@ -153,18 +156,20 @@ const Search: React.FC = () => {
                     </Select>
                   </div>
                   
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                     <Input
                       type="number"
                       placeholder="Min Price"
                       value={manualFilters.min_price}
                       onChange={(e) => handleFilterChange('min_price', e.target.value)}
+                      className="h-11 sm:h-12"
                     />
                     <Input
                       type="number"
                       placeholder="Max Price"
                       value={manualFilters.max_price}
                       onChange={(e) => handleFilterChange('max_price', e.target.value)}
+                      className="h-11 sm:h-12"
                     />
                   </div>
                   
@@ -172,7 +177,7 @@ const Search: React.FC = () => {
                     value={getSafeSelectValue(manualFilters.listing_type)}
                     onValueChange={(value) => handleFilterChange('listing_type', value)}
                   >
-                    <SelectTrigger>
+                    <SelectTrigger className="h-11 sm:h-12">
                       <SelectValue placeholder="Listing Type" />
                     </SelectTrigger>
                     <SelectContent>
@@ -186,7 +191,7 @@ const Search: React.FC = () => {
                   
                   <button
                     onClick={handleManualSearch}
-                    className="w-full bg-gradient-to-r from-orange-500 to-red-500 text-white font-semibold py-3 px-6 rounded-xl shadow-lg hover:shadow-lg hover:shadow-orange-500/30 transition-all duration-300 ease-in-out transform hover:scale-105"
+                    className="w-full h-12 sm:h-14 bg-gradient-to-r from-orange-500 to-red-500 text-white font-semibold rounded-xl shadow-lg hover:shadow-lg hover:shadow-orange-500/30 transition-all duration-300 ease-in-out transform hover:scale-105 text-sm sm:text-base"
                   >
                     Search Properties
                   </button>
@@ -195,23 +200,23 @@ const Search: React.FC = () => {
             </GlassCard>
 
             <GlassCard>
-              <div className="p-6">
-                <h2 className="text-xl font-semibold mb-4 text-gray-900">AI Smart Search (8 Credits)</h2>
-                <div className="space-y-4">
+              <div className="p-4 sm:p-6">
+                <h2 className="text-lg sm:text-xl font-semibold mb-4 text-gray-900">AI Smart Search (8 Credits)</h2>
+                <div className="space-y-3 sm:space-y-4">
                   <Textarea
                     placeholder="Describe what you're looking for... e.g., '3BHK apartment near metro station in Mumbai under 2 crores'"
                     value={aiQuery}
                     onChange={(e) => setAiQuery(e.target.value)}
-                    className="h-32 resize-none"
+                    className="h-24 sm:h-32 resize-none text-sm sm:text-base"
                   />
                   <button
                     onClick={handleAiSearch}
                     disabled={!aiQuery.trim()}
-                    className="w-full bg-gradient-to-r from-red-500 to-orange-500 text-white font-semibold py-3 px-6 rounded-xl shadow-lg hover:shadow-lg hover:shadow-red-500/30 transition-all duration-300 ease-in-out transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+                    className="w-full h-12 sm:h-14 bg-gradient-to-r from-red-500 to-orange-500 text-white font-semibold rounded-xl shadow-lg hover:shadow-lg hover:shadow-red-500/30 transition-all duration-300 ease-in-out transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none text-sm sm:text-base"
                   >
                     Search with AI
                   </button>
-                  <div className="text-sm text-gray-600 text-center">
+                  <div className="text-xs sm:text-sm text-gray-600 text-center">
                     AI will understand your requirements and find matching properties
                   </div>
                 </div>
@@ -219,9 +224,9 @@ const Search: React.FC = () => {
             </GlassCard>
           </div>
 
-          <div className="mt-12">
-            <h2 className="text-2xl font-bold text-gray-900 mb-6">Popular Searches</h2>
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <MobileCardSpacing className="mt-8 sm:mt-12">
+            <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4 sm:mb-6">Popular Searches</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
               {[
                 '3BHK in Mumbai',
                 '2BHK for rent Delhi',
@@ -234,13 +239,13 @@ const Search: React.FC = () => {
                     setAiQuery(search);
                     handleAiSearch();
                   }}
-                  className="bg-white text-gray-900 font-medium px-4 py-2 rounded-xl border border-orange-200 shadow-md hover:bg-orange-50 hover:shadow-lg hover:border-orange-300 transition-all duration-300 ease-in-out transform hover:scale-105 text-left"
+                  className="bg-white text-gray-900 font-medium px-3 sm:px-4 py-3 sm:py-2 rounded-xl border border-orange-200 shadow-md hover:bg-orange-50 hover:shadow-lg hover:border-orange-300 transition-all duration-300 ease-in-out transform hover:scale-105 text-left text-sm sm:text-base min-h-[44px] flex items-center"
                 >
                   {search}
                 </button>
               ))}
             </div>
-          </div>
+          </MobileCardSpacing>
         </div>
       </section>
       <Footer />
