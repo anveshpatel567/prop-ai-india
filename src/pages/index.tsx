@@ -6,11 +6,35 @@ import { Footer } from '../components/layout/Footer';
 import { HeroSection } from '../components/home/HeroSection';
 import { AiTeaserCards } from '../components/home/AiTeaserCards';
 import { RoleSelectorCards } from '../components/home/RoleSelectorCards';
+import { SeoMetaHead } from '../components/seo/SeoMetaHead';
+import { JsonLdSchema } from '../components/seo/JsonLdSchema';
+import { useSeoOverride } from '../hooks/useSeoOverride';
 import { SearchIcon, Building2, FileText, Users } from 'lucide-react';
 
 const Index: React.FC = () => {
+  const { seoData } = useSeoOverride({
+    path: '/',
+    fallbackTitle: 'FreePropList - AI-Powered Property Platform | Smart Real Estate Solutions',
+    fallbackDescription: 'Discover properties with AI-powered search, fraud detection, pricing optimization and more. India\'s most intelligent real estate platform with verified listings and smart matching.'
+  });
+
+  const organizationData = {
+    name: 'FreePropList',
+    description: 'AI-Powered Property Platform for India',
+    url: 'https://freeproplist.com',
+    logo: 'https://freeproplist.com/logo.png'
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-orange-50 to-red-50">
+      <SeoMetaHead
+        title={seoData.title || 'FreePropList - AI-Powered Property Platform'}
+        description={seoData.description || 'Discover properties with AI-powered search and smart matching'}
+        keywords={seoData.keywords}
+        canonicalUrl="https://freeproplist.com/"
+      />
+      <JsonLdSchema type="organization" data={organizationData} />
+      
       <Navbar />
       <HeroSection />
       

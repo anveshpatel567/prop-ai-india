@@ -2871,6 +2871,39 @@ export type Database = {
         }
         Relationships: []
       }
+      ai_seo_overrides: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          keywords: string | null
+          path: string
+          source: string | null
+          title: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          keywords?: string | null
+          path: string
+          source?: string | null
+          title?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          keywords?: string | null
+          path?: string
+          source?: string | null
+          title?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       ai_title_chain_data: {
         Row: {
           chain_json: Json | null

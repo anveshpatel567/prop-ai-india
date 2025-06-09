@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Home from './pages/index';
@@ -20,6 +21,7 @@ import AdminToolsOverviewPage from './pages/admin/tools-overview';
 import AdminUsageMetricsPage from './pages/admin/usage-metrics';
 import LaunchChecklistPage from './pages/admin/launch-checklist';
 import AiToolHealthPage from './pages/admin/ai-tool-health';
+import SeoAuditPage from './pages/admin/seo-audit';
 import CardsTestPage from './pages/test/cards';
 import ButtonsTestPage from './pages/test/buttons';
 import ModalsTestPage from './pages/test/modals';
@@ -63,6 +65,7 @@ export const AppRoutes = () => {
       <Route path="/admin/usage-metrics" element={<AdminUsageMetricsPage />} />
       <Route path="/admin/launch-checklist" element={<LaunchChecklistPage />} />
       <Route path="/admin/ai-tool-health" element={<AiToolHealthPage />} />
+      <Route path="/admin/seo-audit" element={<SeoAuditPage />} />
       
       {/* Test Routes */}
       <Route path="/test/cards" element={<CardsTestPage />} />
