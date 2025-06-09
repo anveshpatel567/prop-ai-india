@@ -1,6 +1,5 @@
 
 import React from 'react';
-import { CheckCircle, ArrowRight } from 'lucide-react';
 
 interface StickyReviewSubmitBarProps {
   onReview: () => void;
@@ -18,27 +17,25 @@ export const StickyReviewSubmitBar: React.FC<StickyReviewSubmitBarProps> = ({
   className = ''
 }) => {
   return (
-    <div className={`fixed bottom-0 left-0 right-0 bg-white border-t border-orange-200 p-3 sm:p-4 shadow-lg z-50 sm:hidden ${className}`}>
+    <div className={`fixed bottom-0 left-0 right-0 bg-[#fff7f0] border-t border-[#ff4500] p-3 sm:p-4 shadow-[0_0_30px_rgba(255,102,0,0.45)] z-50 sm:hidden ${className}`}>
       <div className="flex gap-2 max-w-md mx-auto">
         <button
           onClick={onReview}
-          className="flex-1 border border-orange-500 text-orange-500 bg-white font-semibold rounded-xl px-4 py-2 hover:bg-orange-50 transition duration-300 flex items-center justify-center"
+          className="flex-1 border border-[#ff4500] text-[#ff4500] bg-[#fff7f0] font-semibold rounded-xl px-4 py-2 hover:bg-gradient-to-r hover:from-[#ff3c00] hover:to-[#ff6a00] hover:text-white transition duration-300 flex items-center justify-center"
         >
-          <CheckCircle className="mr-2 h-4 w-4" />
-          Review
+          ✓ Review
         </button>
         
         <button
           onClick={onSubmit}
           disabled={!canSubmit || isSubmitting}
-          className="flex-1 bg-gradient-to-r from-orange-500 to-red-500 text-white font-semibold rounded-xl px-4 py-2 hover:brightness-110 transition duration-300 shadow-md disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+          className="flex-1 bg-gradient-to-r from-[#ff6a00] via-[#ff3c00] to-[#ff0000] text-white font-semibold rounded-xl px-4 py-2 hover:from-[#ff3c00] hover:to-[#ff6a00] transition duration-300 shadow-[0_0_30px_rgba(255,102,0,0.45)] disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
         >
           {isSubmitting ? (
             'Submitting...'
           ) : (
             <>
-              Submit
-              <ArrowRight className="ml-2 h-4 w-4" />
+              Submit →
             </>
           )}
         </button>

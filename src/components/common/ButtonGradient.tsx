@@ -20,11 +20,11 @@ export const ButtonGradient: React.FC<ButtonGradientProps> = ({
   className = '',
   variant = 'ai'
 }) => {
-  const baseClasses = "font-semibold rounded-xl px-6 py-3 transition duration-300 shadow-md disabled:opacity-50 disabled:cursor-not-allowed";
+  const baseClasses = "font-semibold rounded-xl px-6 py-3 transition-all duration-300 shadow-[0_0_30px_rgba(255,102,0,0.45)] disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-[0_0_40px_rgba(255,102,0,0.6)] transform hover:scale-105";
   
   const variantClasses = variant === 'ai' 
-    ? "bg-gradient-to-r from-orange-500 to-red-500 text-white hover:brightness-110 hover:shadow-lg hover:shadow-orange-500/30"
-    : "bg-white border border-orange-500 text-orange-500 hover:bg-orange-50 hover:shadow-lg hover:shadow-orange-500/25";
+    ? "bg-gradient-to-r from-[#ff6a00] via-[#ff3c00] to-[#ff0000] text-white hover:from-[#ff3c00] hover:to-[#ff6a00]"
+    : "bg-[#fff7f0] border border-[#ff4500] text-[#ff4500] hover:bg-gradient-to-r hover:from-[#ff3c00] hover:to-[#ff6a00] hover:text-white hover:border-transparent";
 
   return (
     <button

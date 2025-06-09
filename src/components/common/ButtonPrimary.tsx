@@ -23,7 +23,7 @@ export const ButtonPrimary: React.FC<ButtonPrimaryProps> = ({
       type={type}
       onClick={onClick}
       disabled={disabled || loading}
-      className={`bg-gradient-to-r from-orange-500 to-red-500 text-white font-semibold rounded-xl px-4 py-2 hover:brightness-110 transition duration-300 shadow-md disabled:opacity-50 disabled:cursor-not-allowed ${className}`}
+      className={`bg-gradient-to-r from-[#ff6a00] via-[#ff3c00] to-[#ff0000] text-white font-semibold rounded-xl px-4 py-2 hover:from-[#ff3c00] hover:to-[#ff6a00] transition-all duration-300 shadow-[0_0_30px_rgba(255,102,0,0.45)] disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-[0_0_40px_rgba(255,102,0,0.6)] transform hover:scale-105 ${className}`}
     >
       {loading ? (
         <div className="flex items-center space-x-2">

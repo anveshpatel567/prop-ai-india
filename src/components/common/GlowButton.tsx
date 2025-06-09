@@ -22,12 +22,12 @@ export const GlowButton: React.FC<GlowButtonProps> = ({
   disabled = false,
   type = 'button'
 }) => {
-  const baseClasses = "transition-all duration-300 font-medium rounded-lg shadow-lg hover:shadow-xl";
+  const baseClasses = "transition-all duration-300 font-medium rounded-lg shadow-[0_0_30px_rgba(255,102,0,0.45)] hover:shadow-[0_0_40px_rgba(255,102,0,0.6)] transform hover:scale-105";
   
   const variantClasses = {
-    ai: "bg-gradient-to-r from-orange-500 to-red-500 text-white hover:brightness-110 hover:shadow-orange-500/25",
-    manual: "bg-orange-100 text-orange-600 border border-orange-300 hover:bg-orange-50 hover:shadow-orange-500/25",
-    outline: "border-2 border-orange-500 text-orange-500 hover:bg-orange-500 hover:text-white hover:shadow-orange-500/25"
+    ai: "bg-gradient-to-r from-[#ff6a00] via-[#ff3c00] to-[#ff0000] text-white hover:from-[#ff3c00] hover:to-[#ff6a00]",
+    manual: "bg-[#fff7f0] text-[#ff4500] border border-[#ff4500] hover:bg-gradient-to-r hover:from-[#ff3c00] hover:to-[#ff6a00] hover:text-white hover:border-transparent",
+    outline: "border-2 border-[#ff4500] text-[#ff4500] hover:bg-gradient-to-r hover:from-[#ff3c00] hover:to-[#ff6a00] hover:text-white hover:border-transparent"
   };
 
   const sizeClasses = {

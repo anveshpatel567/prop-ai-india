@@ -2,7 +2,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { ShoppingCart, Zap } from 'lucide-react';
 
 interface BuyCreditsCtaProps {
   toolName?: string;
@@ -34,9 +33,8 @@ export const BuyCreditsCta: React.FC<BuyCreditsCtaProps> = ({
       variant={variant}
       size={size}
       onClick={handleBuyCredits}
-      className={`flex items-center gap-2 ${className}`}
+      className={`flex items-center gap-2 bg-gradient-to-r from-[#ff6a00] via-[#ff3c00] to-[#ff0000] text-white hover:from-[#ff3c00] hover:to-[#ff6a00] shadow-[0_0_30px_rgba(255,102,0,0.45)] hover:shadow-[0_0_40px_rgba(255,102,0,0.6)] ${className}`}
     >
-      <ShoppingCart className="h-4 w-4" />
       {creditsNeeded ? `Buy ${creditsNeeded} Credits` : 'Buy Credits'}
     </Button>
   );
