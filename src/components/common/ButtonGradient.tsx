@@ -8,7 +8,7 @@ interface ButtonGradientProps {
   loading?: boolean;
   type?: 'button' | 'submit';
   className?: string;
-  variant?: 'primary' | 'secondary';
+  variant?: 'ai' | 'manual';
 }
 
 export const ButtonGradient: React.FC<ButtonGradientProps> = ({
@@ -18,13 +18,13 @@ export const ButtonGradient: React.FC<ButtonGradientProps> = ({
   loading = false,
   type = 'button',
   className = '',
-  variant = 'primary'
+  variant = 'ai'
 }) => {
   const baseClasses = "font-semibold rounded-xl px-4 py-2 transition duration-300 shadow-md disabled:opacity-50 disabled:cursor-not-allowed";
   
-  const variantClasses = variant === 'primary' 
+  const variantClasses = variant === 'ai' 
     ? "bg-gradient-to-r from-orange-500 to-red-500 text-white hover:brightness-110"
-    : "border border-orange-500 text-orange-500 bg-white hover:bg-orange-50";
+    : "bg-orange-100 text-orange-600 border border-orange-300 hover:bg-orange-50";
 
   return (
     <button

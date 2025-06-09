@@ -27,5 +27,26 @@ export type NegotiationMessage = {
   sender_id: string;
   message: string;
   message_type: 'offer' | 'counter' | 'acceptance' | 'rejection';
+  offer_amount?: number;
+  sent_at: string;
+  created_at: string;
+};
+
+export type SavedSearch = {
+  id: string;
+  user_id: string;
+  search_name: string;
+  filters: string;
+  alert_enabled: boolean;
+  created_at: string;
+};
+
+export type DeveloperPaymentPlan = {
+  id: string;
+  developer_id: string;
+  plan_name: string;
+  plan_type: 'custom' | 'template';
+  pdf_url: string | null;
+  template_data: string | null;
   created_at: string;
 };

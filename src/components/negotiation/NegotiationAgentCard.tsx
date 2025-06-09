@@ -43,12 +43,11 @@ export const NegotiationAgentCard: React.FC<NegotiationAgentCardProps> = ({
     try {
       setLoading(true);
       
-      await startNegotiation(
-        listingId,
-        listerId,
-        parseFloat(offerAmount),
-        message || undefined
-      );
+      const fullOfferText = message 
+        ? `${message}\n\nOffered Amount: ₹${offerAmount}`
+        : `Offered Amount: ₹${offerAmount}`;
+
+      await startNegotiation(listingId, listerId, fullOfferText);
 
       toast({
         title: "Negotiation Started",

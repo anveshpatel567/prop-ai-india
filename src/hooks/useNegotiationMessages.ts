@@ -38,7 +38,8 @@ export const useNegotiationMessages = (negotiationId: string) => {
           negotiation_id: negotiationId,
           sender_id: user.id,
           message,
-          message_type: messageType
+          message_type: messageType,
+          sent_at: new Date().toISOString()
         });
 
       if (error) throw error;

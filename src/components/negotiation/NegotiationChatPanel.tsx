@@ -37,11 +37,11 @@ export const NegotiationChatPanel: React.FC<NegotiationChatPanelProps> = ({
     try {
       setSending(true);
       
-      await sendMessage(
-        newMessage || `Counter-offer: ₹${offerAmount}`,
-        offerAmount ? parseFloat(offerAmount) : undefined,
-        useAi
-      );
+      const messageText = offerAmount 
+        ? `${newMessage || 'Counter-offer'}\n\nAmount: ₹${offerAmount}`
+        : newMessage;
+
+      await sendMessage(messageText, offerAmount ? 'counter' : 'offer');
 
       setNewMessage('');
       setOfferAmount('');
