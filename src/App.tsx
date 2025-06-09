@@ -10,6 +10,7 @@ import { AppRoutes } from './AppRoutes';
 import { HelmetProvider } from 'react-helmet-async';
 import './App.css';
 
+// React Query client configuration for optimal performance
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -19,6 +20,17 @@ const queryClient = new QueryClient({
   },
 });
 
+/**
+ * Main App Component
+ * 
+ * Context Provider Hierarchy:
+ * - HelmetProvider: SEO and meta tag management
+ * - QueryClientProvider: React Query for server state
+ * - BrowserRouter: Client-side routing
+ * - AuthProvider: User authentication state
+ * - WalletProvider: Credit balance and transactions
+ * - CreditGateProvider: AI tool access control
+ */
 function App() {
   return (
     <HelmetProvider>
