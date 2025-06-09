@@ -1,60 +1,46 @@
 
-import React, { useEffect } from 'react';
-import { ButtonVariant, getValidVariantWithConfig } from '../../utils/buttonVariants';
-import { useButtonControl, logButtonUsage } from '../../hooks/useButtonControl';
+import React from 'react';
 
 interface ButtonGradientProps {
   children: React.ReactNode;
   onClick?: () => void;
-  variant?: ButtonVariant;
-  size?: 'sm' | 'md' | 'lg';
+  disabled?: boolean;
+  loading?: boolean;
+  type?: 'button' | 'submit';
   className?: string;
-  page?: string;
+  variant?: 'primary' | 'secondary';
 }
 
 export const ButtonGradient: React.FC<ButtonGradientProps> = ({
   children,
   onClick,
-  variant = 'primary',
-  size = 'md',
+  disabled = false,
+  loading = false,
+  type = 'button',
   className = '',
-  page = 'default'
+  variant = 'primary'
 }) => {
-  const { data: buttonConfig } = useButtonControl(page);
+  const baseClasses = "font-semibold rounded-xl px-4 py-2 transition duration-300 shadow-md disabled:opacity-50 disabled:cursor-not-allowed";
   
-  const validVariant = buttonConfig 
-    ? getValidVariantWithConfig(variant, buttonConfig.allowed_variants, buttonConfig.fallback_variant)
-    : variant;
-
-  const baseClasses = 'font-rajdhani font-medium rounded-xl transition-all duration-300 glow-hover border';
-  
-  const variantClasses = {
-    primary: 'fire-gradient text-white border-orange-400/30 fire-glow',
-    secondary: 'bg-gradient-to-r from-gray-50 to-gray-100 text-gray-800 border-gray-200 hover:shadow-md',
-    glass: 'glass-button text-fire-primary border-fire-gold hover:bg-white/30 hover:shadow-lg'
-  };
-  
-  const sizeClasses = {
-    sm: 'py-2 px-4 text-sm',
-    md: 'py-3 px-6 text-base',
-    lg: 'py-4 px-8 text-lg'
-  };
-
-  const handleClick = () => {
-    // Log button usage
-    logButtonUsage(page, validVariant);
-    
-    if (onClick) {
-      onClick();
-    }
-  };
+  const variantClasses = variant === 'primary' 
+    ? "bg-gradient-to-r from-orange-500 to-red-500 text-white hover:brightness-110"
+    : "border border-orange-500 text-orange-500 bg-white hover:bg-orange-50";
 
   return (
     <button
-      onClick={handleClick}
-      className={`${baseClasses} ${variantClasses[validVariant]} ${sizeClasses[size]} ${className}`}
+      type={type}
+      onClick={onClick}
+      disabled={disabled || loading}
+      className={`${baseClasses} ${variantClasses} ${className}`}
     >
-      {children}
+      {loading ? (
+        <div className="flex items-center space-x-2">
+          <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin"></div>
+          <span>Processing...</span>
+        </div>
+      ) : (
+        children
+      )}
     </button>
   );
 };
