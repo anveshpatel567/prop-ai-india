@@ -127,10 +127,10 @@ const Search: React.FC = () => {
                       value={getSafeSelectValue(manualFilters.location)}
                       onValueChange={(value) => handleFilterChange('location', value)}
                     >
-                      <SelectTrigger className="h-11 sm:h-12 bg-white/10 backdrop-blur-sm border border-white/20 text-[#2d0000]">
+                      <SelectTrigger className="h-11 sm:h-12 bg-[#fff7f0] border border-[#ff4500] text-[#2d0000]">
                         <SelectValue placeholder="Select City" className="text-[#8b4513]" />
                       </SelectTrigger>
-                      <SelectContent className="bg-white/10 backdrop-blur-xl border border-white/20">
+                      <SelectContent className="bg-[#fff7f0] border border-[#ff4500]">
                         {cities.filter(isValidSelectOption).map((city) => (
                           <SelectItem key={city.value} value={city.value} className="text-[#2d0000] hover:bg-[#ff4500]/10">
                             {city.label}
@@ -143,10 +143,10 @@ const Search: React.FC = () => {
                       value={getSafeSelectValue(manualFilters.property_type)}
                       onValueChange={(value) => handleFilterChange('property_type', value)}
                     >
-                      <SelectTrigger className="h-11 sm:h-12 bg-white/10 backdrop-blur-sm border border-white/20 text-[#2d0000]">
+                      <SelectTrigger className="h-11 sm:h-12 bg-[#fff7f0] border border-[#ff4500] text-[#2d0000]">
                         <SelectValue placeholder="Property Type" className="text-[#8b4513]" />
                       </SelectTrigger>
-                      <SelectContent className="bg-white/10 backdrop-blur-xl border border-white/20">
+                      <SelectContent className="bg-[#fff7f0] border border-[#ff4500]">
                         {propertyTypes.filter(isValidSelectOption).map((type) => (
                           <SelectItem key={type.value} value={type.value} className="text-[#2d0000] hover:bg-[#ff4500]/10">
                             {type.label}
@@ -162,14 +162,14 @@ const Search: React.FC = () => {
                       placeholder="Min Price"
                       value={manualFilters.min_price}
                       onChange={(e) => handleFilterChange('min_price', e.target.value)}
-                      className="h-11 sm:h-12 bg-white/10 backdrop-blur-sm border border-white/20 text-[#2d0000] placeholder:text-[#8b4513]"
+                      className="h-11 sm:h-12 bg-[#fff7f0] border border-[#ff4500] text-[#2d0000] placeholder:text-[#8b4513]"
                     />
                     <Input
                       type="number"
                       placeholder="Max Price"
                       value={manualFilters.max_price}
                       onChange={(e) => handleFilterChange('max_price', e.target.value)}
-                      className="h-11 sm:h-12 bg-white/10 backdrop-blur-sm border border-white/20 text-[#2d0000] placeholder:text-[#8b4513]"
+                      className="h-11 sm:h-12 bg-[#fff7f0] border border-[#ff4500] text-[#2d0000] placeholder:text-[#8b4513]"
                     />
                   </div>
                   
@@ -177,10 +177,10 @@ const Search: React.FC = () => {
                     value={getSafeSelectValue(manualFilters.listing_type)}
                     onValueChange={(value) => handleFilterChange('listing_type', value)}
                   >
-                    <SelectTrigger className="h-11 sm:h-12 bg-white/10 backdrop-blur-sm border border-white/20 text-[#2d0000]">
+                    <SelectTrigger className="h-11 sm:h-12 bg-[#fff7f0] border border-[#ff4500] text-[#2d0000]">
                       <SelectValue placeholder="Listing Type" className="text-[#8b4513]" />
                     </SelectTrigger>
-                    <SelectContent className="bg-white/10 backdrop-blur-xl border border-white/20">
+                    <SelectContent className="bg-[#fff7f0] border border-[#ff4500]">
                       {listingTypes.filter(isValidSelectOption).map((type) => (
                         <SelectItem key={type.value} value={type.value} className="text-[#2d0000] hover:bg-[#ff4500]/10">
                           {type.label}
@@ -207,7 +207,7 @@ const Search: React.FC = () => {
                     placeholder="Describe what you're looking for... e.g., '3BHK apartment near metro station in Mumbai under 2 crores'"
                     value={aiQuery}
                     onChange={(e) => setAiQuery(e.target.value)}
-                    className="h-24 sm:h-32 resize-none text-sm sm:text-base bg-white/10 backdrop-blur-sm border border-white/20 text-[#2d0000] placeholder:text-[#8b4513]"
+                    className="h-24 sm:h-32 resize-none text-sm sm:text-base bg-[#fff7f0] border border-[#ff4500] text-[#2d0000] placeholder:text-[#8b4513]"
                   />
                   <button
                     onClick={handleAiSearch}

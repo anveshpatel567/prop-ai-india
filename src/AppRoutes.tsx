@@ -9,6 +9,8 @@ import AiTools from './pages/ai/index';
 import SeoPreview from './pages/admin/seo-preview';
 import AiEngagement from './pages/admin/ai-engagement';
 import CommunityIndex from './pages/community/index';
+import Login from './pages/login';
+import NotFound from './pages/404';
 
 export const AppRoutes: React.FC = () => {
   return (
@@ -18,9 +20,11 @@ export const AppRoutes: React.FC = () => {
       <Route path="/list-property" element={<ListProperty />} />
       <Route path="/listing/create" element={<CreateListing />} />
       <Route path="/ai" element={<AiTools />} />
+      <Route path="/login" element={<Login />} />
       <Route path="/admin/seo-preview" element={<SeoPreview />} />
       <Route path="/admin/ai-engagement" element={<AiEngagement />} />
       <Route path="/community" element={<CommunityIndex />} />
+      <Route path="*" element={<NotFound />} />
     </Routes>
   );
 };
