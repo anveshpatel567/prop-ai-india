@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Upload, FileText, Check, X, Edit } from 'lucide-react';
@@ -111,7 +112,7 @@ export const BrochureUploaderPanel: React.FC = () => {
           )}
 
           {/* Parsed Results */}
-          {parsedData && parsedData.parsed_fields.length > 0 && (
+          {parsedData && parsedData.parsed_fields && parsedData.parsed_fields.length > 0 && (
             <Card>
               <CardHeader>
                 <CardTitle className="text-lg">Extracted Data</CardTitle>
