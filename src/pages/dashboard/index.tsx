@@ -133,7 +133,7 @@ const Dashboard: React.FC = () => {
               <GlassCard className="text-center">
                 <div className="text-2xl font-rajdhani font-bold text-accent-blue">{balance.balance}</div>
                 <div className="text-sm font-dmsans text-text-muted">AI Credits</div>
-                <ButtonGradient size="sm" className="mt-2">
+                <ButtonGradient variant="ai" className="mt-2">
                   Add Credits
                 </ButtonGradient>
               </GlassCard>
@@ -168,19 +168,19 @@ const Dashboard: React.FC = () => {
         <div className="mt-12">
           <h2 className="font-rajdhani text-2xl font-bold text-text-primary mb-6">Quick Actions</h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
-            <ButtonGradient className="p-6 h-auto flex flex-col">
+            <ButtonGradient variant="ai" className="p-6 h-auto flex flex-col">
               <div className="text-2xl mb-2">🔍</div>
               <span className="font-rajdhani">Smart Search</span>
             </ButtonGradient>
-            <ButtonGradient className="p-6 h-auto flex flex-col">
+            <ButtonGradient variant="ai" className="p-6 h-auto flex flex-col">
               <div className="text-2xl mb-2">🏠</div>
               <span className="font-rajdhani">List Property</span>
             </ButtonGradient>
-            <ButtonGradient className="p-6 h-auto flex flex-col">
+            <ButtonGradient variant="ai" className="p-6 h-auto flex flex-col">
               <div className="text-2xl mb-2">🤖</div>
               <span className="font-rajdhani">AI Tools</span>
             </ButtonGradient>
-            <ButtonGradient className="p-6 h-auto flex flex-col">
+            <ButtonGradient variant="manual" className="p-6 h-auto flex flex-col">
               <div className="text-2xl mb-2">📊</div>
               <span className="font-rajdhani">Analytics</span>
             </ButtonGradient>

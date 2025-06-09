@@ -13,7 +13,7 @@ import { StickyWalletBadge } from '@/components/mobile/StickyWalletBadge';
 export default function MyAiUsagePage() {
   const { summary, loading: summaryLoading } = useMyToolSummary();
   const { attempts, loading: attemptsLoading } = useMyToolAttempts();
-  const { threads } = useNegotiationThreads();
+  const { negotiations } = useNegotiationThreads();
 
   const recentActivity = attempts?.slice(0, 10) || [];
 
@@ -74,7 +74,7 @@ export default function MyAiUsagePage() {
         </MobileCardGrid>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
-          <Card>
+          <Card className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl shadow-lg">
             <CardHeader>
               <CardTitle className="text-lg md:text-xl">AI Resume Builder</CardTitle>
             </CardHeader>
@@ -83,18 +83,18 @@ export default function MyAiUsagePage() {
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl shadow-lg">
             <CardHeader>
               <CardTitle className="text-lg md:text-xl">Negotiation Threads</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-3">
-                {threads.length === 0 ? (
+                {negotiations.length === 0 ? (
                   <p className="text-sm text-muted-foreground">
                     No active negotiations yet
                   </p>
                 ) : (
-                  threads.slice(0, 5).map((thread) => (
+                  negotiations.slice(0, 5).map((thread) => (
                     <div key={thread.id} className="flex items-center justify-between p-2 border rounded">
                       <div>
                         <p className="text-sm font-medium">Thread #{thread.id.slice(0, 8)}</p>
@@ -117,7 +117,7 @@ export default function MyAiUsagePage() {
           </Card>
         </div>
 
-        <Card>
+        <Card className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl shadow-lg">
           <CardHeader>
             <CardTitle className="text-lg md:text-xl">Recent Activity</CardTitle>
           </CardHeader>
