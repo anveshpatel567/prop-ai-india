@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -12,6 +11,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
 import { Home, MapPin, DollarSign, Upload, CheckCircle } from 'lucide-react';
+import { StickyReviewSubmitBar } from '@/components/ui/sticky-review-submit-bar';
 
 const listingSchema = z.object({
   title: z.string().min(10, 'Title must be at least 10 characters'),
@@ -39,6 +39,7 @@ interface ImprovedListingFormProps {
 export const ImprovedListingForm: React.FC<ImprovedListingFormProps> = ({ onReraToggle }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isReraRegistered, setIsReraRegistered] = useState(false);
+  const [showReraDetails, setShowReraDetails] = useState(false);
   const { toast } = useToast();
 
   const {
@@ -108,218 +109,260 @@ export const ImprovedListingForm: React.FC<ImprovedListingFormProps> = ({ onRera
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-      {/* Basic Information */}
-      <Card className="border-orange-200">
-        <CardHeader>
-          <CardTitle className="flex items-center text-orange-600">
-            <Home className="mr-2 h-5 w-5" />
-            Basic Information
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div>
-            <Label htmlFor="title">Property Title *</Label>
-            <Input
-              id="title"
-              {...register('title')}
-              placeholder="e.g., Spacious 3BHK Apartment in Bandra West"
-              className="border-orange-200 focus:border-orange-500"
-            />
-            {errors.title && <p className="text-red-500 text-sm mt-1">{errors.title.message}</p>}
-          </div>
-
-          <div>
-            <Label htmlFor="description">Description *</Label>
-            <Textarea
-              id="description"
-              {...register('description')}
-              placeholder="Describe your property, amenities, and unique features..."
-              rows={4}
-              className="border-orange-200 focus:border-orange-500"
-            />
-            {errors.description && <p className="text-red-500 text-sm mt-1">{errors.description.message}</p>}
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <>
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 pb-20 sm:pb-6">
+        {/* Basic Information */}
+        <Card className="border-orange-200">
+          <CardHeader>
+            <CardTitle className="flex items-center text-orange-600">
+              <Home className="mr-2 h-5 w-5" />
+              Basic Information
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
             <div>
-              <Label>Property Type *</Label>
-              <Select onValueChange={(value) => setValue('propertyType', value)}>
-                <SelectTrigger className="border-orange-200 focus:border-orange-500">
-                  <SelectValue placeholder="Select type" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="residential">Residential</SelectItem>
-                  <SelectItem value="commercial">Commercial</SelectItem>
-                  <SelectItem value="plot">Plot/Land</SelectItem>
-                </SelectContent>
-              </Select>
-              {errors.propertyType && <p className="text-red-500 text-sm mt-1">{errors.propertyType.message}</p>}
-            </div>
-
-            <div>
-              <Label>Listing Type *</Label>
-              <Select onValueChange={(value) => setValue('listingType', value)}>
-                <SelectTrigger className="border-orange-200 focus:border-orange-500">
-                  <SelectValue placeholder="Select type" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="sell">For Sale</SelectItem>
-                  <SelectItem value="rent">For Rent</SelectItem>
-                  <SelectItem value="lease">Lease</SelectItem>
-                </SelectContent>
-              </Select>
-              {errors.listingType && <p className="text-red-500 text-sm mt-1">{errors.listingType.message}</p>}
-            </div>
-          </div>
-
-          {renderConditionalFields()}
-
-          <div className="flex items-center space-x-2">
-            <Checkbox
-              id="rera"
-              checked={isReraRegistered}
-              onCheckedChange={handleReraToggle}
-            />
-            <Label htmlFor="rera">RERA Registered Property</Label>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Pricing & Area */}
-      <Card className="border-orange-200">
-        <CardHeader>
-          <CardTitle className="flex items-center text-orange-600">
-            <DollarSign className="mr-2 h-5 w-5" />
-            Pricing & Area
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div>
-            <Label htmlFor="price">Price (₹) *</Label>
-            <Input
-              id="price"
-              type="number"
-              {...register('price', { valueAsNumber: true })}
-              placeholder="Enter price in rupees"
-              className="border-orange-200 focus:border-orange-500"
-            />
-            {errors.price && <p className="text-red-500 text-sm mt-1">{errors.price.message}</p>}
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <Label htmlFor="area">
-                {isReraRegistered ? 'RERA Carpet Area *' : 'Area *'}
-              </Label>
+              <Label htmlFor="title">Property Title *</Label>
               <Input
-                id="area"
-                type="number"
-                {...register('area', { valueAsNumber: true })}
-                placeholder="Enter area"
-                className="border-orange-200 focus:border-orange-500"
-                disabled={isReraRegistered}
+                id="title"
+                {...register('title')}
+                placeholder="e.g., Spacious 3BHK Apartment in Bandra West"
+                className="border-orange-200 focus:border-orange-500 h-11 sm:h-12"
               />
-              {errors.area && <p className="text-red-500 text-sm mt-1">{errors.area.message}</p>}
+              {errors.title && <p className="text-red-500 text-sm mt-1">{errors.title.message}</p>}
             </div>
 
             <div>
-              <Label>Unit *</Label>
-              <Select onValueChange={(value) => setValue('unit', value)}>
-                <SelectTrigger className="border-orange-200 focus:border-orange-500">
-                  <SelectValue placeholder="Select unit" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="sq-ft">sq.ft</SelectItem>
-                  <SelectItem value="sq-m">sq.m</SelectItem>
-                  <SelectItem value="acres">acres</SelectItem>
-                  <SelectItem value="gaj">gaj</SelectItem>
-                  <SelectItem value="bigha">bigha</SelectItem>
-                  <SelectItem value="hectare">hectare</SelectItem>
-                  <SelectItem value="kanal">kanal</SelectItem>
-                  <SelectItem value="marla">marla</SelectItem>
-                </SelectContent>
-              </Select>
-              {errors.unit && <p className="text-red-500 text-sm mt-1">{errors.unit.message}</p>}
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Location */}
-      <Card className="border-orange-200">
-        <CardHeader>
-          <CardTitle className="flex items-center text-orange-600">
-            <MapPin className="mr-2 h-5 w-5" />
-            Location Details
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <Label htmlFor="city">City *</Label>
-              <Input
-                id="city"
-                {...register('city')}
-                placeholder="e.g., Mumbai"
+              <Label htmlFor="description">Description *</Label>
+              <Textarea
+                id="description"
+                {...register('description')}
+                placeholder="Describe your property, amenities, and unique features..."
+                rows={4}
                 className="border-orange-200 focus:border-orange-500"
               />
-              {errors.city && <p className="text-red-500 text-sm mt-1">{errors.city.message}</p>}
+              {errors.description && <p className="text-red-500 text-sm mt-1">{errors.description.message}</p>}
             </div>
 
-            <div>
-              <Label htmlFor="locality">Locality *</Label>
-              <Input
-                id="locality"
-                {...register('locality')}
-                placeholder="e.g., Bandra West"
-                className="border-orange-200 focus:border-orange-500"
-              />
-              {errors.locality && <p className="text-red-500 text-sm mt-1">{errors.locality.message}</p>}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <Label>Property Type *</Label>
+                <Select onValueChange={(value) => setValue('propertyType', value)}>
+                  <SelectTrigger className="border-orange-200 focus:border-orange-500 h-11 sm:h-12">
+                    <SelectValue placeholder="Select type" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="residential">Residential</SelectItem>
+                    <SelectItem value="commercial">Commercial</SelectItem>
+                    <SelectItem value="plot">Plot/Land</SelectItem>
+                  </SelectContent>
+                </Select>
+                {errors.propertyType && <p className="text-red-500 text-sm mt-1">{errors.propertyType.message}</p>}
+              </div>
+
+              <div>
+                <Label>Listing Type *</Label>
+                <Select onValueChange={(value) => setValue('listingType', value)}>
+                  <SelectTrigger className="border-orange-200 focus:border-orange-500 h-11 sm:h-12">
+                    <SelectValue placeholder="Select type" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="sell">For Sale</SelectItem>
+                    <SelectItem value="rent">For Rent</SelectItem>
+                    <SelectItem value="lease">Lease</SelectItem>
+                  </SelectContent>
+                </Select>
+                {errors.listingType && <p className="text-red-500 text-sm mt-1">{errors.listingType.message}</p>}
+              </div>
             </div>
-          </div>
 
-          <div>
-            <Label htmlFor="address">Full Address *</Label>
-            <Textarea
-              id="address"
-              {...register('address')}
-              placeholder="Enter complete address with landmarks"
-              rows={3}
-              className="border-orange-200 focus:border-orange-500"
-            />
-            {errors.address && <p className="text-red-500 text-sm mt-1">{errors.address.message}</p>}
-          </div>
-        </CardContent>
-      </Card>
+            {renderConditionalFields()}
+          </CardContent>
+        </Card>
 
-      {/* Submit Button */}
-      <div className="flex justify-end space-x-4">
-        <Button
-          type="button"
-          variant="outline"
-          className="border-orange-300 text-orange-600 hover:bg-orange-50"
-        >
-          Save Draft
-        </Button>
-        <Button
-          type="submit"
-          disabled={isSubmitting}
-          className="bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-white shadow-lg hover:shadow-xl transition-all duration-300"
-        >
-          {isSubmitting ? (
-            <>
-              <Upload className="mr-2 h-4 w-4 animate-spin" />
-              Creating...
-            </>
-          ) : (
-            <>
-              <CheckCircle className="mr-2 h-4 w-4" />
-              Create Listing
-            </>
+        {/* RERA Information (Collapsible) */}
+        <Card className="border-orange-200">
+          <CardHeader 
+            className="cursor-pointer"
+            onClick={() => setShowReraDetails(!showReraDetails)}
+          >
+            <CardTitle className="flex items-center justify-between text-orange-600">
+              <div className="flex items-center">
+                <CheckCircle className="mr-2 h-5 w-5" />
+                RERA Registration
+              </div>
+              <div className="text-sm">
+                {showReraDetails ? '▼' : '▶'}
+              </div>
+            </CardTitle>
+          </CardHeader>
+          {showReraDetails && (
+            <CardContent className="space-y-4">
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id="rera"
+                  checked={isReraRegistered}
+                  onCheckedChange={handleReraToggle}
+                />
+                <Label htmlFor="rera">RERA Registered Property</Label>
+              </div>
+              
+              {isReraRegistered && (
+                <div className="p-4 bg-blue-50 rounded-lg border border-blue-200">
+                  <p className="text-sm text-blue-800">
+                    RERA registration provides additional legal protection and transparency for buyers.
+                    Please ensure all area measurements comply with RERA carpet area guidelines.
+                  </p>
+                </div>
+              )}
+            </CardContent>
           )}
-        </Button>
-      </div>
-    </form>
+        </Card>
+
+        {/* Pricing & Area */}
+        <Card className="border-orange-200">
+          <CardHeader>
+            <CardTitle className="flex items-center text-orange-600">
+              <DollarSign className="mr-2 h-5 w-5" />
+              Pricing & Area
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div>
+              <Label htmlFor="price">Price (₹) *</Label>
+              <Input
+                id="price"
+                type="number"
+                {...register('price', { valueAsNumber: true })}
+                placeholder="Enter price in rupees"
+                className="border-orange-200 focus:border-orange-500 h-11 sm:h-12"
+              />
+              {errors.price && <p className="text-red-500 text-sm mt-1">{errors.price.message}</p>}
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <Label htmlFor="area">
+                  {isReraRegistered ? 'RERA Carpet Area *' : 'Area *'}
+                </Label>
+                <Input
+                  id="area"
+                  type="number"
+                  {...register('area', { valueAsNumber: true })}
+                  placeholder="Enter area"
+                  className="border-orange-200 focus:border-orange-500 h-11 sm:h-12"
+                />
+                {errors.area && <p className="text-red-500 text-sm mt-1">{errors.area.message}</p>}
+              </div>
+
+              <div>
+                <Label>Unit *</Label>
+                <Select onValueChange={(value) => setValue('unit', value)}>
+                  <SelectTrigger className="border-orange-200 focus:border-orange-500 h-11 sm:h-12">
+                    <SelectValue placeholder="Select unit" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="sq-ft">sq.ft</SelectItem>
+                    <SelectItem value="sq-m">sq.m</SelectItem>
+                    <SelectItem value="acres">acres</SelectItem>
+                    <SelectItem value="gaj">gaj</SelectItem>
+                    <SelectItem value="bigha">bigha</SelectItem>
+                    <SelectItem value="hectare">hectare</SelectItem>
+                    <SelectItem value="kanal">kanal</SelectItem>
+                    <SelectItem value="marla">marla</SelectItem>
+                  </SelectContent>
+                </Select>
+                {errors.unit && <p className="text-red-500 text-sm mt-1">{errors.unit.message}</p>}
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Location */}
+        <Card className="border-orange-200">
+          <CardHeader>
+            <CardTitle className="flex items-center text-orange-600">
+              <MapPin className="mr-2 h-5 w-5" />
+              Location Details
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <Label htmlFor="city">City *</Label>
+                <Input
+                  id="city"
+                  {...register('city')}
+                  placeholder="e.g., Mumbai"
+                  className="border-orange-200 focus:border-orange-500 h-11 sm:h-12"
+                />
+                {errors.city && <p className="text-red-500 text-sm mt-1">{errors.city.message}</p>}
+              </div>
+
+              <div>
+                <Label htmlFor="locality">Locality *</Label>
+                <Input
+                  id="locality"
+                  {...register('locality')}
+                  placeholder="e.g., Bandra West"
+                  className="border-orange-200 focus:border-orange-500 h-11 sm:h-12"
+                />
+                {errors.locality && <p className="text-red-500 text-sm mt-1">{errors.locality.message}</p>}
+              </div>
+            </div>
+
+            <div>
+              <Label htmlFor="address">Full Address *</Label>
+              <Textarea
+                id="address"
+                {...register('address')}
+                placeholder="Enter complete address with landmarks"
+                rows={3}
+                className="border-orange-200 focus:border-orange-500"
+              />
+              {errors.address && <p className="text-red-500 text-sm mt-1">{errors.address.message}</p>}
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Desktop Submit Buttons */}
+        <div className="hidden sm:flex justify-end space-x-4">
+          <Button
+            type="button"
+            variant="outline"
+            className="border-orange-300 text-orange-600 hover:bg-orange-50 h-11 sm:h-12"
+          >
+            Save Draft
+          </Button>
+          <Button
+            type="submit"
+            disabled={isSubmitting}
+            className="bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-white shadow-lg hover:shadow-xl transition-all duration-300 h-11 sm:h-12"
+          >
+            {isSubmitting ? (
+              <>
+                <Upload className="mr-2 h-4 w-4 animate-spin" />
+                Creating...
+              </>
+            ) : (
+              <>
+                <CheckCircle className="mr-2 h-4 w-4" />
+                Create Listing
+              </>
+            )}
+          </Button>
+        </div>
+      </form>
+
+      {/* Mobile Sticky Submit Bar */}
+      <StickyReviewSubmitBar
+        onReview={() => {
+          // Scroll to top for review
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }}
+        onSubmit={handleSubmit(onSubmit)}
+        isSubmitting={isSubmitting}
+        canSubmit={true}
+      />
+    </>
   );
 };

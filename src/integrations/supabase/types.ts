@@ -1063,10 +1063,13 @@ export type Database = {
           credits_used: number | null
           followup_message: string
           followup_type: string | null
+          followup_variant: string | null
           id: string
+          is_scheduled: boolean | null
           is_sent: boolean | null
           lead_id: string | null
           scheduled_date: string | null
+          sent_at: string | null
         }
         Insert: {
           agent_id?: string | null
@@ -1074,10 +1077,13 @@ export type Database = {
           credits_used?: number | null
           followup_message: string
           followup_type?: string | null
+          followup_variant?: string | null
           id?: string
+          is_scheduled?: boolean | null
           is_sent?: boolean | null
           lead_id?: string | null
           scheduled_date?: string | null
+          sent_at?: string | null
         }
         Update: {
           agent_id?: string | null
@@ -1085,10 +1091,13 @@ export type Database = {
           credits_used?: number | null
           followup_message?: string
           followup_type?: string | null
+          followup_variant?: string | null
           id?: string
+          is_scheduled?: boolean | null
           is_sent?: boolean | null
           lead_id?: string | null
           scheduled_date?: string | null
+          sent_at?: string | null
         }
         Relationships: [
           {
@@ -2873,6 +2882,7 @@ export type Database = {
       }
       ai_seo_overrides: {
         Row: {
+          auto_updated: boolean | null
           created_at: string
           description: string | null
           id: string
@@ -2883,6 +2893,7 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          auto_updated?: boolean | null
           created_at?: string
           description?: string | null
           id?: string
@@ -2893,6 +2904,7 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          auto_updated?: boolean | null
           created_at?: string
           description?: string | null
           id?: string
@@ -3762,6 +3774,117 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "communication_logs_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      communities: {
+        Row: {
+          city: string
+          created_at: string | null
+          id: string
+          monthly_fee: number | null
+          name: string
+          role_access: string
+          state: string
+        }
+        Insert: {
+          city: string
+          created_at?: string | null
+          id?: string
+          monthly_fee?: number | null
+          name: string
+          role_access: string
+          state: string
+        }
+        Update: {
+          city?: string
+          created_at?: string | null
+          id?: string
+          monthly_fee?: number | null
+          name?: string
+          role_access?: string
+          state?: string
+        }
+        Relationships: []
+      }
+      community_memberships: {
+        Row: {
+          community_id: string | null
+          expires_at: string | null
+          id: string
+          joined_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          community_id?: string | null
+          expires_at?: string | null
+          id?: string
+          joined_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          community_id?: string | null
+          expires_at?: string | null
+          id?: string
+          joined_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "community_memberships_community_id_fkey"
+            columns: ["community_id"]
+            isOneToOne: false
+            referencedRelation: "communities"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "community_memberships_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      community_messages: {
+        Row: {
+          ai_flagged: boolean | null
+          community_id: string | null
+          created_at: string | null
+          id: string
+          message: string
+          user_id: string | null
+        }
+        Insert: {
+          ai_flagged?: boolean | null
+          community_id?: string | null
+          created_at?: string | null
+          id?: string
+          message: string
+          user_id?: string | null
+        }
+        Update: {
+          ai_flagged?: boolean | null
+          community_id?: string | null
+          created_at?: string | null
+          id?: string
+          message?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "community_messages_community_id_fkey"
+            columns: ["community_id"]
+            isOneToOne: false
+            referencedRelation: "communities"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "community_messages_user_id_fkey"
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "users"

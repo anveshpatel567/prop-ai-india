@@ -14,7 +14,7 @@ serve(async (req) => {
   }
 
   try {
-    const { path, entityId } = await req.json();
+    const { path, entityId, triggerType = 'manual' } = await req.json();
 
     const openAIApiKey = Deno.env.get('OPENAI_API_KEY');
     if (!openAIApiKey) {
@@ -31,7 +31,6 @@ serve(async (req) => {
     // Get context data based on path
     let contextData = '';
     if (path.startsWith('/property/') && entityId) {
-      // Get listing details for property pages
       const { data: listing } = await supabaseClient
         .from('listings')
         .select('title, description, property_type, city, price, bedrooms, bathrooms')
@@ -55,6 +54,7 @@ serve(async (req) => {
 
 Page: ${path}
 Context: ${contextData}
+Trigger: ${triggerType}
 
 Requirements:
 - Title: 50-60 characters, include "FreePropList" brand, location if relevant
@@ -94,7 +94,7 @@ Return JSON format:
     // Parse the JSON response
     const metadata = JSON.parse(aiResponse);
 
-    // Save to database if valid
+    // Save to database with auto_updated flag
     if (metadata.title && metadata.description) {
       const { error } = await supabaseClient
         .from('ai_seo_overrides')
@@ -103,6 +103,7 @@ Return JSON format:
           title: metadata.title,
           description: metadata.description,
           keywords: metadata.keywords,
+          auto_updated: triggerType === 'auto',
           source: 'gpt'
         });
 
