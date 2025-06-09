@@ -1,7 +1,6 @@
 
 import React from 'react';
 import { Badge } from '@/components/ui/badge';
-import { Percent, Gift } from 'lucide-react';
 
 interface OfferBadgeProps {
   discountPercent?: number;
@@ -16,8 +15,7 @@ export const OfferBadge: React.FC<OfferBadgeProps> = ({
 }) => {
   if (discountPercent) {
     return (
-      <Badge className={`bg-gradient-to-r from-lime-400 to-green-500 text-white ${className}`}>
-        <Percent className="h-3 w-3 mr-1" />
+      <Badge className={`bg-gradient-to-r from-[#ff6a00] via-[#ff3c00] to-[#ff0000] text-white ${className}`}>
         {discountPercent}% OFF
       </Badge>
     );
@@ -25,8 +23,7 @@ export const OfferBadge: React.FC<OfferBadgeProps> = ({
 
   if (offerText) {
     return (
-      <Badge className={`bg-gradient-to-r from-orange-500 to-red-500 text-white ${className}`}>
-        <Gift className="h-3 w-3 mr-1" />
+      <Badge className={`bg-gradient-to-r from-[#ff6a00] via-[#ff3c00] to-[#ff0000] text-white ${className}`}>
         {offerText}
       </Badge>
     );

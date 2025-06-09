@@ -1,7 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
 import { Badge } from '@/components/ui/badge';
-import { Wallet, Zap } from 'lucide-react';
 import { useWallet } from '@/context/WalletContext';
 import { cn } from '@/lib/utils';
 
@@ -13,7 +12,7 @@ export const StickyWalletBadge: React.FC = () => {
   const currentBalance = balance?.balance || 0;
 
   useEffect(() => {
-    const lowThreshold = 50; // Credits below which we consider "low"
+    const lowThreshold = 50;
     const newIsLow = currentBalance < lowThreshold;
     
     if (newIsLow && !isLow) {
@@ -31,15 +30,11 @@ export const StickyWalletBadge: React.FC = () => {
       <Badge
         variant={isLow ? "destructive" : "secondary"}
         className={cn(
-          "flex items-center gap-1 px-3 py-1 text-sm font-medium shadow-lg",
-          shouldAnimate && "animate-pulse"
+          "flex items-center gap-1 px-3 py-1 text-sm font-medium shadow-[0_0_30px_rgba(255,102,0,0.45)]",
+          shouldAnimate && "animate-fiery-glow"
         )}
       >
-        {isLow ? (
-          <Zap className="h-3 w-3" />
-        ) : (
-          <Wallet className="h-3 w-3" />
-        )}
+        <span className="text-[#ff4500] font-bold">₹</span>
         <span>{currentBalance} credits</span>
       </Badge>
     </div>

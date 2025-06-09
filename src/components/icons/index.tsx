@@ -1,35 +1,51 @@
 
 import React from 'react';
-import { Building2, Search, FileText, Shield, Zap, Brain, Scan, Users } from 'lucide-react';
 
-export const BuildingIcon: React.FC<{ className?: string }> = ({ className = "w-8 h-8" }) => (
-  <Building2 className={className} />
+// All icons removed - using text-based indicators only
+export const BuildingPlaceholder: React.FC<{ className?: string }> = ({ className = "w-8 h-8" }) => (
+  <div className={`${className} bg-gradient-to-r from-[#ff6a00] via-[#ff3c00] to-[#ff0000] rounded-full flex items-center justify-center text-white font-bold`}>
+    B
+  </div>
 );
 
-export const SearchIcon: React.FC<{ className?: string }> = ({ className = "w-8 h-8" }) => (
-  <Search className={className} />
+export const SearchPlaceholder: React.FC<{ className?: string }> = ({ className = "w-8 h-8" }) => (
+  <div className={`${className} bg-gradient-to-r from-[#ff6a00] via-[#ff3c00] to-[#ff0000] rounded-full flex items-center justify-center text-white font-bold`}>
+    S
+  </div>
 );
 
-export const DocumentIcon: React.FC<{ className?: string }> = ({ className = "w-8 h-8" }) => (
-  <FileText className={className} />
+export const DocumentPlaceholder: React.FC<{ className?: string }> = ({ className = "w-8 h-8" }) => (
+  <div className={`${className} bg-gradient-to-r from-[#ff6a00] via-[#ff3c00] to-[#ff0000] rounded-full flex items-center justify-center text-white font-bold`}>
+    D
+  </div>
 );
 
-export const ShieldIcon: React.FC<{ className?: string }> = ({ className = "w-8 h-8" }) => (
-  <Shield className={className} />
+export const ShieldPlaceholder: React.FC<{ className?: string }> = ({ className = "w-8 h-8" }) => (
+  <div className={`${className} bg-gradient-to-r from-[#ff6a00] via-[#ff3c00] to-[#ff0000] rounded-full flex items-center justify-center text-white font-bold`}>
+    P
+  </div>
 );
 
-export const ZapIcon: React.FC<{ className?: string }> = ({ className = "w-8 h-8" }) => (
-  <Zap className={className} />
+export const ZapPlaceholder: React.FC<{ className?: string }> = ({ className = "w-8 h-8" }) => (
+  <div className={`${className} bg-gradient-to-r from-[#ff6a00] via-[#ff3c00] to-[#ff0000] rounded-full flex items-center justify-center text-white font-bold`}>
+    Z
+  </div>
 );
 
-export const BrainIcon: React.FC<{ className?: string }> = ({ className = "w-8 h-8" }) => (
-  <Brain className={className} />
+export const BrainPlaceholder: React.FC<{ className?: string }> = ({ className = "w-8 h-8" }) => (
+  <div className={`${className} bg-gradient-to-r from-[#ff6a00] via-[#ff3c00] to-[#ff0000] rounded-full flex items-center justify-center text-white font-bold`}>
+    AI
+  </div>
 );
 
-export const ScanIcon: React.FC<{ className?: string }> = ({ className = "w-8 h-8" }) => (
-  <Scan className={className} />
+export const ScanPlaceholder: React.FC<{ className?: string }> = ({ className = "w-8 h-8" }) => (
+  <div className={`${className} bg-gradient-to-r from-[#ff6a00] via-[#ff3c00] to-[#ff0000] rounded-full flex items-center justify-center text-white font-bold`}>
+    SC
+  </div>
 );
 
-export const UsersIcon: React.FC<{ className?: string }> = ({ className = "w-8 h-8" }) => (
-  <Users className={className} />
+export const UsersPlaceholder: React.FC<{ className?: string }> = ({ className = "w-8 h-8" }) => (
+  <div className={`${className} bg-gradient-to-r from-[#ff6a00] via-[#ff3c00] to-[#ff0000] rounded-full flex items-center justify-center text-white font-bold`}>
+    U
+  </div>
 );
