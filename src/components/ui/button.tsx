@@ -10,11 +10,11 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: "bg-gradient-to-r from-[#ff6a00] via-[#ff3c00] to-[#ff0000] text-white hover:from-[#ff3c00] hover:to-[#ff6a00] shadow-[0_0_30px_rgba(255,102,0,0.45)] hover:shadow-[0_0_40px_rgba(255,102,0,0.6)]",
-        destructive: "bg-gradient-to-r from-[#ff0000] to-[#ff3c00] text-white hover:from-[#ff3c00] hover:to-[#ff0000]",
-        outline: "border border-[#ff4500] bg-[#fff7f0] text-[#ff4500] hover:bg-gradient-to-r hover:from-[#ff3c00] hover:to-[#ff6a00] hover:text-white",
-        secondary: "bg-[#fff7f0] text-[#ff4500] hover:bg-gradient-to-r hover:from-[#ff6a00] hover:to-[#ff3c00] hover:text-white",
-        ghost: "text-[#ff4500] hover:bg-gradient-to-r hover:from-[#ff6a00] hover:to-[#ff3c00] hover:text-white",
+        default: "bg-gradient-to-r from-[#ff6a00] via-[#ff3c00] to-[#ff0000] text-[#fff7f0] hover:from-[#ff3c00] hover:to-[#ff6a00] shadow-[0_0_30px_rgba(255,102,0,0.45)] hover:shadow-[0_0_40px_rgba(255,102,0,0.6)]",
+        destructive: "bg-gradient-to-r from-[#ff0000] to-[#ff3c00] text-[#fff7f0] hover:from-[#ff3c00] hover:to-[#ff0000]",
+        outline: "border border-[#ff4500] bg-[#fff7f0] text-[#ff4500] hover:bg-gradient-to-r hover:from-[#ff3c00] hover:to-[#ff6a00] hover:text-[#fff7f0]",
+        secondary: "bg-[#fff7f0] text-[#ff4500] hover:bg-gradient-to-r hover:from-[#ff6a00] hover:to-[#ff3c00] hover:text-[#fff7f0]",
+        ghost: "text-[#ff4500] hover:bg-gradient-to-r hover:from-[#ff6a00] hover:to-[#ff3c00] hover:text-[#fff7f0]",
         link: "text-[#ff4500] underline-offset-4 hover:underline",
       },
       size: {

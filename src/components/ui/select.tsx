@@ -26,7 +26,7 @@ const SelectTrigger = React.forwardRef<
     {children}
     <SelectPrimitive.Icon asChild>
       <div className="w-4 h-4 bg-gradient-to-r from-[#ff6a00] to-[#ff0000] rounded flex items-center justify-center">
-        <span className="text-white text-xs">▼</span>
+        <span className="text-[#fff7f0] text-xs">▼</span>
       </div>
     </SelectPrimitive.Icon>
   </SelectPrimitive.Trigger>
@@ -46,7 +46,7 @@ const SelectScrollUpButton = React.forwardRef<
     {...props}
   >
     <div className="w-4 h-4 bg-gradient-to-r from-[#ff6a00] to-[#ff0000] rounded flex items-center justify-center">
-      <span className="text-white text-xs">▲</span>
+      <span className="text-[#fff7f0] text-xs">▲</span>
     </div>
   </SelectPrimitive.ScrollUpButton>
 ))
@@ -65,7 +65,7 @@ const SelectScrollDownButton = React.forwardRef<
     {...props}
   >
     <div className="w-4 h-4 bg-gradient-to-r from-[#ff6a00] to-[#ff0000] rounded flex items-center justify-center">
-      <span className="text-white text-xs">▼</span>
+      <span className="text-[#fff7f0] text-xs">▼</span>
     </div>
   </SelectPrimitive.ScrollDownButton>
 ))
@@ -130,7 +130,7 @@ const SelectItem = React.forwardRef<
     <span className="absolute left-2 flex h-3.5 w-3.5 items-center justify-center">
       <SelectPrimitive.ItemIndicator>
         <div className="w-3 h-3 bg-gradient-to-r from-[#ff6a00] to-[#ff0000] rounded flex items-center justify-center">
-          <span className="text-white text-xs">✓</span>
+          <span className="text-[#fff7f0] text-xs">✓</span>
         </div>
       </SelectPrimitive.ItemIndicator>
     </span>

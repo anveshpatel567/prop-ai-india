@@ -53,13 +53,13 @@ export const HeroSection: React.FC = () => {
               {/* CTA Buttons */}
               <div className="flex flex-col sm:flex-row gap-4">
                 <Link to="/search">
-                  <button className="w-full sm:w-auto bg-gradient-to-r from-[#ff6a00] via-[#ff3c00] to-[#ff0000] text-white font-bold py-4 px-8 rounded-xl shadow-[0_0_30px_rgba(255,102,0,0.45)] hover:shadow-[0_0_40px_rgba(255,102,0,0.6)] transition-all duration-300 transform hover:scale-105 font-rajdhani">
+                  <button className="w-full sm:w-auto bg-gradient-to-r from-[#ff6a00] via-[#ff3c00] to-[#ff0000] text-[#fff7f0] font-bold py-4 px-8 rounded-xl shadow-[0_0_30px_rgba(255,102,0,0.45)] hover:shadow-[0_0_40px_rgba(255,102,0,0.6)] transition-all duration-300 transform hover:scale-105 font-rajdhani">
                     Explore Listings with AI
                   </button>
                 </Link>
                 
                 <Link to="/list-property">
-                  <button className="w-full sm:w-auto bg-[#fff7f0] border-2 border-[#ff4500] text-[#ff4500] font-bold py-4 px-8 rounded-xl hover:bg-gradient-to-r hover:from-[#ff6a00] hover:to-[#ff0000] hover:text-white transition-all duration-300 font-rajdhani">
+                  <button className="w-full sm:w-auto bg-[#fff7f0] border-2 border-[#ff4500] text-[#ff4500] font-bold py-4 px-8 rounded-xl hover:bg-gradient-to-r hover:from-[#ff6a00] hover:to-[#ff0000] hover:text-[#fff7f0] transition-all duration-300 font-rajdhani">
                     List Your Property
                   </button>
                 </Link>
@@ -68,16 +68,16 @@ export const HeroSection: React.FC = () => {
               {/* Trust indicators */}
               <div className="flex items-center space-x-6 pt-4">
                 <div className="flex items-center space-x-2">
-                  <div className="w-6 h-6 bg-gradient-to-r from-[#ff6a00] to-[#ff0000] rounded-full flex items-center justify-center">
-                    <span className="text-white text-xs font-bold">R</span>
+                  <div className="w-8 h-8 bg-gradient-to-r from-[#ff6a00] via-[#ff3c00] to-[#ff0000] rounded-full flex items-center justify-center shadow-[0_0_20px_rgba(255,102,0,0.45)]">
+                    <span className="text-[#fff7f0] text-sm font-bold">🔐</span>
                   </div>
-                  <span className="bg-gradient-to-r from-[#ff6a00] to-[#ff0000] text-white px-3 py-1 text-sm rounded-full font-rajdhani font-medium">
+                  <span className="bg-gradient-to-r from-[#ff6a00] to-[#ff0000] text-[#fff7f0] px-3 py-1 text-sm rounded-full font-rajdhani font-medium">
                     RERA Verified
                   </span>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <div className="w-6 h-6 bg-gradient-to-r from-[#ff6a00] to-[#ff0000] rounded-full flex items-center justify-center">
-                    <span className="text-white text-xs font-bold">AI</span>
+                  <div className="w-8 h-8 bg-gradient-to-r from-[#ff6a00] via-[#ff3c00] to-[#ff0000] rounded-full flex items-center justify-center shadow-[0_0_20px_rgba(255,102,0,0.45)]">
+                    <span className="text-[#fff7f0] text-sm font-bold">⚡</span>
                   </div>
                   <span className="text-[#8b4513] text-sm font-rajdhani">AI-Powered Analytics</span>
                 </div>
@@ -92,7 +92,7 @@ export const HeroSection: React.FC = () => {
                 <div className="flex items-center justify-between mb-6">
                   <h3 className="font-orbitron text-xl font-bold text-[#2d0000]">AI Analytics Dashboard</h3>
                   <div className="w-4 h-4 bg-gradient-to-br from-[#ff6a00] to-[#ff0000] rounded-full flex items-center justify-center">
-                    <div className="w-2 h-2 bg-white rounded-full animate-pulse"></div>
+                    <div className="w-2 h-2 bg-[#fff7f0] rounded-full animate-pulse"></div>
                   </div>
                 </div>
 
@@ -137,28 +137,28 @@ export const HeroSection: React.FC = () => {
           
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             <AiFeatureCard
-              icon={<div className="w-8 h-8 bg-gradient-to-r from-[#ff6a00] to-[#ff0000] rounded-full flex items-center justify-center text-white font-bold">S</div>}
+              icon={<div className="w-8 h-8 bg-gradient-to-r from-[#ff6a00] to-[#ff0000] rounded-full flex items-center justify-center text-[#fff7f0] font-bold">S</div>}
               title="Smart Search"
               description="AI-powered property matching based on your preferences and behavior patterns"
               category="intelligence"
               href="#search"
             />
             <AiFeatureCard
-              icon={<div className="w-8 h-8 bg-gradient-to-r from-[#ff6a00] to-[#ff0000] rounded-full flex items-center justify-center text-white font-bold">V</div>}
+              icon={<div className="w-8 h-8 bg-gradient-to-r from-[#ff6a00] to-[#ff0000] rounded-full flex items-center justify-center text-[#fff7f0] font-bold">V</div>}
               title="Document Verification"
               description="Automated verification of property documents and legal compliance"
               category="verification"
               href="#listing"
             />
             <AiFeatureCard
-              icon={<div className="w-8 h-8 bg-gradient-to-r from-[#ff6a00] to-[#ff0000] rounded-full flex items-center justify-center text-white font-bold">P</div>}
+              icon={<div className="w-8 h-8 bg-gradient-to-r from-[#ff6a00] to-[#ff0000] rounded-full flex items-center justify-center text-[#fff7f0] font-bold">P</div>}
               title="Price Prediction"
               description="Machine learning algorithms predict accurate property valuations"
               category="analysis"
               href="#compare"
             />
             <AiFeatureCard
-              icon={<div className="w-8 h-8 bg-gradient-to-r from-[#ff6a00] to-[#ff0000] rounded-full flex items-center justify-center text-white font-bold">L</div>}
+              icon={<div className="w-8 h-8 bg-gradient-to-r from-[#ff6a00] to-[#ff0000] rounded-full flex items-center justify-center text-[#fff7f0] font-bold">L</div>}
               title="Lead Intelligence"
               description="Automated lead scoring and buyer-seller matching system"
               category="automation"
