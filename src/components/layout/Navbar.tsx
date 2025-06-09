@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/context/AuthContext';
 import { UserWalletBadge } from '@/components/common/UserWalletBadge';
+import { LayoutDashboard, Brain, BarChart3, Settings, User, LogOut } from 'lucide-react';
 
 export const Navbar: React.FC = () => {
   const { user, logout } = useAuth();
@@ -27,27 +28,32 @@ export const Navbar: React.FC = () => {
           <div className="flex items-center space-x-6">
             {user ? (
               <>
-                <Link to="/dashboard" className="flex items-center space-x-1 text-[#ff4500] hover:text-[#2d0000] transition-colors">
+                <Link to="/dashboard" className="flex items-center space-x-2 text-[#ff4500] hover:text-[#2d0000] transition-colors hover:scale-105 duration-200">
+                  <LayoutDashboard className="h-5 w-5" />
                   <span className="hidden sm:inline">Dashboard</span>
                 </Link>
                 
-                <Link to="/ai" className="flex items-center space-x-1 text-[#ff4500] hover:text-[#2d0000] transition-colors">
+                <Link to="/ai" className="flex items-center space-x-2 text-[#ff4500] hover:text-[#2d0000] transition-colors hover:scale-105 duration-200">
+                  <Brain className="h-5 w-5" />
                   <span className="hidden sm:inline">AI Tools</span>
                 </Link>
 
-                <Link to="/my-ai-usage" className="flex items-center space-x-1 text-[#ff4500] hover:text-[#2d0000] transition-colors">
+                <Link to="/my-ai-usage" className="flex items-center space-x-2 text-[#ff4500] hover:text-[#2d0000] transition-colors hover:scale-105 duration-200">
+                  <BarChart3 className="h-5 w-5" />
                   <span className="hidden sm:inline">Usage</span>
                 </Link>
 
                 {user.role === 'admin' && (
-                  <Link to="/admin" className="flex items-center space-x-1 text-[#ff4500] hover:text-[#2d0000] transition-colors">
+                  <Link to="/admin" className="flex items-center space-x-2 text-[#ff4500] hover:text-[#2d0000] transition-colors hover:scale-105 duration-200">
+                    <Settings className="h-5 w-5" />
                     <span className="hidden sm:inline">Admin</span>
                   </Link>
                 )}
 
                 <UserWalletBadge />
 
-                <Link to="/profile" className="flex items-center space-x-1 text-[#ff4500] hover:text-[#2d0000] transition-colors">
+                <Link to="/profile" className="flex items-center space-x-2 text-[#ff4500] hover:text-[#2d0000] transition-colors hover:scale-105 duration-200">
+                  <User className="h-5 w-5" />
                   <span className="hidden sm:inline">Profile</span>
                 </Link>
 
@@ -56,6 +62,7 @@ export const Navbar: React.FC = () => {
                   className="bg-gradient-to-r from-[#ff6a00] via-[#ff3c00] to-[#ff0000] text-[#fff7f0] hover:from-[#ff3c00] hover:to-[#ff6a00] shadow-[0_0_30px_rgba(255,102,0,0.45)] hover:shadow-[0_0_40px_rgba(255,102,0,0.6)] transition-all duration-300 transform hover:scale-105"
                   size="sm"
                 >
+                  <LogOut className="h-4 w-4 mr-1" />
                   <span className="hidden sm:inline">Logout</span>
                   <span className="sm:hidden">Exit</span>
                 </Button>

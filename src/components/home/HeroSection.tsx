@@ -2,6 +2,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { AiFeatureCard } from './AiFeatureCard';
+import { Shield, Zap, CheckCircle, TrendingUp } from 'lucide-react';
 
 export const HeroSection: React.FC = () => {
   return (
@@ -67,17 +68,17 @@ export const HeroSection: React.FC = () => {
 
               {/* Trust indicators */}
               <div className="flex items-center space-x-6 pt-4">
-                <div className="flex items-center space-x-2">
+                <div className="flex items-center space-x-2 hover:scale-105 transition-all duration-200">
                   <div className="w-8 h-8 bg-gradient-to-r from-[#ff6a00] via-[#ff3c00] to-[#ff0000] rounded-full flex items-center justify-center shadow-[0_0_20px_rgba(255,102,0,0.45)]">
-                    <span className="text-[#fff7f0] text-sm font-bold">🔐</span>
+                    <Shield className="h-4 w-4 text-[#fff7f0]" />
                   </div>
                   <span className="bg-gradient-to-r from-[#ff6a00] to-[#ff0000] text-[#fff7f0] px-3 py-1 text-sm rounded-full font-rajdhani font-medium">
                     RERA Verified
                   </span>
                 </div>
-                <div className="flex items-center space-x-2">
+                <div className="flex items-center space-x-2 hover:scale-105 transition-all duration-200">
                   <div className="w-8 h-8 bg-gradient-to-r from-[#ff6a00] via-[#ff3c00] to-[#ff0000] rounded-full flex items-center justify-center shadow-[0_0_20px_rgba(255,102,0,0.45)]">
-                    <span className="text-[#fff7f0] text-sm font-bold">⚡</span>
+                    <Zap className="h-4 w-4 text-[#fff7f0]" />
                   </div>
                   <span className="text-[#8b4513] text-sm font-rajdhani">AI-Powered Analytics</span>
                 </div>
@@ -98,15 +99,15 @@ export const HeroSection: React.FC = () => {
 
                 {/* Mock AI metrics */}
                 <div className="space-y-4 mb-8">
-                  <div className="flex justify-between items-center p-3 bg-white/10 backdrop-blur-xl border border-[#ff4500]/30 rounded-xl">
+                  <div className="flex justify-between items-center p-3 bg-white/10 backdrop-blur-xl border border-[#ff4500]/30 rounded-xl hover:scale-105 transition-all duration-200">
                     <span className="font-rajdhani text-[#8b4513]">Market Analysis</span>
                     <span className="text-[#ff4500] font-orbitron font-bold">98.5%</span>
                   </div>
-                  <div className="flex justify-between items-center p-3 bg-white/10 backdrop-blur-xl border border-[#ff4500]/30 rounded-xl">
+                  <div className="flex justify-between items-center p-3 bg-white/10 backdrop-blur-xl border border-[#ff4500]/30 rounded-xl hover:scale-105 transition-all duration-200">
                     <span className="font-rajdhani text-[#8b4513]">Price Prediction</span>
                     <span className="text-[#ff4500] font-orbitron font-bold">₹47.2L</span>
                   </div>
-                  <div className="flex justify-between items-center p-3 bg-white/10 backdrop-blur-xl border border-[#ff4500]/30 rounded-xl">
+                  <div className="flex justify-between items-center p-3 bg-white/10 backdrop-blur-xl border border-[#ff4500]/30 rounded-xl hover:scale-105 transition-all duration-200">
                     <span className="font-rajdhani text-[#8b4513]">Investment Score</span>
                     <span className="text-[#ff4500] font-orbitron font-bold">9.2/10</span>
                   </div>
@@ -137,28 +138,28 @@ export const HeroSection: React.FC = () => {
           
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             <AiFeatureCard
-              icon={<div className="w-8 h-8 bg-gradient-to-r from-[#ff6a00] to-[#ff0000] rounded-full flex items-center justify-center text-[#fff7f0] font-bold">S</div>}
+              icon={<Brain className="h-6 w-6 text-white" />}
               title="Smart Search"
               description="AI-powered property matching based on your preferences and behavior patterns"
               category="intelligence"
               href="#search"
             />
             <AiFeatureCard
-              icon={<div className="w-8 h-8 bg-gradient-to-r from-[#ff6a00] to-[#ff0000] rounded-full flex items-center justify-center text-[#fff7f0] font-bold">V</div>}
+              icon={<CheckCircle className="h-6 w-6 text-white" />}
               title="Document Verification"
               description="Automated verification of property documents and legal compliance"
               category="verification"
               href="#listing"
             />
             <AiFeatureCard
-              icon={<div className="w-8 h-8 bg-gradient-to-r from-[#ff6a00] to-[#ff0000] rounded-full flex items-center justify-center text-[#fff7f0] font-bold">P</div>}
+              icon={<TrendingUp className="h-6 w-6 text-white" />}
               title="Price Prediction"
               description="Machine learning algorithms predict accurate property valuations"
               category="analysis"
               href="#compare"
             />
             <AiFeatureCard
-              icon={<div className="w-8 h-8 bg-gradient-to-r from-[#ff6a00] to-[#ff0000] rounded-full flex items-center justify-center text-[#fff7f0] font-bold">L</div>}
+              icon={<Zap className="h-6 w-6 text-white" />}
               title="Lead Intelligence"
               description="Automated lead scoring and buyer-seller matching system"
               category="automation"

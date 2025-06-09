@@ -1,43 +1,44 @@
 
 import React from 'react';
 import { GlassCard } from '../layout/GlassCard';
+import { Search, FileText, MapPin, Sparkles, BarChart3, Video } from 'lucide-react';
 
 export const AiTeaserCards: React.FC = () => {
   const aiFeatures = [
     {
       title: 'Smart Property Search',
       description: 'Just describe what you want in plain English. Our AI finds the perfect matches.',
-      icon: '🔍',
+      icon: <Search className="h-6 w-6 text-blue-600" />,
       cost: '8 credits'
     },
     {
       title: 'Brochure AI Parser',
       description: 'Upload property brochures and let AI extract all details automatically.',
-      icon: '📄',
+      icon: <FileText className="h-6 w-6 text-green-600" />,
       cost: '10 credits'
     },
     {
       title: 'Location Intelligence',
       description: 'Get detailed insights about schools, hospitals, and amenities nearby.',
-      icon: '📍',
+      icon: <MapPin className="h-6 w-6 text-purple-600" />,
       cost: '6 credits'
     },
     {
       title: 'AI Title Generator',
       description: 'Create compelling property titles that attract more buyers.',
-      icon: '✨',
+      icon: <Sparkles className="h-6 w-6 text-orange-600" />,
       cost: '5 credits'
     },
     {
       title: 'Lead Scoring AI',
       description: 'Automatically score and prioritize leads for maximum conversion.',
-      icon: '📊',
+      icon: <BarChart3 className="h-6 w-6 text-red-600" />,
       cost: '12 credits'
     },
     {
       title: 'Video Generator',
       description: 'Transform property photos into engaging video presentations.',
-      icon: '🎥',
+      icon: <Video className="h-6 w-6 text-indigo-600" />,
       cost: '20 credits'
     }
   ];
@@ -57,8 +58,8 @@ export const AiTeaserCards: React.FC = () => {
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {aiFeatures.map((feature, index) => (
-            <GlassCard key={index} className="text-center space-y-4">
-              <div className="text-4xl mb-4">{feature.icon}</div>
+            <GlassCard key={index} className="text-center space-y-4 hover:scale-105 transition-all duration-200">
+              <div className="flex justify-center mb-4">{feature.icon}</div>
               <h3 className="text-xl font-semibold text-gray-800">{feature.title}</h3>
               <p className="text-gray-600">{feature.description}</p>
               <div className="glass-card bg-orange-50 border-orange-200 py-2 px-4 inline-block rounded-full">
@@ -69,7 +70,7 @@ export const AiTeaserCards: React.FC = () => {
         </div>
 
         <div className="text-center mt-12">
-          <div className="glass-card inline-block p-6 border-2 border-orange-200">
+          <div className="glass-card inline-block p-6 border-2 border-orange-200 hover:scale-105 transition-all duration-200">
             <div className="flex items-center space-x-4">
               <div className="text-3xl">💳</div>
               <div>

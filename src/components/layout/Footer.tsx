@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { Search, Plus, Brain, FileText, DollarSign, Video, Shield, MapPin, HelpCircle, FileCheck, Cookie, Phone, Mail, MapPin as Location } from 'lucide-react';
 
 export const Footer: React.FC = () => {
   const handleMissingLink = (path: string) => {
@@ -24,16 +25,16 @@ export const Footer: React.FC = () => {
                 India's premier AI-enhanced real estate platform. Find your dream property with smart search and verified listings.
               </p>
               <div className="space-y-2 text-sm text-[#8b4513]">
-                <div className="flex items-center space-x-2">
-                  <span>📧</span>
+                <div className="flex items-center space-x-2 hover:scale-105 transition-all duration-200">
+                  <Mail className="h-4 w-4" />
                   <span>info@freeproplist.com</span>
                 </div>
-                <div className="flex items-center space-x-2">
-                  <span>📞</span>
+                <div className="flex items-center space-x-2 hover:scale-105 transition-all duration-200">
+                  <Phone className="h-4 w-4" />
                   <span>+91 9512901356</span>
                 </div>
-                <div className="flex items-center space-x-2">
-                  <span>📍</span>
+                <div className="flex items-center space-x-2 hover:scale-105 transition-all duration-200">
+                  <Location className="h-4 w-4" />
                   <span>Ahmedabad, Gujarat, India</span>
                 </div>
               </div>
@@ -45,23 +46,27 @@ export const Footer: React.FC = () => {
             <h4 className="text-[#ff4500] font-semibold text-base mb-4">Quick Links</h4>
             <ul className="space-y-3">
               <li>
-                <Link to="/search" className="block text-[#8b4513] hover:text-[#ff4500] text-sm transition-colors duration-200">
-                  Search Properties
+                <Link to="/search" className="flex items-center space-x-2 text-[#8b4513] hover:text-[#ff4500] text-sm transition-colors duration-200 hover:scale-105">
+                  <Search className="h-4 w-4" />
+                  <span>Search Properties</span>
                 </Link>
               </li>
               <li>
-                <Link to="/list-property" className="block text-[#8b4513] hover:text-[#ff4500] text-sm transition-colors duration-200">
-                  List Property
+                <Link to="/list-property" className="flex items-center space-x-2 text-[#8b4513] hover:text-[#ff4500] text-sm transition-colors duration-200 hover:scale-105">
+                  <Plus className="h-4 w-4" />
+                  <span>List Property</span>
                 </Link>
               </li>
               <li>
-                <Link to="/ai" className="block text-[#8b4513] hover:text-[#ff4500] text-sm transition-colors duration-200">
-                  AI Tools
+                <Link to="/ai" className="flex items-center space-x-2 text-[#8b4513] hover:text-[#ff4500] text-sm transition-colors duration-200 hover:scale-105">
+                  <Brain className="h-4 w-4" />
+                  <span>AI Tools</span>
                 </Link>
               </li>
               <li>
-                <Link to="/agent/resume" className="block text-[#8b4513] hover:text-[#ff4500] text-sm transition-colors duration-200">
-                  Agent Resume
+                <Link to="/agent/resume" className="flex items-center space-x-2 text-[#8b4513] hover:text-[#ff4500] text-sm transition-colors duration-200 hover:scale-105">
+                  <FileText className="h-4 w-4" />
+                  <span>Agent Resume</span>
                 </Link>
               </li>
             </ul>
@@ -72,23 +77,27 @@ export const Footer: React.FC = () => {
             <h4 className="text-[#ff4500] font-semibold text-base mb-4">AI Services</h4>
             <ul className="space-y-3">
               <li>
-                <Link to="/tools/ai-pricing" className="block text-[#8b4513] hover:text-[#ff4500] text-sm transition-colors duration-200">
-                  Smart Pricing
+                <Link to="/tools/ai-pricing" className="flex items-center space-x-2 text-[#8b4513] hover:text-[#ff4500] text-sm transition-colors duration-200 hover:scale-105">
+                  <DollarSign className="h-4 w-4" />
+                  <span>Smart Pricing</span>
                 </Link>
               </li>
               <li>
-                <Link to="/tools/ai-video" className="block text-[#8b4513] hover:text-[#ff4500] text-sm transition-colors duration-200">
-                  Video Generation
+                <Link to="/tools/ai-video" className="flex items-center space-x-2 text-[#8b4513] hover:text-[#ff4500] text-sm transition-colors duration-200 hover:scale-105">
+                  <Video className="h-4 w-4" />
+                  <span>Video Generation</span>
                 </Link>
               </li>
               <li>
-                <Link to="/tools/ai-fraud-detection" className="block text-[#8b4513] hover:text-[#ff4500] text-sm transition-colors duration-200">
-                  Fraud Detection
+                <Link to="/tools/ai-fraud-detection" className="flex items-center space-x-2 text-[#8b4513] hover:text-[#ff4500] text-sm transition-colors duration-200 hover:scale-105">
+                  <Shield className="h-4 w-4" />
+                  <span>Fraud Detection</span>
                 </Link>
               </li>
               <li>
-                <Link to="/tools/locality-report" className="block text-[#8b4513] hover:text-[#ff4500] text-sm transition-colors duration-200">
-                  Locality Reports
+                <Link to="/tools/locality-report" className="flex items-center space-x-2 text-[#8b4513] hover:text-[#ff4500] text-sm transition-colors duration-200 hover:scale-105">
+                  <MapPin className="h-4 w-4" />
+                  <span>Locality Reports</span>
                 </Link>
               </li>
             </ul>
@@ -99,23 +108,27 @@ export const Footer: React.FC = () => {
             <h4 className="text-[#ff4500] font-semibold text-base mb-4">Legal & Support</h4>
             <ul className="space-y-3">
               <li>
-                <Link to="/legal/privacy" className="block text-[#8b4513] hover:text-[#ff4500] text-sm transition-colors duration-200">
-                  Privacy Policy
+                <Link to="/legal/privacy" className="flex items-center space-x-2 text-[#8b4513] hover:text-[#ff4500] text-sm transition-colors duration-200 hover:scale-105">
+                  <Shield className="h-4 w-4" />
+                  <span>Privacy Policy</span>
                 </Link>
               </li>
               <li>
-                <Link to="/legal/terms" className="block text-[#8b4513] hover:text-[#ff4500] text-sm transition-colors duration-200">
-                  Terms of Service
+                <Link to="/legal/terms" className="flex items-center space-x-2 text-[#8b4513] hover:text-[#ff4500] text-sm transition-colors duration-200 hover:scale-105">
+                  <FileCheck className="h-4 w-4" />
+                  <span>Terms of Service</span>
                 </Link>
               </li>
               <li>
-                <Link to="/legal/cookies" className="block text-[#8b4513] hover:text-[#ff4500] text-sm transition-colors duration-200">
-                  Cookie Policy
+                <Link to="/legal/cookies" className="flex items-center space-x-2 text-[#8b4513] hover:text-[#ff4500] text-sm transition-colors duration-200 hover:scale-105">
+                  <Cookie className="h-4 w-4" />
+                  <span>Cookie Policy</span>
                 </Link>
               </li>
               <li>
-                <Link to="/support/help" className="block text-[#8b4513] hover:text-[#ff4500] text-sm transition-colors duration-200">
-                  Help Center
+                <Link to="/support/help" className="flex items-center space-x-2 text-[#8b4513] hover:text-[#ff4500] text-sm transition-colors duration-200 hover:scale-105">
+                  <HelpCircle className="h-4 w-4" />
+                  <span>Help Center</span>
                 </Link>
               </li>
             </ul>
@@ -128,15 +141,15 @@ export const Footer: React.FC = () => {
               © 2025 FreePropList. All rights reserved. Made with ❤️ in India.
             </p>
             <div className="flex space-x-6">
-              <button className="text-[#8b4513] hover:text-[#ff4500] transition-colors">
+              <button className="text-[#8b4513] hover:text-[#ff4500] transition-colors hover:scale-105 duration-200">
                 <span className="sr-only">Twitter</span>
                 <div className="h-5 w-5 bg-gradient-to-r from-[#ff6a00] to-[#ff0000] rounded"></div>
               </button>
-              <button className="text-[#8b4513] hover:text-[#ff4500] transition-colors">
+              <button className="text-[#8b4513] hover:text-[#ff4500] transition-colors hover:scale-105 duration-200">
                 <span className="sr-only">LinkedIn</span>
                 <div className="h-5 w-5 bg-gradient-to-r from-[#ff6a00] to-[#ff0000] rounded"></div>
               </button>
-              <button className="text-[#8b4513] hover:text-[#ff4500] transition-colors">
+              <button className="text-[#8b4513] hover:text-[#ff4500] transition-colors hover:scale-105 duration-200">
                 <span className="sr-only">Instagram</span>
                 <div className="h-5 w-5 bg-gradient-to-r from-[#ff6a00] to-[#ff0000] rounded"></div>
               </button>
