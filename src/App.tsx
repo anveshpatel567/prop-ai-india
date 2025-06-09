@@ -2,9 +2,9 @@
 import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { AuthContextProvider } from './context/AuthContext';
-import { WalletContextProvider } from './context/WalletContext';
-import { CreditGateContextProvider } from './context/CreditGateContext';
+import { AuthProvider } from './context/AuthContext';
+import { WalletProvider } from './context/WalletContext';
+import { CreditGateProvider } from './context/CreditGateContext';
 import { Toaster } from '@/components/ui/toaster';
 import { AppRoutes } from './AppRoutes';
 import { HelmetProvider } from 'react-helmet-async';
@@ -24,14 +24,14 @@ function App() {
     <HelmetProvider>
       <QueryClientProvider client={queryClient}>
         <BrowserRouter>
-          <AuthContextProvider>
-            <WalletContextProvider>
-              <CreditGateContextProvider>
+          <AuthProvider>
+            <WalletProvider>
+              <CreditGateProvider>
                 <AppRoutes />
                 <Toaster />
-              </CreditGateContextProvider>
-            </WalletContextProvider>
-          </AuthContextProvider>
+              </CreditGateProvider>
+            </WalletProvider>
+          </AuthProvider>
         </BrowserRouter>
       </QueryClientProvider>
     </HelmetProvider>
