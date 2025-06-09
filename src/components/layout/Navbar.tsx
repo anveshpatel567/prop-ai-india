@@ -53,7 +53,7 @@ export const Navbar: React.FC = () => {
 
                 <Button
                   onClick={handleLogout}
-                  className="bg-gradient-to-r from-[#ff6a00] via-[#ff3c00] to-[#ff0000] text-white hover:from-[#ff3c00] hover:to-[#ff6a00] shadow-[0_0_30px_rgba(255,102,0,0.45)] hover:shadow-[0_0_40px_rgba(255,102,0,0.6)] transition-all duration-300 transform hover:scale-105"
+                  className="bg-gradient-to-r from-[#ff6a00] via-[#ff3c00] to-[#ff0000] text-[#fff7f0] hover:from-[#ff3c00] hover:to-[#ff6a00] shadow-[0_0_30px_rgba(255,102,0,0.45)] hover:shadow-[0_0_40px_rgba(255,102,0,0.6)] transition-all duration-300 transform hover:scale-105"
                   size="sm"
                 >
                   <span className="hidden sm:inline">Logout</span>
@@ -62,7 +62,7 @@ export const Navbar: React.FC = () => {
               </>
             ) : (
               <Link to="/login">
-                <button className="bg-gradient-to-r from-[#ff6a00] via-[#ff3c00] to-[#ff0000] text-white font-semibold px-6 py-2 rounded-xl shadow-[0_0_30px_rgba(255,102,0,0.45)] hover:shadow-[0_0_40px_rgba(255,102,0,0.6)] transition-all duration-300 transform hover:scale-105 hover:from-[#ff3c00] hover:to-[#ff6a00]">
+                <button className="bg-gradient-to-r from-[#ff6a00] via-[#ff3c00] to-[#ff0000] text-[#fff7f0] font-semibold px-6 py-2 rounded-xl shadow-[0_0_30px_rgba(255,102,0,0.45)] hover:shadow-[0_0_40px_rgba(255,102,0,0.6)] transition-all duration-300 transform hover:scale-105 hover:from-[#ff3c00] hover:to-[#ff6a00]">
                   Start Now
                 </button>
               </Link>
