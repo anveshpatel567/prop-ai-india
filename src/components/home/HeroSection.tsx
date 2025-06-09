@@ -1,8 +1,7 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { AiFeatureCard } from './AiFeatureCard';
-import { Shield, Zap, CheckCircle, TrendingUp } from 'lucide-react';
+import { Shield, Zap, CheckCircle, TrendingUp, Brain } from 'lucide-react';
 
 export const HeroSection: React.FC = () => {
   return (
