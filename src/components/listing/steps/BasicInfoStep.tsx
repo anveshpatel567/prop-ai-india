@@ -3,6 +3,7 @@ import React from 'react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Textarea } from '@/components/ui/textarea';
 
 interface BasicInfoStepProps {
   data: any;
@@ -85,27 +86,73 @@ export const BasicInfoStep: React.FC<BasicInfoStepProps> = ({ data, onDataChange
             type="number"
             value={data.area_sqft || ''}
             onChange={(e) => handleChange('area_sqft', Number(e.target.value))}
-            placeholder="Enter area"
+            placeholder="Built-up area"
           />
         </div>
 
-        <div className="space-y-2">
-          <Label htmlFor="bedrooms">Bedrooms</Label>
-          <Input
-            id="bedrooms"
-            type="number"
-            value={data.bedrooms || ''}
-            onChange={(e) => handleChange('bedrooms', Number(e.target.value))}
-            placeholder="Number of bedrooms"
+        {data.property_type === 'residential' && (
+          <>
+            <div className="space-y-2">
+              <Label htmlFor="bedrooms">Bedrooms</Label>
+              <Select
+                value={data.bedrooms?.toString() || ''}
+                onValueChange={(value) => handleChange('bedrooms', Number(value))}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Select" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="1">1 BHK</SelectItem>
+                  <SelectItem value="2">2 BHK</SelectItem>
+                  <SelectItem value="3">3 BHK</SelectItem>
+                  <SelectItem value="4">4 BHK</SelectItem>
+                  <SelectItem value="5">5+ BHK</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="bathrooms">Bathrooms</Label>
+              <Select
+                value={data.bathrooms?.toString() || ''}
+                onValueChange={(value) => handleChange('bathrooms', Number(value))}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Select" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="1">1</SelectItem>
+                  <SelectItem value="2">2</SelectItem>
+                  <SelectItem value="3">3</SelectItem>
+                  <SelectItem value="4">4</SelectItem>
+                  <SelectItem value="5">5+</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </>
+        )}
+
+        <div className="md:col-span-2 space-y-2">
+          <Label htmlFor="description">Property Description</Label>
+          <Textarea
+            id="description"
+            value={data.description || ''}
+            onChange={(e) => handleChange('description', e.target.value)}
+            placeholder="Describe your property features, amenities, and highlights..."
+            rows={4}
           />
         </div>
       </div>
 
-      {!canProceed && (
-        <p className="text-sm text-red-600">
-          Please fill in all required fields marked with *
-        </p>
-      )}
+      <div className="bg-orange-50 p-4 rounded-lg">
+        <h4 className="font-medium text-orange-800 mb-2">Quick Tips:</h4>
+        <ul className="text-sm text-orange-600 space-y-1">
+          <li>• Use a clear, descriptive title that highlights key features</li>
+          <li>• Accurate property type helps in better categorization</li>
+          <li>• Competitive pricing attracts more genuine inquiries</li>
+          <li>• Detailed description increases buyer interest</li>
+        </ul>
+      </div>
     </div>
   );
 };

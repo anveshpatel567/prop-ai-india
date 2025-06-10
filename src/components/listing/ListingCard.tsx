@@ -1,121 +1,150 @@
 
 import React from 'react';
-import { getSafeSelectValue } from '@/utils/selectUtils';
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { MapPin, Home, Bed, Bath, Square, Heart, Share2, Phone } from 'lucide-react';
+import { PropertyListing } from '@/types';
 
 interface ListingCardProps {
-  listing: {
-    id: string;
-    title: string;
-    description?: string | null;
-    property_type: string;
-    listing_type: string;
-    price: number;
-    area_sqft?: number | null;
-    bedrooms?: number | null;
-    bathrooms?: number | null;
-    city: string;
-    locality?: string | null;
-    amenities?: any;
-    photos?: any;
-  };
+  listing: PropertyListing;
+  showMatchScore?: boolean;
+  matchScore?: number;
+  matchReasons?: string[];
 }
 
-export const ListingCard: React.FC<ListingCardProps> = ({ listing }) => {
-  const formatPrice = (price: number) => {
-    if (price >= 10000000) {
-      return `₹${(price / 10000000).toFixed(1)}Cr`;
-    } else if (price >= 100000) {
-      return `₹${(price / 100000).toFixed(1)}L`;
-    } else {
-      return `₹${price.toLocaleString()}`;
-    }
+export const ListingCard: React.FC<ListingCardProps> = ({
+  listing,
+  showMatchScore = false,
+  matchScore = 0,
+  matchReasons = []
+}) => {
+  const handleContact = () => {
+    console.log('Contact for listing:', listing.id);
+    // Implement contact functionality
   };
 
-  const getLocationDisplay = (listing: any) => {
-    const city = getSafeSelectValue(listing.city);
-    const locality = getSafeSelectValue(listing.locality);
-    
-    if (locality !== "-" && city !== "-") {
-      return `${locality}, ${city}`;
-    } else if (city !== "-") {
-      return city;
-    } else {
-      return 'Location not specified';
-    }
+  const handleSave = () => {
+    console.log('Save listing:', listing.id);
+    // Implement save functionality
   };
 
-  const safeAmenities = Array.isArray(listing.amenities) ? listing.amenities : [];
+  const handleShare = () => {
+    console.log('Share listing:', listing.id);
+    // Implement share functionality
+  };
 
   return (
-    <div className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl shadow-[0_0_30px_rgba(255,102,0,0.45)] overflow-hidden hover:bg-white/20 hover:shadow-[0_0_40px_rgba(255,102,0,0.6)] transition-all duration-300 transform hover:scale-105">
-      <div className="aspect-video bg-gradient-to-br from-[#ffe4d6] to-[#ff6a00] relative">
-        <div className="absolute inset-0 flex items-center justify-center text-[#2d0000] font-['DM_Sans'] font-bold text-lg">
-          🏠 Property Image
-        </div>
-      </div>
-      <div className="p-4">
-        <div className="flex justify-between items-start mb-2">
-          <h3 className="font-semibold text-lg line-clamp-2 font-['Rajdhani'] text-[#2d0000]">
-            {getSafeSelectValue(listing.title)}
-          </h3>
-          <span className={`px-2 py-1 rounded text-xs font-medium font-['DM_Sans'] ${
-            listing.listing_type === 'sale' 
-              ? 'bg-gradient-to-r from-[#84cc16] to-[#10b981] text-white' 
-              : 'bg-gradient-to-r from-[#ff6a00] to-[#ff3c00] text-white'
-          }`}>
-            {listing.listing_type === 'sale' ? 'For Sale' : 'For Rent'}
-          </span>
-        </div>
-        
-        <p className="text-[#8b4513] text-sm mb-3 line-clamp-2 font-['DM_Sans']">
-          {getSafeSelectValue(listing.description) !== "-" 
-            ? listing.description 
-            : 'No description available'}
-        </p>
-        
-        <div className="flex items-center text-sm text-[#8b4513] mb-3 font-['DM_Sans']">
-          <span>{getLocationDisplay(listing)}</span>
-          {listing.area_sqft && (
-            <>
-              <span className="mx-2">•</span>
-              <span>{listing.area_sqft} sq ft</span>
-            </>
-          )}
-          {listing.bedrooms && (
-            <>
-              <span className="mx-2">•</span>
-              <span>{listing.bedrooms}BHK</span>
-            </>
-          )}
+    <Card className="overflow-hidden hover:shadow-lg transition-shadow">
+      <div className="relative">
+        <img
+          src="/placeholder.svg"
+          alt={listing.title}
+          className="w-full h-48 object-cover"
+        />
+        <div className="absolute top-2 right-2 flex gap-2">
+          <Button
+            size="sm"
+            variant="outline"
+            className="bg-white/90 backdrop-blur-sm"
+            onClick={handleSave}
+          >
+            <Heart className="h-4 w-4" />
+          </Button>
+          <Button
+            size="sm"
+            variant="outline"
+            className="bg-white/90 backdrop-blur-sm"
+            onClick={handleShare}
+          >
+            <Share2 className="h-4 w-4" />
+          </Button>
         </div>
         
-        <div className="flex justify-between items-center">
-          <span className="text-xl font-bold bg-gradient-to-r from-[#ff6a00] via-[#ff3c00] to-[#ff0000] bg-clip-text text-transparent font-['Rajdhani']">
-            {formatPrice(listing.price)}
-          </span>
-          <span className="text-xs text-[#8b4513] capitalize font-['DM_Sans']">
-            {getSafeSelectValue(listing.property_type)}
-          </span>
-        </div>
-        
-        {safeAmenities.length > 0 && (
-          <div className="mt-3 flex flex-wrap gap-1">
-            {safeAmenities.slice(0, 3).map((amenity: string, index: number) => (
-              <span 
-                key={index}
-                className="bg-white/30 text-[#2d0000] px-2 py-1 rounded text-xs font-['DM_Sans']"
-              >
-                {getSafeSelectValue(amenity)}
-              </span>
-            ))}
-            {safeAmenities.length > 3 && (
-              <span className="text-xs text-[#8b4513] font-['DM_Sans']">
-                +{safeAmenities.length - 3} more
-              </span>
-            )}
+        {showMatchScore && matchScore > 0 && (
+          <div className="absolute top-2 left-2">
+            <Badge className="bg-green-500 text-white">
+              {matchScore}% Match
+            </Badge>
           </div>
         )}
+        
+        <div className="absolute bottom-2 left-2">
+          <Badge variant="secondary">
+            {listing.listing_type === 'sale' ? 'For Sale' : 'For Rent'}
+          </Badge>
+        </div>
       </div>
-    </div>
+
+      <CardHeader className="pb-2">
+        <div className="flex items-start justify-between">
+          <div>
+            <h3 className="font-semibold text-lg line-clamp-1">{listing.title}</h3>
+            <div className="flex items-center text-gray-600 text-sm mt-1">
+              <MapPin className="h-4 w-4 mr-1" />
+              {listing.locality}, {listing.city}
+            </div>
+          </div>
+          <div className="text-right">
+            <div className="text-xl font-bold text-green-600">
+              ₹{listing.price.toLocaleString()}
+            </div>
+          </div>
+        </div>
+      </CardHeader>
+
+      <CardContent className="space-y-3">
+        <div className="flex items-center gap-4 text-sm text-gray-600">
+          {listing.area_sqft && (
+            <div className="flex items-center gap-1">
+              <Square className="h-4 w-4" />
+              {listing.area_sqft} sq ft
+            </div>
+          )}
+          {listing.bedrooms && (
+            <div className="flex items-center gap-1">
+              <Bed className="h-4 w-4" />
+              {listing.bedrooms} BHK
+            </div>
+          )}
+          {listing.bathrooms && (
+            <div className="flex items-center gap-1">
+              <Bath className="h-4 w-4" />
+              {listing.bathrooms} Bath
+            </div>
+          )}
+        </div>
+
+        {listing.description && (
+          <p className="text-sm text-gray-600 line-clamp-2">
+            {listing.description}
+          </p>
+        )}
+
+        {showMatchScore && matchReasons.length > 0 && (
+          <div className="bg-green-50 p-2 rounded">
+            <p className="text-xs font-medium text-green-800 mb-1">Why this matches:</p>
+            <ul className="text-xs text-green-600 space-y-1">
+              {matchReasons.slice(0, 2).map((reason, index) => (
+                <li key={index}>• {reason}</li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        <div className="flex gap-2 pt-2">
+          <Button variant="outline" className="flex-1">
+            View Details
+          </Button>
+          <Button
+            onClick={handleContact}
+            className="flex-1 bg-gradient-to-r from-orange-500 to-red-600"
+          >
+            <Phone className="h-4 w-4 mr-2" />
+            Contact
+          </Button>
+        </div>
+      </CardContent>
+    </Card>
   );
 };

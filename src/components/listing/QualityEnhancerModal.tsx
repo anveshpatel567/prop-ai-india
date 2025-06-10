@@ -7,25 +7,16 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { CheckCircle, XCircle, Sparkles, AlertCircle } from 'lucide-react';
-import { useCreditGate } from '@/context/CreditGateContext';
-import { useWallet } from '@/context/WalletContext';
-import { supabase } from '@/integrations/supabase/client';
-
-interface QualitySuggestion {
-  field: string;
-  current_value: string;
-  suggested_value: string;
-  reason: string;
-  confidence: number;
-}
+import { CheckCircle, AlertTriangle, Sparkles, Loader2 } from 'lucide-react';
+import { useAiQualityEnhancer } from '@/hooks/useAiQualityEnhancer';
 
 interface QualityEnhancerModalProps {
   isOpen: boolean;
   onClose: () => void;
   listingData: any;
-  onApplySuggestions: (suggestions: QualitySuggestion[]) => void;
+  onApplySuggestions: (suggestions: any[]) => void;
 }
 
 export const QualityEnhancerModal: React.FC<QualityEnhancerModalProps> = ({
@@ -34,82 +25,38 @@ export const QualityEnhancerModal: React.FC<QualityEnhancerModalProps> = ({
   listingData,
   onApplySuggestions
 }) => {
-  const [suggestions, setSuggestions] = useState<QualitySuggestion[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
   const [selectedSuggestions, setSelectedSuggestions] = useState<string[]>([]);
-  
-  const { checkToolAccess, logToolAttempt } = useCreditGate();
-  const { deductCredits } = useWallet();
+  const { analyzing, suggestions, analyzeQuality } = useAiQualityEnhancer();
 
-  const generateSuggestions = async () => {
-    if (!listingData) {
-      setError('No listing data provided');
-      return;
-    }
-
-    setError(null);
-    setLoading(true);
-
+  const handleAnalyze = async () => {
     try {
-      const access = checkToolAccess('quality_enhancer');
-      await logToolAttempt('quality_enhancer', access.canAccess);
-
-      if (!access.canAccess) {
-        setError(access.reason || 'Insufficient credits');
-        return;
-      }
-
-      const success = await deductCredits(access.creditsRequired, 'Quality Enhancer');
-      if (!success) {
-        setError('Failed to deduct credits');
-        return;
-      }
-
-      const { data, error: enhanceError } = await supabase.functions.invoke('ai/quality-enhancer', {
-        body: { listing_data: listingData }
-      });
-
-      if (enhanceError) {
-        setError('Quality enhancement failed. Please try again.');
-        console.error('Quality enhancement error:', enhanceError);
-        return;
-      }
-
-      const enhancedSuggestions = Array.isArray(data.suggestions) ? data.suggestions : [];
-      setSuggestions(enhancedSuggestions);
-
-      // Log the enhancement
-      await supabase.from('ai_quality_suggestions').insert({
-        user_id: (await supabase.auth.getUser()).data.user?.id,
-        listing_id: listingData.id,
-        original_data: listingData,
-        suggestions: enhancedSuggestions,
-        credits_used: access.creditsRequired
-      });
-
-    } catch (err) {
-      console.error('Quality enhancement failed:', err);
-      setError('Quality enhancement failed. Please try again.');
-    } finally {
-      setLoading(false);
+      await analyzeQuality(listingData);
+    } catch (error) {
+      console.error('Quality analysis failed:', error);
     }
   };
 
-  const toggleSuggestion = (field: string) => {
-    setSelectedSuggestions(prev => 
-      prev.includes(field) 
-        ? prev.filter(f => f !== field)
-        : [...prev, field]
+  const toggleSuggestion = (suggestionId: string) => {
+    setSelectedSuggestions(prev =>
+      prev.includes(suggestionId)
+        ? prev.filter(id => id !== suggestionId)
+        : [...prev, suggestionId]
     );
   };
 
   const applySuggestions = () => {
-    const selectedSuggestionData = suggestions.filter(s => 
-      selectedSuggestions.includes(s.field)
-    );
-    onApplySuggestions(selectedSuggestionData);
+    const selectedItems = suggestions.filter(s => selectedSuggestions.includes(s.id));
+    onApplySuggestions(selectedItems);
     onClose();
+  };
+
+  const getSeverityColor = (severity: string) => {
+    switch (severity) {
+      case 'high': return 'bg-red-100 text-red-800 border-red-200';
+      case 'medium': return 'bg-yellow-100 text-yellow-800 border-yellow-200';
+      case 'low': return 'bg-blue-100 text-blue-800 border-blue-200';
+      default: return 'bg-gray-100 text-gray-800 border-gray-200';
+    }
   };
 
   return (
@@ -117,85 +64,113 @@ export const QualityEnhancerModal: React.FC<QualityEnhancerModalProps> = ({
       <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
-            <Sparkles className="h-5 w-5" />
-            AI Quality Enhancement Suggestions
+            <Sparkles className="h-5 w-5 text-purple-600" />
+            AI Quality Enhancer
           </DialogTitle>
         </DialogHeader>
 
         <div className="space-y-4">
-          {error && (
-            <div className="flex items-center gap-2 text-red-600 bg-red-50 p-3 rounded">
-              <AlertCircle className="h-4 w-4" />
-              {error}
+          {!suggestions.length && !analyzing && (
+            <div className="text-center py-8">
+              <Sparkles className="h-12 w-12 mx-auto text-purple-400 mb-4" />
+              <h3 className="text-lg font-medium mb-2">Enhance Your Listing Quality</h3>
+              <p className="text-gray-600 mb-4">
+                Get AI-powered suggestions to improve your listing and attract more buyers.
+              </p>
+              <Button
+                onClick={handleAnalyze}
+                disabled={analyzing}
+                className="bg-gradient-to-r from-purple-500 to-pink-600"
+              >
+                {analyzing ? (
+                  <>
+                    <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                    Analyzing...
+                  </>
+                ) : (
+                  <>
+                    <Sparkles className="h-4 w-4 mr-2" />
+                    Analyze Quality (100 Credits)
+                  </>
+                )}
+              </Button>
             </div>
           )}
 
-          {suggestions.length === 0 ? (
+          {analyzing && (
             <div className="text-center py-8">
-              <Button 
-                onClick={generateSuggestions}
-                disabled={loading}
-                className="flex items-center gap-2"
-              >
-                <Sparkles className="h-4 w-4" />
-                {loading ? 'Analyzing...' : 'Generate AI Suggestions (100 Credits)'}
-              </Button>
+              <Loader2 className="h-8 w-8 mx-auto animate-spin text-purple-600 mb-4" />
+              <p className="text-gray-600">Analyzing your listing quality...</p>
             </div>
-          ) : (
-            <>
-              <div className="space-y-3">
-                {suggestions.map((suggestion, index) => (
-                  <div key={index} className="border rounded-lg p-4">
-                    <div className="flex items-start justify-between mb-2">
-                      <h4 className="font-medium capitalize">{suggestion.field.replace('_', ' ')}</h4>
-                      <div className="flex items-center gap-2">
-                        <Badge variant="secondary">
-                          {Math.round((suggestion.confidence || 0) * 100)}% confidence
-                        </Badge>
-                        <Button
-                          size="sm"
-                          variant={selectedSuggestions.includes(suggestion.field) ? "default" : "outline"}
-                          onClick={() => toggleSuggestion(suggestion.field)}
-                        >
-                          {selectedSuggestions.includes(suggestion.field) ? (
-                            <CheckCircle className="h-4 w-4" />
+          )}
+
+          {suggestions.length > 0 && (
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <h3 className="text-lg font-medium">Quality Suggestions</h3>
+                <Badge variant="outline">
+                  {suggestions.length} suggestions found
+                </Badge>
+              </div>
+
+              <div className="grid gap-4">
+                {suggestions.map((suggestion) => (
+                  <Card
+                    key={suggestion.id}
+                    className={`cursor-pointer transition-all ${
+                      selectedSuggestions.includes(suggestion.id)
+                        ? 'ring-2 ring-purple-500 bg-purple-50'
+                        : 'hover:bg-gray-50'
+                    }`}
+                    onClick={() => toggleSuggestion(suggestion.id)}
+                  >
+                    <CardHeader className="pb-2">
+                      <div className="flex items-center justify-between">
+                        <CardTitle className="text-sm flex items-center gap-2">
+                          {suggestion.type === 'improvement' ? (
+                            <AlertTriangle className="h-4 w-4 text-yellow-500" />
                           ) : (
-                            <XCircle className="h-4 w-4" />
+                            <CheckCircle className="h-4 w-4 text-green-500" />
                           )}
-                        </Button>
+                          {suggestion.field} Enhancement
+                        </CardTitle>
+                        <Badge
+                          variant="outline"
+                          className={getSeverityColor(suggestion.severity)}
+                        >
+                          {suggestion.severity} priority
+                        </Badge>
                       </div>
-                    </div>
-                    
-                    <div className="grid grid-cols-2 gap-4 text-sm">
-                      <div>
-                        <p className="font-medium text-gray-600 mb-1">Current:</p>
-                        <p className="bg-gray-50 p-2 rounded">{suggestion.current_value || 'N/A'}</p>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-sm text-gray-600 mb-2">
+                        {suggestion.reason}
+                      </p>
+                      <div className="text-sm">
+                        <strong>Suggested:</strong> {suggestion.suggested_value}
                       </div>
-                      <div>
-                        <p className="font-medium text-green-600 mb-1">Suggested:</p>
-                        <p className="bg-green-50 p-2 rounded">{suggestion.suggested_value || 'N/A'}</p>
-                      </div>
-                    </div>
-                    
-                    <p className="text-sm text-gray-600 mt-2">
-                      <strong>Reason:</strong> {suggestion.reason || 'No reason provided'}
-                    </p>
-                  </div>
+                    </CardContent>
+                  </Card>
                 ))}
               </div>
 
-              <div className="flex justify-between">
-                <Button variant="outline" onClick={onClose}>
-                  Cancel
+              <div className="flex gap-2 pt-4 border-t">
+                <Button
+                  variant="outline"
+                  onClick={onClose}
+                  className="flex-1"
+                >
+                  Close
                 </Button>
-                <Button 
+                <Button
                   onClick={applySuggestions}
                   disabled={selectedSuggestions.length === 0}
+                  className="flex-1 bg-gradient-to-r from-purple-500 to-pink-600"
                 >
-                  Apply {selectedSuggestions.length} Suggestion(s)
+                  Apply {selectedSuggestions.length} Suggestions
                 </Button>
               </div>
-            </>
+            </div>
           )}
         </div>
       </DialogContent>

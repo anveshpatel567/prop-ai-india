@@ -1,32 +1,17 @@
 
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Badge } from '@/components/ui/badge';
-import { Search, MapPin, Filter, RotateCcw, Sparkles } from 'lucide-react';
-import { AiSearchToggle } from './AiSearchToggle';
-
-const cities = [
-  'Mumbai', 'Delhi', 'Bangalore', 'Hyderabad', 'Ahmedabad', 'Chennai', 
-  'Kolkata', 'Surat', 'Pune', 'Jaipur', 'Lucknow', 'Kanpur', 'Nagpur',
-  'Indore', 'Thane', 'Bhopal', 'Visakhapatnam', 'Pimpri-Chinchwad'
-];
-
-interface SearchFilters {
-  location: string;
-  property_type: string;
-  listing_type: string;
-  min_price: string;
-  max_price: string;
-  bedrooms: string;
-  amenities: string[];
-}
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Search, Sparkles, Filter, MapPin, Home, Rupee } from 'lucide-react';
+import { AiToolGate } from '@/components/common/AiToolGate';
+import { useAiSearch } from '@/hooks/useAiSearch';
 
 interface ImprovedSearchInterfaceProps {
-  onSearch: (filters: SearchFilters) => void;
+  onSearch: (filters: any) => void;
   onAiSearch: (query: string) => void;
   searchResults: any[];
   loading: boolean;
@@ -38,106 +23,66 @@ export const ImprovedSearchInterface: React.FC<ImprovedSearchInterfaceProps> = (
   searchResults,
   loading
 }) => {
-  const [searchMode, setSearchMode] = useState<'manual' | 'ai'>('manual');
-  const [filters, setFilters] = useState<SearchFilters>({
-    location: '',
+  const [searchQuery, setSearchQuery] = useState('');
+  const [filters, setFilters] = useState({
     property_type: '',
-    listing_type: '',
+    listing_type: 'sale',
+    city: '',
+    locality: '',
     min_price: '',
     max_price: '',
     bedrooms: '',
+    bathrooms: '',
     amenities: []
   });
 
-  const handleFilterChange = (key: keyof SearchFilters, value: string) => {
-    setFilters(prev => ({ ...prev, [key]: value }));
+  const { searching, searchWithAi } = useAiSearch();
+
+  const handleFilterChange = (field: string, value: any) => {
+    setFilters(prev => ({ ...prev, [field]: value }));
   };
 
-  const resetFilters = () => {
-    setFilters({
-      location: '',
-      property_type: '',
-      listing_type: '',
-      min_price: '',
-      max_price: '',
-      bedrooms: '',
-      amenities: []
-    });
-  };
-
-  const handleSearch = () => {
+  const handleManualSearch = () => {
     onSearch(filters);
   };
 
-  const addAmenityFilter = (amenity: string) => {
-    if (!filters.amenities.includes(amenity)) {
-      setFilters(prev => ({
-        ...prev,
-        amenities: [...prev.amenities, amenity]
-      }));
+  const handleAiSearch = async () => {
+    if (!searchQuery.trim()) return;
+    
+    try {
+      await searchWithAi(searchQuery);
+      onAiSearch(searchQuery);
+    } catch (error) {
+      console.error('AI search failed:', error);
     }
-  };
-
-  const removeAmenityFilter = (amenity: string) => {
-    setFilters(prev => ({
-      ...prev,
-      amenities: prev.amenities.filter(a => a !== amenity)
-    }));
   };
 
   return (
     <div className="space-y-6">
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center justify-between">
-            <span>Property Search</span>
-            <div className="flex gap-2">
-              <Button
-                variant={searchMode === 'manual' ? 'default' : 'outline'}
-                size="sm"
-                onClick={() => setSearchMode('manual')}
-                className="flex items-center gap-2"
-              >
-                <Filter className="h-4 w-4" />
-                Manual
-              </Button>
-              <Button
-                variant={searchMode === 'ai' ? 'default' : 'outline'}
-                size="sm"
-                onClick={() => setSearchMode('ai')}
-                className="flex items-center gap-2"
-              >
-                <Sparkles className="h-4 w-4" />
-                AI Search
-              </Button>
-            </div>
+          <CardTitle className="flex items-center gap-2">
+            <Search className="h-5 w-5" />
+            Find Your Perfect Property
           </CardTitle>
         </CardHeader>
         <CardContent>
-          {searchMode === 'manual' ? (
-            <div className="space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <Tabs defaultValue="manual" className="w-full">
+            <TabsList className="grid w-full grid-cols-2">
+              <TabsTrigger value="manual" className="flex items-center gap-2">
+                <Filter className="h-4 w-4" />
+                Manual Search
+              </TabsTrigger>
+              <TabsTrigger value="ai" className="flex items-center gap-2">
+                <Sparkles className="h-4 w-4" />
+                AI Search
+              </TabsTrigger>
+            </TabsList>
+            
+            <TabsContent value="manual" className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                 <div className="space-y-2">
-                  <Label>Location</Label>
-                  <Select
-                    value={filters.location}
-                    onValueChange={(value) => handleFilterChange('location', value)}
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select city" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {cities.map((city) => (
-                        <SelectItem key={city} value={city}>
-                          {city}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <div className="space-y-2">
-                  <Label>Property Type</Label>
+                  <Label htmlFor="property_type">Property Type</Label>
                   <Select
                     value={filters.property_type}
                     onValueChange={(value) => handleFilterChange('property_type', value)}
@@ -155,44 +100,65 @@ export const ImprovedSearchInterface: React.FC<ImprovedSearchInterfaceProps> = (
                 </div>
 
                 <div className="space-y-2">
-                  <Label>Listing Type</Label>
+                  <Label htmlFor="listing_type">For</Label>
                   <Select
                     value={filters.listing_type}
                     onValueChange={(value) => handleFilterChange('listing_type', value)}
                   >
                     <SelectTrigger>
-                      <SelectValue placeholder="Any" />
+                      <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="">Any</SelectItem>
-                      <SelectItem value="sale">For Sale</SelectItem>
-                      <SelectItem value="rent">For Rent</SelectItem>
+                      <SelectItem value="sale">Sale</SelectItem>
+                      <SelectItem value="rent">Rent</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
 
                 <div className="space-y-2">
-                  <Label>Min Price (₹)</Label>
+                  <Label htmlFor="city">City</Label>
                   <Input
+                    id="city"
+                    value={filters.city}
+                    onChange={(e) => handleFilterChange('city', e.target.value)}
+                    placeholder="e.g., Mumbai"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="locality">Locality</Label>
+                  <Input
+                    id="locality"
+                    value={filters.locality}
+                    onChange={(e) => handleFilterChange('locality', e.target.value)}
+                    placeholder="e.g., Bandra West"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="min_price">Min Price</Label>
+                  <Input
+                    id="min_price"
                     type="number"
-                    placeholder="Min price"
                     value={filters.min_price}
                     onChange={(e) => handleFilterChange('min_price', e.target.value)}
+                    placeholder="₹ Minimum"
                   />
                 </div>
 
                 <div className="space-y-2">
-                  <Label>Max Price (₹)</Label>
+                  <Label htmlFor="max_price">Max Price</Label>
                   <Input
+                    id="max_price"
                     type="number"
-                    placeholder="Max price"
                     value={filters.max_price}
                     onChange={(e) => handleFilterChange('max_price', e.target.value)}
+                    placeholder="₹ Maximum"
                   />
                 </div>
 
                 <div className="space-y-2">
-                  <Label>Bedrooms</Label>
+                  <Label htmlFor="bedrooms">Bedrooms</Label>
                   <Select
                     value={filters.bedrooms}
                     onValueChange={(value) => handleFilterChange('bedrooms', value)}
@@ -205,74 +171,86 @@ export const ImprovedSearchInterface: React.FC<ImprovedSearchInterfaceProps> = (
                       <SelectItem value="1">1 BHK</SelectItem>
                       <SelectItem value="2">2 BHK</SelectItem>
                       <SelectItem value="3">3 BHK</SelectItem>
-                      <SelectItem value="4">4 BHK</SelectItem>
-                      <SelectItem value="5+">5+ BHK</SelectItem>
+                      <SelectItem value="4">4+ BHK</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="bathrooms">Bathrooms</Label>
+                  <Select
+                    value={filters.bathrooms}
+                    onValueChange={(value) => handleFilterChange('bathrooms', value)}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Any" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="">Any</SelectItem>
+                      <SelectItem value="1">1</SelectItem>
+                      <SelectItem value="2">2</SelectItem>
+                      <SelectItem value="3">3</SelectItem>
+                      <SelectItem value="4">4+</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
               </div>
 
-              {filters.amenities.length > 0 && (
-                <div className="space-y-2">
-                  <Label>Selected Amenities</Label>
-                  <div className="flex flex-wrap gap-2">
-                    {filters.amenities.map((amenity) => (
-                      <Badge
-                        key={amenity}
-                        variant="secondary"
-                        className="cursor-pointer"
-                        onClick={() => removeAmenityFilter(amenity)}
-                      >
-                        {amenity} ×
-                      </Badge>
-                    ))}
+              <Button
+                onClick={handleManualSearch}
+                disabled={loading}
+                className="w-full bg-gradient-to-r from-orange-500 to-red-600"
+              >
+                <Search className="h-4 w-4 mr-2" />
+                {loading ? 'Searching...' : 'Search Properties'}
+              </Button>
+            </TabsContent>
+
+            <TabsContent value="ai" className="space-y-4">
+              <AiToolGate
+                toolName="ai_search"
+                toolTitle="AI Property Search"
+              >
+                <div className="space-y-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="ai_query">Describe what you're looking for</Label>
+                    <Input
+                      id="ai_query"
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      placeholder="e.g., 3BHK apartment in Mumbai under 2 crores with parking"
+                      className="text-base"
+                    />
+                  </div>
+
+                  <Button
+                    onClick={handleAiSearch}
+                    disabled={searching || !searchQuery.trim()}
+                    className="w-full bg-gradient-to-r from-purple-500 to-pink-600"
+                  >
+                    <Sparkles className="h-4 w-4 mr-2" />
+                    {searching ? 'AI Searching...' : 'Search with AI (10 Credits)'}
+                  </Button>
+
+                  <div className="bg-purple-50 p-4 rounded-lg">
+                    <h4 className="font-medium text-purple-800 mb-2">AI Search Examples:</h4>
+                    <ul className="text-sm text-purple-600 space-y-1">
+                      <li>• "2BHK flat in Pune near IT parks under 80 lakhs"</li>
+                      <li>• "Commercial space for rent in Bangalore with parking"</li>
+                      <li>• "Villa in Goa with sea view and swimming pool"</li>
+                      <li>• "Studio apartment in Delhi metro connectivity"</li>
+                    </ul>
                   </div>
                 </div>
-              )}
-
-              <div className="flex gap-2">
-                <Button
-                  onClick={handleSearch}
-                  disabled={loading}
-                  className="flex items-center gap-2"
-                >
-                  <Search className="h-4 w-4" />
-                  {loading ? 'Searching...' : 'Search Properties'}
-                </Button>
-                <Button
-                  variant="outline"
-                  onClick={resetFilters}
-                  className="flex items-center gap-2"
-                >
-                  <RotateCcw className="h-4 w-4" />
-                  Reset
-                </Button>
-              </div>
-            </div>
-          ) : (
-            <AiSearchToggle
-              onSearchResults={() => {}}
-              onAiSearch={onAiSearch}
-            />
-          )}
+              </AiToolGate>
+            </TabsContent>
+          </Tabs>
         </CardContent>
       </Card>
 
       {searchResults.length > 0 && (
-        <div className="space-y-4">
-          <div className="flex items-center justify-between">
-            <h3 className="text-lg font-semibold">
-              Search Results ({searchResults.length})
-            </h3>
-            <div className="flex items-center gap-2 text-sm text-gray-600">
-              <MapPin className="h-4 w-4" />
-              <span>Showing properties near you</span>
-            </div>
-          </div>
-          
-          <div className="text-sm text-gray-600">
-            Found {searchResults.length} properties matching your criteria
-          </div>
+        <div className="text-sm text-gray-600">
+          Found {searchResults.length} properties matching your criteria
         </div>
       )}
     </div>

@@ -1,8 +1,8 @@
 
 import React from 'react';
-import { Lock, Zap } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { Lock, Zap } from 'lucide-react';
 import { BuyCreditsCta } from './BuyCreditsCta';
 
 interface LockedToolCardProps {
@@ -10,7 +10,7 @@ interface LockedToolCardProps {
   title: string;
   description: string;
   creditsRequired: number;
-  onUnlock?: () => void;
+  onAttempt?: () => void;
 }
 
 export const LockedToolCard: React.FC<LockedToolCardProps> = ({
@@ -18,32 +18,33 @@ export const LockedToolCard: React.FC<LockedToolCardProps> = ({
   title,
   description,
   creditsRequired,
-  onUnlock
+  onAttempt
 }) => {
   return (
-    <Card className="relative overflow-hidden bg-gradient-to-br from-gray-50 to-gray-100 border-2 border-dashed border-gray-300">
-      <div className="absolute inset-0 bg-white/60 backdrop-blur-sm z-10" />
-      
-      <CardHeader className="relative z-20">
+    <Card className="border-2 border-dashed border-gray-300 bg-gray-50 cursor-pointer hover:bg-gray-100 transition-colors" onClick={onAttempt}>
+      <CardHeader>
         <CardTitle className="flex items-center gap-2 text-gray-600">
           <Lock className="h-5 w-5" />
           {title}
         </CardTitle>
       </CardHeader>
-      
-      <CardContent className="relative z-20 space-y-4">
+      <CardContent className="space-y-4">
         <p className="text-sm text-gray-600">{description}</p>
         
-        <div className="flex items-center gap-2 text-sm font-medium text-amber-600">
-          <Zap className="h-4 w-4" />
-          {creditsRequired} credits required
-        </div>
+        {creditsRequired > 0 && (
+          <div className="flex items-center justify-between">
+            <Badge variant="outline" className="flex items-center gap-1">
+              <Zap className="h-3 w-3" />
+              {creditsRequired} Credits
+            </Badge>
+          </div>
+        )}
         
         <BuyCreditsCta 
           toolName={toolName}
           creditsNeeded={creditsRequired}
-          variant="outline"
           className="w-full"
+          size="sm"
         />
       </CardContent>
     </Card>

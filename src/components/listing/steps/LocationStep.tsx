@@ -2,16 +2,9 @@
 import React, { useState } from 'react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
-import { MapPin, Search } from 'lucide-react';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-
-const majorCities = [
-  'Mumbai', 'Delhi', 'Bangalore', 'Hyderabad', 'Ahmedabad', 'Chennai', 
-  'Kolkata', 'Surat', 'Pune', 'Jaipur', 'Lucknow', 'Kanpur', 'Nagpur',
-  'Indore', 'Thane', 'Bhopal', 'Visakhapatnam', 'Pimpri-Chinchwad'
-];
+import { Textarea } from '@/components/ui/textarea';
+import { MapPin, Navigation } from 'lucide-react';
 
 interface LocationStepProps {
   data: any;
@@ -20,96 +13,114 @@ interface LocationStepProps {
 }
 
 export const LocationStep: React.FC<LocationStepProps> = ({ data, onDataChange, onNext }) => {
-  const [mapQuery, setMapQuery] = useState('');
+  const [locating, setLocating] = useState(false);
 
-  const handleChange = (field: string, value: string) => {
+  const handleChange = (field: string, value: any) => {
     onDataChange({ [field]: value });
   };
 
-  const searchGoogleMaps = () => {
-    if (mapQuery.trim()) {
-      const mapsUrl = `https://www.google.com/maps/search/${encodeURIComponent(mapQuery)}`;
-      window.open(mapsUrl, '_blank');
+  const getCurrentLocation = () => {
+    setLocating(true);
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+          handleChange('google_maps_pin', `${latitude},${longitude}`);
+          setLocating(false);
+        },
+        (error) => {
+          console.error('Error getting location:', error);
+          setLocating(false);
+        }
+      );
     }
   };
 
-  const canProceed = data.city && data.google_maps_pin;
+  const canProceed = data.city && data.locality && data.google_maps_pin;
 
   return (
     <div className="space-y-6">
-      <h3 className="text-lg font-semibold">Property Location & Map Pin</h3>
+      <h3 className="text-lg font-semibold">Property Location</h3>
       
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="space-y-2">
           <Label htmlFor="city">City *</Label>
-          <Select
+          <Input
+            id="city"
             value={data.city || ''}
-            onValueChange={(value) => handleChange('city', value)}
-          >
-            <SelectTrigger>
-              <SelectValue placeholder="Select city" />
-            </SelectTrigger>
-            <SelectContent>
-              {majorCities.map((city) => (
-                <SelectItem key={city} value={city}>
-                  {city}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+            onChange={(e) => handleChange('city', e.target.value)}
+            placeholder="e.g., Mumbai"
+            required
+          />
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="locality">Locality/Area</Label>
+          <Label htmlFor="locality">Locality/Area *</Label>
           <Input
             id="locality"
             value={data.locality || ''}
             onChange={(e) => handleChange('locality', e.target.value)}
-            placeholder="e.g., Bandra West, CP"
+            placeholder="e.g., Bandra West"
+            required
           />
         </div>
-      </div>
 
-      <div className="space-y-3">
-        <Label>Find Location on Google Maps</Label>
-        <div className="flex gap-2">
+        <div className="md:col-span-2 space-y-2">
+          <Label htmlFor="address">Complete Address</Label>
+          <Textarea
+            id="address"
+            value={data.address || ''}
+            onChange={(e) => handleChange('address', e.target.value)}
+            placeholder="Enter complete address with landmarks"
+            rows={3}
+          />
+        </div>
+
+        <div className="md:col-span-2 space-y-2">
+          <div className="flex items-center justify-between">
+            <Label htmlFor="google_maps_pin">Google Maps Location *</Label>
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={getCurrentLocation}
+              disabled={locating}
+              className="flex items-center gap-2"
+            >
+              <Navigation className="h-4 w-4" />
+              {locating ? 'Getting Location...' : 'Use Current Location'}
+            </Button>
+          </div>
           <Input
-            value={mapQuery}
-            onChange={(e) => setMapQuery(e.target.value)}
-            placeholder="Search for your property location"
-            className="flex-1"
+            id="google_maps_pin"
+            value={data.google_maps_pin || ''}
+            onChange={(e) => handleChange('google_maps_pin', e.target.value)}
+            placeholder="Paste Google Maps link or coordinates"
+            required
           />
-          <Button onClick={searchGoogleMaps} size="sm" className="flex items-center gap-2">
-            <Search className="h-4 w-4" />
-            Search Maps
-          </Button>
-        </div>
-        <p className="text-xs text-gray-500">
-          Search for your property, then copy the Google Maps link and paste it below
-        </p>
-      </div>
-
-      <div className="space-y-2">
-        <Label htmlFor="google_maps_pin">Google Maps Link/Pin *</Label>
-        <Textarea
-          id="google_maps_pin"
-          value={data.google_maps_pin || ''}
-          onChange={(e) => handleChange('google_maps_pin', e.target.value)}
-          placeholder="Paste Google Maps link or complete address with pin code"
-          rows={3}
-          required
-        />
-        <div className="flex items-center gap-2 text-sm text-gray-600">
-          <MapPin className="h-4 w-4" />
-          <span>This helps buyers find your property easily</span>
+          <p className="text-xs text-gray-500">
+            Copy the Google Maps link of your property or use current location
+          </p>
         </div>
       </div>
 
-      {!canProceed && (
-        <p className="text-sm text-red-600">
-          Please select a city and provide Google Maps location
-        </p>
-      )}
+      <div className="bg-blue-50 p-4 rounded-lg">
+        <h4 className="font-medium text-blue-800 mb-2">Location Tips:</h4>
+        <ul className="text-sm text-blue-600 space-y-1">
+          <li>• Provide exact locality for better visibility</li>
+          <li>• Mention nearby landmarks in address</li>
+          <li>• Accurate location helps buyers find your property easily</li>
+          <li>• Use Google Maps link for precise location</li>
+        </ul>
+      </div>
+
+      <Button
+        onClick={onNext}
+        disabled={!canProceed}
+        className="w-full bg-gradient-to-r from-orange-500 to-red-600"
+      >
+        Continue to Pricing
+      </Button>
     </div>
   );
 };

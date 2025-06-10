@@ -1,184 +1,160 @@
 
 import React, { useState } from 'react';
-import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
-import { CheckCircle, ArrowLeft, ArrowRight } from 'lucide-react';
-import { BasicInfoStep } from './steps/BasicInfoStep';
+import { CheckCircle, Circle, ArrowLeft, ArrowRight } from 'lucide-react';
 import { BrochureUploadStep } from './steps/BrochureUploadStep';
-import { AmenitiesStep } from './steps/AmenitiesStep';
-import { LocationStep } from './steps/LocationStep';
+import { BasicInfoStep } from './steps/BasicInfoStep';
 import { PropertyDetailsStep } from './steps/PropertyDetailsStep';
-import { ReviewSubmitStep } from './steps/ReviewSubmitStep';
-import { useToast } from '@/hooks/use-toast';
-
-interface ListingData {
-  title: string;
-  property_type: string;
-  listing_type: 'sale' | 'rent';
-  price: number;
-  area_sqft?: number;
-  bedrooms?: number;
-  bathrooms?: number;
-  city: string;
-  locality?: string;
-  description: string;
-  google_maps_pin: string;
-  amenities: string[];
-  brochure_data?: any;
-  photos: string[];
-}
+import { LocationStep } from './steps/LocationStep';
+import { PricingStep } from './steps/PricingStep';
+import { PhotosStep } from './steps/PhotosStep';
+import { ReviewStep } from './steps/ReviewStep';
+import { useListing } from '@/hooks/useListing';
 
 const steps = [
+  { id: 'brochure', title: 'Brochure Upload', component: BrochureUploadStep, optional: true },
   { id: 'basic', title: 'Basic Info', component: BasicInfoStep },
-  { id: 'brochure', title: 'Brochure Upload', component: BrochureUploadStep },
-  { id: 'amenities', title: 'Amenities', component: AmenitiesStep },
-  { id: 'location', title: 'Location & Pin', component: LocationStep },
   { id: 'details', title: 'Property Details', component: PropertyDetailsStep },
-  { id: 'review', title: 'Review & Submit', component: ReviewSubmitStep }
+  { id: 'location', title: 'Location', component: LocationStep },
+  { id: 'pricing', title: 'Pricing', component: PricingStep },
+  { id: 'photos', title: 'Photos', component: PhotosStep },
+  { id: 'review', title: 'Review & Publish', component: ReviewStep }
 ];
 
 export const ListingFormWizard: React.FC = () => {
   const [currentStep, setCurrentStep] = useState(0);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [listingData, setListingData] = useState<ListingData>({
-    title: '',
-    property_type: '',
-    listing_type: 'sale',
-    price: 0,
-    city: '',
-    description: '',
-    google_maps_pin: '',
-    amenities: [],
-    photos: []
-  });
-  const { toast } = useToast();
+  const [formData, setFormData] = useState<any>({});
+  const [completedSteps, setCompletedSteps] = useState<Set<number>>(new Set());
+  const { createListing, isLoading } = useListing();
 
-  const updateListingData = (stepData: Partial<ListingData>) => {
-    setListingData(prev => ({ ...prev, ...stepData }));
+  const currentStepData = steps[currentStep];
+  const CurrentStepComponent = currentStepData.component;
+
+  const handleDataChange = (newData: any) => {
+    setFormData(prev => ({ ...prev, ...newData }));
   };
 
-  const nextStep = () => {
+  const handleNext = () => {
+    setCompletedSteps(prev => new Set([...prev, currentStep]));
     if (currentStep < steps.length - 1) {
-      setCurrentStep(prev => prev + 1);
+      setCurrentStep(currentStep + 1);
     }
   };
 
-  const previousStep = () => {
+  const handlePrevious = () => {
     if (currentStep > 0) {
-      setCurrentStep(prev => prev - 1);
+      setCurrentStep(currentStep - 1);
+    }
+  };
+
+  const handleStepClick = (stepIndex: number) => {
+    if (stepIndex <= currentStep || completedSteps.has(stepIndex)) {
+      setCurrentStep(stepIndex);
     }
   };
 
   const handleSubmit = async () => {
-    setIsSubmitting(true);
     try {
-      // TODO: Implement actual submission to backend
-      console.log('Submitting listing:', listingData);
-      
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
-      toast({
-        title: "Listing created successfully!",
-        description: "Your property has been listed and is now live"
-      });
-      
-      // Reset form or redirect
+      await createListing(formData);
+      // Navigate to success page or listings
     } catch (error) {
-      toast({
-        title: "Failed to create listing",
-        description: "Please check your data and try again",
-        variant: "destructive"
-      });
-    } finally {
-      setIsSubmitting(false);
+      console.error('Error creating listing:', error);
     }
   };
 
-  const CurrentStepComponent = steps[currentStep].component;
   const progress = ((currentStep + 1) / steps.length) * 100;
 
   return (
-    <div className="max-w-4xl mx-auto space-y-6">
+    <div className="max-w-6xl mx-auto space-y-6">
+      {/* Progress Header */}
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center justify-between">
-            <span>Create Property Listing</span>
-            <span className="text-sm text-gray-500">
+          <div className="flex items-center justify-between mb-4">
+            <CardTitle>Create Property Listing</CardTitle>
+            <div className="text-sm text-gray-500">
               Step {currentStep + 1} of {steps.length}
-            </span>
-          </CardTitle>
-          <Progress value={progress} className="w-full" />
-        </CardHeader>
-        <CardContent>
-          <div className="mb-6">
-            <div className="flex items-center space-x-4">
-              {steps.map((step, index) => (
-                <div key={step.id} className="flex items-center">
-                  <div className={`flex items-center justify-center w-8 h-8 rounded-full border-2 ${
-                    index < currentStep ? 'bg-green-500 border-green-500 text-white' :
-                    index === currentStep ? 'border-blue-500 text-blue-500' :
-                    'border-gray-300 text-gray-300'
-                  }`}>
-                    {index < currentStep ? (
-                      <CheckCircle className="w-5 h-5" />
-                    ) : (
-                      <span>{index + 1}</span>
-                    )}
-                  </div>
-                  <span className={`ml-2 text-sm ${
-                    index <= currentStep ? 'text-gray-900' : 'text-gray-400'
-                  }`}>
-                    {step.title}
-                  </span>
-                  {index < steps.length - 1 && (
-                    <div className="w-8 h-px bg-gray-300 mx-4" />
-                  )}
-                </div>
-              ))}
             </div>
           </div>
-
-          <CurrentStepComponent
-            data={listingData}
-            onDataChange={updateListingData}
-            onNext={nextStep}
-            onSubmit={handleSubmit}
-            isSubmitting={isSubmitting}
-          />
-
-          <div className="flex justify-between mt-6">
-            <Button
-              variant="outline"
-              onClick={previousStep}
-              disabled={currentStep === 0}
-              className="flex items-center gap-2"
-            >
-              <ArrowLeft className="w-4 h-4" />
-              Previous
-            </Button>
-            
-            {currentStep < steps.length - 1 ? (
-              <Button
-                onClick={nextStep}
-                className="flex items-center gap-2"
+          <Progress value={progress} className="mb-4" />
+          
+          {/* Step Navigation */}
+          <div className="flex items-center justify-between">
+            {steps.map((step, index) => (
+              <div 
+                key={step.id}
+                className="flex flex-col items-center cursor-pointer"
+                onClick={() => handleStepClick(index)}
               >
-                Next
-                <ArrowRight className="w-4 h-4" />
-              </Button>
-            ) : (
-              <Button
-                onClick={handleSubmit}
-                disabled={isSubmitting}
-                className="flex items-center gap-2"
-              >
-                {isSubmitting ? 'Creating...' : 'Create Listing'}
-              </Button>
-            )}
+                <div className={`flex items-center justify-center w-8 h-8 rounded-full border-2 ${
+                  completedSteps.has(index) 
+                    ? 'bg-green-500 border-green-500 text-white' 
+                    : index === currentStep
+                    ? 'border-orange-500 text-orange-500'
+                    : 'border-gray-300 text-gray-300'
+                }`}>
+                  {completedSteps.has(index) ? (
+                    <CheckCircle className="h-5 w-5" />
+                  ) : (
+                    <span className="text-xs font-medium">{index + 1}</span>
+                  )}
+                </div>
+                <span className={`text-xs mt-1 ${
+                  index === currentStep ? 'text-orange-500 font-medium' : 'text-gray-500'
+                }`}>
+                  {step.title}
+                </span>
+                {step.optional && (
+                  <span className="text-xs text-gray-400">(Optional)</span>
+                )}
+              </div>
+            ))}
           </div>
+        </CardHeader>
+      </Card>
+
+      {/* Current Step Content */}
+      <Card>
+        <CardContent className="p-6">
+          <CurrentStepComponent
+            data={formData}
+            onDataChange={handleDataChange}
+            onNext={handleNext}
+          />
         </CardContent>
       </Card>
+
+      {/* Navigation Buttons */}
+      <div className="flex justify-between">
+        <Button
+          variant="outline"
+          onClick={handlePrevious}
+          disabled={currentStep === 0}
+          className="flex items-center gap-2"
+        >
+          <ArrowLeft className="h-4 w-4" />
+          Previous
+        </Button>
+
+        {currentStep === steps.length - 1 ? (
+          <Button
+            onClick={handleSubmit}
+            disabled={isLoading}
+            className="flex items-center gap-2 bg-gradient-to-r from-orange-500 to-red-600"
+          >
+            {isLoading ? 'Publishing...' : 'Publish Listing'}
+          </Button>
+        ) : (
+          <Button
+            onClick={handleNext}
+            className="flex items-center gap-2 bg-gradient-to-r from-orange-500 to-red-600"
+          >
+            Next
+            <ArrowRight className="h-4 w-4" />
+          </Button>
+        )}
+      </div>
     </div>
   );
 };

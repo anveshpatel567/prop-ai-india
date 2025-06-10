@@ -1,7 +1,7 @@
 
-import { useAiToolFlags } from './useAiToolFlags';
+import { useAi } from '@/context/AiContext';
 
-export function useIsAiToolEnabled(toolName: string) {
-  const { isToolEnabled } = useAiToolFlags();
+export const useIsAiToolEnabled = (toolName: string): boolean => {
+  const { isToolEnabled } = useAi();
   return isToolEnabled(toolName);
-}
+};
