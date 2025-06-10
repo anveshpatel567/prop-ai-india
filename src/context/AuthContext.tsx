@@ -12,48 +12,56 @@ interface AuthContextType {
   updateProfile: (data: Partial<UserProfile>) => Promise<void>;
 }
 
+// Create context with null default - this is safe because we'll check for it
 export const AuthContext = createContext<AuthContextType | null>(null);
 
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  // Iframe-safe state initialization
+  // Early return guard - don't render anything until we're in a proper browser environment
+  if (typeof window === 'undefined') {
+    return null;
+  }
+
+  return <AuthProviderInner>{children}</AuthProviderInner>;
+};
+
+// Separate inner component to ensure hooks are only called in safe environment
+const AuthProviderInner: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [isMounted, setIsMounted] = useState(false);
   const [user, setUser] = useState<UserProfile | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Ensure we only run client-side logic after mount
+  // Only execute after component mounts in browser
   useEffect(() => {
-    if (typeof window === 'undefined') return;
-    
+    console.log('🔧 AuthContext: Initializing...');
     setIsMounted(true);
     
-    // Simulate loading user data only after mount
     const loadUser = async () => {
       try {
-        // Check for existing session only in browser
         const savedUser = localStorage.getItem('freeproplist_user');
         if (savedUser) {
           setUser(JSON.parse(savedUser));
+          console.log('🔧 AuthContext: User loaded from storage');
         }
       } catch (error) {
         if (import.meta.env.DEV) {
-          console.error('Error loading user:', error);
+          console.error('🚨 AuthContext: Error loading user:', error);
         }
       } finally {
         setIsLoading(false);
+        console.log('🔧 AuthContext: Ready ✅');
       }
     };
 
-    // Small delay to ensure DOM is ready in iframe environments
-    const timeoutId = setTimeout(loadUser, 50);
+    // Small delay to ensure iframe environment is stable
+    const timeoutId = setTimeout(loadUser, 100);
     return () => clearTimeout(timeoutId);
   }, []);
 
   const login = async (email: string, password: string) => {
-    if (!isMounted || typeof window === 'undefined') return;
+    if (!isMounted) return;
     
     setIsLoading(true);
     try {
-      // Simulate API call
       const mockUser: UserProfile = {
         id: '1',
         email,
@@ -67,8 +75,9 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       
       setUser(mockUser);
       localStorage.setItem('freeproplist_user', JSON.stringify(mockUser));
+      console.log('🔧 AuthContext: Login successful');
     } catch (error) {
-      console.error('Login error:', error);
+      console.error('🚨 AuthContext: Login error:', error);
       throw error;
     } finally {
       setIsLoading(false);
@@ -76,7 +85,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   };
 
   const register = async (userData: Partial<UserProfile>) => {
-    if (!isMounted || typeof window === 'undefined') return;
+    if (!isMounted) return;
     
     setIsLoading(true);
     try {
@@ -93,8 +102,9 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       
       setUser(newUser);
       localStorage.setItem('freeproplist_user', JSON.stringify(newUser));
+      console.log('🔧 AuthContext: Registration successful');
     } catch (error) {
-      console.error('Registration error:', error);
+      console.error('🚨 AuthContext: Registration error:', error);
       throw error;
     } finally {
       setIsLoading(false);
@@ -102,19 +112,26 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   };
 
   const logout = () => {
-    if (!isMounted || typeof window === 'undefined') return;
+    if (!isMounted) return;
     
     setUser(null);
     localStorage.removeItem('freeproplist_user');
+    console.log('🔧 AuthContext: Logout successful');
   };
 
   const updateProfile = async (data: Partial<UserProfile>) => {
-    if (!user || !isMounted || typeof window === 'undefined') return;
+    if (!user || !isMounted) return;
     
     const updatedUser = { ...user, ...data, updated_at: new Date().toISOString() };
     setUser(updatedUser);
     localStorage.setItem('freeproplist_user', JSON.stringify(updatedUser));
+    console.log('🔧 AuthContext: Profile updated');
   };
+
+  // Don't render children until mounted and ready
+  if (!isMounted) {
+    return <div>Loading auth...</div>;
+  }
 
   return (
     <AuthContext.Provider value={{
@@ -134,7 +151,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) {
-    throw new Error('useAuth must be used within AuthProvider');
+    throw new Error('useAuth must be used within AuthProvider. Make sure AuthProvider wraps your component tree.');
   }
   return context;
 };

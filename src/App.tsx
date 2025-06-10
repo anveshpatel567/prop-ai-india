@@ -47,6 +47,11 @@ const useIframeSafeEffect = () => {
 function App() {
   useIframeSafeEffect();
   
+  // Early return for SSR/iframe safety
+  if (typeof window === 'undefined') {
+    return <div>Loading...</div>;
+  }
+  
   return (
     <ErrorBoundary>
       <HelmetProvider>
