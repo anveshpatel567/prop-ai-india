@@ -18,39 +18,34 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | null>(null);
 
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  if (typeof window === 'undefined') {
-    return <div>Loading...</div>;
-  }
-  return <AuthProviderInner>{children}</AuthProviderInner>;
-};
-
-const AuthProviderInner: React.FC<{ children: ReactNode }> = ({ children }) => {
+  const [isMounted, setIsMounted] = useState(false);
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [isMounted, setIsMounted] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    setIsMounted(true);
-    
-    // Set up auth state listener FIRST
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (event, session) => {
+    if (typeof window !== 'undefined') {
+      setIsMounted(true);
+      
+      // Set up auth state listener AFTER mounting
+      const { data: { subscription } } = supabase.auth.onAuthStateChange(
+        (event, session) => {
+          setSession(session);
+          setUser(session?.user ?? null);
+          setIsLoading(false);
+        }
+      );
+
+      // THEN check for existing session
+      supabase.auth.getSession().then(({ data: { session } }) => {
         setSession(session);
         setUser(session?.user ?? null);
         setIsLoading(false);
-      }
-    );
+      });
 
-    // THEN check for existing session
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-      setUser(session?.user ?? null);
-      setIsLoading(false);
-    });
-
-    return () => subscription.unsubscribe();
+      return () => subscription.unsubscribe();
+    }
   }, []);
 
   const login = async (email: string, password: string): Promise<void> => {
@@ -111,6 +106,15 @@ const AuthProviderInner: React.FC<{ children: ReactNode }> = ({ children }) => {
       throw error;
     }
   };
+
+  // Show loading state until mounted
+  if (!isMounted) {
+    return (
+      <div className="fixed bottom-52 right-4 bg-blue-100 px-4 py-2 rounded-lg shadow-lg text-sm z-50">
+        🔐 Auth context initializing...
+      </div>
+    );
+  }
 
   return (
     <AuthContext.Provider value={{

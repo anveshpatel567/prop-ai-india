@@ -18,6 +18,9 @@ import AgentDashboard from '@/pages/agent/dashboard';
 import DevStatus from '@/pages/dev/status';
 import DevtoolsPage from '@/pages/devtools';
 import DevtoolsGpt from '@/pages/devtools/gpt';
+import Profile from '@/pages/profile';
+import Login from '@/pages/login';
+import Dashboard from '@/pages/dashboard/index';
 
 // AI Tools Pages
 import AiPricingPage from '@/pages/tools/ai-pricing';
@@ -36,6 +39,9 @@ function App() {
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/auth" element={<AuthPage />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/wallet" element={<WalletPage />} />
             <Route path="/wallet/history" element={<WalletHistory />} />
             <Route path="/listing/create" element={<CreateListing />} />

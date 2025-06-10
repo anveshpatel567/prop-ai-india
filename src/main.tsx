@@ -28,14 +28,17 @@ if (typeof window !== 'undefined') {
   });
 }
 
-// Force React strict mode with iframe-safe mounting
-const root = document.getElementById('root');
-if (root) {
+// Browser-ready mounting with proper lifecycle
+const mount = () => {
+  const rootEl = document.getElementById('root');
+  if (!rootEl) return;
+
   try {
-    ReactDOM.createRoot(root).render(
+    const root = ReactDOM.createRoot(rootEl);
+    root.render(
       <React.StrictMode>
         <App />
-      </React.StrictMode>,
+      </React.StrictMode>
     );
     
     // Deferred health check - after React mounts
@@ -51,5 +54,14 @@ if (root) {
     if (isDev) {
       console.error('❌ React mounting failed:', error);
     }
+  }
+};
+
+// Ensure mounting only happens when DOM and window are ready
+if (typeof window !== 'undefined') {
+  if (document.readyState === 'loading') {
+    window.addEventListener('DOMContentLoaded', mount);
+  } else {
+    mount();
   }
 }
