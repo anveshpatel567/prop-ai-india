@@ -1,139 +1,108 @@
 
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { CheckCircle, XCircle, Loader2 } from 'lucide-react';
-import { fetchGpt4oResponse, testGptConnection } from '@/services/gptService';
+import { callGptApi, isGptKeyConfigured } from '@/lib/gptService';
+import { AlertTriangle, Send, CheckCircle } from 'lucide-react';
 
 export const GptApiTester: React.FC = () => {
-  const [prompt, setPrompt] = useState('Hello, can you help me with real estate?');
+  const [prompt, setPrompt] = useState('Suggest a good title for a 2BHK flat in Andheri');
   const [response, setResponse] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [connectionStatus, setConnectionStatus] = useState<'unknown' | 'connected' | 'failed'>('unknown');
-  const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [isMounted, setIsMounted] = useState(false);
 
-  const testConnection = async () => {
-    setLoading(true);
-    setError(null);
-    
-    try {
-      const isConnected = await testGptConnection();
-      setConnectionStatus(isConnected ? 'connected' : 'failed');
-      
-      if (!isConnected) {
-        setError('Failed to connect to OpenAI API. Check your API key.');
-      }
-    } catch (err) {
-      setConnectionStatus('failed');
-      setError(err instanceof Error ? err.message : 'Unknown error');
-    } finally {
-      setLoading(false);
-    }
-  };
+  // Iframe-safe mounting
+  React.useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
-  const sendPrompt = async () => {
-    if (!prompt.trim()) return;
+  const handleTest = async () => {
+    if (!isMounted || typeof window === 'undefined') return;
     
-    setLoading(true);
-    setError(null);
+    setIsLoading(true);
+    setError('');
     setResponse('');
-    
+
     try {
-      const result = await fetchGpt4oResponse(prompt);
-      
-      if (result.success) {
-        setResponse(result.content);
-        setConnectionStatus('connected');
-      } else {
-        setError(result.error || 'Failed to get response');
-        setConnectionStatus('failed');
-      }
+      const result = await callGptApi(prompt);
+      setResponse(result);
+      console.log('✅ GPT Test Success');
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Unknown error');
-      setConnectionStatus('failed');
+      const errorMsg = err instanceof Error ? err.message : 'Unknown error';
+      setError(errorMsg);
+      console.error('❌ GPT Test Failed:', errorMsg);
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   };
 
-  const getStatusBadge = () => {
-    switch (connectionStatus) {
-      case 'connected':
-        return <Badge className="bg-green-100 text-green-800"><CheckCircle className="h-3 w-3 mr-1" />Connected</Badge>;
-      case 'failed':
-        return <Badge className="bg-red-100 text-red-800"><XCircle className="h-3 w-3 mr-1" />Failed</Badge>;
-      default:
-        return <Badge variant="outline">Unknown</Badge>;
-    }
-  };
+  // Don't render until mounted
+  if (!isMounted) return <div>Loading...</div>;
+
+  const hasApiKey = isGptKeyConfigured();
 
   return (
-    <Card className="w-full max-w-2xl mx-auto">
-      <CardHeader>
-        <CardTitle className="flex items-center justify-between">
-          GPT-4o API Tester
-          {getStatusBadge()}
-        </CardTitle>
-      </CardHeader>
-      <CardContent className="space-y-4">
-        <div className="flex gap-2">
-          <Button 
-            onClick={testConnection} 
-            disabled={loading}
-            variant="outline"
-            className="flex items-center gap-2"
-          >
-            {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : null}
-            Test Connection
-          </Button>
-        </div>
+    <div className="space-y-6">
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center justify-between">
+            GPT-4o API Test Console
+            <Badge variant={hasApiKey ? "default" : "destructive"}>
+              {hasApiKey ? <CheckCircle className="h-3 w-3 mr-1" /> : <AlertTriangle className="h-3 w-3 mr-1" />}
+              {hasApiKey ? 'API Key Found' : 'API Key Missing'}
+            </Badge>
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          {!hasApiKey && (
+            <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+              <p className="text-sm text-yellow-800">
+                ⚠️ No API key detected. Create a <code>.env</code> file with:
+              </p>
+              <code className="block bg-yellow-100 p-2 rounded mt-2 text-xs">
+                VITE_OPENAI_API_KEY=sk-your-key-here
+              </code>
+            </div>
+          )}
 
-        <div className="space-y-2">
-          <label className="text-sm font-medium">Test Prompt:</label>
-          <Input
-            value={prompt}
-            onChange={(e) => setPrompt(e.target.value)}
-            placeholder="Enter a test prompt..."
-          />
-        </div>
-
-        <Button 
-          onClick={sendPrompt} 
-          disabled={loading || !prompt.trim()}
-          className="w-full"
-        >
-          {loading ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : null}
-          Send Prompt
-        </Button>
-
-        {error && (
-          <div className="p-3 bg-red-50 border border-red-200 rounded text-red-700 text-sm">
-            <strong>Error:</strong> {error}
-          </div>
-        )}
-
-        {response && (
           <div className="space-y-2">
-            <label className="text-sm font-medium">Response:</label>
+            <label className="text-sm font-medium">Test Prompt:</label>
             <Textarea
-              value={response}
-              readOnly
-              className="min-h-[100px] bg-gray-50"
+              value={prompt}
+              onChange={(e) => setPrompt(e.target.value)}
+              placeholder="Enter your GPT prompt here..."
+              rows={3}
             />
           </div>
-        )}
 
-        <div className="text-xs text-gray-500 space-y-1">
-          <p><strong>API Key Status:</strong> {import.meta.env.VITE_OPENAI_API_KEY ? 'Set' : 'Missing'}</p>
-          <p><strong>Environment:</strong> {import.meta.env.MODE}</p>
-          {!import.meta.env.VITE_OPENAI_API_KEY && (
-            <p className="text-red-600">⚠️ Set VITE_OPENAI_API_KEY in your environment variables</p>
+          <Button 
+            onClick={handleTest} 
+            disabled={isLoading || !hasApiKey || !prompt.trim()}
+            className="w-full"
+          >
+            <Send className="h-4 w-4 mr-2" />
+            {isLoading ? 'Testing GPT...' : 'Run GPT Test'}
+          </Button>
+
+          {error && (
+            <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+              <p className="text-sm text-red-800">❌ Error: {error}</p>
+            </div>
           )}
-        </div>
-      </CardContent>
-    </Card>
+
+          {response && (
+            <div className="space-y-2">
+              <label className="text-sm font-medium">GPT Response:</label>
+              <pre className="bg-gray-50 border rounded-lg p-4 text-sm whitespace-pre-wrap overflow-auto max-h-64">
+                {response}
+              </pre>
+            </div>
+          )}
+        </CardContent>
+      </Card>
+    </div>
   );
 };

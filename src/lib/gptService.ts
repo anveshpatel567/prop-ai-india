@@ -1,7 +1,8 @@
 
 const gptApiKey = import.meta.env.VITE_OPENAI_API_KEY;
 
-if (import.meta.env.DEV) {
+// Iframe-safe logging
+if (import.meta.env.DEV && typeof window !== 'undefined') {
   console.log("🔑 GPT Key:", gptApiKey ? "Found ✅" : "Missing ❌");
 }
 
@@ -19,7 +20,7 @@ export const isGptKeyConfigured = () => {
   return !!gptApiKey;
 };
 
-// Basic GPT service function
+// Iframe-safe GPT service function
 export const callGptApi = async (prompt: string) => {
   try {
     const key = getGptKey();

@@ -13,7 +13,7 @@ import { ErrorBoundary } from './components/common/ErrorBoundary';
 import { isGptKeyConfigured } from './lib/gptService';
 import './App.css';
 
-// Development mode React Query configuration
+// Iframe-safe query client configuration
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -24,31 +24,28 @@ const queryClient = new QueryClient({
   },
 });
 
-// Development mode logging - only in browser
-if (typeof window !== 'undefined' && import.meta.env.DEV) {
-  console.log('🔧 System mode: DEV ✅');
-  console.log('🔧 Query Client configured for development');
-  
-  // GPT API Key check
-  const gptReady = isGptKeyConfigured();
-  console.log('🔑 GPT Ready:', gptReady ? '✅' : '❌');
-  if (!gptReady) {
-    console.warn('⚠️ GPT API key missing - Add VITE_OPENAI_API_KEY to .env');
-  }
-}
-
-/**
- * Main App Component - DEVELOPMENT MODE
- */
-function App() {
-  // Development mode error boundary
+// Iframe detection and safe logging
+const useIframeSafeEffect = () => {
   React.useEffect(() => {
-    if (import.meta.env.DEV) {
-      console.log('🔧 App mounted successfully');
-      console.log('🧪 System mode: DEV ✅ | Toast Fixed ✅ | GPT Ready', isGptKeyConfigured() ? '✅' : '❌');
+    // Only run after component mounts and in browser
+    if (typeof window === 'undefined') return;
+    
+    const isIframe = window.self !== window.top;
+    const isDev = import.meta.env.DEV;
+    
+    if (isDev) {
+      console.log('🔧 App Context:', isIframe ? 'Iframe Mode' : 'Standalone');
+      console.log('🔧 GPT Ready:', isGptKeyConfigured() ? '✅' : '❌');
     }
   }, []);
+};
 
+/**
+ * Main App Component - Iframe Compatible
+ */
+function App() {
+  useIframeSafeEffect();
+  
   return (
     <ErrorBoundary>
       <HelmetProvider>

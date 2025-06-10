@@ -5,10 +5,18 @@ import { isGptKeyConfigured } from '@/lib/gptService';
 
 export const ApiKeyWarning: React.FC = () => {
   const [showWarning, setShowWarning] = React.useState(false);
+  const [isMounted, setIsMounted] = React.useState(false);
+
+  // Iframe-safe initialization
+  React.useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   React.useEffect(() => {
-    // Client-side only check to prevent SSR issues
-    if (typeof window !== 'undefined') {
+    // Only check after component is mounted and in browser
+    if (!isMounted || typeof window === 'undefined') return;
+    
+    try {
       const hasKey = isGptKeyConfigured();
       setShowWarning(!hasKey);
       
@@ -18,17 +26,16 @@ export const ApiKeyWarning: React.FC = () => {
           console.warn('⚠️ Create .env file with VITE_OPENAI_API_KEY=sk-your-key-here');
         }
       }
+    } catch (error) {
+      // Silent fail in iframe environments
+      if (import.meta.env.DEV) {
+        console.warn('⚠️ API key check failed in iframe environment');
+      }
     }
-  }, []);
+  }, [isMounted]);
 
-  // Development mode - log when warning shows/hides
-  React.useEffect(() => {
-    if (import.meta.env.DEV && typeof window !== 'undefined') {
-      console.log('🔧 API Warning:', showWarning ? 'Showing ⚠️' : 'Hidden ✅');
-    }
-  }, [showWarning]);
-
-  if (!showWarning) return null;
+  // Don't render until mounted (prevents SSR/iframe issues)
+  if (!isMounted || !showWarning) return null;
 
   return (
     <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-4">

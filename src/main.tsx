@@ -4,86 +4,51 @@ import ReactDOM from 'react-dom/client'
 import App from './App.tsx'
 import './index.css'
 
-// Development mode - comprehensive logging
-if (import.meta.env.DEV) {
-  console.log('🚀 FreePropList AI System Starting in DEVELOPMENT MODE...');
-  console.log('📊 Environment:', import.meta.env.MODE);
-  console.log('🔧 Development Mode Features: ALL ENABLED');
+// Iframe-safe initialization - defer all complex logic until after React mounts
+const isIframe = typeof window !== 'undefined' && window.self !== window.top;
+const isDev = import.meta.env.DEV;
 
-  // Safe API key check with full logging
-  const hasApiKey = !!import.meta.env.VITE_OPENAI_API_KEY;
-  console.log('🔑 OpenAI API Key:', hasApiKey ? 'Configured ✅' : 'Missing ❌');
-
-  if (!hasApiKey) {
-    console.warn('⚠️ DEVELOPMENT MODE: OpenAI GPT API key missing');
-    console.warn('📝 Create .env file with: VITE_OPENAI_API_KEY=sk-your-key-here');
-    console.warn('🔄 Hot reload will detect .env changes immediately');
-  }
+// Basic logging only - no complex checks in main.tsx
+if (isDev && typeof window !== 'undefined') {
+  console.log('🚀 FreePropList starting...', isIframe ? '(iframe mode)' : '(standalone)');
 }
 
-// Development mode error boundaries - catch everything
+// Simple error boundary for iframe compatibility
 if (typeof window !== 'undefined') {
   window.addEventListener('error', (event) => {
-    if (import.meta.env.DEV) {
-      console.error('🚨 DEVELOPMENT MODE - Runtime Error Caught:', event.error);
-      console.error('📍 Error Location:', event.filename, 'Line:', event.lineno, 'Col:', event.colno);
+    if (isDev) {
+      console.error('🚨 Runtime Error:', event.error?.message || 'Unknown error');
     }
   });
 
   window.addEventListener('unhandledrejection', (event) => {
-    if (import.meta.env.DEV) {
-      console.error('🚨 DEVELOPMENT MODE - Unhandled Promise Rejection:', event.reason);
+    if (isDev) {
+      console.error('🚨 Promise Rejection:', event.reason);
     }
   });
 }
 
-// Force React strict mode for development
+// Force React strict mode with iframe-safe mounting
 const root = document.getElementById('root');
 if (root) {
-  ReactDOM.createRoot(root).render(
-    <React.StrictMode>
-      <App />
-    </React.StrictMode>,
-  );
-}
-
-// Development health check with full diagnostics
-if (typeof window !== 'undefined') {
-  setTimeout(() => {
-    try {
-      if (import.meta.env.DEV) {
-        console.log('🔍 DEVELOPMENT MODE - System Health Check:');
-        
-        // Check React tree mounting
-        const reactRoot = document.querySelector('[data-reactroot]') || document.getElementById('root')?.firstChild;
-        const hasReactErrors = !reactRoot;
-        
-        if (!hasReactErrors) {
-          console.log('✅ React tree: Mounted correctly');
-          console.log('✅ App container: Found and active');
-          console.log('✅ Development mode: ALL DIAGNOSTICS ENABLED');
-          
-          const hasApiKey = !!import.meta.env.VITE_OPENAI_API_KEY;
-          if (hasApiKey) {
-            console.log('✅ GPT API: Ready for development testing');
-          } else {
-            console.log('⚠️ GPT API: Add key to .env for immediate hot reload');
-          }
-        } else {
-          console.error('❌ DEVELOPMENT MODE - React mounting failed');
-          console.error('🔧 Check for component syntax errors or hook violations');
-        }
-        
-        // Development mode - log all environment variables (safe ones)
-        console.log('🔧 Development Environment Variables:');
-        console.log('- MODE:', import.meta.env.MODE);
-        console.log('- DEV:', import.meta.env.DEV);
-        console.log('- PROD:', import.meta.env.PROD);
-      }
-    } catch (error) {
-      if (import.meta.env.DEV) {
-        console.error('❌ DEVELOPMENT MODE - Health check failed:', error);
-      }
+  try {
+    ReactDOM.createRoot(root).render(
+      <React.StrictMode>
+        <App />
+      </React.StrictMode>,
+    );
+    
+    // Deferred health check - after React mounts
+    if (isDev && typeof window !== 'undefined') {
+      setTimeout(() => {
+        console.log('✅ App mounted successfully');
+        const hasApiKey = !!import.meta.env.VITE_OPENAI_API_KEY;
+        console.log('🔑 GPT Key:', hasApiKey ? 'Found ✅' : 'Missing ❌');
+      }, 100);
     }
-  }, 100);
+  } catch (error) {
+    if (isDev) {
+      console.error('❌ React mounting failed:', error);
+    }
+  }
 }
