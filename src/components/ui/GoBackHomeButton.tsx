@@ -1,8 +1,9 @@
 
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { Home } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useMountReady } from '@/hooks/useMountReady';
 
 interface GoBackHomeButtonProps {
   className?: string;
@@ -13,25 +14,11 @@ export const GoBackHomeButton: React.FC<GoBackHomeButtonProps> = ({
   className = '',
   variant = 'outline'
 }) => {
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      setMounted(true);
-    }
-  }, []);
+  const isReady = useMountReady();
 
   // Don't render Link until mounted to prevent router context crashes
-  if (!mounted) {
-    return (
-      <Button 
-        className={`border-2 border-orange-500 text-orange-500 ${className}`}
-        disabled
-      >
-        <Home className="mr-2 h-4 w-4" />
-        Loading...
-      </Button>
-    );
+  if (!isReady) {
+    return null;
   }
 
   if (variant === 'primary') {

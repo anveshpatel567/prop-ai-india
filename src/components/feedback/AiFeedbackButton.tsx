@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Textarea } from '@/components/ui/textarea';
 import { ThumbsUp, ThumbsDown, Minus } from 'lucide-react';
+import { useMountReady } from '@/hooks/useMountReady';
 import {
   Dialog,
   DialogContent,
@@ -21,11 +22,15 @@ interface AiFeedbackButtonProps {
 }
 
 export default function AiFeedbackButton({ featureName, variant = 'outline' }: AiFeedbackButtonProps) {
+  const isReady = useMountReady();
   const { user } = useAuth();
   const { submitFeedback, loading } = usePersonalizationFeedback();
   const [isOpen, setIsOpen] = useState(false);
   const [selectedType, setSelectedType] = useState<'positive' | 'negative' | 'neutral' | null>(null);
   const [notes, setNotes] = useState('');
+
+  // Don't render until mounted and user is available
+  if (!isReady || !user) return null;
 
   const handleSubmit = async () => {
     if (!user?.id || !selectedType) return;
@@ -35,8 +40,6 @@ export default function AiFeedbackButton({ featureName, variant = 'outline' }: A
     setSelectedType(null);
     setNotes('');
   };
-
-  if (!user) return null;
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>

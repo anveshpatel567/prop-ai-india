@@ -1,38 +1,18 @@
 
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/context/AuthContext';
 import { UserWalletBadge } from '@/components/common/UserWalletBadge';
 import { LayoutDashboard, Brain, BarChart3, Settings, User, LogOut } from 'lucide-react';
+import { useMountReady } from '@/hooks/useMountReady';
 
 export const Navbar: React.FC = () => {
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      setMounted(true);
-    }
-  }, []);
-
-  // Don't render anything until mounted to prevent Link/useContext crashes
-  if (!mounted) {
-    return (
-      <nav className="bg-[#fff7f0] shadow-[0_0_20px_rgba(255,102,0,0.25)] border-b border-[#ff4500] sticky top-0 z-50">
-        <div className="container mx-auto px-4">
-          <div className="flex justify-between items-center h-16">
-            <div className="text-2xl font-bold bg-gradient-to-r from-[#ff6a00] via-[#ff3c00] to-[#ff0000] bg-clip-text text-transparent">
-              FreePropList
-            </div>
-            <div className="flex items-center space-x-6">
-              <div className="bg-gradient-to-r from-[#ff6a00] via-[#ff3c00] to-[#ff0000] text-[#fff7f0] font-semibold px-6 py-2 rounded-xl shadow-[0_0_30px_rgba(255,102,0,0.45)]">
-                Loading...
-              </div>
-            </div>
-          </div>
-        </div>
-      </nav>
-    );
+  const isReady = useMountReady();
+  
+  // Don't render anything until fully mounted and ready
+  if (!isReady) {
+    return null;
   }
 
   const { user, logout } = useAuth();
