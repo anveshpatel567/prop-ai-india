@@ -12,25 +12,18 @@ interface AuthContextType {
   updateProfile: (data: Partial<UserProfile>) => Promise<void>;
 }
 
-// Create context with null default - this is safe because we'll check for it
-export const AuthContext = createContext<AuthContextType | null>(null);
+const AuthContext = createContext<AuthContextType | null>(null);
 
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  // Early return guard - don't render anything until we're in a proper browser environment
-  if (typeof window === 'undefined') {
-    return null;
-  }
-
+  if (typeof window === 'undefined') return null;
   return <AuthProviderInner>{children}</AuthProviderInner>;
 };
 
-// Separate inner component to ensure hooks are only called in safe environment
 const AuthProviderInner: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [isMounted, setIsMounted] = useState(false);
   const [user, setUser] = useState<UserProfile | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Only execute after component mounts in browser
   useEffect(() => {
     console.log('🔧 AuthContext: Initializing...');
     setIsMounted(true);
@@ -52,8 +45,7 @@ const AuthProviderInner: React.FC<{ children: ReactNode }> = ({ children }) => {
       }
     };
 
-    // Small delay to ensure iframe environment is stable
-    const timeoutId = setTimeout(loadUser, 100);
+    const timeoutId = setTimeout(loadUser, 50);
     return () => clearTimeout(timeoutId);
   }, []);
 
@@ -128,7 +120,6 @@ const AuthProviderInner: React.FC<{ children: ReactNode }> = ({ children }) => {
     console.log('🔧 AuthContext: Profile updated');
   };
 
-  // Don't render children until mounted and ready
   if (!isMounted) {
     return <div>Loading auth...</div>;
   }

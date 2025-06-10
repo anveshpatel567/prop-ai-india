@@ -14,7 +14,6 @@ import { DevStatusOverlay } from './components/common/DevStatusOverlay';
 import { isGptKeyConfigured } from './lib/gptService';
 import './App.css';
 
-// Iframe-safe query client configuration
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -25,10 +24,8 @@ const queryClient = new QueryClient({
   },
 });
 
-// Iframe detection and safe logging
 const useIframeSafeEffect = () => {
   React.useEffect(() => {
-    // Only run after component mounts and in browser
     if (typeof window === 'undefined') return;
     
     const isIframe = window.self !== window.top;
@@ -41,13 +38,9 @@ const useIframeSafeEffect = () => {
   }, []);
 };
 
-/**
- * Main App Component - Iframe Compatible
- */
 function App() {
   useIframeSafeEffect();
   
-  // Early return for SSR/iframe safety
   if (typeof window === 'undefined') {
     return <div>Loading...</div>;
   }

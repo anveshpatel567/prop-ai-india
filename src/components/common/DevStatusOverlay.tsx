@@ -6,33 +6,27 @@ import { useAuth } from '@/context/AuthContext';
 export const DevStatusOverlay: React.FC = () => {
   const [isMounted, setIsMounted] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
-  const [authStatus, setAuthStatus] = useState('❌');
 
   useEffect(() => {
     setIsMounted(true);
   }, []);
 
-  // Safe auth check
-  useEffect(() => {
-    if (!isMounted) return;
-    
-    try {
-      const { isMounted: authMounted } = useAuth();
-      setAuthStatus(authMounted ? '✅' : '❌');
-    } catch (error) {
-      setAuthStatus('❌');
-      console.log('🔧 DevStatusOverlay: Auth context not ready yet');
-    }
-  }, [isMounted]);
+  if (!isMounted || typeof window === 'undefined') return null;
 
-  // Don't render until mounted
-  if (!isMounted) return null;
-
-  const isIframe = typeof window !== 'undefined' && window.self !== window.top;
+  const isIframe = window.self !== window.top;
   const hasGptKey = isGptKeyConfigured();
   const isDev = import.meta.env.DEV;
 
   if (!isDev || !isVisible) return null;
+
+  const SafeAuthStatus = () => {
+    try {
+      const { isMounted: authMounted } = useAuth();
+      return authMounted ? '✅' : '❌';
+    } catch (error) {
+      return '❌';
+    }
+  };
 
   return (
     <div className="fixed top-4 right-4 z-50 bg-black/80 text-white text-xs p-2 rounded font-mono">
@@ -49,7 +43,7 @@ export const DevStatusOverlay: React.FC = () => {
         <div>System: DEV {isDev ? '✅' : '❌'}</div>
         <div>GPT: {hasGptKey ? '✅' : '❌'}</div>
         <div>Toast: ✅</div>
-        <div>Auth: {authStatus}</div>
+        <div>Auth: <SafeAuthStatus /></div>
         <div>IFrame Safe: {isIframe ? '✅' : 'N/A'}</div>
       </div>
     </div>
