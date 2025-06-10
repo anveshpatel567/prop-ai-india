@@ -2,6 +2,9 @@
 import React, { useState, useEffect } from 'react';
 import { isGptKeyConfigured } from '@/lib/gptService';
 import { useAuth } from '@/context/AuthContext';
+import { useWallet } from '@/context/WalletContext';
+import { useNotification } from '@/context/NotificationContext';
+import { useAi } from '@/context/AiContext';
 
 export const DevStatusOverlay: React.FC = () => {
   const [isMounted, setIsMounted] = useState(false);
@@ -19,12 +22,24 @@ export const DevStatusOverlay: React.FC = () => {
 
   if (!isDev || !isVisible) return null;
 
-  const SafeAuthStatus = () => {
+  const SafeContextStatus = () => {
     try {
-      const { isMounted: authMounted } = useAuth();
-      return authMounted ? '✅' : '❌';
+      const { isMounted: authMounted, user } = useAuth();
+      const { balance } = useWallet();
+      const { getUnreadCount } = useNotification();
+      const { aiTools } = useAi();
+
+      return (
+        <>
+          <div>Auth: {authMounted ? '✅' : '❌'}</div>
+          <div>User: {user?.email ? '✅' : '❌'}</div>
+          <div>Balance: ₹{balance?.balance || 0}</div>
+          <div>Notifications: {getUnreadCount()}</div>
+          <div>AI Tools: {aiTools.length}</div>
+        </>
+      );
     } catch (error) {
-      return '❌';
+      return <div>Context: ❌</div>;
     }
   };
 
@@ -43,7 +58,7 @@ export const DevStatusOverlay: React.FC = () => {
         <div>System: DEV {isDev ? '✅' : '❌'}</div>
         <div>GPT: {hasGptKey ? '✅' : '❌'}</div>
         <div>Toast: ✅</div>
-        <div>Auth: <SafeAuthStatus /></div>
+        <SafeContextStatus />
         <div>IFrame Safe: {isIframe ? '✅' : 'N/A'}</div>
       </div>
     </div>
