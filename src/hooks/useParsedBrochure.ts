@@ -5,6 +5,12 @@ import { useSupabaseUser } from '@/hooks/useSupabaseUser';
 import { useNavigate } from 'react-router-dom';
 
 interface ParsedData {
+  parsed_fields: {
+    field: string;
+    value: string;
+    confidence: number;
+  }[];
+  raw_text: string;
   title: string;
   property_type: 'residential' | 'commercial' | 'plot';
   listing_type: 'sale' | 'rent';
