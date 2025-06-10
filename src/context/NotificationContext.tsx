@@ -21,6 +21,7 @@ interface NotificationContextType {
 const NotificationContext = createContext<NotificationContextType | null>(null);
 
 export const NotificationProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  // ✅ Always call hooks at the top level - never conditionally
   const [isMounted, setIsMounted] = useState(false);
   const [notifications, setNotifications] = useState<Notification[]>([]);
 
@@ -72,7 +73,7 @@ export const NotificationProvider: React.FC<{ children: React.ReactNode }> = ({ 
     return notifications.filter(n => !n.isRead).length;
   };
 
-  // Show loading state until mounted
+  // ✅ Safe guard AFTER all hooks are called
   if (!isMounted) {
     return (
       <div className="fixed bottom-16 right-4 bg-blue-100 px-4 py-2 rounded-lg shadow-lg text-sm z-50">
