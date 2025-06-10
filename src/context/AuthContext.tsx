@@ -10,6 +10,7 @@ interface AuthContextType {
   register: (userData: Partial<UserProfile>) => Promise<void>;
   logout: () => void;
   updateProfile: (data: Partial<UserProfile>) => Promise<void>;
+  error: string | null;
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
@@ -23,6 +24,7 @@ const AuthProviderInner: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [isMounted, setIsMounted] = useState(false);
   const [user, setUser] = useState<UserProfile | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     console.log('🔧 AuthContext: Initializing...');
@@ -36,6 +38,7 @@ const AuthProviderInner: React.FC<{ children: ReactNode }> = ({ children }) => {
           console.log('🔧 AuthContext: User loaded from storage');
         }
       } catch (error) {
+        setError('Failed to load user data');
         if (import.meta.env.DEV) {
           console.error('🚨 AuthContext: Error loading user:', error);
         }
@@ -53,6 +56,7 @@ const AuthProviderInner: React.FC<{ children: ReactNode }> = ({ children }) => {
     if (!isMounted) return;
     
     setIsLoading(true);
+    setError(null);
     try {
       const mockUser: UserProfile = {
         id: '1',
@@ -70,6 +74,7 @@ const AuthProviderInner: React.FC<{ children: ReactNode }> = ({ children }) => {
       console.log('🔧 AuthContext: Login successful');
     } catch (error) {
       console.error('🚨 AuthContext: Login error:', error);
+      setError('Login failed. Please try again.');
       throw error;
     } finally {
       setIsLoading(false);
@@ -80,6 +85,7 @@ const AuthProviderInner: React.FC<{ children: ReactNode }> = ({ children }) => {
     if (!isMounted) return;
     
     setIsLoading(true);
+    setError(null);
     try {
       const newUser: UserProfile = {
         id: Date.now().toString(),
@@ -97,6 +103,7 @@ const AuthProviderInner: React.FC<{ children: ReactNode }> = ({ children }) => {
       console.log('🔧 AuthContext: Registration successful');
     } catch (error) {
       console.error('🚨 AuthContext: Registration error:', error);
+      setError('Registration failed. Please try again.');
       throw error;
     } finally {
       setIsLoading(false);
@@ -107,6 +114,7 @@ const AuthProviderInner: React.FC<{ children: ReactNode }> = ({ children }) => {
     if (!isMounted) return;
     
     setUser(null);
+    setError(null);
     localStorage.removeItem('freeproplist_user');
     console.log('🔧 AuthContext: Logout successful');
   };
@@ -114,10 +122,17 @@ const AuthProviderInner: React.FC<{ children: ReactNode }> = ({ children }) => {
   const updateProfile = async (data: Partial<UserProfile>) => {
     if (!user || !isMounted) return;
     
-    const updatedUser = { ...user, ...data, updated_at: new Date().toISOString() };
-    setUser(updatedUser);
-    localStorage.setItem('freeproplist_user', JSON.stringify(updatedUser));
-    console.log('🔧 AuthContext: Profile updated');
+    setError(null);
+    try {
+      const updatedUser = { ...user, ...data, updated_at: new Date().toISOString() };
+      setUser(updatedUser);
+      localStorage.setItem('freeproplist_user', JSON.stringify(updatedUser));
+      console.log('🔧 AuthContext: Profile updated');
+    } catch (error) {
+      console.error('🚨 AuthContext: Profile update error:', error);
+      setError('Failed to update profile.');
+      throw error;
+    }
   };
 
   if (!isMounted) {
@@ -132,7 +147,8 @@ const AuthProviderInner: React.FC<{ children: ReactNode }> = ({ children }) => {
       login,
       register,
       logout,
-      updateProfile
+      updateProfile,
+      error
     }}>
       {children}
     </AuthContext.Provider>
