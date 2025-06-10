@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 
@@ -29,6 +28,12 @@ export function useSeoOverride({
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // Only run on client side after component mount
+    if (typeof window === 'undefined') {
+      setLoading(false);
+      return;
+    }
+
     async function fetchSeoOverride() {
       try {
         const { data, error } = await supabase
@@ -37,7 +42,15 @@ export function useSeoOverride({
           .eq('path', path)
           .maybeSingle();
 
-        if (error) throw error;
+        if (error) {
+          console.warn('SEO override fetch failed:', error);
+          // Use fallbacks on error instead of throwing
+          setSeoData({
+            title: fallbackTitle,
+            description: fallbackDescription
+          });
+          return;
+        }
 
         if (data) {
           setSeoData({
@@ -49,12 +62,12 @@ export function useSeoOverride({
         } else {
           // If no override exists and entityId provided, try to generate AI metadata
           if (entityId) {
-            generateAiMetadata(path, entityId);
+            await generateAiMetadata(path, entityId);
           }
         }
       } catch (error) {
         console.error('Error fetching SEO override:', error);
-        // Use fallbacks on error
+        // Always provide fallbacks instead of crashing
         setSeoData({
           title: fallbackTitle,
           description: fallbackDescription
@@ -73,7 +86,10 @@ export function useSeoOverride({
         body: { path, entityId }
       });
 
-      if (error) throw error;
+      if (error) {
+        console.warn('AI metadata generation failed:', error);
+        return;
+      }
 
       if (data) {
         setSeoData({
@@ -85,6 +101,7 @@ export function useSeoOverride({
       }
     } catch (error) {
       console.error('Error generating AI metadata:', error);
+      // Silently fail and keep fallbacks
     }
   };
 

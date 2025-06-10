@@ -8,7 +8,7 @@ import {
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { CheckCircle, XCircle, Sparkles } from 'lucide-react';
+import { CheckCircle, XCircle, Sparkles, AlertCircle } from 'lucide-react';
 import { useCreditGate } from '@/context/CreditGateContext';
 import { useWallet } from '@/context/WalletContext';
 import { supabase } from '@/integrations/supabase/client';
@@ -36,47 +36,61 @@ export const QualityEnhancerModal: React.FC<QualityEnhancerModalProps> = ({
 }) => {
   const [suggestions, setSuggestions] = useState<QualitySuggestion[]>([]);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [selectedSuggestions, setSelectedSuggestions] = useState<string[]>([]);
   
   const { checkToolAccess, logToolAttempt } = useCreditGate();
   const { deductCredits } = useWallet();
 
   const generateSuggestions = async () => {
-    const access = checkToolAccess('quality_enhancer');
-    await logToolAttempt('quality_enhancer', access.canAccess);
-
-    if (!access.canAccess) {
-      alert(access.reason);
+    if (!listingData) {
+      setError('No listing data provided');
       return;
     }
 
+    setError(null);
     setLoading(true);
+
     try {
-      const success = await deductCredits(access.creditsRequired, 'Quality Enhancer');
-      if (!success) {
-        throw new Error('Failed to deduct credits');
+      const access = checkToolAccess('quality_enhancer');
+      await logToolAttempt('quality_enhancer', access.canAccess);
+
+      if (!access.canAccess) {
+        setError(access.reason || 'Insufficient credits');
+        return;
       }
 
-      const { data, error } = await supabase.functions.invoke('ai/quality-enhancer', {
+      const success = await deductCredits(access.creditsRequired, 'Quality Enhancer');
+      if (!success) {
+        setError('Failed to deduct credits');
+        return;
+      }
+
+      const { data, error: enhanceError } = await supabase.functions.invoke('ai/quality-enhancer', {
         body: { listing_data: listingData }
       });
 
-      if (error) throw error;
+      if (enhanceError) {
+        setError('Quality enhancement failed. Please try again.');
+        console.error('Quality enhancement error:', enhanceError);
+        return;
+      }
 
-      setSuggestions(data.suggestions || []);
+      const enhancedSuggestions = Array.isArray(data.suggestions) ? data.suggestions : [];
+      setSuggestions(enhancedSuggestions);
 
       // Log the enhancement
       await supabase.from('ai_quality_suggestions').insert({
         user_id: (await supabase.auth.getUser()).data.user?.id,
         listing_id: listingData.id,
         original_data: listingData,
-        suggestions: data.suggestions,
+        suggestions: enhancedSuggestions,
         credits_used: access.creditsRequired
       });
 
-    } catch (error) {
-      console.error('Quality enhancement failed:', error);
-      alert('Quality enhancement failed. Please try again.');
+    } catch (err) {
+      console.error('Quality enhancement failed:', err);
+      setError('Quality enhancement failed. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -109,6 +123,13 @@ export const QualityEnhancerModal: React.FC<QualityEnhancerModalProps> = ({
         </DialogHeader>
 
         <div className="space-y-4">
+          {error && (
+            <div className="flex items-center gap-2 text-red-600 bg-red-50 p-3 rounded">
+              <AlertCircle className="h-4 w-4" />
+              {error}
+            </div>
+          )}
+
           {suggestions.length === 0 ? (
             <div className="text-center py-8">
               <Button 
@@ -129,7 +150,7 @@ export const QualityEnhancerModal: React.FC<QualityEnhancerModalProps> = ({
                       <h4 className="font-medium capitalize">{suggestion.field.replace('_', ' ')}</h4>
                       <div className="flex items-center gap-2">
                         <Badge variant="secondary">
-                          {Math.round(suggestion.confidence * 100)}% confidence
+                          {Math.round((suggestion.confidence || 0) * 100)}% confidence
                         </Badge>
                         <Button
                           size="sm"
@@ -148,16 +169,16 @@ export const QualityEnhancerModal: React.FC<QualityEnhancerModalProps> = ({
                     <div className="grid grid-cols-2 gap-4 text-sm">
                       <div>
                         <p className="font-medium text-gray-600 mb-1">Current:</p>
-                        <p className="bg-gray-50 p-2 rounded">{suggestion.current_value}</p>
+                        <p className="bg-gray-50 p-2 rounded">{suggestion.current_value || 'N/A'}</p>
                       </div>
                       <div>
                         <p className="font-medium text-green-600 mb-1">Suggested:</p>
-                        <p className="bg-green-50 p-2 rounded">{suggestion.suggested_value}</p>
+                        <p className="bg-green-50 p-2 rounded">{suggestion.suggested_value || 'N/A'}</p>
                       </div>
                     </div>
                     
                     <p className="text-sm text-gray-600 mt-2">
-                      <strong>Reason:</strong> {suggestion.reason}
+                      <strong>Reason:</strong> {suggestion.reason || 'No reason provided'}
                     </p>
                   </div>
                 ))}

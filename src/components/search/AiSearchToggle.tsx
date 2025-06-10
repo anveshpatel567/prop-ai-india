@@ -25,6 +25,7 @@ export const AiSearchToggle: React.FC<AiSearchToggleProps> = ({
     priceRange: ''
   });
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   
   const { checkToolAccess, logToolAttempt } = useCreditGate();
   const { deductCredits } = useWallet();
@@ -32,28 +33,35 @@ export const AiSearchToggle: React.FC<AiSearchToggleProps> = ({
   const handleAiSearch = async () => {
     if (!aiQuery.trim()) return;
 
-    const access = checkToolAccess('ai_search');
-    await logToolAttempt('ai_search', access.canAccess);
-
-    if (!access.canAccess) {
-      alert(access.reason);
-      return;
-    }
-
+    setError(null);
     setLoading(true);
+
     try {
+      const access = checkToolAccess('ai_search');
+      await logToolAttempt('ai_search', access.canAccess);
+
+      if (!access.canAccess) {
+        setError(access.reason || 'Insufficient credits');
+        return;
+      }
+
       // Deduct credits first
       const success = await deductCredits(access.creditsRequired, 'AI Search');
       if (!success) {
-        throw new Error('Failed to deduct credits');
+        setError('Failed to deduct credits');
+        return;
       }
 
       // Call AI search function
-      const { data, error } = await supabase.functions.invoke('ai/search-query', {
+      const { data, error: searchError } = await supabase.functions.invoke('ai/search-query', {
         body: { search_query: aiQuery }
       });
 
-      if (error) throw error;
+      if (searchError) {
+        setError('Search failed. Please try again.');
+        console.error('AI search error:', searchError);
+        return;
+      }
 
       // Log the search
       await supabase.from('ai_search_logs').insert({
@@ -66,16 +74,16 @@ export const AiSearchToggle: React.FC<AiSearchToggleProps> = ({
 
       onAiSearch(aiQuery);
       onSearchResults(data.results || []);
-    } catch (error) {
-      console.error('AI search failed:', error);
-      alert('AI search failed. Please try again.');
+    } catch (err) {
+      console.error('AI search failed:', err);
+      setError('AI search failed. Please try again.');
     } finally {
       setLoading(false);
     }
   };
 
   const handleManualSearch = () => {
-    // Basic manual search logic
+    setError(null);
     console.log('Manual search with filters:', manualFilters);
     onSearchResults([]);
   };
@@ -100,6 +108,12 @@ export const AiSearchToggle: React.FC<AiSearchToggleProps> = ({
           AI Search (10 Credits)
         </Button>
       </div>
+
+      {error && (
+        <div className="text-red-600 text-sm bg-red-50 p-2 rounded">
+          {error}
+        </div>
+      )}
 
       {searchMode === 'manual' ? (
         <div className="grid gap-3">
