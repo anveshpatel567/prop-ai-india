@@ -20,6 +20,8 @@ export const useListings = () => {
   }) => {
     try {
       setLoading(true);
+      setError(null);
+      
       let query = supabase
         .from('listings')
         .select('*')
@@ -44,6 +46,7 @@ export const useListings = () => {
       const { data, error: fetchError } = await query.order('created_at', { ascending: false });
 
       if (fetchError) {
+        console.error('Fetch listings error:', fetchError);
         setError(fetchError.message);
         return [];
       }
@@ -62,6 +65,8 @@ export const useListings = () => {
   const createListing = async (listingData: ListingInsert) => {
     try {
       setLoading(true);
+      setError(null);
+      
       const { data, error: createError } = await supabase
         .from('listings')
         .insert(listingData)
@@ -69,6 +74,7 @@ export const useListings = () => {
         .single();
 
       if (createError) {
+        console.error('Create listing error:', createError);
         setError(createError.message);
         return null;
       }
@@ -86,6 +92,8 @@ export const useListings = () => {
   const getUserListings = async (userId: string) => {
     try {
       setLoading(true);
+      setError(null);
+      
       const { data, error: fetchError } = await supabase
         .from('listings')
         .select('*')
@@ -93,6 +101,7 @@ export const useListings = () => {
         .order('created_at', { ascending: false });
 
       if (fetchError) {
+        console.error('Get user listings error:', fetchError);
         setError(fetchError.message);
         return [];
       }
@@ -110,6 +119,8 @@ export const useListings = () => {
   const updateListing = async (id: string, updates: Partial<ListingInsert>) => {
     try {
       setLoading(true);
+      setError(null);
+      
       const { data, error: updateError } = await supabase
         .from('listings')
         .update(updates)
@@ -118,6 +129,7 @@ export const useListings = () => {
         .single();
 
       if (updateError) {
+        console.error('Update listing error:', updateError);
         setError(updateError.message);
         return null;
       }
@@ -133,7 +145,10 @@ export const useListings = () => {
   };
 
   useEffect(() => {
-    fetchListings();
+    // Only fetch listings on initial mount if we're in a browser environment
+    if (typeof window !== 'undefined') {
+      fetchListings();
+    }
   }, []);
 
   return {

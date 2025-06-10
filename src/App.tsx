@@ -24,7 +24,7 @@ const queryClient = new QueryClient({
  * Main App Component
  * 
  * Context Provider Hierarchy:
- * - HelmetProvider: SEO and meta tag management
+ * - HelmetProvider: SEO and meta tag management (MUST BE OUTERMOST)
  * - QueryClientProvider: React Query for server state
  * - BrowserRouter: Client-side routing
  * - AuthProvider: User authentication state

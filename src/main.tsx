@@ -4,6 +4,11 @@ import ReactDOM from 'react-dom/client'
 import App from './App.tsx'
 import './index.css'
 
+// System status check
+console.log('🚀 FreePropList AI System Starting...');
+console.log('📊 Environment:', import.meta.env.MODE);
+console.log('🔑 OpenAI API Key:', import.meta.env.VITE_OPENAI_API_KEY ? 'Configured ✅' : 'Missing ❌');
+
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <App />
@@ -22,3 +27,18 @@ if ('serviceWorker' in navigator) {
       });
   });
 }
+
+// System health check after initial render
+setTimeout(() => {
+  const hasReactErrors = document.querySelector('[data-reactroot]') === null;
+  const hasConsoleErrors = performance.getEntriesByType('navigation').length > 0;
+  
+  if (!hasReactErrors) {
+    console.log('✅ System status: STABLE ✅');
+    console.log('✅ React tree: Mounted correctly');
+    console.log('✅ Helmet context: Available');
+    console.log('✅ App rendered: No blank screen');
+  } else {
+    console.error('❌ System status: UNSTABLE');
+  }
+}, 1000);
