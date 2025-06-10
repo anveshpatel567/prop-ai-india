@@ -25,28 +25,30 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      setIsMounted(true);
-      
-      // Set up auth state listener AFTER mounting
-      const { data: { subscription } } = supabase.auth.onAuthStateChange(
-        (event, session) => {
-          setSession(session);
-          setUser(session?.user ?? null);
-          setIsLoading(false);
-        }
-      );
+    setIsMounted(true);
+  }, []);
 
-      // THEN check for existing session
-      supabase.auth.getSession().then(({ data: { session } }) => {
+  useEffect(() => {
+    if (!isMounted) return;
+    
+    // Set up auth state listener AFTER mounting
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      (event, session) => {
         setSession(session);
         setUser(session?.user ?? null);
         setIsLoading(false);
-      });
+      }
+    );
 
-      return () => subscription.unsubscribe();
-    }
-  }, []);
+    // THEN check for existing session
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+      setUser(session?.user ?? null);
+      setIsLoading(false);
+    });
+
+    return () => subscription.unsubscribe();
+  }, [isMounted]);
 
   const login = async (email: string, password: string): Promise<void> => {
     try {
@@ -107,14 +109,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     }
   };
 
-  // Show loading state until mounted
-  if (!isMounted) {
-    return (
-      <div className="fixed bottom-52 right-4 bg-blue-100 px-4 py-2 rounded-lg shadow-lg text-sm z-50">
-        🔐 Auth context initializing...
-      </div>
-    );
-  }
+  if (!isMounted) return null;
 
   return (
     <AuthContext.Provider value={{

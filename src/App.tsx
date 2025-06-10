@@ -1,5 +1,5 @@
 
-import React from 'react';
+import { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Toaster } from '@/components/ui/toaster';
 import { ProviderTreeWrapper } from '@/context/ProviderTreeWrapper';
@@ -29,7 +29,17 @@ import BrochureMatcherPage from '@/pages/tools/brochure-matcher';
 import AiFraudDetectionPage from '@/pages/tools/ai-fraud-detection';
 import TitleChainPage from '@/pages/tools/title-chain';
 
-function App() {
+export default function App() {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      setMounted(true);
+    }
+  }, []);
+
+  if (!mounted) return null;
+
   return (
     <ProviderTreeWrapper>
       <Router>
@@ -66,5 +76,3 @@ function App() {
     </ProviderTreeWrapper>
   );
 }
-
-export default App;
