@@ -13,6 +13,13 @@ import {
 export function Toaster() {
   const { toasts } = useToast()
 
+  // Development mode logging
+  React.useEffect(() => {
+    if (import.meta.env.DEV && toasts.length > 0) {
+      console.log('🔧 DEVELOPMENT MODE - Toast rendered:', toasts.length, 'toasts');
+    }
+  }, [toasts]);
+
   return (
     <ToastProvider>
       {toasts.map(function ({ id, title, description, action, ...props }) {

@@ -7,11 +7,23 @@ export const ApiKeyWarning: React.FC = () => {
   const [showWarning, setShowWarning] = React.useState(false);
 
   React.useEffect(() => {
-    // Only check after component mounts to avoid SSR issues
+    // Development mode - immediate check
     if (typeof window !== 'undefined') {
-      setShowWarning(!isApiKeyConfigured());
+      const hasKey = isApiKeyConfigured();
+      setShowWarning(!hasKey);
+      
+      if (import.meta.env.DEV) {
+        console.log('🔧 DEVELOPMENT MODE - API Key Check:', hasKey ? 'Found' : 'Missing');
+      }
     }
   }, []);
+
+  // Development mode - log when warning shows/hides
+  React.useEffect(() => {
+    if (import.meta.env.DEV) {
+      console.log('🔧 DEVELOPMENT MODE - API Warning:', showWarning ? 'Showing' : 'Hidden');
+    }
+  }, [showWarning]);
 
   if (!showWarning) return null;
 
@@ -23,9 +35,9 @@ export const ApiKeyWarning: React.FC = () => {
         </div>
         <div className="ml-3">
           <p className="text-sm text-yellow-700">
-            <strong>⚠️ GPT API key not set.</strong> Add{' '}
+            <strong>⚠️ DEVELOPMENT MODE: GPT API key not set.</strong> Add{' '}
             <code className="bg-yellow-100 px-1 rounded">VITE_OPENAI_API_KEY</code>{' '}
-            to your .env file to enable AI features.
+            to your .env file. Hot reload will detect changes immediately.
           </p>
           <div className="mt-2 text-xs text-yellow-600">
             <p>Create a .env file in your project root with:</p>

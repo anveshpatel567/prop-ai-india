@@ -11,28 +11,43 @@ import { HelmetProvider } from 'react-helmet-async';
 import { ApiKeyWarning } from './components/common/ApiKeyWarning';
 import './App.css';
 
-// React Query client configuration for optimal performance
+// Development mode React Query configuration
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      staleTime: 1000 * 60 * 5, // 5 minutes
-      retry: 1,
+      staleTime: import.meta.env.DEV ? 0 : 1000 * 60 * 5, // No cache in dev
+      retry: import.meta.env.DEV ? 1 : 3, // Less retries in dev for faster debugging
+      refetchOnWindowFocus: import.meta.env.DEV, // Refetch on focus in dev
     },
   },
 });
 
+// Development mode logging
+if (import.meta.env.DEV) {
+  console.log('🔧 DEVELOPMENT MODE - App.tsx initializing');
+  console.log('🔧 Query Client configured for development');
+  console.log('🔧 Hot Module Reload: ENABLED');
+}
+
 /**
- * Main App Component
+ * Main App Component - DEVELOPMENT MODE
  * 
- * Context Provider Hierarchy:
- * - HelmetProvider: SEO and meta tag management (MUST BE OUTERMOST)
- * - QueryClientProvider: React Query for server state
- * - BrowserRouter: Client-side routing
+ * Context Provider Hierarchy (Development Mode):
+ * - HelmetProvider: SEO and meta tag management
+ * - QueryClientProvider: React Query with dev-friendly settings
+ * - BrowserRouter: Client-side routing with dev logging
  * - AuthProvider: User authentication state
  * - WalletProvider: Credit balance and transactions
  * - CreditGateProvider: AI tool access control
  */
 function App() {
+  // Development mode error boundary
+  React.useEffect(() => {
+    if (import.meta.env.DEV) {
+      console.log('🔧 DEVELOPMENT MODE - App mounted successfully');
+    }
+  }, []);
+
   return (
     <HelmetProvider>
       <QueryClientProvider client={queryClient}>
