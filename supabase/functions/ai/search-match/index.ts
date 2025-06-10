@@ -25,44 +25,38 @@ serve(async (req) => {
     const { data: { user } } = await supabaseClient.auth.getUser();
     if (!user) throw new Error('Unauthorized');
 
-    const { listing_id, listing_data } = await req.json();
+    const { search_query } = await req.json();
 
-    // Check wallet balance for 500 credits
+    // Check wallet balance for 250 credits
     const { data: wallet } = await supabaseClient
       .from('wallets')
       .select('balance')
       .eq('user_id', user.id)
       .single();
 
-    if (!wallet || wallet.balance < 500) {
-      return new Response(JSON.stringify({ error: 'Insufficient credits. Need 500 credits (₹500)' }), {
+    if (!wallet || wallet.balance < 250) {
+      return new Response(JSON.stringify({ error: 'Insufficient credits. Need 250 credits (₹250)' }), {
         status: 400,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       });
     }
 
-    const prompt = `You are a real estate video script writer. Create an engaging video script for this property listing:
+    const prompt = `Parse the real estate search query and extract structured filters. Return ONLY valid JSON:
+    {
+      "location": "city or area name",
+      "property_type": "residential|commercial|plot",
+      "listing_type": "sale|rent",
+      "min_price": number,
+      "max_price": number,
+      "bedrooms": number,
+      "bathrooms": number,
+      "amenities": ["amenity1", "amenity2"],
+      "urgency": "high|medium|low",
+      "search_confidence": 0.95
+    }
+    Only include fields that are clearly mentioned in the query.
 
-Property Details: ${JSON.stringify(listing_data)}
-
-Create a compelling video script that includes:
-1. Opening hook (10-15 seconds)
-2. Property highlights (30-45 seconds)  
-3. Location benefits (15-20 seconds)
-4. Call to action (10-15 seconds)
-
-Format as JSON:
-{
-  "script": {
-    "opening": "Engaging opening line",
-    "highlights": "Property features presentation",
-    "location": "Location benefits",
-    "cta": "Call to action"
-  },
-  "duration_estimate": "90 seconds",
-  "scene_count": 4,
-  "visual_suggestions": ["suggestion1", "suggestion2"]
-}`;
+Search Query: "${search_query}"`;
 
     if (!openAIApiKey) {
       throw new Error('OpenAI API key not configured');
@@ -77,37 +71,21 @@ Format as JSON:
       body: JSON.stringify({
         model: 'gpt-4o-mini',
         messages: [
-          { role: 'system', content: 'You are a professional real estate video script writer. Always respond with valid JSON.' },
+          { role: 'system', content: 'You are a real estate search assistant. Always respond with valid JSON.' },
           { role: 'user', content: prompt }
         ],
-        temperature: 0.7,
-        max_tokens: 800
+        temperature: 0.1,
+        max_tokens: 400
       }),
     });
 
     const data = await response.json();
-    const script = JSON.parse(data.choices[0].message.content);
+    const searchFilters = JSON.parse(data.choices[0].message.content);
 
-    // Create video job
-    const { data: videoJob, error } = await supabaseClient
-      .from('ai_video_jobs')
-      .insert({
-        user_id: user.id,
-        listing_id,
-        generation_prompt: script.script,
-        status: 'completed',
-        video_url: `https://example.com/video/${listing_id}`,
-        thumbnail_url: `https://example.com/thumb/${listing_id}`
-      })
-      .select()
-      .single();
-
-    if (error) throw error;
-
-    // Deduct 500 credits
+    // Deduct 250 credits
     await supabaseClient
       .from('wallets')
-      .update({ balance: wallet.balance - 500 })
+      .update({ balance: wallet.balance - 250 })
       .eq('user_id', user.id);
 
     // Log transaction
@@ -115,22 +93,22 @@ Format as JSON:
       .from('ai_tool_transactions')
       .insert({
         user_id: user.id,
-        tool_name: 'video_generator',
-        credit_cost: 500,
-        input_data: { listing_id, listing_data },
-        output_data: script,
+        tool_name: 'search_match',
+        credit_cost: 250,
+        input_data: { search_query },
+        output_data: searchFilters,
         status: 'success'
       });
 
     return new Response(JSON.stringify({ 
-      video_job: videoJob,
-      script,
-      credits_used: 500
+      success: true, 
+      filters: searchFilters,
+      credits_used: 250
     }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });
   } catch (error) {
-    console.error('Error in generateVideoFromListing:', error);
+    console.error('Error in search-match function:', error);
     
     // Log failed transaction
     try {
@@ -146,7 +124,7 @@ Format as JSON:
           .from('ai_tool_transactions')
           .insert({
             user_id: user.id,
-            tool_name: 'video_generator',
+            tool_name: 'search_match',
             credit_cost: 0,
             status: 'failed',
             error_message: error.message
@@ -154,7 +132,10 @@ Format as JSON:
       }
     } catch {}
 
-    return new Response(JSON.stringify({ error: error.message }), {
+    return new Response(JSON.stringify({ 
+      success: false, 
+      error: error.message 
+    }), {
       status: 500,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });

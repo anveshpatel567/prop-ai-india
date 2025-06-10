@@ -25,44 +25,41 @@ serve(async (req) => {
     const { data: { user } } = await supabaseClient.auth.getUser();
     if (!user) throw new Error('Unauthorized');
 
-    const { listing_id, listing_data } = await req.json();
+    const { listing_data } = await req.json();
 
-    // Check wallet balance for 500 credits
+    // Check wallet balance for 300 credits
     const { data: wallet } = await supabaseClient
       .from('wallets')
       .select('balance')
       .eq('user_id', user.id)
       .single();
 
-    if (!wallet || wallet.balance < 500) {
-      return new Response(JSON.stringify({ error: 'Insufficient credits. Need 500 credits (₹500)' }), {
+    if (!wallet || wallet.balance < 300) {
+      return new Response(JSON.stringify({ error: 'Insufficient credits. Need 300 credits (₹300)' }), {
         status: 400,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       });
     }
 
-    const prompt = `You are a real estate video script writer. Create an engaging video script for this property listing:
+    const prompt = `You are a real estate listing quality expert. Analyze this property listing and suggest improvements to make it more attractive and professional. Focus on:
+    1. Title optimization for better searchability
+    2. Description enhancement for emotional appeal
+    3. Amenities completeness and presentation
+    4. Pricing strategy feedback
+    5. Photo placement suggestions
+    
+    Return ONLY valid JSON array of suggestions:
+    [
+      {
+        "field": "title",
+        "current_value": "current title text",
+        "suggested_value": "improved title text",
+        "reason": "explanation why this is better",
+        "confidence": 0.85
+      }
+    ]
 
-Property Details: ${JSON.stringify(listing_data)}
-
-Create a compelling video script that includes:
-1. Opening hook (10-15 seconds)
-2. Property highlights (30-45 seconds)  
-3. Location benefits (15-20 seconds)
-4. Call to action (10-15 seconds)
-
-Format as JSON:
-{
-  "script": {
-    "opening": "Engaging opening line",
-    "highlights": "Property features presentation",
-    "location": "Location benefits",
-    "cta": "Call to action"
-  },
-  "duration_estimate": "90 seconds",
-  "scene_count": 4,
-  "visual_suggestions": ["suggestion1", "suggestion2"]
-}`;
+Listing Data: ${JSON.stringify(listing_data)}`;
 
     if (!openAIApiKey) {
       throw new Error('OpenAI API key not configured');
@@ -77,37 +74,21 @@ Format as JSON:
       body: JSON.stringify({
         model: 'gpt-4o-mini',
         messages: [
-          { role: 'system', content: 'You are a professional real estate video script writer. Always respond with valid JSON.' },
+          { role: 'system', content: 'You are a real estate listing quality expert. Always respond with valid JSON.' },
           { role: 'user', content: prompt }
         ],
-        temperature: 0.7,
-        max_tokens: 800
+        temperature: 0.3,
+        max_tokens: 1000
       }),
     });
 
     const data = await response.json();
-    const script = JSON.parse(data.choices[0].message.content);
+    const suggestions = JSON.parse(data.choices[0].message.content);
 
-    // Create video job
-    const { data: videoJob, error } = await supabaseClient
-      .from('ai_video_jobs')
-      .insert({
-        user_id: user.id,
-        listing_id,
-        generation_prompt: script.script,
-        status: 'completed',
-        video_url: `https://example.com/video/${listing_id}`,
-        thumbnail_url: `https://example.com/thumb/${listing_id}`
-      })
-      .select()
-      .single();
-
-    if (error) throw error;
-
-    // Deduct 500 credits
+    // Deduct 300 credits
     await supabaseClient
       .from('wallets')
-      .update({ balance: wallet.balance - 500 })
+      .update({ balance: wallet.balance - 300 })
       .eq('user_id', user.id);
 
     // Log transaction
@@ -115,22 +96,22 @@ Format as JSON:
       .from('ai_tool_transactions')
       .insert({
         user_id: user.id,
-        tool_name: 'video_generator',
-        credit_cost: 500,
-        input_data: { listing_id, listing_data },
-        output_data: script,
+        tool_name: 'quality_enhancer',
+        credit_cost: 300,
+        input_data: { listing_data },
+        output_data: { suggestions },
         status: 'success'
       });
 
     return new Response(JSON.stringify({ 
-      video_job: videoJob,
-      script,
-      credits_used: 500
+      success: true, 
+      suggestions: suggestions,
+      credits_used: 300
     }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });
   } catch (error) {
-    console.error('Error in generateVideoFromListing:', error);
+    console.error('Error in quality enhancer function:', error);
     
     // Log failed transaction
     try {
@@ -146,7 +127,7 @@ Format as JSON:
           .from('ai_tool_transactions')
           .insert({
             user_id: user.id,
-            tool_name: 'video_generator',
+            tool_name: 'quality_enhancer',
             credit_cost: 0,
             status: 'failed',
             error_message: error.message
@@ -154,7 +135,10 @@ Format as JSON:
       }
     } catch {}
 
-    return new Response(JSON.stringify({ error: error.message }), {
+    return new Response(JSON.stringify({ 
+      success: false, 
+      error: error.message 
+    }), {
       status: 500,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });

@@ -1,4 +1,3 @@
-
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.50.0';
@@ -27,15 +26,15 @@ serve(async (req) => {
 
     const { listing_id, property_details } = await req.json();
 
-    // Check wallet balance for 300 credits
+    // Check wallet balance for 250 credits (updated from 300)
     const { data: wallet } = await supabaseClient
       .from('wallets')
       .select('balance')
       .eq('user_id', user.id)
       .single();
 
-    if (!wallet || wallet.balance < 300) {
-      return new Response(JSON.stringify({ error: 'Insufficient credits. Need 300 credits (₹300)' }), {
+    if (!wallet || wallet.balance < 250) {
+      return new Response(JSON.stringify({ error: 'Insufficient credits. Need 250 credits (₹250)' }), {
         status: 400,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       });
@@ -102,10 +101,10 @@ Provide a detailed analysis in JSON format:
 
     if (error) throw error;
 
-    // Deduct 300 credits
+    // Deduct 250 credits (updated from 300)
     await supabaseClient
       .from('wallets')
-      .update({ balance: wallet.balance - 300 })
+      .update({ balance: wallet.balance - 250 })
       .eq('user_id', user.id);
 
     // Log transaction
@@ -114,7 +113,7 @@ Provide a detailed analysis in JSON format:
       .insert({
         user_id: user.id,
         tool_name: 'pricing_suggestion',
-        credit_cost: 300,
+        credit_cost: 250,
         input_data: { listing_id, property_details },
         output_data: analysis,
         status: 'success'
@@ -123,12 +122,35 @@ Provide a detailed analysis in JSON format:
     return new Response(JSON.stringify({ 
       suggestion,
       analysis,
-      credits_used: 300
+      credits_used: 250
     }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });
   } catch (error) {
     console.error('Error:', error);
+    
+    // Log failed transaction
+    try {
+      const supabaseClient = createClient(
+        Deno.env.get('SUPABASE_URL') ?? '',
+        Deno.env.get('SUPABASE_ANON_KEY') ?? '',
+        { global: { headers: { Authorization: req.headers.get('Authorization')! } } }
+      );
+      const { data: { user } } = await supabaseClient.auth.getUser();
+      
+      if (user) {
+        await supabaseClient
+          .from('ai_tool_transactions')
+          .insert({
+            user_id: user.id,
+            tool_name: 'pricing_suggestion',
+            credit_cost: 0,
+            status: 'failed',
+            error_message: error.message
+          });
+      }
+    } catch {}
+
     return new Response(JSON.stringify({ error: error.message }), {
       status: 500,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
