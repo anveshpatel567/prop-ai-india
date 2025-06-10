@@ -168,40 +168,22 @@ function toast({ ...props }: Toast) {
 }
 
 function useToast() {
-  // Add safety check for React context
-  if (typeof window === 'undefined') {
-    return {
-      toasts: [],
-      toast: () => ({ id: '', dismiss: () => {}, update: () => {} }),
-      dismiss: () => {},
-    }
-  }
+  const [state, setState] = React.useState<State>(memoryState)
 
-  try {
-    const [state, setState] = React.useState<State>(memoryState)
-
-    React.useEffect(() => {
-      listeners.push(setState)
-      return () => {
-        const index = listeners.indexOf(setState)
-        if (index > -1) {
-          listeners.splice(index, 1)
-        }
+  React.useEffect(() => {
+    listeners.push(setState)
+    return () => {
+      const index = listeners.indexOf(setState)
+      if (index > -1) {
+        listeners.splice(index, 1)
       }
-    }, [state])
+    }
+  }, [state])
 
-    return {
-      ...state,
-      toast,
-      dismiss: (toastId?: string) => dispatch({ type: "DISMISS_TOAST", toastId }),
-    }
-  } catch (error) {
-    console.warn('useToast called outside React tree, returning no-op fallback')
-    return {
-      toasts: [],
-      toast: () => ({ id: '', dismiss: () => {}, update: () => {} }),
-      dismiss: () => {},
-    }
+  return {
+    ...state,
+    toast,
+    dismiss: (toastId?: string) => dispatch({ type: "DISMISS_TOAST", toastId }),
   }
 }
 
