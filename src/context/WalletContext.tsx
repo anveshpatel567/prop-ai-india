@@ -13,17 +13,14 @@ interface WalletContextType {
 const WalletContext = createContext<WalletContextType | null>(null);
 
 export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  // ✅ Always call hooks at the top level - never conditionally
   const [isMounted, setIsMounted] = useState(false);
+  const [balance, setBalance] = useState<WalletBalance | null>(null);
+  const [receipts, setReceipts] = useState<PaymentReceipt[]>([]);
 
   useEffect(() => {
     setIsMounted(true);
   }, []);
-
-  if (!isMounted) return null;
-
-  // ✅ Setup wallet logic AFTER mount
-  const [balance, setBalance] = useState<WalletBalance | null>(null);
-  const [receipts, setReceipts] = useState<PaymentReceipt[]>([]);
 
   useEffect(() => {
     // Initialize wallet data after mounting
@@ -83,6 +80,9 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   const refreshBalance = async () => {
     console.log('Refreshing wallet balance...');
   };
+
+  // ✅ Safe guard AFTER all hooks are called
+  if (!isMounted) return null;
 
   return (
     <WalletContext.Provider value={{
