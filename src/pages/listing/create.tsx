@@ -2,8 +2,7 @@
 import React from 'react';
 import { Navbar } from '@/components/layout/Navbar';
 import { Footer } from '@/components/layout/Footer';
-import { GlassCard } from '@/components/layout/GlassCard';
-import { ListingForm } from '@/components/forms/ListingForm';
+import { ListingFormWizard } from '@/components/listing/ListingFormWizard';
 
 const CreateListing: React.FC = () => {
   return (
@@ -12,14 +11,10 @@ const CreateListing: React.FC = () => {
       <div className="max-w-4xl mx-auto px-4 py-8">
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold text-gray-800 mb-2">Create Property Listing</h1>
-          <p className="text-gray-600">List your property and connect with potential buyers/tenants</p>
+          <p className="text-gray-600">List your property with our step-by-step wizard and AI-powered tools</p>
         </div>
 
-        <GlassCard>
-          <div className="p-6">
-            <ListingForm />
-          </div>
-        </GlassCard>
+        <ListingFormWizard />
       </div>
       <Footer />
     </div>
