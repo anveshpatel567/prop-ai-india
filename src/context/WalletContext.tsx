@@ -15,6 +15,7 @@ const WalletContext = createContext<WalletContextType | null>(null);
 export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [balance, setBalance] = useState<WalletBalance | null>(null);
   const [receipts, setReceipts] = useState<PaymentReceipt[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     // Initialize dummy wallet data
@@ -26,6 +27,7 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
       status: 'active'
     };
     setBalance(dummyBalance);
+    setLoading(false);
   }, []);
 
   const addCredits = async (amount: number, receiptUrl: string) => {
@@ -71,6 +73,10 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     // Simulate API call to refresh balance
     console.log('Refreshing wallet balance...');
   };
+
+  if (loading) {
+    return <div>Loading wallet...</div>;
+  }
 
   return (
     <WalletContext.Provider value={{
