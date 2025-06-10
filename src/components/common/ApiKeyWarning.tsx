@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { AlertTriangle } from 'lucide-react';
-import { isApiKeyConfigured } from '@/services/gptService';
+import { isGptKeyConfigured } from '@/lib/gptService';
 
 export const ApiKeyWarning: React.FC = () => {
   const [showWarning, setShowWarning] = React.useState(false);
@@ -9,13 +9,13 @@ export const ApiKeyWarning: React.FC = () => {
   React.useEffect(() => {
     // Development mode - immediate check
     if (typeof window !== 'undefined') {
-      const hasKey = isApiKeyConfigured();
+      const hasKey = isGptKeyConfigured();
       setShowWarning(!hasKey);
       
       if (import.meta.env.DEV) {
-        console.log('🔧 DEVELOPMENT MODE - API Key Check:', hasKey ? 'Found ✅' : 'Missing ❌');
+        console.log('🔧 API Key Check:', hasKey ? 'Found ✅' : 'Missing ❌');
         if (!hasKey) {
-          console.warn('⚠️ DEVELOPMENT MODE - Create .env file with VITE_OPENAI_API_KEY=sk-your-key-here');
+          console.warn('⚠️ Create .env file with VITE_OPENAI_API_KEY=sk-your-key-here');
         }
       }
     }
@@ -24,7 +24,7 @@ export const ApiKeyWarning: React.FC = () => {
   // Development mode - log when warning shows/hides
   React.useEffect(() => {
     if (import.meta.env.DEV) {
-      console.log('🔧 DEVELOPMENT MODE - API Warning:', showWarning ? 'Showing ⚠️' : 'Hidden ✅');
+      console.log('🔧 API Warning:', showWarning ? 'Showing ⚠️' : 'Hidden ✅');
     }
   }, [showWarning]);
 
@@ -45,7 +45,6 @@ export const ApiKeyWarning: React.FC = () => {
           <div className="mt-2 text-xs text-yellow-600">
             <p>Create a .env file in your project root with:</p>
             <code className="block bg-yellow-100 p-2 rounded mt-1">
-              # ✅ REQUIRED FOR GPT-4o to work<br/>
               VITE_OPENAI_API_KEY=sk-PASTE-YOUR-KEY-HERE
             </code>
           </div>
