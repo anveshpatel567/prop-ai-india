@@ -1,6 +1,7 @@
 
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.50.0';
 
 const openAIApiKey = Deno.env.get('OPENAI_API_KEY');
 
@@ -15,9 +16,32 @@ serve(async (req) => {
   }
 
   try {
-    const { current_description, property_details, user_id } = await req.json();
+    const supabaseClient = createClient(
+      Deno.env.get('SUPABASE_URL') ?? '',
+      Deno.env.get('SUPABASE_ANON_KEY') ?? '',
+      { global: { headers: { Authorization: req.headers.get('Authorization')! } } }
+    );
 
-    const prompt = `You are a professional real estate copywriter. Enhance this property description:
+    const { data: { user } } = await supabaseClient.auth.getUser();
+    if (!user) throw new Error('Unauthorized');
+
+    const { current_description, property_details } = await req.json();
+
+    // Check wallet balance for 300 credits
+    const { data: wallet } = await supabaseClient
+      .from('wallets')
+      .select('balance')
+      .eq('user_id', user.id)
+      .single();
+
+    if (!wallet || wallet.balance < 300) {
+      return new Response(JSON.stringify({ error: 'Insufficient credits. Need 300 credits (₹300)' }), {
+        status: 400,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
+
+    const prompt = `You are a professional real estate copywriter specializing in Indian property markets. Enhance this property description to be more engaging and conversion-focused.
 
 Current Description: "${current_description}"
 
@@ -25,17 +49,22 @@ Property Details:
 - Title: ${property_details.title}
 - Location: ${property_details.location}
 - Type: ${property_details.property_type}
-- Price: ₹${property_details.price || 'Not specified'}
+- Price: ₹${property_details.price || 'Contact for price'}
+- Area: ${property_details.area_sqft || 'N/A'} sq ft
+- Bedrooms: ${property_details.bedrooms || 'N/A'}
+- Bathrooms: ${property_details.bathrooms || 'N/A'}
 
 Instructions:
-1. Make the description more engaging and professional
-2. Highlight key selling points
-3. Use persuasive language that appeals to buyers
-4. Keep it concise but comprehensive
-5. Include location advantages if relevant
-6. Format for online listings
+1. Create a compelling, professional description
+2. Highlight key selling points and unique features
+3. Use persuasive language that appeals to Indian property buyers
+4. Include location advantages and connectivity
+5. Format for online property listings
+6. Keep it engaging but factual
+7. Use Indian English and local terminology
+8. Maximum 300 words
 
-Return only the enhanced description text.`;
+Return only the enhanced description text, nothing else.`;
 
     const response = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
@@ -46,7 +75,7 @@ Return only the enhanced description text.`;
       body: JSON.stringify({
         model: 'gpt-4o-mini',
         messages: [
-          { role: 'system', content: 'You are a professional real estate copywriter who creates compelling property descriptions.' },
+          { role: 'system', content: 'You are a professional real estate copywriter who creates compelling property descriptions for Indian markets.' },
           { role: 'user', content: prompt }
         ],
         temperature: 0.7,
@@ -57,6 +86,24 @@ Return only the enhanced description text.`;
     const data = await response.json();
     const enhanced_description = data.choices[0].message.content;
 
+    // Deduct 300 credits
+    await supabaseClient
+      .from('wallets')
+      .update({ balance: wallet.balance - 300 })
+      .eq('user_id', user.id);
+
+    // Log transaction
+    await supabaseClient
+      .from('ai_tool_transactions')
+      .insert({
+        user_id: user.id,
+        tool_name: 'smart_description',
+        credit_cost: 300,
+        input_data: { current_description, property_details },
+        output_data: { enhanced_description },
+        status: 'success'
+      });
+
     return new Response(JSON.stringify({ 
       success: true, 
       enhanced_description,
@@ -65,7 +112,7 @@ Return only the enhanced description text.`;
         "Highlight unique features of the location",
         "Mention nearby landmarks or facilities"
       ],
-      credits_used: 100
+      credits_used: 300
     }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });

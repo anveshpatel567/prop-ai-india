@@ -27,37 +27,44 @@ serve(async (req) => {
 
     const { listing_id, property_details } = await req.json();
 
-    // Check wallet balance
+    // Check wallet balance for 300 credits
     const { data: wallet } = await supabaseClient
       .from('wallets')
       .select('balance')
       .eq('user_id', user.id)
       .single();
 
-    if (!wallet || wallet.balance < 25) {
-      return new Response(JSON.stringify({ error: 'Insufficient credits' }), {
+    if (!wallet || wallet.balance < 300) {
+      return new Response(JSON.stringify({ error: 'Insufficient credits. Need 300 credits (₹300)' }), {
         status: 400,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       });
     }
 
-    const prompt = `Analyze this property and suggest optimal pricing:
-    Property Details: ${JSON.stringify(property_details)}
-    
-    Consider:
-    1. Property type, size, and location
-    2. Current market conditions
-    3. Comparable properties in area
-    4. Property condition and amenities
-    5. Market demand trends
-    
-    Provide:
-    - Suggested price range
-    - Confidence level (0-1)
-    - Market analysis reasoning
-    - Pricing strategy recommendations
-    
-    Return as valid JSON with fields: suggested_price, confidence_score, market_analysis, recommendations`;
+    const prompt = `You are a real estate pricing expert in India. Analyze this property and suggest optimal pricing:
+
+Property Details: ${JSON.stringify(property_details)}
+
+Consider:
+1. Property type, size, and location specifics
+2. Current Indian real estate market conditions
+3. Comparable properties in the locality
+4. Property condition and amenities
+5. Market demand trends in the city/area
+6. Price per square foot analysis
+
+Provide a detailed analysis in JSON format:
+{
+  "suggested_price_range": {
+    "min": number,
+    "max": number,
+    "optimal": number
+  },
+  "confidence_score": number (0-1),
+  "market_analysis": "detailed reasoning",
+  "pricing_factors": ["factor1", "factor2"],
+  "recommendations": ["recommendation1", "recommendation2"]
+}`;
 
     const response = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
@@ -72,6 +79,7 @@ serve(async (req) => {
           { role: 'user', content: prompt }
         ],
         max_tokens: 1000,
+        temperature: 0.3,
       }),
     });
 
@@ -84,7 +92,7 @@ serve(async (req) => {
       .insert({
         user_id: user.id,
         listing_id,
-        suggested_price: analysis.suggested_price,
+        suggested_price: analysis.suggested_price_range.optimal,
         market_analysis: analysis,
         confidence_score: analysis.confidence_score,
         status: 'completed'
@@ -94,13 +102,29 @@ serve(async (req) => {
 
     if (error) throw error;
 
-    // Deduct credits
+    // Deduct 300 credits
     await supabaseClient
       .from('wallets')
-      .update({ balance: wallet.balance - 25 })
+      .update({ balance: wallet.balance - 300 })
       .eq('user_id', user.id);
 
-    return new Response(JSON.stringify({ suggestion }), {
+    // Log transaction
+    await supabaseClient
+      .from('ai_tool_transactions')
+      .insert({
+        user_id: user.id,
+        tool_name: 'pricing_suggestion',
+        credit_cost: 300,
+        input_data: { listing_id, property_details },
+        output_data: analysis,
+        status: 'success'
+      });
+
+    return new Response(JSON.stringify({ 
+      suggestion,
+      analysis,
+      credits_used: 300
+    }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });
   } catch (error) {
