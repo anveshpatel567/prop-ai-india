@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { useWallet } from '../../context/WalletContext';
@@ -14,8 +15,21 @@ const Dashboard: React.FC = () => {
     return <div>Please login to access dashboard</div>;
   }
 
+  const getUserDisplayName = () => {
+    // Safely get display name, fallback to email or 'User'
+    if (user.user_metadata?.full_name) return user.user_metadata.full_name;
+    if (user.email) return user.email.split('@')[0];
+    return 'User';
+  };
+
+  const getUserRole = () => {
+    // Safely get role from metadata or default to 'seeker'
+    return user.user_metadata?.role || 'seeker';
+  };
+
   const getDashboardContent = () => {
-    switch (user.role) {
+    const role = getUserRole();
+    switch (role) {
       case 'seeker':
         return (
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -121,10 +135,10 @@ const Dashboard: React.FC = () => {
           <div className="flex justify-between items-start mb-6">
             <div>
               <h1 className="font-rajdhani text-3xl font-bold text-[#2d0000]">
-                Welcome back, {user.full_name}!
+                Welcome back, {getUserDisplayName()}!
               </h1>
               <p className="font-dmsans text-[#8b4513] capitalize">
-                {user.role.replace('_', ' ')} Dashboard
+                {getUserRole().replace('_', ' ')} Dashboard
               </p>
             </div>
             

@@ -7,7 +7,7 @@ import { Footer } from '../components/layout/Footer';
 import { GlassCard } from '../components/layout/GlassCard';
 import { InputField } from '../components/common/InputField';
 import { ButtonPrimary } from '../components/common/ButtonPrimary';
-import { UserProfile } from '../types';
+import { UserRole } from '../types/global';
 
 const Login: React.FC = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -16,7 +16,7 @@ const Login: React.FC = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [fullName, setFullName] = useState('');
   const [phone, setPhone] = useState('');
-  const [role, setRole] = useState<UserProfile['role']>('seeker');
+  const [role, setRole] = useState<UserRole>('seeker');
   const [reraNumber, setReraNumber] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
@@ -38,12 +38,10 @@ const Login: React.FC = () => {
           setIsLoading(false);
           return;
         }
+        // Only pass email and full_name to register function as those are supported
         await register({
-          full_name: fullName,
           email,
-          phone,
-          role,
-          rera_number: reraNumber || null
+          full_name: fullName
         });
       }
       navigate('/dashboard');
@@ -125,7 +123,7 @@ const Login: React.FC = () => {
                     </label>
                     <select
                       value={role}
-                      onChange={(e) => setRole(e.target.value as UserProfile['role'])}
+                      onChange={(e) => setRole(e.target.value as UserRole)}
                       className="w-full px-4 py-3 border border-gray-300 rounded-lg 
                         focus:ring-2 focus:ring-orange-500 focus:border-transparent"
                     >

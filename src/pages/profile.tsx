@@ -27,10 +27,15 @@ const Profile: React.FC = () => {
     }
     
     if (user) {
+      // Safely extract data from user metadata or default values
+      const fullName = user.user_metadata?.full_name || user.email?.split('@')[0] || '';
+      const phone = user.user_metadata?.phone || '';
+      const userRole = user.user_metadata?.role as UserRole || 'seeker';
+      
       setFormData({
-        full_name: user.full_name || '',
-        phone: user.phone || '',
-        role: user.role || 'seeker'
+        full_name: fullName,
+        phone: phone,
+        role: userRole
       });
     }
   }, [user, loading, navigate]);
@@ -81,7 +86,7 @@ const Profile: React.FC = () => {
                 <Input
                   id="email"
                   type="email"
-                  value={user.email}
+                  value={user.email || ''}
                   disabled
                   className="bg-gray-100"
                 />
