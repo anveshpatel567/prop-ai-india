@@ -1,3 +1,4 @@
+
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { useWallet } from './WalletContext';
 import { ToolUsageLogger } from '@/utils/toolUsageLog';
@@ -24,16 +25,13 @@ interface CreditGateContextType {
 const CreditGateContext = createContext<CreditGateContextType | null>(null);
 
 export const CreditGateProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  if (typeof window === 'undefined') return null;
-  return <CreditGateProviderInner>{children}</CreditGateProviderInner>;
-};
-
-const CreditGateProviderInner: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [mounted, setMounted] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    setMounted(true);
+    if (typeof window !== 'undefined') {
+      setIsMounted(true);
+    }
   }, []);
 
   const TOOL_CREDIT_REQUIREMENTS: Record<string, ToolCreditRequirement> = {
@@ -89,8 +87,13 @@ const CreditGateProviderInner: React.FC<{ children: ReactNode }> = ({ children }
     }
   };
 
-  if (!mounted) {
-    return <div>Loading...</div>;
+  // Show loading state until mounted
+  if (!isMounted) {
+    return (
+      <div className="fixed bottom-40 right-4 bg-green-100 px-4 py-2 rounded-lg shadow-lg text-sm z-50">
+        🔐 Credit gate initializing...
+      </div>
+    );
   }
 
   const { user } = useAuth();
