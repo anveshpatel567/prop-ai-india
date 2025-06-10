@@ -8,7 +8,7 @@ import { Badge } from '@/components/ui/badge';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Upload, FileText, Check, X, Edit } from 'lucide-react';
 import { useParsedBrochure } from '@/hooks/useParsedBrochure';
-import { ParsedBrochureField } from '@/types/listing/brochure';
+import { BrochureParseResult, ParsedBrochureField } from '@/types/listing/brochure';
 
 export const BrochureUploaderPanel: React.FC = () => {
   const { parsing, parsedData, parseBrochure } = useParsedBrochure();
@@ -119,8 +119,8 @@ export const BrochureUploaderPanel: React.FC = () => {
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  {parsedData.parsed_fields.map((field) => (
-                    <div key={field.field_name} className="flex items-center justify-between p-3 border rounded">
+                  {parsedData.parsed_fields.map((field, index) => (
+                    <div key={field.field_name || index} className="flex items-center justify-between p-3 border rounded">
                       <div className="flex-1">
                         <div className="font-medium">{field.field_name}</div>
                         {editingField === field.field_name ? (

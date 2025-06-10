@@ -16,3 +16,12 @@ export interface BrochureParseResult {
   parsing_status: 'success' | 'error' | 'partial';
   error_message?: string;
 }
+
+export type ParsedData = {
+  parsed_fields: {
+    field: string;
+    value: string;
+    confidence: number;
+  }[];
+  raw_text: string;
+};
