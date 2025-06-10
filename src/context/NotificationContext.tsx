@@ -21,37 +21,34 @@ interface NotificationContextType {
 const NotificationContext = createContext<NotificationContextType | null>(null);
 
 export const NotificationProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  if (typeof window === 'undefined') return null;
-  return <NotificationProviderInner>{children}</NotificationProviderInner>;
-};
-
-const NotificationProviderInner: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [mounted, setMounted] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
   const [notifications, setNotifications] = useState<Notification[]>([]);
 
   useEffect(() => {
-    setMounted(true);
-    const stored = localStorage.getItem("freeproplist_notifications");
-    if (stored) {
-      try {
-        setNotifications(JSON.parse(stored));
-      } catch (error) {
-        console.error('Failed to load notifications from storage:', error);
+    if (typeof window !== 'undefined') {
+      setIsMounted(true);
+      
+      // Load notifications from localStorage after mounting
+      const stored = localStorage.getItem("freeproplist_notifications");
+      if (stored) {
+        try {
+          setNotifications(JSON.parse(stored));
+        } catch (error) {
+          console.error('Failed to load notifications from storage:', error);
+        }
       }
     }
   }, []);
 
   useEffect(() => {
-    if (mounted && notifications.length > 0) {
+    if (isMounted && notifications.length > 0) {
       localStorage.setItem("freeproplist_notifications", JSON.stringify(notifications));
     }
-  }, [notifications, mounted]);
-
-  if (!mounted) {
-    return <div>Loading notifications...</div>;
-  }
+  }, [notifications, isMounted]);
 
   const addNotification = (notification: Omit<Notification, 'id' | 'isRead' | 'createdAt'>) => {
+    if (!isMounted) return;
+    
     const newNotification: Notification = {
       ...notification,
       id: Date.now().toString(),
@@ -62,16 +59,27 @@ const NotificationProviderInner: React.FC<{ children: React.ReactNode }> = ({ ch
   };
 
   const markAsRead = (id: string) => {
+    if (!isMounted) return;
     setNotifications(prev => prev.map(n => n.id === id ? { ...n, isRead: true } : n));
   };
 
   const removeNotification = (id: string) => {
+    if (!isMounted) return;
     setNotifications(prev => prev.filter(n => n.id !== id));
   };
 
   const getUnreadCount = () => {
     return notifications.filter(n => !n.isRead).length;
   };
+
+  // Show loading state until mounted
+  if (!isMounted) {
+    return (
+      <div className="fixed bottom-16 right-4 bg-blue-100 px-4 py-2 rounded-lg shadow-lg text-sm z-50">
+        📱 Notification context initializing...
+      </div>
+    );
+  }
 
   return (
     <NotificationContext.Provider value={{
