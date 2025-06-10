@@ -10,6 +10,7 @@ import { AppRoutes } from './AppRoutes';
 import { HelmetProvider } from 'react-helmet-async';
 import { ApiKeyWarning } from './components/common/ApiKeyWarning';
 import { ErrorBoundary } from './components/common/ErrorBoundary';
+import { DevStatusOverlay } from './components/common/DevStatusOverlay';
 import { isGptKeyConfigured } from './lib/gptService';
 import './App.css';
 
@@ -57,6 +58,7 @@ function App() {
                   <ApiKeyWarning />
                   <AppRoutes />
                   <Toaster />
+                  {import.meta.env.DEV && <DevStatusOverlay />}
                 </CreditGateProvider>
               </WalletProvider>
             </AuthProvider>

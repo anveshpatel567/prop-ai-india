@@ -44,6 +44,7 @@ if (root) {
         console.log('✅ App mounted successfully');
         const hasApiKey = !!import.meta.env.VITE_OPENAI_API_KEY;
         console.log('🔑 GPT Key:', hasApiKey ? 'Found ✅' : 'Missing ❌');
+        console.log('🔧 Auth Context: Initializing...');
       }, 100);
     }
   } catch (error) {

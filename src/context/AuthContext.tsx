@@ -5,6 +5,7 @@ import { UserProfile } from '../types';
 interface AuthContextType {
   user: UserProfile | null;
   isLoading: boolean;
+  isMounted: boolean;
   login: (email: string, password: string) => Promise<void>;
   register: (userData: Partial<UserProfile>) => Promise<void>;
   logout: () => void;
@@ -14,29 +15,42 @@ interface AuthContextType {
 export const AuthContext = createContext<AuthContextType | null>(null);
 
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+  // Iframe-safe state initialization
+  const [isMounted, setIsMounted] = useState(false);
   const [user, setUser] = useState<UserProfile | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
+  // Ensure we only run client-side logic after mount
   useEffect(() => {
-    // Simulate loading user data
+    if (typeof window === 'undefined') return;
+    
+    setIsMounted(true);
+    
+    // Simulate loading user data only after mount
     const loadUser = async () => {
       try {
-        // Check for existing session
+        // Check for existing session only in browser
         const savedUser = localStorage.getItem('freeproplist_user');
         if (savedUser) {
           setUser(JSON.parse(savedUser));
         }
       } catch (error) {
-        console.error('Error loading user:', error);
+        if (import.meta.env.DEV) {
+          console.error('Error loading user:', error);
+        }
       } finally {
         setIsLoading(false);
       }
     };
 
-    loadUser();
+    // Small delay to ensure DOM is ready in iframe environments
+    const timeoutId = setTimeout(loadUser, 50);
+    return () => clearTimeout(timeoutId);
   }, []);
 
   const login = async (email: string, password: string) => {
+    if (!isMounted || typeof window === 'undefined') return;
+    
     setIsLoading(true);
     try {
       // Simulate API call
@@ -62,6 +76,8 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   };
 
   const register = async (userData: Partial<UserProfile>) => {
+    if (!isMounted || typeof window === 'undefined') return;
+    
     setIsLoading(true);
     try {
       const newUser: UserProfile = {
@@ -86,12 +102,14 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   };
 
   const logout = () => {
+    if (!isMounted || typeof window === 'undefined') return;
+    
     setUser(null);
     localStorage.removeItem('freeproplist_user');
   };
 
   const updateProfile = async (data: Partial<UserProfile>) => {
-    if (!user) return;
+    if (!user || !isMounted || typeof window === 'undefined') return;
     
     const updatedUser = { ...user, ...data, updated_at: new Date().toISOString() };
     setUser(updatedUser);
@@ -102,6 +120,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     <AuthContext.Provider value={{
       user,
       isLoading,
+      isMounted,
       login,
       register,
       logout,
