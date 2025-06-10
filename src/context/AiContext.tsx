@@ -20,32 +20,27 @@ interface AiContextType {
 const AiContext = createContext<AiContextType | null>(null);
 
 export const AiProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  if (typeof window === 'undefined') return null;
-  return <AiProviderInner>{children}</AiProviderInner>;
-};
-
-const AiProviderInner: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [mounted, setMounted] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
   const [aiTools, setAiTools] = useState<AiTool[]>([]);
 
   useEffect(() => {
-    setMounted(true);
-    // Initialize default AI tools
-    const defaultTools: AiTool[] = [
-      { id: '1', name: 'ai_search', enabled: true, creditCost: 10, description: 'AI-powered property search' },
-      { id: '2', name: 'smart_pricing', enabled: true, creditCost: 30, description: 'AI pricing analysis' },
-      { id: '3', name: 'brochure_parser', enabled: true, creditCost: 50, description: 'Brochure parsing' },
-      { id: '4', name: 'video_generator', enabled: true, creditCost: 100, description: 'Video generation' },
-      { id: '5', name: 'lead_scorer', enabled: true, creditCost: 25, description: 'Lead scoring' },
-    ];
-    setAiTools(defaultTools);
+    if (typeof window !== 'undefined') {
+      setIsMounted(true);
+      
+      // Initialize default AI tools after mounting
+      const defaultTools: AiTool[] = [
+        { id: '1', name: 'ai_search', enabled: true, creditCost: 10, description: 'AI-powered property search' },
+        { id: '2', name: 'smart_pricing', enabled: true, creditCost: 30, description: 'AI pricing analysis' },
+        { id: '3', name: 'brochure_parser', enabled: true, creditCost: 50, description: 'Brochure parsing' },
+        { id: '4', name: 'video_generator', enabled: true, creditCost: 100, description: 'Video generation' },
+        { id: '5', name: 'lead_scorer', enabled: true, creditCost: 25, description: 'Lead scoring' },
+      ];
+      setAiTools(defaultTools);
+    }
   }, []);
 
-  if (!mounted) {
-    return <div>Loading AI tools...</div>;
-  }
-
   const isToolEnabled = (toolName: string): boolean => {
+    if (!isMounted) return false;
     const tool = aiTools.find(t => t.name === toolName);
     return tool?.enabled || false;
   };
@@ -56,10 +51,20 @@ const AiProviderInner: React.FC<{ children: React.ReactNode }> = ({ children }) 
   };
 
   const toggleTool = (toolName: string) => {
+    if (!isMounted) return;
     setAiTools(prev => prev.map(tool => 
       tool.name === toolName ? { ...tool, enabled: !tool.enabled } : tool
     ));
   };
+
+  // Show loading state until mounted
+  if (!isMounted) {
+    return (
+      <div className="fixed bottom-28 right-4 bg-purple-100 px-4 py-2 rounded-lg shadow-lg text-sm z-50">
+        🤖 AI context initializing...
+      </div>
+    );
+  }
 
   return (
     <AiContext.Provider value={{
