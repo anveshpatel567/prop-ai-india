@@ -13,7 +13,10 @@ export const ApiKeyWarning: React.FC = () => {
       setShowWarning(!hasKey);
       
       if (import.meta.env.DEV) {
-        console.log('🔧 DEVELOPMENT MODE - API Key Check:', hasKey ? 'Found' : 'Missing');
+        console.log('🔧 DEVELOPMENT MODE - API Key Check:', hasKey ? 'Found ✅' : 'Missing ❌');
+        if (!hasKey) {
+          console.warn('⚠️ DEVELOPMENT MODE - Create .env file with VITE_OPENAI_API_KEY=sk-your-key-here');
+        }
       }
     }
   }, []);
@@ -21,7 +24,7 @@ export const ApiKeyWarning: React.FC = () => {
   // Development mode - log when warning shows/hides
   React.useEffect(() => {
     if (import.meta.env.DEV) {
-      console.log('🔧 DEVELOPMENT MODE - API Warning:', showWarning ? 'Showing' : 'Hidden');
+      console.log('🔧 DEVELOPMENT MODE - API Warning:', showWarning ? 'Showing ⚠️' : 'Hidden ✅');
     }
   }, [showWarning]);
 

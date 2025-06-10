@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { AuthProvider } from './context/AuthContext';
 import { WalletProvider } from './context/WalletContext';
 import { CreditGateProvider } from './context/CreditGateContext';
+import { ToastProvider } from '@/components/ui/toast';
 import { Toaster } from '@/components/ui/toaster';
 import { AppRoutes } from './AppRoutes';
 import { HelmetProvider } from 'react-helmet-async';
@@ -27,6 +28,13 @@ if (import.meta.env.DEV) {
   console.log('🔧 DEVELOPMENT MODE - App.tsx initializing');
   console.log('🔧 Query Client configured for development');
   console.log('🔧 Hot Module Reload: ENABLED');
+  
+  // GPT API Key check
+  const gptKey = import.meta.env.VITE_OPENAI_API_KEY;
+  console.log('🔑 GPT KEY:', gptKey ? 'Found ✅' : 'Missing ❌');
+  if (!gptKey) {
+    console.warn('⚠️ GPT API key missing - Add VITE_OPENAI_API_KEY to .env');
+  }
 }
 
 /**
@@ -36,6 +44,7 @@ if (import.meta.env.DEV) {
  * - HelmetProvider: SEO and meta tag management
  * - QueryClientProvider: React Query with dev-friendly settings
  * - BrowserRouter: Client-side routing with dev logging
+ * - ToastProvider: Toast context (MUST be at root level)
  * - AuthProvider: User authentication state
  * - WalletProvider: Credit balance and transactions
  * - CreditGateProvider: AI tool access control
@@ -45,6 +54,7 @@ function App() {
   React.useEffect(() => {
     if (import.meta.env.DEV) {
       console.log('🔧 DEVELOPMENT MODE - App mounted successfully');
+      console.log('🧪 System mode: DEV ✅ | Toast Fixed ✅ | GPT Ready', import.meta.env.VITE_OPENAI_API_KEY ? '✅' : '❌');
     }
   }, []);
 
@@ -52,15 +62,17 @@ function App() {
     <HelmetProvider>
       <QueryClientProvider client={queryClient}>
         <BrowserRouter>
-          <AuthProvider>
-            <WalletProvider>
-              <CreditGateProvider>
-                <ApiKeyWarning />
-                <AppRoutes />
-                <Toaster />
-              </CreditGateProvider>
-            </WalletProvider>
-          </AuthProvider>
+          <ToastProvider>
+            <AuthProvider>
+              <WalletProvider>
+                <CreditGateProvider>
+                  <ApiKeyWarning />
+                  <AppRoutes />
+                  <Toaster />
+                </CreditGateProvider>
+              </WalletProvider>
+            </AuthProvider>
+          </ToastProvider>
         </BrowserRouter>
       </QueryClientProvider>
     </HelmetProvider>

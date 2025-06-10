@@ -9,6 +9,14 @@ const getApiKey = (): string | null => {
   // Check for environment variable
   const apiKey = import.meta.env.VITE_OPENAI_API_KEY;
   
+  // Development mode logging
+  if (import.meta.env.DEV) {
+    console.log('🔧 DEVELOPMENT MODE - GPT API Key Check:', apiKey ? 'Found ✅' : 'Missing ❌');
+    if (!apiKey) {
+      console.warn('⚠️ GPT API key missing - Add VITE_OPENAI_API_KEY to .env file');
+    }
+  }
+  
   if (!apiKey) {
     console.warn('⚠️ OpenAI GPT API key missing. Add VITE_OPENAI_API_KEY to .env file');
     return null;
@@ -21,14 +29,34 @@ export async function fetchGpt4oResponse(prompt: string): Promise<GptResponse> {
   const apiKey = getApiKey();
   
   if (!apiKey) {
+    const errorMessage = '⚠️ GPT API key not set. Please add VITE_OPENAI_API_KEY to your .env file.';
+    
+    // Development mode - show detailed error
+    if (import.meta.env.DEV) {
+      console.error('🚨 DEVELOPMENT MODE - GPT API Key Missing:', {
+        prompt: prompt.substring(0, 50) + '...',
+        env: import.meta.env.MODE,
+        key_present: !!import.meta.env.VITE_OPENAI_API_KEY
+      });
+    }
+    
     return {
       success: false,
-      content: '⚠️ GPT API key not set. Please add VITE_OPENAI_API_KEY to your .env file.',
+      content: errorMessage,
       error: 'Missing OpenAI API key'
     };
   }
 
   try {
+    // Development mode - log request details
+    if (import.meta.env.DEV) {
+      console.log('🔧 DEVELOPMENT MODE - GPT Request:', {
+        model: 'gpt-4o-mini',
+        prompt_length: prompt.length,
+        api_key_present: true
+      });
+    }
+
     const response = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
       headers: {
@@ -55,6 +83,16 @@ export async function fetchGpt4oResponse(prompt: string): Promise<GptResponse> {
     if (!response.ok) {
       const errorData = await response.json();
       console.error('OpenAI API error:', errorData);
+      
+      // Development mode - detailed error logging
+      if (import.meta.env.DEV) {
+        console.error('🚨 DEVELOPMENT MODE - GPT API Error:', {
+          status: response.status,
+          error: errorData,
+          prompt: prompt.substring(0, 50) + '...'
+        });
+      }
+      
       return {
         success: false,
         content: 'AI service temporarily unavailable',
@@ -73,12 +111,29 @@ export async function fetchGpt4oResponse(prompt: string): Promise<GptResponse> {
       };
     }
 
+    // Development mode - log successful response
+    if (import.meta.env.DEV) {
+      console.log('✅ DEVELOPMENT MODE - GPT Response Success:', {
+        response_length: content.length,
+        tokens_used: data.usage?.total_tokens || 'unknown'
+      });
+    }
+
     return {
       success: true,
       content: content.trim()
     };
   } catch (err) {
     console.error('GPT API call failed:', err);
+    
+    // Development mode - detailed error logging
+    if (import.meta.env.DEV) {
+      console.error('🚨 DEVELOPMENT MODE - GPT Network Error:', {
+        error: err instanceof Error ? err.message : 'Unknown error',
+        prompt: prompt.substring(0, 50) + '...'
+      });
+    }
+    
     return {
       success: false,
       content: 'AI temporarily unavailable',
@@ -89,9 +144,22 @@ export async function fetchGpt4oResponse(prompt: string): Promise<GptResponse> {
 
 export async function testGptConnection(): Promise<boolean> {
   const result = await fetchGpt4oResponse('Say "Hello, API is working!" if you can read this.');
+  
+  // Development mode - log connection test result
+  if (import.meta.env.DEV) {
+    console.log('🔧 DEVELOPMENT MODE - GPT Connection Test:', result.success ? 'PASSED ✅' : 'FAILED ❌');
+  }
+  
   return result.success;
 }
 
 export function isApiKeyConfigured(): boolean {
-  return !!import.meta.env.VITE_OPENAI_API_KEY;
+  const hasKey = !!import.meta.env.VITE_OPENAI_API_KEY;
+  
+  // Development mode - log key status
+  if (import.meta.env.DEV) {
+    console.log('🔧 DEVELOPMENT MODE - API Key Status:', hasKey ? 'Configured ✅' : 'Missing ❌');
+  }
+  
+  return hasKey;
 }
