@@ -32,6 +32,9 @@ export const BrochureUploaderPanel: React.FC = () => {
     }
   };
 
+  // Safely extract parsed fields with null checks
+  const parsedFields = parsedData?.parsed_fields || [];
+
   return (
     <div className="max-w-4xl mx-auto space-y-6">
       <Card>
@@ -59,8 +62,8 @@ export const BrochureUploaderPanel: React.FC = () => {
             </Button>
           )}
 
-          {parsedData?.parsed_fields && (
-            <BrochureParsedData parsedFields={parsedData.parsed_fields} />
+          {parsedFields.length > 0 && (
+            <BrochureParsedData parsedFields={parsedFields} />
           )}
 
           <BrochureLegalAgreement 

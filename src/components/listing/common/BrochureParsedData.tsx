@@ -63,7 +63,7 @@ export const BrochureParsedData: React.FC<BrochureParsedDataProps> = ({
                   </div>
                 )}
                 <Badge variant="secondary" className="mt-1">
-                  {Math.round(field.confidence * 100)}% confidence
+                  {Math.round((field.confidence || 0) * 100)}% confidence
                 </Badge>
               </div>
               <div className="flex gap-2">

@@ -24,4 +24,15 @@ export type ParsedData = {
     confidence: number;
   }[];
   raw_text: string;
+  title: string;
+  property_type: 'residential' | 'commercial' | 'plot';
+  listing_type: 'sale' | 'rent';
+  price: number;
+  area_sqft?: number;
+  bedrooms?: number;
+  bathrooms?: number;
+  city: string;
+  locality?: string;
+  amenities: string[];
+  description: string;
 };
