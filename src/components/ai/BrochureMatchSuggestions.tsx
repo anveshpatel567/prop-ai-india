@@ -2,109 +2,102 @@
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
-import { FileText, Upload, Zap } from 'lucide-react';
 import { useBrochureMatches } from '@/hooks/useBrochureMatches';
-import { useToast } from '@/hooks/use-toast';
+import { FileText, Upload, Search } from 'lucide-react';
 
 export const BrochureMatchSuggestions: React.FC = () => {
   const { matches, loading, generateMatches } = useBrochureMatches();
-  const { toast } = useToast();
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [file, setFile] = useState<File | null>(null);
+  const [uploading, setUploading] = useState(false);
 
-  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      setSelectedFile(file);
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setFile(e.target.files[0]);
     }
   };
 
-  const handleGenerateMatches = async () => {
-    if (!selectedFile) {
-      toast({
-        title: "No File Selected",
-        description: "Please select a brochure file first",
-        variant: "destructive"
-      });
-      return;
-    }
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!file) return;
 
+    setUploading(true);
     try {
-      await generateMatches(selectedFile);
-      toast({
-        title: "Matches Generated",
-        description: "AI has analyzed your brochure and found property matches",
-      });
-      setSelectedFile(null);
+      await generateMatches(file);
     } catch (error) {
-      toast({
-        title: "Error",
-        description: "Failed to generate matches",
-        variant: "destructive"
-      });
+      console.error('Error generating matches:', error);
+    } finally {
+      setUploading(false);
     }
   };
 
   return (
-    <div className="space-y-6">
-      <Card className="border-orange-200">
-        <CardHeader>
-          <CardTitle className="flex items-center text-orange-600">
-            <FileText className="mr-2 h-5 w-5" />
-            AI Brochure Matcher
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="space-y-3">
-            <Input
-              type="file"
-              accept=".pdf,.doc,.docx,.txt"
-              onChange={handleFileUpload}
-              className="file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-orange-50 file:text-orange-700 hover:file:bg-orange-100"
-            />
-            {selectedFile && (
-              <div className="flex items-center space-x-2 text-sm text-gray-600">
-                <Upload className="h-4 w-4" />
-                <span>{selectedFile.name}</span>
-              </div>
-            )}
+    <Card>
+      <CardHeader>
+        <CardTitle className="flex items-center">
+          <FileText className="mr-2 h-5 w-5" />
+          AI Brochure Matcher
+          <Badge className="ml-2">350 Credits</Badge>
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <label className="block text-sm font-medium mb-2">
+              Upload Property Brochure (PDF, JPG, PNG)
+            </label>
+            <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
+              <Upload className="mx-auto h-12 w-12 text-gray-400 mb-4" />
+              <input
+                type="file"
+                onChange={handleFileChange}
+                accept=".pdf,.jpg,.jpeg,.png"
+                className="hidden"
+                id="brochure-upload"
+              />
+              <label
+                htmlFor="brochure-upload"
+                className="cursor-pointer text-blue-600 hover:text-blue-500"
+              >
+                Choose file or drag and drop
+              </label>
+              {file && (
+                <p className="mt-2 text-sm text-gray-600">
+                  Selected: {file.name}
+                </p>
+              )}
+            </div>
           </div>
-          <Button 
-            onClick={handleGenerateMatches} 
-            disabled={loading || !selectedFile}
-            className="bg-orange-500 hover:bg-orange-600"
-          >
-            <Zap className="mr-2 h-4 w-4" />
-            Generate Matches (25 credits)
-          </Button>
-        </CardContent>
-      </Card>
 
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-gray-700">Match Results</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-3">
-            {matches.map((match) => (
-              <div key={match.id} className="p-4 border rounded-lg space-y-2">
-                <div className="flex items-center justify-between">
-                  <Badge variant="secondary">
-                    {match.matched_listings?.length || 0} matches found
-                  </Badge>
-                  <span className="text-xs text-gray-500">
-                    {new Date(match.created_at).toLocaleDateString()}
-                  </span>
-                </div>
-                <div className="text-sm text-gray-600">
-                  Brochure: {match.uploaded_brochure_url}
-                </div>
-              </div>
-            ))}
+          <Button type="submit" className="w-full" disabled={!file || uploading}>
+            <Search className="mr-2 h-4 w-4" />
+            {uploading ? 'Analyzing Brochure...' : 'Find Matching Properties'}
+          </Button>
+        </form>
+
+        {matches.length > 0 && (
+          <div className="mt-6">
+            <h3 className="font-semibold mb-4">AI Match Results</h3>
+            <div className="space-y-3">
+              {matches.map((match) => (
+                <Card key={match.id} className="p-3">
+                  <div className="flex justify-between items-start">
+                    <div>
+                      <p className="font-medium">Match #{match.id.slice(-8)}</p>
+                      <p className="text-sm text-gray-600">
+                        Created: {new Date(match.created_at).toLocaleDateString()}
+                      </p>
+                    </div>
+                    <Badge variant="outline">
+                      {match.status}
+                    </Badge>
+                  </div>
+                </Card>
+              ))}
+            </div>
           </div>
-        </CardContent>
-      </Card>
-    </div>
+        )}
+      </CardContent>
+    </Card>
   );
 };

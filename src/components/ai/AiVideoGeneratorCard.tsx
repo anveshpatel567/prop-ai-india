@@ -1,85 +1,96 @@
 
 import React, { useState } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { useAiVideoJobs } from '@/hooks/useAiVideoJobs';
-import { useToast } from '@/components/ui/use-toast';
-import { Video, Play, Loader2 } from 'lucide-react';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { Badge } from '@/components/ui/badge';
+import { useAiVideoGeneration } from '@/hooks/useAiVideoGeneration';
+import { Video, Sparkles } from 'lucide-react';
 
-interface AiVideoGeneratorCardProps {
-  listingId?: string;
-}
+export const AiVideoGeneratorCard: React.FC = () => {
+  const { isGenerating, generatedVideo, generateVideo } = useAiVideoGeneration();
+  const [videoData, setVideoData] = useState({
+    title: '',
+    description: '',
+    property_type: 'residential',
+    location: '',
+    highlights: ''
+  });
 
-export const AiVideoGeneratorCard: React.FC<AiVideoGeneratorCardProps> = ({ listingId }) => {
-  const { generateVideo, loading } = useAiVideoJobs();
-  const { toast } = useToast();
-
-  const handleGenerateVideo = async () => {
-    if (!listingId) {
-      toast({
-        title: "Error",
-        description: "Please select a listing first",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    try {
-      await generateVideo(listingId);
-      toast({
-        title: "Video Generation Started",
-        description: "Your promotional video is being created. Check back in a few minutes!",
-      });
-    } catch (error) {
-      toast({
-        title: "Error",
-        description: "Failed to start video generation",
-        variant: "destructive",
-      });
-    }
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    await generateVideo(videoData);
   };
 
   return (
-    <Card className="w-full max-w-md bg-gradient-to-br from-red-50 to-orange-50 border-red-200">
-      <CardHeader className="text-center">
-        <div className="mx-auto w-12 h-12 bg-gradient-to-r from-red-500 to-orange-500 rounded-full flex items-center justify-center mb-2">
-          <Video className="h-6 w-6 text-white" />
-        </div>
-        <CardTitle className="text-red-600">AI Video Generator</CardTitle>
-        <CardDescription>Create stunning promotional videos for your listings</CardDescription>
+    <Card>
+      <CardHeader>
+        <CardTitle className="flex items-center">
+          <Video className="mr-2 h-5 w-5" />
+          AI Video Generator
+          <Badge className="ml-2">500 Credits</Badge>
+        </CardTitle>
       </CardHeader>
-      <CardContent className="space-y-4">
-        <div className="bg-red-100 p-4 rounded-lg">
-          <h4 className="font-semibold text-red-700 mb-2">What you'll get:</h4>
-          <ul className="text-sm text-red-600 space-y-1">
-            <li>• Professional property showcase video</li>
-            <li>• AI-generated voiceover narration</li>
-            <li>• Optimized for social media sharing</li>
-            <li>• HD quality with branded elements</li>
-          </ul>
-        </div>
+      <CardContent>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <label className="block text-sm font-medium mb-1">Property Title</label>
+            <Input
+              value={videoData.title}
+              onChange={(e) => setVideoData(prev => ({ ...prev, title: e.target.value }))}
+              placeholder="Luxury 3BHK Apartment"
+              required
+            />
+          </div>
 
-        <Button 
-          onClick={handleGenerateVideo}
-          className="w-full bg-gradient-to-r from-red-500 to-orange-500 hover:from-red-600 hover:to-orange-600"
-          disabled={loading || !listingId}
-        >
-          {loading ? (
-            <>
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              Generating Video...
-            </>
-          ) : (
-            <>
-              <Play className="mr-2 h-4 w-4" />
-              Generate Video (15 credits)
-            </>
-          )}
-        </Button>
+          <div>
+            <label className="block text-sm font-medium mb-1">Location</label>
+            <Input
+              value={videoData.location}
+              onChange={(e) => setVideoData(prev => ({ ...prev, location: e.target.value }))}
+              placeholder="Bandra West, Mumbai"
+              required
+            />
+          </div>
 
-        <div className="text-xs text-gray-500 text-center">
-          Video generation typically takes 2-5 minutes
-        </div>
+          <div>
+            <label className="block text-sm font-medium mb-1">Property Description</label>
+            <Textarea
+              value={videoData.description}
+              onChange={(e) => setVideoData(prev => ({ ...prev, description: e.target.value }))}
+              placeholder="Describe your property features, amenities, and location benefits"
+              rows={3}
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium mb-1">Key Highlights</label>
+            <Textarea
+              value={videoData.highlights}
+              onChange={(e) => setVideoData(prev => ({ ...prev, highlights: e.target.value }))}
+              placeholder="Sea view, Modern amenities, Prime location"
+              rows={2}
+            />
+          </div>
+
+          <Button type="submit" className="w-full" disabled={isGenerating}>
+            <Sparkles className="mr-2 h-4 w-4" />
+            {isGenerating ? 'Generating Video...' : 'Generate AI Video Script'}
+          </Button>
+        </form>
+
+        {generatedVideo && (
+          <div className="mt-6 p-4 bg-green-50 rounded-lg">
+            <h3 className="font-semibold text-green-900 mb-2">Video Generated!</h3>
+            <p className="text-sm text-green-700">
+              Your property video script has been created. Video processing typically takes 3-5 minutes.
+            </p>
+            <Button variant="outline" className="mt-2" size="sm">
+              View Video Script
+            </Button>
+          </div>
+        )}
       </CardContent>
     </Card>
   );

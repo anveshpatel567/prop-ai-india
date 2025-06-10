@@ -6,7 +6,7 @@ import { useAuth } from '@/context/AuthContext';
 export interface AiPricingSuggestion {
   id: string;
   user_id: string;
-  listing_id: string;
+  listing_id?: string;
   suggested_price: number;
   market_analysis: any;
   confidence_score: number;
@@ -44,29 +44,10 @@ export function useAiPricingSuggestions() {
     }
   };
 
-  const generatePricingSuggestion = async (listing_id: string, property_details: any) => {
-    try {
-      setLoading(true);
-      const { data, error } = await supabase.functions.invoke('generatePricingSuggestion', {
-        body: { listing_id, property_details }
-      });
-
-      if (error) throw error;
-      await fetchSuggestions();
-      return data.suggestion;
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to generate pricing');
-      throw err;
-    } finally {
-      setLoading(false);
-    }
-  };
-
   return {
     suggestions,
     loading,
     error,
-    generatePricingSuggestion,
     refetch: fetchSuggestions
   };
 }

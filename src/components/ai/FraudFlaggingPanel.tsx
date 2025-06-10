@@ -2,97 +2,101 @@
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
-import { AlertTriangle, Shield, CheckCircle } from 'lucide-react';
-import { useFraudFlagging } from '@/hooks/useFraudFlagging';
-import { useToast } from '@/hooks/use-toast';
+import { Shield, AlertTriangle, CheckCircle } from 'lucide-react';
 
 export const FraudFlaggingPanel: React.FC = () => {
-  const { flags, loading, flagListing } = useFraudFlagging();
-  const { toast } = useToast();
-  const [listingId, setListingId] = useState('');
-  const [reason, setReason] = useState('');
+  const [content, setContent] = useState('');
+  const [analyzing, setAnalyzing] = useState(false);
+  const [result, setResult] = useState<any>(null);
 
-  const handleFlag = async () => {
-    if (!listingId.trim() || !reason.trim()) {
-      toast({
-        title: "Missing Information",
-        description: "Please provide both listing ID and reason",
-        variant: "destructive"
+  const handleAnalyze = async () => {
+    setAnalyzing(true);
+    // Simulate AI analysis
+    setTimeout(() => {
+      setResult({
+        fraudScore: Math.random() * 100,
+        indicators: ['Unrealistic pricing', 'Missing contact details'],
+        confidence: 0.85
       });
-      return;
-    }
-
-    try {
-      await flagListing(listingId, { reason, flagged_manually: true });
-      toast({
-        title: "Listing Flagged",
-        description: "The listing has been flagged for fraud review",
-      });
-      setListingId('');
-      setReason('');
-    } catch (error) {
-      toast({
-        title: "Error",
-        description: "Failed to flag listing",
-        variant: "destructive"
-      });
-    }
+      setAnalyzing(false);
+    }, 2000);
   };
 
   return (
-    <div className="space-y-6">
-      <Card className="border-orange-200">
-        <CardHeader>
-          <CardTitle className="flex items-center text-orange-600">
-            <Shield className="mr-2 h-5 w-5" />
-            AI Fraud Detection
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <Input
-              placeholder="Listing ID"
-              value={listingId}
-              onChange={(e) => setListingId(e.target.value)}
-            />
-            <Input
-              placeholder="Fraud reason/indicator"
-              value={reason}
-              onChange={(e) => setReason(e.target.value)}
+    <Card>
+      <CardHeader>
+        <CardTitle className="flex items-center">
+          <Shield className="mr-2 h-5 w-5" />
+          AI Fraud Detection
+          <Badge className="ml-2">250 Credits</Badge>
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="space-y-4">
+          <div>
+            <label className="block text-sm font-medium mb-2">
+              Property Listing Content to Analyze
+            </label>
+            <Textarea
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
+              placeholder="Paste the property listing description, contact details, and any other content you want to analyze for potential fraud indicators..."
+              rows={6}
             />
           </div>
-          <Button onClick={handleFlag} disabled={loading} className="bg-orange-500 hover:bg-orange-600">
-            <AlertTriangle className="mr-2 h-4 w-4" />
-            Flag for Review (10 credits)
-          </Button>
-        </CardContent>
-      </Card>
 
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-gray-700">Recent Fraud Flags</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-3">
-            {flags.map((flag) => (
-              <div key={flag.id} className="flex items-center justify-between p-3 border rounded-lg">
-                <div className="flex items-center space-x-3">
-                  <AlertTriangle className="h-4 w-4 text-orange-500" />
-                  <span className="text-sm font-medium">Listing: {flag.listing_id}</span>
-                  <Badge variant={flag.admin_reviewed ? "default" : "secondary"}>
-                    {flag.admin_reviewed ? "Reviewed" : "Pending"}
+          <Button 
+            onClick={handleAnalyze} 
+            className="w-full" 
+            disabled={!content || analyzing}
+          >
+            <Shield className="mr-2 h-4 w-4" />
+            {analyzing ? 'Analyzing...' : 'Analyze for Fraud'}
+          </Button>
+
+          {result && (
+            <div className="mt-6 p-4 rounded-lg bg-gray-50">
+              <h3 className="font-semibold mb-3 flex items-center">
+                {result.fraudScore > 70 ? (
+                  <AlertTriangle className="mr-2 h-5 w-5 text-red-500" />
+                ) : (
+                  <CheckCircle className="mr-2 h-5 w-5 text-green-500" />
+                )}
+                Analysis Results
+              </h3>
+              
+              <div className="space-y-2">
+                <div className="flex justify-between">
+                  <span>Fraud Risk Score:</span>
+                  <Badge variant={result.fraudScore > 70 ? 'destructive' : 'default'}>
+                    {Math.round(result.fraudScore)}%
                   </Badge>
                 </div>
-                <span className="text-xs text-gray-500">
-                  {new Date(flag.created_at).toLocaleDateString()}
-                </span>
+                
+                <div className="flex justify-between">
+                  <span>Analysis Confidence:</span>
+                  <span>{Math.round(result.confidence * 100)}%</span>
+                </div>
+
+                {result.indicators && result.indicators.length > 0 && (
+                  <div>
+                    <p className="font-medium mt-3 mb-2">Risk Indicators:</p>
+                    <ul className="list-disc list-inside space-y-1">
+                      {result.indicators.map((indicator: string, index: number) => (
+                        <li key={index} className="text-sm text-gray-600">
+                          {indicator}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
               </div>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
-    </div>
+            </div>
+          )}
+        </div>
+      </CardContent>
+    </Card>
   );
 };

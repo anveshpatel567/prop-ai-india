@@ -6,11 +6,10 @@ import { useAuth } from '@/context/AuthContext';
 export interface AiVideoJob {
   id: string;
   user_id: string;
-  listing_id: string;
-  video_url: string | null;
-  thumbnail_url: string | null;
-  generation_prompt: string;
+  listing_id?: string;
   status: string;
+  video_url?: string;
+  thumbnail_url?: string;
   credits_used: number;
   created_at: string;
 }
@@ -31,7 +30,7 @@ export function useAiVideoJobs() {
     try {
       setLoading(true);
       const { data, error } = await supabase
-        .from('ai_video_jobs')
+        .from('ai_listing_videos')
         .select('*')
         .eq('user_id', user?.id)
         .order('created_at', { ascending: false });
@@ -45,29 +44,10 @@ export function useAiVideoJobs() {
     }
   };
 
-  const generateVideo = async (listing_id: string) => {
-    try {
-      setLoading(true);
-      const { data, error } = await supabase.functions.invoke('generateVideoFromListing', {
-        body: { listing_id }
-      });
-
-      if (error) throw error;
-      await fetchJobs();
-      return data.video_job;
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to generate video');
-      throw err;
-    } finally {
-      setLoading(false);
-    }
-  };
-
   return {
     jobs,
     loading,
     error,
-    generateVideo,
     refetch: fetchJobs
   };
 }
