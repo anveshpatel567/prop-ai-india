@@ -3,7 +3,7 @@ import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { MapPin, Home, Rupee, Calendar, Sparkles } from 'lucide-react';
+import { MapPin, Home, IndianRupee, Calendar, Sparkles } from 'lucide-react';
 import { AiToolGate } from '@/components/common/AiToolGate';
 import { QualityEnhancerModal } from '@/components/listing/QualityEnhancerModal';
 import { useState } from 'react';
@@ -113,7 +113,7 @@ export const ReviewStep: React.FC<ReviewStepProps> = ({ data, onDataChange, onNe
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <Rupee className="h-5 w-5" />
+                <IndianRupee className="h-5 w-5" />
                 Pricing
               </CardTitle>
             </CardHeader>
