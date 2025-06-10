@@ -18,18 +18,18 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | null>(null);
 
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [isMounted, setIsMounted] = useState(false);
+  const [isClient, setIsClient] = useState(false);
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    setIsMounted(true);
+    setIsClient(true);
   }, []);
 
   useEffect(() => {
-    if (!isMounted) return;
+    if (!isClient) return;
     
     // Set up auth state listener AFTER mounting
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
@@ -48,7 +48,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     });
 
     return () => subscription.unsubscribe();
-  }, [isMounted]);
+  }, [isClient]);
 
   const login = async (email: string, password: string): Promise<void> => {
     try {
@@ -109,14 +109,14 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     }
   };
 
-  if (!isMounted) return null;
+  if (!isClient) return null;
 
   return (
     <AuthContext.Provider value={{
       user,
       session,
       isLoading,
-      isMounted,
+      isMounted: isClient,
       login,
       register,
       logout,
