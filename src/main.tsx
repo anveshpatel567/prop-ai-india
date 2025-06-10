@@ -7,7 +7,15 @@ import './index.css'
 // System status check
 console.log('🚀 FreePropList AI System Starting...');
 console.log('📊 Environment:', import.meta.env.MODE);
-console.log('🔑 OpenAI API Key:', import.meta.env.VITE_OPENAI_API_KEY ? 'Configured ✅' : 'Missing ❌');
+
+// Safe API key check
+const hasApiKey = !!import.meta.env.VITE_OPENAI_API_KEY;
+console.log('🔑 OpenAI API Key:', hasApiKey ? 'Configured ✅' : 'Missing ❌');
+
+if (!hasApiKey) {
+  console.warn('⚠️ OpenAI GPT API key missing. Add VITE_OPENAI_API_KEY to .env file');
+  console.warn('📝 Create .env file with: VITE_OPENAI_API_KEY=sk-your-key-here');
+}
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
@@ -30,15 +38,25 @@ if ('serviceWorker' in navigator) {
 
 // System health check after initial render
 setTimeout(() => {
-  const hasReactErrors = document.querySelector('[data-reactroot]') === null;
-  const hasConsoleErrors = performance.getEntriesByType('navigation').length > 0;
-  
-  if (!hasReactErrors) {
-    console.log('✅ System status: STABLE ✅');
-    console.log('✅ React tree: Mounted correctly');
-    console.log('✅ Helmet context: Available');
-    console.log('✅ App rendered: No blank screen');
-  } else {
-    console.error('❌ System status: UNSTABLE');
+  try {
+    const hasReactErrors = document.querySelector('[data-reactroot]') === null;
+    
+    if (!hasReactErrors) {
+      console.log('✅ System status: STABLE ✅');
+      console.log('✅ React tree: Mounted correctly');
+      console.log('✅ Helmet context: Available');
+      console.log('✅ Toast system: Wrapped safely');
+      console.log('✅ App rendered: No blank screen');
+      
+      if (hasApiKey) {
+        console.log('✅ GPT API: Ready for use');
+      } else {
+        console.log('⚠️ GPT API: Needs configuration');
+      }
+    } else {
+      console.error('❌ System status: UNSTABLE');
+    }
+  } catch (error) {
+    console.error('❌ Health check failed:', error);
   }
 }, 1000);

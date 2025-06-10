@@ -10,7 +10,7 @@ const getApiKey = (): string | null => {
   const apiKey = import.meta.env.VITE_OPENAI_API_KEY;
   
   if (!apiKey) {
-    console.warn('⚠️ Missing GPT-4o API key. Set VITE_OPENAI_API_KEY in environment.');
+    console.warn('⚠️ OpenAI GPT API key missing. Add VITE_OPENAI_API_KEY to .env file');
     return null;
   }
   
@@ -23,7 +23,7 @@ export async function fetchGpt4oResponse(prompt: string): Promise<GptResponse> {
   if (!apiKey) {
     return {
       success: false,
-      content: 'API key not configured',
+      content: '⚠️ GPT API key not set. Please add VITE_OPENAI_API_KEY to your .env file.',
       error: 'Missing OpenAI API key'
     };
   }
@@ -90,4 +90,8 @@ export async function fetchGpt4oResponse(prompt: string): Promise<GptResponse> {
 export async function testGptConnection(): Promise<boolean> {
   const result = await fetchGpt4oResponse('Say "Hello, API is working!" if you can read this.');
   return result.success;
+}
+
+export function isApiKeyConfigured(): boolean {
+  return !!import.meta.env.VITE_OPENAI_API_KEY;
 }

@@ -8,6 +8,7 @@ import { CreditGateProvider } from './context/CreditGateContext';
 import { Toaster } from '@/components/ui/toaster';
 import { AppRoutes } from './AppRoutes';
 import { HelmetProvider } from 'react-helmet-async';
+import { ApiKeyWarning } from './components/common/ApiKeyWarning';
 import './App.css';
 
 // React Query client configuration for optimal performance
@@ -39,6 +40,7 @@ function App() {
           <AuthProvider>
             <WalletProvider>
               <CreditGateProvider>
+                <ApiKeyWarning />
                 <AppRoutes />
                 <Toaster />
               </CreditGateProvider>
