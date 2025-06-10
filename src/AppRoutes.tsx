@@ -12,6 +12,7 @@ import AiEngagement from './pages/admin/ai-engagement';
 import CommunityIndex from './pages/community/index';
 import Login from './pages/login';
 import NotFound from './pages/404';
+import DevtoolsGpt from './pages/devtools/gpt';
 
 // Wrapper component for pages with error boundaries
 const PageWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => (
@@ -32,6 +33,7 @@ export const AppRoutes: React.FC = () => {
       <Route path="/admin/seo-preview" element={<PageWrapper><SeoPreview /></PageWrapper>} />
       <Route path="/admin/ai-engagement" element={<PageWrapper><AiEngagement /></PageWrapper>} />
       <Route path="/community" element={<PageWrapper><CommunityIndex /></PageWrapper>} />
+      <Route path="/devtools/gpt" element={<PageWrapper><DevtoolsGpt /></PageWrapper>} />
       <Route path="*" element={<PageWrapper><NotFound /></PageWrapper>} />
     </Routes>
   );

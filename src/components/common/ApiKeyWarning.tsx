@@ -7,7 +7,7 @@ export const ApiKeyWarning: React.FC = () => {
   const [showWarning, setShowWarning] = React.useState(false);
 
   React.useEffect(() => {
-    // Development mode - immediate check
+    // Client-side only check to prevent SSR issues
     if (typeof window !== 'undefined') {
       const hasKey = isGptKeyConfigured();
       setShowWarning(!hasKey);
@@ -23,7 +23,7 @@ export const ApiKeyWarning: React.FC = () => {
 
   // Development mode - log when warning shows/hides
   React.useEffect(() => {
-    if (import.meta.env.DEV) {
+    if (import.meta.env.DEV && typeof window !== 'undefined') {
       console.log('🔧 API Warning:', showWarning ? 'Showing ⚠️' : 'Hidden ✅');
     }
   }, [showWarning]);
