@@ -2,11 +2,6 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { UserProfile } from '../types';
 
-// Add fallback protection for React hooks
-if (!React || !useState) {
-  throw new Error("React hooks not initialized");
-}
-
 interface AuthContextType {
   user: UserProfile | null;
   isLoading: boolean;

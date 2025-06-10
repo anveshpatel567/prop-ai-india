@@ -57,6 +57,14 @@ export const BrochureUploaderPanel: React.FC = () => {
     setEditingField(null);
   };
 
+  // Convert ParsedData to display format with defensive checks
+  const displayFields = parsedData?.parsed_fields?.map((field, index) => ({
+    field_name: field.field || `field_${index}`,
+    extracted_value: field.value || '',
+    confidence_score: field.confidence || 0,
+    status: 'accepted' as const
+  })) || [];
+
   return (
     <div className="max-w-4xl mx-auto space-y-6">
       <Card>
@@ -112,14 +120,14 @@ export const BrochureUploaderPanel: React.FC = () => {
           )}
 
           {/* Parsed Results */}
-          {parsedData && parsedData.parsed_fields && parsedData.parsed_fields.length > 0 && (
+          {parsedData && displayFields.length > 0 && (
             <Card>
               <CardHeader>
                 <CardTitle className="text-lg">Extracted Data</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  {parsedData.parsed_fields.map((field, index) => (
+                  {displayFields.map((field, index) => (
                     <div key={field.field_name || index} className="flex items-center justify-between p-3 border rounded">
                       <div className="flex-1">
                         <div className="font-medium">{field.field_name}</div>
