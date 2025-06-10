@@ -13,35 +13,33 @@ interface WalletContextType {
 const WalletContext = createContext<WalletContextType | null>(null);
 
 export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  if (typeof window === 'undefined') return null;
-  return <WalletProviderInner>{children}</WalletProviderInner>;
-};
-
-const WalletProviderInner: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [mounted, setMounted] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
   const [balance, setBalance] = useState<WalletBalance | null>(null);
   const [receipts, setReceipts] = useState<PaymentReceipt[]>([]);
 
   useEffect(() => {
-    setMounted(true);
-    
-    const initializeWallet = () => {
-      const dummyBalance: WalletBalance = {
-        id: '1',
-        user_id: '1',
-        balance: 250,
-        last_updated: new Date().toISOString(),
-        status: 'active'
+    if (typeof window !== 'undefined') {
+      setIsMounted(true);
+      
+      // Initialize wallet data after mounting
+      const initializeWallet = () => {
+        const dummyBalance: WalletBalance = {
+          id: '1',
+          user_id: '1',
+          balance: 250,
+          last_updated: new Date().toISOString(),
+          status: 'active'
+        };
+        setBalance(dummyBalance);
       };
-      setBalance(dummyBalance);
-    };
 
-    const timeoutId = setTimeout(initializeWallet, 50);
-    return () => clearTimeout(timeoutId);
+      const timeoutId = setTimeout(initializeWallet, 50);
+      return () => clearTimeout(timeoutId);
+    }
   }, []);
 
   const addCredits = async (amount: number, receiptUrl: string) => {
-    if (!mounted) return;
+    if (!isMounted) return;
     
     const newReceipt: PaymentReceipt = {
       id: Date.now().toString(),
@@ -66,7 +64,7 @@ const WalletProviderInner: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const deductCredits = async (amount: number, toolName: string): Promise<boolean> => {
-    if (!mounted || !balance || balance.balance < amount) {
+    if (!isMounted || !balance || balance.balance < amount) {
       return false;
     }
 
@@ -81,12 +79,17 @@ const WalletProviderInner: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const refreshBalance = async () => {
-    if (!mounted) return;
+    if (!isMounted) return;
     console.log('Refreshing wallet balance...');
   };
 
-  if (!mounted) {
-    return <div>Loading wallet...</div>;
+  // Show loading state until mounted
+  if (!isMounted) {
+    return (
+      <div className="fixed bottom-4 right-4 bg-yellow-100 px-4 py-2 rounded-lg shadow-lg text-sm z-50">
+        💳 Wallet context initializing...
+      </div>
+    );
   }
 
   return (

@@ -1,10 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
 import { isGptKeyConfigured } from '@/lib/gptService';
-import { useAuth } from '@/context/AuthContext';
-import { useWallet } from '@/context/WalletContext';
-import { useNotification } from '@/context/NotificationContext';
-import { useAi } from '@/context/AiContext';
 
 export const DevStatusOverlay: React.FC = () => {
   const [isMounted, setIsMounted] = useState(false);
@@ -24,6 +20,12 @@ export const DevStatusOverlay: React.FC = () => {
 
   const SafeContextStatus = () => {
     try {
+      // Dynamically import and use contexts only if available
+      const { useAuth } = require('@/context/AuthContext');
+      const { useWallet } = require('@/context/WalletContext');
+      const { useNotification } = require('@/context/NotificationContext');
+      const { useAi } = require('@/context/AiContext');
+
       const { isMounted: authMounted, user } = useAuth();
       const { balance } = useWallet();
       const { getUnreadCount } = useNotification();
@@ -39,7 +41,7 @@ export const DevStatusOverlay: React.FC = () => {
         </>
       );
     } catch (error) {
-      return <div>Context: ❌</div>;
+      return <div>Context: ❌ {error instanceof Error ? error.message.slice(0, 30) : 'Error'}</div>;
     }
   };
 
