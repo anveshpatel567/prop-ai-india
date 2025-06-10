@@ -21,7 +21,7 @@ const PageWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => (
   </ErrorBoundary>
 );
 
-export const AppRoutes: React.FC = () => {
+export default function AppRoutes() {
   return (
     <Routes>
       <Route path="/" element={<PageWrapper><Index /></PageWrapper>} />
@@ -37,6 +37,4 @@ export const AppRoutes: React.FC = () => {
       <Route path="*" element={<PageWrapper><NotFound /></PageWrapper>} />
     </Routes>
   );
-};
-
-export default AppRoutes;
+}
