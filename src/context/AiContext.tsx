@@ -20,6 +20,7 @@ interface AiContextType {
 const AiContext = createContext<AiContextType | null>(null);
 
 export const AiProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  // ✅ Always call hooks at the top level - never conditionally
   const [isMounted, setIsMounted] = useState(false);
   const [aiTools, setAiTools] = useState<AiTool[]>([]);
 
@@ -57,7 +58,7 @@ export const AiProvider: React.FC<{ children: React.ReactNode }> = ({ children }
     ));
   };
 
-  // Show loading state until mounted
+  // ✅ Safe guard AFTER all hooks are called
   if (!isMounted) {
     return (
       <div className="fixed bottom-28 right-4 bg-purple-100 px-4 py-2 rounded-lg shadow-lg text-sm z-50">
