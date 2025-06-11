@@ -5,41 +5,42 @@ import './index.css';
 
 console.log('Main.tsx starting...');
 
-// Simple loading component
-const LoadingApp = () => (
-  <div className="min-h-screen bg-gradient-to-br from-[#fff7f0] to-[#ffe4d6] flex items-center justify-center">
-    <div className="text-center">
-      <div className="text-2xl font-bold bg-gradient-to-r from-[#ff6a00] via-[#ff3c00] to-[#ff0000] bg-clip-text text-transparent mb-4">
-        FreePropList
-      </div>
-      <div className="text-[#8b4513]">Loading...</div>
-    </div>
-  </div>
-);
+// Simple loading component while app initializes
+const AppLoader = () => {
+  const [isLoading, setIsLoading] = React.useState(true);
+  const [AppComponent, setAppComponent] = React.useState<React.ComponentType | null>(null);
 
-// Ensure DOM is ready
-const initializeApp = () => {
-  console.log('DOM Content Loaded');
-  
-  const container = document.getElementById('root');
-  if (!container) {
-    throw new Error('Root element not found');
+  React.useEffect(() => {
+    console.log('Loading App component...');
+    
+    // Add a small delay to ensure React is fully initialized
+    setTimeout(() => {
+      import('./App').then((module) => {
+        console.log('App module loaded successfully');
+        setAppComponent(() => module.default);
+        setIsLoading(false);
+      }).catch((error) => {
+        console.error('Failed to load App:', error);
+        setIsLoading(false);
+      });
+    }, 50);
+  }, []);
+
+  if (isLoading || !AppComponent) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-[#fff7f0] to-[#ffe4d6] flex items-center justify-center">
+        <div className="text-center">
+          <div className="text-2xl font-bold bg-gradient-to-r from-[#ff6a00] via-[#ff3c00] to-[#ff0000] bg-clip-text text-transparent mb-4">
+            FreePropList
+          </div>
+          <div className="text-[#8b4513]">Loading...</div>
+        </div>
+      </div>
+    );
   }
 
-  console.log('Creating React root...');
-  const root = createRoot(container);
-
-  console.log('Rendering loading app...');
-  root.render(<LoadingApp />);
-
-  // Dynamically import the main App to avoid circular dependencies
-  import('./App').then((AppModule) => {
-    console.log('App module loaded, rendering main app...');
-    const App = AppModule.default;
-    root.render(<App />);
-  }).catch((error) => {
-    console.error('Failed to load App:', error);
-    root.render(
+  if (!AppComponent) {
+    return (
       <div className="min-h-screen flex items-center justify-center bg-red-50">
         <div className="text-center">
           <div className="text-red-600 mb-4">Failed to load application</div>
@@ -52,7 +53,25 @@ const initializeApp = () => {
         </div>
       </div>
     );
-  });
+  }
+
+  return <AppComponent />;
+};
+
+// Initialize app when DOM is ready
+const initializeApp = () => {
+  console.log('DOM Content Loaded');
+  
+  const container = document.getElementById('root');
+  if (!container) {
+    throw new Error('Root element not found');
+  }
+
+  console.log('Creating React root...');
+  const root = createRoot(container);
+  
+  console.log('Rendering app loader...');
+  root.render(<AppLoader />);
 };
 
 if (document.readyState === 'loading') {
