@@ -1,11 +1,10 @@
 
-import React, { useState, useEffect, useContext, createContext } from 'react';
+import React from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import type { User, Session } from '@supabase/supabase-js';
 
 console.log('AuthContext module loading...');
 console.log('React object:', React);
-console.log('useState function:', useState);
 
 interface AuthContextType {
   user: User | null;
@@ -18,25 +17,18 @@ interface AuthContextType {
   error: string | null;
 }
 
-const AuthContext = createContext<AuthContextType | null>(null);
+const AuthContext = React.createContext<AuthContextType | null>(null);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   console.log('AuthProvider rendering...');
   
-  // Ensure React hooks are available
-  if (!useState || !useEffect || !useContext) {
-    console.error('React hooks not available!');
-    return <div>Loading React...</div>;
-  }
+  // Access hooks directly from React object to avoid destructuring issues
+  const [user, setUser] = React.useState<User | null>(null);
+  const [session, setSession] = React.useState<Session | null>(null);
+  const [isLoading, setIsLoading] = React.useState(true);
+  const [error, setError] = React.useState<string | null>(null);
 
-  console.log('React hooks confirmed available');
-
-  const [user, setUser] = useState<User | null>(null);
-  const [session, setSession] = useState<Session | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
+  React.useEffect(() => {
     console.log('AuthProvider useEffect running...');
     
     // Get initial session first
@@ -151,7 +143,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 };
 
 export const useAuth = () => {
-  const context = useContext(AuthContext);
+  const context = React.useContext(AuthContext);
   if (!context) {
     throw new Error('useAuth must be used within an AuthProvider');
   }
