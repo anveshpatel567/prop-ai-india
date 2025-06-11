@@ -3,7 +3,7 @@ import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import AppRoutes from '@/AppRoutes';
 import { AuthProvider } from '@/context/AuthContext';
-import { WalletProvider } from '@/context/WalletProvider';
+import { WalletProvider } from '@/context/WalletContext';
 import { NotificationProvider } from '@/context/NotificationProvider';
 import { AiProvider } from '@/context/AiProvider';
 import { CreditGateProvider } from '@/context/CreditGateProvider';
