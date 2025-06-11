@@ -1,31 +1,19 @@
 
-import React from 'react';
-import { createRoot } from 'react-dom/client';
-import './index.css';
-import App from './App';
+import React from 'react'
+import ReactDOM from 'react-dom/client'
+import App from './App.tsx'
+import './index.css'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { HelmetProvider } from 'react-helmet-async'
 
-console.log('Main.tsx starting...');
+const queryClient = new QueryClient()
 
-// Initialize app when DOM is ready
-const initializeApp = () => {
-  console.log('DOM Content Loaded');
-  
-  const container = document.getElementById('root');
-  if (!container) {
-    throw new Error('Root element not found');
-  }
-
-  console.log('Creating React root...');
-  const root = createRoot(container);
-  
-  console.log('Rendering App...');
-  root.render(<App />);
-};
-
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', initializeApp);
-} else {
-  initializeApp();
-}
-
-console.log('Main.tsx completed.');
+ReactDOM.createRoot(document.getElementById("root")!).render(
+  <React.StrictMode>
+    <HelmetProvider>
+      <QueryClientProvider client={queryClient}>
+        <App />
+      </QueryClientProvider>
+    </HelmetProvider>
+  </React.StrictMode>,
+)
