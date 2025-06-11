@@ -18,6 +18,7 @@ const AuthContext = createContext<AuthContextType | null>(null);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   console.log('AuthProvider mounting...');
+  console.log('React hooks available:', { useState, useEffect, useContext });
 
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
@@ -147,4 +148,3 @@ export const useAuth = () => {
 };
 
 export default AuthProvider;
-

@@ -22,27 +22,25 @@ const queryClient = new QueryClient({
 
 export default function App() {
   console.log('App component mounting...');
+  console.log('React version check:', React.version);
   
   return (
-    <React.Fragment>
-      <HelmetProvider>
-        <QueryClientProvider client={queryClient}>
-          <BrowserRouter>
-            <AuthProvider>
-              <WalletProvider>
-                <NotificationProvider>
-                  <AiProvider>
-                    <CreditGateProvider>
-                      <AppRoutes />
-                    </CreditGateProvider>
-                  </AiProvider>
-                </NotificationProvider>
-              </WalletProvider>
-            </AuthProvider>
-          </BrowserRouter>
-        </QueryClientProvider>
-      </HelmetProvider>
-    </React.Fragment>
+    <HelmetProvider>
+      <QueryClientProvider client={queryClient}>
+        <BrowserRouter>
+          <AuthProvider>
+            <WalletProvider>
+              <NotificationProvider>
+                <AiProvider>
+                  <CreditGateProvider>
+                    <AppRoutes />
+                  </CreditGateProvider>
+                </AiProvider>
+              </NotificationProvider>
+            </WalletProvider>
+          </AuthProvider>
+        </BrowserRouter>
+      </QueryClientProvider>
+    </HelmetProvider>
   );
 }
-
