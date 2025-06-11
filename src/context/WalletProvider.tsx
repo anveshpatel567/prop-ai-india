@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 import { WalletBalance, PaymentReceipt } from '../types';
 
 interface WalletContextType {
@@ -10,21 +10,21 @@ interface WalletContextType {
   refreshBalance: () => Promise<void>;
 }
 
-const WalletContext = React.createContext<WalletContextType | null>(null);
+const WalletContext = createContext<WalletContextType | null>(null);
 
 export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   console.log('WalletProvider rendering...');
   
-  const [hasMounted, setHasMounted] = React.useState(false);
-  const [balance, setBalance] = React.useState<WalletBalance | null>(null);
-  const [receipts, setReceipts] = React.useState<PaymentReceipt[]>([]);
+  const [hasMounted, setHasMounted] = useState(false);
+  const [balance, setBalance] = useState<WalletBalance | null>(null);
+  const [receipts, setReceipts] = useState<PaymentReceipt[]>([]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     console.log('WalletProvider mounting effect...');
     setHasMounted(true);
   }, []);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (!hasMounted) return;
 
     const initializeWallet = () => {
@@ -89,23 +89,21 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     return null;
   }
 
-  return React.createElement(
-    WalletContext.Provider,
-    {
-      value: {
-        balance,
-        receipts,
-        addCredits,
-        deductCredits,
-        refreshBalance
-      }
-    },
-    children
+  return (
+    <WalletContext.Provider value={{
+      balance,
+      receipts,
+      addCredits,
+      deductCredits,
+      refreshBalance
+    }}>
+      {children}
+    </WalletContext.Provider>
   );
 };
 
 export const useWallet = () => {
-  const context = React.useContext(WalletContext);
+  const context = useContext(WalletContext);
   if (!context) {
     throw new Error('useWallet must be used within WalletProvider');
   }
