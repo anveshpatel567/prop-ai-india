@@ -1,46 +1,36 @@
 
 import { useState, useEffect } from 'react';
 import { PropertyListing } from '../types';
+import { supabase } from '@/integrations/supabase/client';
 
-export const useListing = () => {
-  const [listings, setListings] = useState<PropertyListing[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
+export const useListing = (listingId: string) => {
+  const [listing, setListing] = useState<PropertyListing | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  const createListing = async (listingData: Partial<PropertyListing>) => {
-    setIsLoading(true);
-    try {
-      // Mock API call
-      const newListing: PropertyListing = {
-        id: Date.now().toString(),
-        user_id: '1',
-        title: listingData.title || '',
-        description: listingData.description || '',
-        property_type: listingData.property_type || 'residential',
-        listing_type: listingData.listing_type || 'sale',
-        price: listingData.price || 0,
-        area_sqft: listingData.area_sqft || 0,
-        bedrooms: listingData.bedrooms || 0,
-        bathrooms: listingData.bathrooms || 0,
-        city: listingData.city || '',
-        locality: listingData.locality || '',
-        google_maps_pin: listingData.google_maps_pin || '',
-        rera_number: listingData.rera_number || null,
-        is_rera_verified: false,
-        status: 'active',
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString()
-      };
-      
-      setListings(prev => [newListing, ...prev]);
-      return newListing;
-    } finally {
-      setIsLoading(false);
+  useEffect(() => {
+    const fetchListing = async () => {
+      try {
+        setLoading(true);
+        const { data, error } = await supabase
+          .from('listings')
+          .select('*')
+          .eq('id', listingId)
+          .single();
+
+        if (error) throw error;
+        setListing(data);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Failed to fetch listing');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (listingId) {
+      fetchListing();
     }
-  };
+  }, [listingId]);
 
-  return {
-    listings,
-    isLoading,
-    createListing
-  };
+  return { listing, loading, error };
 };

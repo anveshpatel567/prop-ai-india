@@ -1,94 +1,62 @@
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { SearchFilter, PropertyListing, PropertyMatchScore } from '../types';
+import { supabase } from '@/integrations/supabase/client';
 
 export const useSearch = () => {
-  const [searchResults, setSearchResults] = useState<PropertyListing[]>([]);
+  const [listings, setListings] = useState<PropertyListing[]>([]);
   const [matchScores, setMatchScores] = useState<PropertyMatchScore[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [filters, setFilters] = useState<SearchFilter>({
+    location: '',
+    min_price: 0,
+    max_price: 0,
+    property_type: '',
+    bedrooms: 0,
+    bathrooms: 0
+  });
 
-  const manualSearch = async (filters: SearchFilter) => {
-    setIsLoading(true);
+  const searchListings = async (searchFilters: Partial<SearchFilter>) => {
+    setLoading(true);
     try {
-      // Mock search results
-      const mockResults: PropertyListing[] = [
-        {
-          id: '1',
-          user_id: '1',
-          title: 'Luxury 3BHK in Bandra West',
-          description: 'Beautiful apartment with sea view',
-          property_type: 'residential',
-          listing_type: 'sale',
-          price: 25000000,
-          area_sqft: 1200,
-          bedrooms: 3,
-          bathrooms: 2,
-          city: 'Mumbai',
-          locality: 'Bandra West',
-          google_maps_pin: 'https://maps.google.com/123',
-          rera_number: null,
-          is_rera_verified: false,
-          status: 'active',
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString()
-        }
-      ];
-      
-      setSearchResults(mockResults);
-      return mockResults;
-    } finally {
-      setIsLoading(false);
-    }
-  };
+      let query = supabase.from('listings').select('*');
 
-  const aiSearch = async (query: string) => {
-    setIsLoading(true);
-    try {
-      // Mock AI search with match scores
-      const mockResults: PropertyListing[] = [
-        {
-          id: '1',
-          user_id: '1',
-          title: 'Luxury 3BHK in Bandra West',
-          description: 'Beautiful apartment with sea view',
-          property_type: 'residential',
-          listing_type: 'sale',
-          price: 25000000,
-          area_sqft: 1200,
-          bedrooms: 3,
-          bathrooms: 2,
-          city: 'Mumbai',
-          locality: 'Bandra West',
-          google_maps_pin: 'https://maps.google.com/123',
-          rera_number: null,
-          is_rera_verified: false,
-          status: 'active',
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString()
-        }
-      ];
+      if (searchFilters.location) {
+        query = query.ilike('location', `%${searchFilters.location}%`);
+      }
+      if (searchFilters.min_price) {
+        query = query.gte('price', searchFilters.min_price);
+      }
+      if (searchFilters.max_price) {
+        query = query.lte('price', searchFilters.max_price);
+      }
+      if (searchFilters.property_type) {
+        query = query.eq('property_type', searchFilters.property_type);
+      }
+      if (searchFilters.bedrooms) {
+        query = query.eq('bedrooms', searchFilters.bedrooms);
+      }
+      if (searchFilters.bathrooms) {
+        query = query.eq('bathrooms', searchFilters.bathrooms);
+      }
 
-      const mockScores: PropertyMatchScore[] = [
-        {
-          property_id: '1',
-          match_percentage: 92,
-          match_reasons: ['Exact bedroom match', 'Location preference', 'Budget compatible']
-        }
-      ];
-      
-      setSearchResults(mockResults);
-      setMatchScores(mockScores);
-      return { results: mockResults, scores: mockScores };
+      const { data, error } = await query;
+      if (error) throw error;
+
+      setListings(data || []);
+    } catch (error) {
+      console.error('Search error:', error);
     } finally {
-      setIsLoading(false);
+      setLoading(false);
     }
   };
 
   return {
-    searchResults,
+    listings,
     matchScores,
-    isLoading,
-    manualSearch,
-    aiSearch
+    loading,
+    filters,
+    setFilters,
+    searchListings
   };
 };
