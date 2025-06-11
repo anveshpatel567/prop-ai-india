@@ -3,9 +3,6 @@ import React from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import type { User, Session } from '@supabase/supabase-js';
 
-console.log('AuthContext module loading...');
-console.log('React object:', React);
-
 interface AuthContextType {
   user: User | null;
   session: Session | null;
@@ -20,23 +17,16 @@ interface AuthContextType {
 const AuthContext = React.createContext<AuthContextType | null>(null);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  console.log('AuthProvider rendering...');
-  
-  // Access hooks directly from React object to avoid destructuring issues
   const [user, setUser] = React.useState<User | null>(null);
   const [session, setSession] = React.useState<Session | null>(null);
   const [isLoading, setIsLoading] = React.useState(true);
   const [error, setError] = React.useState<string | null>(null);
 
   React.useEffect(() => {
-    console.log('AuthProvider useEffect running...');
-    
     // Get initial session first
     const getSession = async () => {
       try {
-        console.log('Getting initial session...');
         const { data: { session } } = await supabase.auth.getSession();
-        console.log('Initial session result:', session?.user?.email || 'No session');
         setSession(session);
         setUser(session?.user ?? null);
         setIsLoading(false);
@@ -49,20 +39,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     getSession();
 
     // Set up auth state listener
-    console.log('Setting up auth state listener...');
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (event, session) => {
-        console.log('Auth state change:', event, session?.user?.email || 'No session');
         setSession(session);
         setUser(session?.user ?? null);
         setIsLoading(false);
       }
     );
 
-    return () => {
-      console.log('Cleaning up auth subscription...');
-      subscription.unsubscribe();
-    };
+    return () => subscription.unsubscribe();
   }, []);
 
   const login = async (email: string, password: string): Promise<void> => {
@@ -123,8 +108,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       throw error;
     }
   };
-
-  console.log('AuthProvider rendering with user:', user?.email || 'No user');
 
   return (
     <AuthContext.Provider value={{

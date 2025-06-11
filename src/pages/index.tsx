@@ -5,7 +5,7 @@ import { Footer } from '../components/layout/Footer';
 import { HeroSection } from '../components/home/HeroSection';
 import { AiTeaserCards } from '../components/home/AiTeaserCards';
 import { RoleSelectorCards } from '../components/home/RoleSelectorCards';
-import { useSeoOverride } from '../hooks/useSeoOverride';
+import { AppProviders } from '../components/providers/AppProviders';
 import { MobileCardGrid, MobileCardSpacing } from '../components/mobile/MobileCardSpacingFix';
 
 // Simple fallback loading component
@@ -63,7 +63,7 @@ const Index: React.FC = () => {
     );
   };
 
-  return (
+  const PageContent = () => (
     <div className="min-h-screen bg-gradient-to-br from-[#fff7f0] to-[#ffe4d6]">
       <Navbar />
       <HeroSection />
@@ -148,6 +148,12 @@ const Index: React.FC = () => {
       
       <Footer />
     </div>
+  );
+
+  return (
+    <AppProviders>
+      <PageContent />
+    </AppProviders>
   );
 };
 

@@ -4,11 +4,6 @@ import { BrowserRouter } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { HelmetProvider } from 'react-helmet-async';
 import AppRoutes from '@/AppRoutes';
-import { AuthProvider } from '@/context/AuthContext';
-import { WalletProvider } from '@/context/WalletProvider';
-import { NotificationProvider } from '@/context/NotificationProvider';
-import { AiProvider } from '@/context/AiProvider';
-import { CreditGateProvider } from '@/context/CreditGateProvider';
 
 // Create QueryClient instance with error handling
 const queryClient = new QueryClient({
@@ -28,17 +23,7 @@ export default function App() {
     <HelmetProvider>
       <QueryClientProvider client={queryClient}>
         <BrowserRouter>
-          <AuthProvider>
-            <WalletProvider>
-              <NotificationProvider>
-                <AiProvider>
-                  <CreditGateProvider>
-                    <AppRoutes />
-                  </CreditGateProvider>
-                </AiProvider>
-              </NotificationProvider>
-            </WalletProvider>
-          </AuthProvider>
+          <AppRoutes />
         </BrowserRouter>
       </QueryClientProvider>
     </HelmetProvider>
