@@ -11,12 +11,12 @@ interface AppShellProps {
 
 export default function AppShell({ children }: AppShellProps) {
   return (
-    <HelmetProvider>
-      <BrowserRouter>
+    <BrowserRouter>
+      <HelmetProvider>
         <ProviderTreeWrapper>
           {children ?? <AppRoutes />}
         </ProviderTreeWrapper>
-      </BrowserRouter>
-    </HelmetProvider>
+      </HelmetProvider>
+    </BrowserRouter>
   );
 }
