@@ -12,6 +12,7 @@ import SeoPreview from './pages/admin/seo-preview';
 import AiEngagement from './pages/admin/ai-engagement';
 import CommunityIndex from './pages/community/index';
 import Login from './pages/login';
+import Dashboard from './pages/dashboard/index';
 import NotFound from './pages/404';
 import DevtoolsGpt from './pages/devtools/gpt';
 
@@ -26,6 +27,7 @@ export default function AppRoutes() {
   return (
     <Routes>
       <Route path="/" element={<PageWrapper><Index /></PageWrapper>} />
+      <Route path="/dashboard" element={<PageWrapper><Dashboard /></PageWrapper>} />
       <Route path="/search" element={<PageWrapper><Search /></PageWrapper>} />
       <Route path="/list-property" element={<PageWrapper><ListProperty /></PageWrapper>} />
       <Route path="/listing/create" element={<PageWrapper><CreateListing /></PageWrapper>} />

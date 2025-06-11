@@ -20,92 +20,26 @@ const queryClient = new QueryClient({
   },
 });
 
-// Simple error boundary component
-class AppErrorBoundary extends React.Component<
-  { children: React.ReactNode },
-  { hasError: boolean; error?: Error }
-> {
-  constructor(props: { children: React.ReactNode }) {
-    super(props);
-    this.state = { hasError: false };
-  }
-
-  static getDerivedStateFromError(error: Error) {
-    console.error('App Error Boundary caught error:', error);
-    return { hasError: true, error };
-  }
-
-  componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
-    console.error('App Error Boundary - Full error:', error, errorInfo);
-  }
-
-  render() {
-    if (this.state.hasError) {
-      return (
-        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#fff7f0] to-[#ffe4d6]">
-          <div className="text-center p-8">
-            <div className="text-2xl font-bold bg-gradient-to-r from-[#ff6a00] via-[#ff3c00] to-[#ff0000] bg-clip-text text-transparent mb-4">
-              FreePropList
-            </div>
-            <div className="text-[#8b4513] mb-4">Something went wrong. Please refresh the page.</div>
-            <button 
-              onClick={() => window.location.reload()} 
-              className="bg-gradient-to-r from-[#ff6a00] to-[#ff0000] text-white px-4 py-2 rounded"
-            >
-              Refresh Page
-            </button>
-          </div>
-        </div>
-      );
-    }
-
-    return this.props.children;
-  }
-}
-
 export default function App() {
   console.log('App component mounting...');
-  console.log('React object:', React);
-  console.log('React.useEffect:', React.useEffect);
-  
-  // Early return with fallback if React is not properly loaded
-  if (!React || !React.useEffect) {
-    console.error('React is not properly loaded!');
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <div className="text-center p-8">
-          <div className="text-2xl font-bold text-red-600 mb-4">Loading Error</div>
-          <div className="text-gray-600 mb-4">React framework is not properly initialized.</div>
-          <button 
-            onClick={() => window.location.reload()} 
-            className="bg-blue-500 text-white px-4 py-2 rounded"
-          >
-            Refresh Page
-          </button>
-        </div>
-      </div>
-    );
-  }
   
   return (
-    <AppErrorBoundary>
-      <HelmetProvider>
-        <QueryClientProvider client={queryClient}>
-          <BrowserRouter>
-            <AuthProvider>
-              <WalletProvider>
-                <NotificationProvider>
-                  <AiProvider>
-                    <CreditGateProvider>
-                      <AppRoutes />
-                    </CreditGateProvider>
-                  </AiProvider>
-                </NotificationProvider>
-              </WalletProvider>
-            </AuthProvider>
-          </BrowserRouter>
-        </QueryClientProvider>
-      </HelmetProvider>
-    </AppErrorBoundary>
+    <HelmetProvider>
+      <QueryClientProvider client={queryClient}>
+        <BrowserRouter>
+          <AuthProvider>
+            <WalletProvider>
+              <NotificationProvider>
+                <AiProvider>
+                  <CreditGateProvider>
+                    <AppRoutes />
+                  </CreditGateProvider>
+                </AiProvider>
+              </NotificationProvider>
+            </WalletProvider>
+          </AuthProvider>
+        </BrowserRouter>
+      </QueryClientProvider>
+    </HelmetProvider>
   );
 }
