@@ -1,172 +1,90 @@
+
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { AiFeatureCard } from './AiFeatureCard';
-import { Shield, Zap, CheckCircle, TrendingUp, Brain } from 'lucide-react';
 
 export const HeroSection: React.FC = () => {
+  console.log('HeroSection rendering...');
+
+  const handleGetStarted = () => {
+    window.location.href = '/search';
+  };
+
+  const handleListProperty = () => {
+    window.location.href = '/list-property';
+  };
+
   return (
-    <>
-      {/* Hero Section */}
-      <section className="section-hero py-20 lg:py-32">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            
-            {/* Left Content */}
-            <div className="space-y-8">
-              <div className="space-y-6">
-                <h1 className="heading-primary">
-                  India's Most
-                  <span className="block bg-gradient-to-r from-[#ff6a00] via-[#ff3c00] to-[#ff0000] bg-clip-text text-transparent">
-                    Intelligent
-                  </span>
-                  Property Platform
-                </h1>
-                
-                <p className="text-lg text-[#8b4513] max-w-xl font-dmsans">
-                  Powered by advanced AI algorithms, we revolutionize real estate discovery 
-                  with smart matching, fraud detection, and predictive analytics for Indian markets.
-                </p>
-              </div>
+    <section className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-[#fff7f0] to-[#ffe4d6] overflow-hidden">
+      {/* Background elements */}
+      <div className="absolute inset-0 bg-[url('/placeholder.svg')] opacity-5"></div>
+      
+      <div className="relative z-10 text-center px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto">
+        {/* Main heading */}
+        <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6">
+          <span className="block text-[#2d0000] mb-2">India's Most</span>
+          <span className="block bg-gradient-to-r from-[#ff6a00] via-[#ff3c00] to-[#ff0000] bg-clip-text text-transparent">
+            Intelligent
+          </span>
+          <span className="block text-[#2d0000]">Property Platform</span>
+        </h1>
 
-              {/* Verified stats */}
-              <div className="grid grid-cols-3 gap-6 py-6">
-                <div className="text-center">
-                  <div className="text-3xl font-orbitron font-bold text-[#ff4500]">
-                    1M+
-                  </div>
-                  <div className="text-sm font-rajdhani text-[#8b4513]">Verified Properties</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-3xl font-orbitron font-bold text-[#ff4500]">
-                    50K+
-                  </div>
-                  <div className="text-sm font-rajdhani text-[#8b4513]">Active Users</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-3xl font-orbitron font-bold text-[#ff4500]">
-                    99.9%
-                  </div>
-                  <div className="text-sm font-rajdhani text-[#8b4513]">AI Accuracy</div>
-                </div>
-              </div>
+        {/* Subtitle */}
+        <p className="text-lg sm:text-xl text-[#8b4513] mb-8 max-w-3xl mx-auto leading-relaxed">
+          Discover properties with AI-powered search, fraud detection, pricing optimization and more. 
+          Experience the future of real estate with verified listings and smart matching.
+        </p>
 
-              {/* CTA Buttons */}
-              <div className="flex flex-col sm:flex-row gap-4">
-                <Link to="/search">
-                  <button className="w-full sm:w-auto bg-gradient-to-r from-[#ff6a00] via-[#ff3c00] to-[#ff0000] text-[#fff7f0] font-bold py-4 px-8 rounded-xl shadow-[0_0_30px_rgba(255,102,0,0.45)] hover:shadow-[0_0_40px_rgba(255,102,0,0.6)] transition-all duration-300 transform hover:scale-105 font-rajdhani">
-                    Explore Listings with AI
-                  </button>
-                </Link>
-                
-                <Link to="/list-property">
-                  <button className="w-full sm:w-auto bg-[#fff7f0] border-2 border-[#ff4500] text-[#ff4500] font-bold py-4 px-8 rounded-xl hover:bg-gradient-to-r hover:from-[#ff6a00] hover:to-[#ff0000] hover:text-[#fff7f0] transition-all duration-300 font-rajdhani">
-                    List Your Property
-                  </button>
-                </Link>
-              </div>
-
-              {/* Trust indicators */}
-              <div className="flex items-center space-x-6 pt-4">
-                <div className="flex items-center space-x-2 hover:scale-105 transition-all duration-200">
-                  <div className="w-8 h-8 bg-gradient-to-r from-[#ff6a00] via-[#ff3c00] to-[#ff0000] rounded-full flex items-center justify-center shadow-[0_0_20px_rgba(255,102,0,0.45)]">
-                    <Shield className="h-4 w-4 text-[#fff7f0]" />
-                  </div>
-                  <span className="bg-gradient-to-r from-[#ff6a00] to-[#ff0000] text-[#fff7f0] px-3 py-1 text-sm rounded-full font-rajdhani font-medium">
-                    RERA Verified
-                  </span>
-                </div>
-                <div className="flex items-center space-x-2 hover:scale-105 transition-all duration-200">
-                  <div className="w-8 h-8 bg-gradient-to-r from-[#ff6a00] via-[#ff3c00] to-[#ff0000] rounded-full flex items-center justify-center shadow-[0_0_20px_rgba(255,102,0,0.45)]">
-                    <Zap className="h-4 w-4 text-[#fff7f0]" />
-                  </div>
-                  <span className="text-[#8b4513] text-sm font-rajdhani">AI-Powered Analytics</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Right Content - AI Dashboard Mock */}
-            <div className="relative">
-              <div className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-3xl p-8 shadow-[0_0_30px_rgba(255,102,0,0.45)]">
-                
-                {/* AI Dashboard Header */}
-                <div className="flex items-center justify-between mb-6">
-                  <h3 className="font-orbitron text-xl font-bold text-[#2d0000]">AI Analytics Dashboard</h3>
-                  <div className="w-4 h-4 bg-gradient-to-br from-[#ff6a00] to-[#ff0000] rounded-full flex items-center justify-center">
-                    <div className="w-2 h-2 bg-[#fff7f0] rounded-full animate-pulse"></div>
-                  </div>
-                </div>
-
-                {/* Mock AI metrics */}
-                <div className="space-y-4 mb-8">
-                  <div className="flex justify-between items-center p-3 bg-white/10 backdrop-blur-xl border border-[#ff4500]/30 rounded-xl hover:scale-105 transition-all duration-200">
-                    <span className="font-rajdhani text-[#8b4513]">Market Analysis</span>
-                    <span className="text-[#ff4500] font-orbitron font-bold">98.5%</span>
-                  </div>
-                  <div className="flex justify-between items-center p-3 bg-white/10 backdrop-blur-xl border border-[#ff4500]/30 rounded-xl hover:scale-105 transition-all duration-200">
-                    <span className="font-rajdhani text-[#8b4513]">Price Prediction</span>
-                    <span className="text-[#ff4500] font-orbitron font-bold">₹47.2L</span>
-                  </div>
-                  <div className="flex justify-between items-center p-3 bg-white/10 backdrop-blur-xl border border-[#ff4500]/30 rounded-xl hover:scale-105 transition-all duration-200">
-                    <span className="font-rajdhani text-[#8b4513]">Investment Score</span>
-                    <span className="text-[#ff4500] font-orbitron font-bold">9.2/10</span>
-                  </div>
-                </div>
-
-                {/* AI scan animation */}
-                <div className="relative h-3 bg-[#fff7f0]/50 rounded-full overflow-hidden">
-                  <div className="absolute h-full w-1/2 bg-gradient-to-r from-[#ff6a00] via-[#ff3c00] to-[#ff0000] rounded-full animate-pulse"></div>
-                </div>
-                <p className="text-center text-[#8b4513] text-sm font-rajdhani mt-2">AI Processing Real-time Data</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* AI Features Section */}
-      <section className="py-20 bg-[#fff7f0]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="font-orbitron text-3xl lg:text-4xl font-bold text-[#2d0000] mb-4">
-              Intelligent Real Estate Solutions
-            </h2>
-            <p className="text-lg text-[#8b4513] max-w-2xl mx-auto font-dmsans">
-              Experience the future of property discovery with our AI-powered platform designed for Indian real estate markets
-            </p>
-          </div>
+        {/* CTA Buttons */}
+        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
+          <button
+            onClick={handleGetStarted}
+            className="w-full sm:w-auto bg-gradient-to-r from-[#ff6a00] via-[#ff3c00] to-[#ff0000] text-[#fff7f0] font-bold py-4 px-8 rounded-xl shadow-[0_0_30px_rgba(255,102,0,0.45)] hover:shadow-[0_0_40px_rgba(255,102,0,0.6)] transition-all duration-300 ease-in-out transform hover:scale-105 min-h-[56px]"
+          >
+            🔍 Start AI Search
+          </button>
           
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <AiFeatureCard
-              icon={<Brain className="h-6 w-6 text-white" />}
-              title="Smart Search"
-              description="AI-powered property matching based on your preferences and behavior patterns"
-              category="intelligence"
-              href="#search"
-            />
-            <AiFeatureCard
-              icon={<CheckCircle className="h-6 w-6 text-white" />}
-              title="Document Verification"
-              description="Automated verification of property documents and legal compliance"
-              category="verification"
-              href="#listing"
-            />
-            <AiFeatureCard
-              icon={<TrendingUp className="h-6 w-6 text-white" />}
-              title="Price Prediction"
-              description="Machine learning algorithms predict accurate property valuations"
-              category="analysis"
-              href="#compare"
-            />
-            <AiFeatureCard
-              icon={<Zap className="h-6 w-6 text-white" />}
-              title="Lead Intelligence"
-              description="Automated lead scoring and buyer-seller matching system"
-              category="automation"
-              href="#ai-tools"
-            />
+          <button
+            onClick={handleListProperty}
+            className="w-full sm:w-auto bg-white/20 backdrop-blur-sm text-[#ff4500] font-bold py-4 px-8 rounded-xl border-2 border-[#ff4500] hover:bg-[#ff4500] hover:text-white transition-all duration-300 ease-in-out min-h-[56px]"
+          >
+            🏠 List Your Property
+          </button>
+        </div>
+
+        {/* Features grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mt-12">
+          <div className="bg-white/10 backdrop-blur-xl rounded-2xl p-4 sm:p-6 text-center shadow-[0_0_30px_rgba(255,102,0,0.25)] border border-[#ff4500]/20">
+            <div className="w-12 h-12 mx-auto mb-4 bg-gradient-to-r from-[#ff6a00] to-[#ff0000] rounded-full flex items-center justify-center text-white text-xl">
+              🤖
+            </div>
+            <h3 className="font-semibold mb-2 text-[#2d0000]">AI-Powered</h3>
+            <p className="text-sm text-[#8b4513]">Smart search and matching</p>
+          </div>
+
+          <div className="bg-white/10 backdrop-blur-xl rounded-2xl p-4 sm:p-6 text-center shadow-[0_0_30px_rgba(255,102,0,0.25)] border border-[#ff4500]/20">
+            <div className="w-12 h-12 mx-auto mb-4 bg-gradient-to-r from-[#ff6a00] to-[#ff0000] rounded-full flex items-center justify-center text-white text-xl">
+              🛡️
+            </div>
+            <h3 className="font-semibold mb-2 text-[#2d0000]">Fraud Detection</h3>
+            <p className="text-sm text-[#8b4513]">Verified listings only</p>
+          </div>
+
+          <div className="bg-white/10 backdrop-blur-xl rounded-2xl p-4 sm:p-6 text-center shadow-[0_0_30px_rgba(255,102,0,0.25)] border border-[#ff4500]/20">
+            <div className="w-12 h-12 mx-auto mb-4 bg-gradient-to-r from-[#ff6a00] to-[#ff0000] rounded-full flex items-center justify-center text-white text-xl">
+              💰
+            </div>
+            <h3 className="font-semibold mb-2 text-[#2d0000]">Smart Pricing</h3>
+            <p className="text-sm text-[#8b4513]">AI pricing optimization</p>
+          </div>
+
+          <div className="bg-white/10 backdrop-blur-xl rounded-2xl p-4 sm:p-6 text-center shadow-[0_0_30px_rgba(255,102,0,0.25)] border border-[#ff4500]/20">
+            <div className="w-12 h-12 mx-auto mb-4 bg-gradient-to-r from-[#ff6a00] to-[#ff0000] rounded-full flex items-center justify-center text-white text-xl">
+              ⚡
+            </div>
+            <h3 className="font-semibold mb-2 text-[#2d0000]">Fast Matching</h3>
+            <p className="text-sm text-[#8b4513]">Instant property matches</p>
           </div>
         </div>
-      </section>
-    </>
+      </div>
+    </section>
   );
 };
