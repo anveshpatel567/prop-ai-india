@@ -24,29 +24,31 @@ const queryClient = new QueryClient({
   },
 });
 
-function App() {
+const App: React.FC = () => {
   console.log('App component mounting...');
   
   return (
-    <HelmetProvider>
-      <QueryClientProvider client={queryClient}>
-        <AuthProvider>
-          <WalletProvider>
-            <NotificationProvider>
-              <AiProvider>
-                <CreditGateProvider>
-                  <BrowserRouter>
-                    <AppRoutes />
-                  </BrowserRouter>
-                </CreditGateProvider>
-              </AiProvider>
-            </NotificationProvider>
-          </WalletProvider>
-        </AuthProvider>
-      </QueryClientProvider>
-    </HelmetProvider>
+    <React.StrictMode>
+      <HelmetProvider>
+        <QueryClientProvider client={queryClient}>
+          <AuthProvider>
+            <WalletProvider>
+              <NotificationProvider>
+                <AiProvider>
+                  <CreditGateProvider>
+                    <BrowserRouter>
+                      <AppRoutes />
+                    </BrowserRouter>
+                  </CreditGateProvider>
+                </AiProvider>
+              </NotificationProvider>
+            </WalletProvider>
+          </AuthProvider>
+        </QueryClientProvider>
+      </HelmetProvider>
+    </React.StrictMode>
   );
-}
+};
 
 const rootElement = document.getElementById("root");
 if (!rootElement) {
@@ -57,10 +59,6 @@ console.log('Creating React root...');
 const root = ReactDOM.createRoot(rootElement);
 
 console.log('Rendering App...');
-root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-);
+root.render(<App />);
 
 console.log('React app rendered successfully');
