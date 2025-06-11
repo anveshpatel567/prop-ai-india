@@ -7,7 +7,6 @@ interface AuthContextType {
   user: User | null;
   session: Session | null;
   isLoading: boolean;
-  isMounted: boolean;
   login: (email: string, password: string) => Promise<void>;
   register: (data: { email: string; full_name: string }) => Promise<void>;
   logout: () => void;
@@ -18,25 +17,19 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | null>(null);
 
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  // ✅ SSR-safe: No hooks called when context might be null
-  const [isMounted, setIsMounted] = useState(false);
+  const [hasMounted, setHasMounted] = useState(false);
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // ✅ SSR-safe: Mount detection happens after hydration
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      setIsMounted(true);
-    }
+    setHasMounted(true);
   }, []);
 
-  // ✅ SSR-safe: Auth setup only after mounting
   useEffect(() => {
-    if (!isMounted) return;
+    if (!hasMounted) return;
     
-    // Set up auth state listener AFTER mounting
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (event, session) => {
         setSession(session);
@@ -45,7 +38,6 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       }
     );
 
-    // THEN check for existing session
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
       setUser(session?.user ?? null);
@@ -53,7 +45,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     });
 
     return () => subscription.unsubscribe();
-  }, [isMounted]);
+  }, [hasMounted]);
 
   const login = async (email: string, password: string): Promise<void> => {
     try {
@@ -76,7 +68,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     try {
       setError(null);
       setIsLoading(true);
-      const redirectUrl = `${window.location.origin}/`;
+      const redirectUrl = hasMounted ? `${window.location.origin}/` : '';
       
       const { error } = await supabase.auth.signUp({
         email: data.email,
@@ -114,23 +106,8 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     }
   };
 
-  // ✅ SSR-safe: Return loading state during hydration
-  if (!isMounted) {
-    return (
-      <AuthContext.Provider value={{
-        user: null,
-        session: null,
-        isLoading: true,
-        isMounted: false,
-        login,
-        register,
-        logout,
-        updateProfile,
-        error: null
-      }}>
-        {children}
-      </AuthContext.Provider>
-    );
+  if (!hasMounted) {
+    return null;
   }
 
   return (
@@ -138,7 +115,6 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       user,
       session,
       isLoading,
-      isMounted,
       login,
       register,
       logout,

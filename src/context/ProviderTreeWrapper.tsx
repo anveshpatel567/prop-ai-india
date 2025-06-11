@@ -1,7 +1,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { AuthProvider } from './AuthContext';
-import { WalletProvider } from './WalletContext';
+import { WalletProvider } from './WalletProvider';
 import { NotificationProvider } from './NotificationContext';
 import { AiProvider } from './AiContext';
 import { CreditGateProvider } from './CreditGateContext';

@@ -21,22 +21,16 @@ interface NotificationContextType {
 const NotificationContext = createContext<NotificationContextType | null>(null);
 
 export const NotificationProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  // ✅ SSR-safe: All hooks declared unconditionally
-  const [isMounted, setIsMounted] = useState(false);
+  const [hasMounted, setHasMounted] = useState(false);
   const [notifications, setNotifications] = useState<Notification[]>([]);
 
-  // ✅ SSR-safe: Mount detection
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      setIsMounted(true);
-    }
+    setHasMounted(true);
   }, []);
 
-  // ✅ SSR-safe: localStorage access only after mounting
   useEffect(() => {
-    if (!isMounted) return;
+    if (!hasMounted) return;
     
-    // Load notifications from localStorage after mounting
     const stored = localStorage.getItem("freeproplist_notifications");
     if (stored) {
       try {
@@ -45,17 +39,16 @@ export const NotificationProvider: React.FC<{ children: React.ReactNode }> = ({ 
         console.error('Failed to load notifications from storage:', error);
       }
     }
-  }, [isMounted]);
+  }, [hasMounted]);
 
-  // ✅ SSR-safe: localStorage save only when mounted
   useEffect(() => {
-    if (isMounted && notifications.length > 0) {
+    if (hasMounted && notifications.length > 0) {
       localStorage.setItem("freeproplist_notifications", JSON.stringify(notifications));
     }
-  }, [notifications, isMounted]);
+  }, [notifications, hasMounted]);
 
   const addNotification = (notification: Omit<Notification, 'id' | 'isRead' | 'createdAt'>) => {
-    if (!isMounted) return;
+    if (!hasMounted) return;
     
     const newNotification: Notification = {
       ...notification,
@@ -67,12 +60,12 @@ export const NotificationProvider: React.FC<{ children: React.ReactNode }> = ({ 
   };
 
   const markAsRead = (id: string) => {
-    if (!isMounted) return;
+    if (!hasMounted) return;
     setNotifications(prev => prev.map(n => n.id === id ? { ...n, isRead: true } : n));
   };
 
   const removeNotification = (id: string) => {
-    if (!isMounted) return;
+    if (!hasMounted) return;
     setNotifications(prev => prev.filter(n => n.id !== id));
   };
 
@@ -80,20 +73,9 @@ export const NotificationProvider: React.FC<{ children: React.ReactNode }> = ({ 
     return notifications.filter(n => !n.isRead).length;
   };
 
-  // ✅ SSR-safe: Provide loading state during hydration
-  if (!isMounted) {
-    return (
-      <NotificationContext.Provider value={{
-        notifications: [],
-        addNotification: () => {},
-        markAsRead: () => {},
-        removeNotification: () => {},
-        getUnreadCount: () => 0
-      }}>
-        {children}
-      </NotificationContext.Provider>
-    );
-    };
+  if (!hasMounted) {
+    return null;
+  }
 
   return (
     <NotificationContext.Provider value={{
