@@ -1,5 +1,5 @@
 
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { AuthProvider } from './AuthContext';
 import { WalletProvider } from './WalletContext';
 import { NotificationProvider } from './NotificationContext';
@@ -11,20 +11,6 @@ interface ProviderTreeWrapperProps {
 }
 
 export const ProviderTreeWrapper: React.FC<ProviderTreeWrapperProps> = ({ children }) => {
-  const [isClient, setIsClient] = useState(false);
-  
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
-
-  if (!isClient) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-lg">Loading...</div>
-      </div>
-    );
-  }
-
   return (
     <AuthProvider>
       <WalletProvider>

@@ -5,16 +5,8 @@ import { Button } from '@/components/ui/button';
 import { useAuth } from '@/context/AuthContext';
 import { UserWalletBadge } from '@/components/common/UserWalletBadge';
 import { LayoutDashboard, Brain, BarChart3, Settings, User, LogOut } from 'lucide-react';
-import { useMountReady } from '@/hooks/useMountReady';
 
 export const Navbar: React.FC = () => {
-  const isReady = useMountReady();
-  
-  // Don't render anything until fully mounted and ready
-  if (!isReady) {
-    return null;
-  }
-
   const { user, logout } = useAuth();
   const navigate = useNavigate();
 

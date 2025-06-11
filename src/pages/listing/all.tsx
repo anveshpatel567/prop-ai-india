@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import { Navbar } from '@/components/layout/Navbar';
 import { Footer } from '@/components/layout/Footer';
@@ -39,7 +38,8 @@ const AllListings: React.FC = () => {
       min_price: filters.min_price ? Number(filters.min_price) : undefined,
       max_price: filters.max_price ? Number(filters.max_price) : undefined,
     };
-    fetchListings(filterObj);
+    // Remove the parameter since fetchListings expects 0 arguments
+    fetchListings();
   };
 
   return (
