@@ -1,11 +1,9 @@
 
-import { useState, useEffect } from 'react';
-import { SearchFilter, PropertyListing, PropertyMatchScore } from '../types';
-import { supabase } from '@/integrations/supabase/client';
+import { useState } from 'react';
+import { PropertyListing, PropertyMatchScore, SearchFilter } from '@/types';
 
-export const useSearch = () => {
+export function useSearch() {
   const [listings, setListings] = useState<PropertyListing[]>([]);
-  const [matchScores, setMatchScores] = useState<PropertyMatchScore[]>([]);
   const [loading, setLoading] = useState(false);
   const [filters, setFilters] = useState<SearchFilter>({
     location: '',
@@ -15,37 +13,14 @@ export const useSearch = () => {
     bedrooms: 0,
     bathrooms: 0
   });
+  const [matchScores, setMatchScores] = useState<PropertyMatchScore[]>([]);
 
-  const searchListings = async (searchFilters: Partial<SearchFilter>) => {
+  const searchListings = async (searchFilters?: Partial<SearchFilter>) => {
     setLoading(true);
     try {
-      let query = supabase.from('listings').select('*');
-
-      if (searchFilters.location) {
-        query = query.ilike('location', `%${searchFilters.location}%`);
-      }
-      if (searchFilters.min_price) {
-        query = query.gte('price', searchFilters.min_price);
-      }
-      if (searchFilters.max_price) {
-        query = query.lte('price', searchFilters.max_price);
-      }
-      if (searchFilters.property_type) {
-        query = query.eq('property_type', searchFilters.property_type);
-      }
-      if (searchFilters.bedrooms) {
-        query = query.eq('bedrooms', searchFilters.bedrooms);
-      }
-      if (searchFilters.bathrooms) {
-        query = query.eq('bathrooms', searchFilters.bathrooms);
-      }
-
-      const { data, error } = await query;
-      if (error) throw error;
-
-      setListings(data || []);
-    } catch (error) {
-      console.error('Search error:', error);
+      // TODO: Replace with actual search logic
+      setListings([]);
+      setMatchScores([]);
     } finally {
       setLoading(false);
     }
@@ -56,15 +31,8 @@ export const useSearch = () => {
   };
 
   const aiSearch = async (query: string) => {
-    // Mock AI search implementation
     console.log('AI search with query:', query);
-    setLoading(true);
-    
-    // Simulate API call
-    setTimeout(() => {
-      setListings([]);
-      setLoading(false);
-    }, 1000);
+    await searchListings();
   };
 
   return {
@@ -77,6 +45,6 @@ export const useSearch = () => {
     setFilters,
     searchListings,
     manualSearch,
-    aiSearch
+    aiSearch,
   };
-};
+}

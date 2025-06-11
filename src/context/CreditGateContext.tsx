@@ -33,6 +33,7 @@ export const CreditGateProvider: React.FC<CreditGateProviderProps> = ({ children
       { tool_name: 'lead_scorer', credits_required: 25, is_enabled: true, description: 'AI lead scoring system' },
       { tool_name: 'whatsapp_responder', credits_required: 8, is_enabled: true, description: 'Automated WhatsApp responses' },
       { tool_name: 'ai-pricing', credits_required: 25, is_enabled: true, description: 'AI-powered pricing suggestions' },
+      { tool_name: 'resume-builder', credits_required: 5, is_enabled: true, description: 'AI Resume Builder' },
     ];
     
     setToolRequirements(defaultRequirements);
