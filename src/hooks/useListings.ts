@@ -1,163 +1,50 @@
 
 import { useState, useEffect } from 'react';
+import { PropertyListing } from '../types';
 import { supabase } from '@/integrations/supabase/client';
-import type { Database } from '@/types/supabase-db';
-
-type Listing = Database['public']['Tables']['listings']['Row'];
-type ListingInsert = Database['public']['Tables']['listings']['Insert'];
 
 export const useListings = () => {
-  const [listings, setListings] = useState<Listing[]>([]);
+  const [listings, setListings] = useState<PropertyListing[]>([]);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
 
-  const fetchListings = async (filters?: {
-    location?: string;
-    property_type?: string;
-    listing_type?: string;
-    min_price?: number;
-    max_price?: number;
-  }) => {
+  const fetchListings = async (filters?: any) => {
+    setLoading(true);
     try {
-      setLoading(true);
-      setError(null);
+      let query = supabase.from('listings').select('*');
+
+      if (filters) {
+        if (filters.location) {
+          query = query.ilike('location', `%${filters.location}%`);
+        }
+        if (filters.property_type && filters.property_type !== 'all') {
+          query = query.eq('property_type', filters.property_type);
+        }
+        if (filters.listing_type && filters.listing_type !== 'all') {
+          query = query.eq('listing_type', filters.listing_type);
+        }
+        if (filters.min_price) {
+          query = query.gte('price', filters.min_price);
+        }
+        if (filters.max_price) {
+          query = query.lte('price', filters.max_price);
+        }
+      }
+
+      const { data, error } = await query.order('created_at', { ascending: false });
       
-      let query = supabase
-        .from('listings')
-        .select('*')
-        .eq('status', 'active');
-
-      if (filters?.location) {
-        query = query.or(`city.ilike.%${filters.location}%,locality.ilike.%${filters.location}%`);
-      }
-      if (filters?.property_type) {
-        query = query.eq('property_type', filters.property_type);
-      }
-      if (filters?.listing_type) {
-        query = query.eq('listing_type', filters.listing_type);
-      }
-      if (filters?.min_price) {
-        query = query.gte('price', filters.min_price);
-      }
-      if (filters?.max_price) {
-        query = query.lte('price', filters.max_price);
-      }
-
-      const { data, error: fetchError } = await query.order('created_at', { ascending: false });
-
-      if (fetchError) {
-        console.error('Fetch listings error:', fetchError);
-        setError(fetchError.message);
-        return [];
-      }
-
+      if (error) throw error;
       setListings(data || []);
-      return data || [];
-    } catch (err) {
-      console.error('Error fetching listings:', err);
-      setError('Failed to fetch listings');
-      return [];
+    } catch (error) {
+      console.error('Error fetching listings:', error);
+      setListings([]);
     } finally {
       setLoading(false);
     }
   };
-
-  const createListing = async (listingData: ListingInsert) => {
-    try {
-      setLoading(true);
-      setError(null);
-      
-      const { data, error: createError } = await supabase
-        .from('listings')
-        .insert(listingData)
-        .select()
-        .single();
-
-      if (createError) {
-        console.error('Create listing error:', createError);
-        setError(createError.message);
-        return null;
-      }
-
-      return data;
-    } catch (err) {
-      console.error('Error creating listing:', err);
-      setError('Failed to create listing');
-      return null;
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const getUserListings = async (userId: string) => {
-    try {
-      setLoading(true);
-      setError(null);
-      
-      const { data, error: fetchError } = await supabase
-        .from('listings')
-        .select('*')
-        .eq('user_id', userId)
-        .order('created_at', { ascending: false });
-
-      if (fetchError) {
-        console.error('Get user listings error:', fetchError);
-        setError(fetchError.message);
-        return [];
-      }
-
-      return data || [];
-    } catch (err) {
-      console.error('Error fetching user listings:', err);
-      setError('Failed to fetch user listings');
-      return [];
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const updateListing = async (id: string, updates: Partial<ListingInsert>) => {
-    try {
-      setLoading(true);
-      setError(null);
-      
-      const { data, error: updateError } = await supabase
-        .from('listings')
-        .update(updates)
-        .eq('id', id)
-        .select()
-        .single();
-
-      if (updateError) {
-        console.error('Update listing error:', updateError);
-        setError(updateError.message);
-        return null;
-      }
-
-      return data;
-    } catch (err) {
-      console.error('Error updating listing:', err);
-      setError('Failed to update listing');
-      return null;
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    // Only fetch listings on initial mount if we're in a browser environment
-    if (typeof window !== 'undefined') {
-      fetchListings();
-    }
-  }, []);
 
   return {
     listings,
     loading,
-    error,
-    fetchListings,
-    createListing,
-    getUserListings,
-    updateListing
+    fetchListings
   };
 };

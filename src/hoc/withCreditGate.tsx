@@ -65,13 +65,15 @@ export function withCreditGate<P extends object>(
         return <FallbackComponent {...props} onAttempt={handleAttempt} />;
       }
       
+      const description = toolRequirement?.description || `Requires ${creditsRequired} credits`;
+      
       return (
         <>
           <div onClick={handleAttempt} className="cursor-pointer">
             <LockedToolCard
               toolName={toolName}
               title={toolTitle}
-              description={toolRequirement?.description || `Requires ${creditsRequired} credits`}
+              description={description}
               creditsRequired={creditsRequired}
             />
           </div>

@@ -51,12 +51,32 @@ export const useSearch = () => {
     }
   };
 
+  const manualSearch = async (filters: any) => {
+    await searchListings(filters);
+  };
+
+  const aiSearch = async (query: string) => {
+    // Mock AI search implementation
+    console.log('AI search with query:', query);
+    setLoading(true);
+    
+    // Simulate API call
+    setTimeout(() => {
+      setListings([]);
+      setLoading(false);
+    }, 1000);
+  };
+
   return {
     listings,
+    searchResults: listings,
     matchScores,
     loading,
+    isLoading: loading,
     filters,
     setFilters,
-    searchListings
+    searchListings,
+    manualSearch,
+    aiSearch
   };
 };

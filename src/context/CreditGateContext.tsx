@@ -26,13 +26,13 @@ export const CreditGateProvider: React.FC<CreditGateProviderProps> = ({ children
     
     // Initialize default tool requirements
     const defaultRequirements: ToolRequirement[] = [
-      { tool_name: 'ai_search', credits_required: 10, is_enabled: true },
-      { tool_name: 'smart_pricing', credits_required: 30, is_enabled: true },
-      { tool_name: 'brochure_parser', credits_required: 50, is_enabled: true },
-      { tool_name: 'video_generator', credits_required: 100, is_enabled: true },
-      { tool_name: 'lead_scorer', credits_required: 25, is_enabled: true },
-      { tool_name: 'whatsapp_responder', credits_required: 8, is_enabled: true },
-      { tool_name: 'ai-pricing', credits_required: 25, is_enabled: true },
+      { tool_name: 'ai_search', credits_required: 10, is_enabled: true, description: 'AI-powered property search' },
+      { tool_name: 'smart_pricing', credits_required: 30, is_enabled: true, description: 'AI pricing analysis' },
+      { tool_name: 'brochure_parser', credits_required: 50, is_enabled: true, description: 'Brochure parsing using AI' },
+      { tool_name: 'video_generator', credits_required: 100, is_enabled: true, description: 'Video generation for properties' },
+      { tool_name: 'lead_scorer', credits_required: 25, is_enabled: true, description: 'AI lead scoring system' },
+      { tool_name: 'whatsapp_responder', credits_required: 8, is_enabled: true, description: 'Automated WhatsApp responses' },
+      { tool_name: 'ai-pricing', credits_required: 25, is_enabled: true, description: 'AI-powered pricing suggestions' },
     ];
     
     setToolRequirements(defaultRequirements);

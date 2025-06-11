@@ -87,6 +87,9 @@ export interface PropertyListing {
   bathrooms: number;
   created_at: string;
   updated_at: string;
+  listing_type: string;
+  locality: string;
+  city: string;
 }
 
 export interface ListingCategory {
@@ -137,6 +140,7 @@ export interface ToolRequirement {
   tool_name: string;
   credits_required: number;
   is_enabled: boolean;
+  description: string;
 }
 
 export interface ToolAccessResult {
