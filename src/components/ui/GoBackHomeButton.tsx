@@ -3,7 +3,6 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Home } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { useMountReady } from '@/hooks/useMountReady';
 
 interface GoBackHomeButtonProps {
   className?: string;
@@ -14,13 +13,6 @@ export const GoBackHomeButton: React.FC<GoBackHomeButtonProps> = ({
   className = '',
   variant = 'outline'
 }) => {
-  const isReady = useMountReady();
-
-  // Don't render Link until mounted to prevent router context crashes
-  if (!isReady) {
-    return null;
-  }
-
   if (variant === 'primary') {
     return (
       <Link to="/">
