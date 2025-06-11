@@ -3,6 +3,10 @@ import React, { useState, useEffect, useContext, createContext } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import type { User, Session } from '@supabase/supabase-js';
 
+console.log('AuthContext module loading...');
+console.log('React object:', React);
+console.log('useState function:', useState);
+
 interface AuthContextType {
   user: User | null;
   session: Session | null;
@@ -17,8 +21,15 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | null>(null);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  console.log('AuthProvider mounting...');
-  console.log('React hooks available:', { useState, useEffect, useContext });
+  console.log('AuthProvider rendering...');
+  
+  // Ensure React hooks are available
+  if (!useState || !useEffect || !useContext) {
+    console.error('React hooks not available!');
+    return <div>Loading React...</div>;
+  }
+
+  console.log('React hooks confirmed available');
 
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
