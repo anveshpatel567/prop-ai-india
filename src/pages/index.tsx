@@ -1,6 +1,5 @@
 
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
 import { Navbar } from '../components/layout/Navbar';
 import { Footer } from '../components/layout/Footer';
 import { HeroSection } from '../components/home/HeroSection';
@@ -11,7 +10,35 @@ import { JsonLdSchema } from '../components/seo/JsonLdSchema';
 import { useSeoOverride } from '../hooks/useSeoOverride';
 import { MobileCardGrid, MobileCardSpacing } from '../components/mobile/MobileCardSpacingFix';
 
+// Simple fallback loading component
+const PageLoading = () => (
+  <div className="min-h-screen bg-gradient-to-br from-[#fff7f0] to-[#ffe4d6] flex items-center justify-center">
+    <div className="text-center">
+      <div className="text-2xl font-bold bg-gradient-to-r from-[#ff6a00] via-[#ff3c00] to-[#ff0000] bg-clip-text text-transparent mb-4">
+        FreePropList
+      </div>
+      <div className="text-[#8b4513]">Loading...</div>
+    </div>
+  </div>
+);
+
 const Index: React.FC = () => {
+  const [isReady, setIsReady] = useState(false);
+
+  useEffect(() => {
+    // Wait a bit to ensure all contexts are initialized
+    const timer = setTimeout(() => {
+      setIsReady(true);
+    }, 100);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  // Show loading screen until contexts are ready
+  if (!isReady) {
+    return <PageLoading />;
+  }
+
   const { seoData } = useSeoOverride({
     path: '/',
     fallbackTitle: 'FreePropList - AI-Powered Property Platform | Smart Real Estate Solutions',
@@ -25,12 +52,26 @@ const Index: React.FC = () => {
     logo: 'https://freeproplist.com/logo.png'
   };
 
+  // Safe link component that handles potential router context issues
+  const SafeLink: React.FC<{ to: string; children: React.ReactNode; className?: string }> = ({ to, children, className }) => {
+    const handleClick = (e: React.MouseEvent) => {
+      e.preventDefault();
+      window.location.href = to;
+    };
+
+    return (
+      <a href={to} onClick={handleClick} className={className}>
+        {children}
+      </a>
+    );
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#fff7f0] to-[#ffe4d6]">
       <SeoMetaHead
-        title={seoData.title || 'FreePropList - AI-Powered Property Platform'}
-        description={seoData.description || 'Discover properties with AI-powered search and smart matching'}
-        keywords={seoData.keywords}
+        title={seoData?.title || 'FreePropList - AI-Powered Property Platform'}
+        description={seoData?.description || 'Discover properties with AI-powered search and smart matching'}
+        keywords={seoData?.keywords}
         canonicalUrl="https://freeproplist.com/"
       />
       <JsonLdSchema type="organization" data={organizationData} />
@@ -49,37 +90,37 @@ const Index: React.FC = () => {
           </div>
           
           <MobileCardGrid>
-            <Link to="/search">
+            <SafeLink to="/search">
               <div className="bg-white/10 backdrop-blur-xl rounded-2xl p-4 sm:p-6 text-center shadow-[0_0_30px_rgba(255,102,0,0.45)] hover:shadow-[0_0_40px_rgba(255,102,0,0.6)] transition-all duration-300 cursor-pointer group border border-[#ff4500] min-h-[120px] sm:min-h-[140px] flex flex-col justify-center transform hover:scale-105">
                 <div className="w-8 h-8 sm:w-12 sm:h-12 mx-auto mb-3 sm:mb-4 bg-gradient-to-r from-[#ff6a00] to-[#ff0000] rounded-full flex items-center justify-center text-white font-bold group-hover:scale-110 transition-transform">🔍</div>
                 <h3 className="font-semibold mb-2 text-[#2d0000] text-sm sm:text-base">Search Properties</h3>
                 <p className="text-xs sm:text-sm text-[#8b4513]">AI-powered property discovery</p>
               </div>
-            </Link>
+            </SafeLink>
             
-            <Link to="/list-property">
+            <SafeLink to="/list-property">
               <div className="bg-white/10 backdrop-blur-xl rounded-2xl p-4 sm:p-6 text-center shadow-[0_0_30px_rgba(255,102,0,0.45)] hover:shadow-[0_0_40px_rgba(255,102,0,0.6)] transition-all duration-300 cursor-pointer group border border-[#ff4500] min-h-[120px] sm:min-h-[140px] flex flex-col justify-center transform hover:scale-105">
                 <div className="w-8 h-8 sm:w-12 sm:h-12 mx-auto mb-3 sm:mb-4 bg-gradient-to-r from-[#ff6a00] to-[#ff0000] rounded-full flex items-center justify-center text-white font-bold group-hover:scale-110 transition-transform">🏠</div>
                 <h3 className="font-semibold mb-2 text-[#2d0000] text-sm sm:text-base">List Property</h3>
                 <p className="text-xs sm:text-sm text-[#8b4513]">Sell or rent your property</p>
               </div>
-            </Link>
+            </SafeLink>
             
-            <Link to="/listing/all">
+            <SafeLink to="/listing/all">
               <div className="bg-white/10 backdrop-blur-xl rounded-2xl p-4 sm:p-6 text-center shadow-[0_0_30px_rgba(255,102,0,0.45)] hover:shadow-[0_0_40px_rgba(255,102,0,0.6)] transition-all duration-300 cursor-pointer group border border-[#ff4500] min-h-[120px] sm:min-h-[140px] flex flex-col justify-center transform hover:scale-105">
                 <div className="w-8 h-8 sm:w-12 sm:h-12 mx-auto mb-3 sm:mb-4 bg-gradient-to-r from-[#ff6a00] to-[#ff0000] rounded-full flex items-center justify-center text-white font-bold group-hover:scale-110 transition-transform">📄</div>
                 <h3 className="font-semibold mb-2 text-[#2d0000] text-sm sm:text-base">Browse All</h3>
                 <p className="text-xs sm:text-sm text-[#8b4513]">Explore all listings</p>
               </div>
-            </Link>
+            </SafeLink>
             
-            <Link to="/login">
+            <SafeLink to="/login">
               <div className="bg-white/10 backdrop-blur-xl rounded-2xl p-4 sm:p-6 text-center shadow-[0_0_30px_rgba(255,102,0,0.45)] hover:shadow-[0_0_40px_rgba(255,102,0,0.6)] transition-all duration-300 cursor-pointer group border border-[#ff4500] min-h-[120px] sm:min-h-[140px] flex flex-col justify-center transform hover:scale-105">
                 <div className="w-8 h-8 sm:w-12 sm:h-12 mx-auto mb-3 sm:mb-4 bg-gradient-to-r from-[#ff6a00] to-[#ff0000] rounded-full flex items-center justify-center text-white font-bold group-hover:scale-110 transition-transform">👤</div>
                 <h3 className="font-semibold mb-2 text-[#2d0000] text-sm sm:text-base">Join Us</h3>
                 <p className="text-xs sm:text-sm text-[#8b4513]">Create your account</p>
               </div>
-            </Link>
+            </SafeLink>
           </MobileCardGrid>
         </div>
       </section>
@@ -102,16 +143,16 @@ const Index: React.FC = () => {
             Join thousands of users who trust FreePropList's AI-powered platform for their property needs
           </p>
           <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
-            <Link to="/search">
+            <SafeLink to="/search">
               <button className="w-full sm:w-auto bg-[#fff7f0] text-[#ff4500] font-bold py-3 sm:py-4 px-6 sm:px-8 rounded-xl shadow-[0_0_30px_rgba(255,102,0,0.45)] hover:shadow-[0_0_40px_rgba(255,102,0,0.6)] hover:bg-white transition-all duration-300 ease-in-out transform hover:scale-105 min-h-[44px] text-sm sm:text-base">
                 Start AI Search
               </button>
-            </Link>
-            <Link to="/list-property">
+            </SafeLink>
+            <SafeLink to="/list-property">
               <button className="w-full sm:w-auto bg-white/20 backdrop-blur-sm text-white font-bold py-3 sm:py-4 px-6 sm:px-8 rounded-xl border border-white/30 hover:bg-white/30 hover:border-white/50 transition-all duration-300 ease-in-out min-h-[44px] text-sm sm:text-base">
                 List Your Property
               </button>
-            </Link>
+            </SafeLink>
           </div>
         </div>
       </section>
