@@ -20,16 +20,20 @@ interface AiContextType {
 const AiContext = createContext<AiContextType | null>(null);
 
 export const AiProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  console.log('AiProvider rendering...');
+  
   const [hasMounted, setHasMounted] = useState(false);
   const [aiTools, setAiTools] = useState<AiTool[]>([]);
 
   useEffect(() => {
+    console.log('AiProvider mounting effect...');
     setHasMounted(true);
   }, []);
 
   useEffect(() => {
     if (!hasMounted) return;
     
+    console.log('Initializing AI tools...');
     const defaultTools: AiTool[] = [
       { id: '1', name: 'ai_search', enabled: true, creditCost: 10, description: 'AI-powered property search' },
       { id: '2', name: 'smart_pricing', enabled: true, creditCost: 30, description: 'AI pricing analysis' },
