@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useContext, createContext } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import type { User, Session } from '@supabase/supabase-js';
@@ -17,18 +16,20 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | null>(null);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  console.log('=== AuthProvider Debug ===');
   console.log('AuthProvider mounting...');
-  console.log('React available in AuthProvider:', React);
-  console.log('useState available:', React.useState);
-  
-  // Add defensive check for React hooks
-  if (!React || !React.useState || !React.useEffect) {
-    console.error('React hooks not available in AuthProvider');
+  console.log('React in AuthProvider:', !!React);
+  console.log('useState available:', !!(React && React.useState));
+  console.log('useEffect available:', !!(React && React.useEffect));
+
+  // Enhanced defensive check with detailed logging
+  if (!React) {
+    console.error('CRITICAL: React object is null/undefined in AuthProvider');
     return (
       <div className="min-h-screen flex items-center justify-center bg-red-50">
         <div className="text-center p-8">
-          <h1 className="text-xl font-bold text-red-600 mb-4">Auth Provider Error</h1>
-          <p className="text-gray-700 mb-4">React hooks are not available. Please refresh the page.</p>
+          <h1 className="text-xl font-bold text-red-600 mb-4">React Not Available</h1>
+          <p className="text-gray-700 mb-4">React object is not available in AuthProvider</p>
           <button 
             onClick={() => window.location.reload()} 
             className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
@@ -39,13 +40,37 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       </div>
     );
   }
-  
-  const [user, setUser] = React.useState<User | null>(null);
-  const [session, setSession] = React.useState<Session | null>(null);
-  const [isLoading, setIsLoading] = React.useState(true);
-  const [error, setError] = React.useState<string | null>(null);
 
-  React.useEffect(() => {
+  if (!React.useState || !React.useEffect) {
+    console.error('CRITICAL: React hooks not available in AuthProvider', {
+      useState: !!React.useState,
+      useEffect: !!React.useEffect
+    });
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-red-50">
+        <div className="text-center p-8">
+          <h1 className="text-xl font-bold text-red-600 mb-4">React Hooks Not Available</h1>
+          <p className="text-gray-700 mb-4">useState or useEffect hooks are not available</p>
+          <button 
+            onClick={() => window.location.reload()} 
+            className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+          >
+            Reload Page
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  console.log('✅ React hooks verified in AuthProvider - proceeding with state setup');
+
+  // Use imported hooks directly instead of React.useState
+  const [user, setUser] = useState<User | null>(null);
+  const [session, setSession] = useState<Session | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
     console.log('AuthProvider useEffect running...');
     
     // Get initial session first
@@ -166,3 +191,5 @@ export const useAuth = () => {
   }
   return context;
 };
+
+export default AuthProvider;
