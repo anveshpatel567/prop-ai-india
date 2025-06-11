@@ -11,8 +11,8 @@ import { CreditGateProvider } from '@/context/CreditGateContext';
 
 export default function App() {
   return (
-    <BrowserRouter>
-      <HelmetProvider>
+    <HelmetProvider>
+      <BrowserRouter>
         <AuthProvider>
           <WalletProvider>
             <NotificationProvider>
@@ -24,7 +24,7 @@ export default function App() {
             </NotificationProvider>
           </WalletProvider>
         </AuthProvider>
-      </HelmetProvider>
-    </BrowserRouter>
+      </BrowserRouter>
+    </HelmetProvider>
   );
 }
