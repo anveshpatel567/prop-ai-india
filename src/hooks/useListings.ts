@@ -42,9 +42,26 @@ export const useListings = () => {
     }
   };
 
+  const createListing = async (listingData: any) => {
+    try {
+      const { data, error } = await supabase
+        .from('listings')
+        .insert(listingData)
+        .select()
+        .single();
+      
+      if (error) throw error;
+      return data;
+    } catch (error) {
+      console.error('Error creating listing:', error);
+      throw error;
+    }
+  };
+
   return {
     listings,
     loading,
-    fetchListings
+    fetchListings,
+    createListing
   };
 };

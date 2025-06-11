@@ -51,7 +51,7 @@ export const Navbar: React.FC = () => {
                   <span className="hidden sm:inline">Usage</span>
                 </Link>
 
-                {user.role === 'admin' && (
+                {user.user_metadata?.role === 'admin' && (
                   <Link to="/admin" className="flex items-center space-x-2 text-[#ff4500] hover:text-[#2d0000] transition-colors hover:scale-105 duration-200">
                     <Settings className="h-5 w-5" />
                     <span className="hidden sm:inline">Admin</span>

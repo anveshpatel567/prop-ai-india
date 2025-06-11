@@ -18,7 +18,11 @@ export const ProviderTreeWrapper: React.FC<ProviderTreeWrapperProps> = ({ childr
   }, []);
 
   if (!isClient) {
-    return null;
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-lg">Loading...</div>
+      </div>
+    );
   }
 
   return (
