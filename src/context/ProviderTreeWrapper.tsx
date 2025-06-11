@@ -1,7 +1,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { AuthProvider } from './AuthContext';
-import { WalletProvider } from './WalletProvider';
+import { WalletProvider } from './WalletContext';
 import { NotificationProvider } from './NotificationContext';
 import { AiProvider } from './AiContext';
 import { CreditGateProvider } from './CreditGateContext';
@@ -17,7 +17,9 @@ export const ProviderTreeWrapper: React.FC<ProviderTreeWrapperProps> = ({ childr
     setIsClient(true);
   }, []);
 
-  if (!isClient) return null;
+  if (!isClient) {
+    return null;
+  }
 
   return (
     <AuthProvider>

@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 
@@ -26,10 +27,14 @@ export function useSeoOverride({
     description: fallbackDescription
   });
   const [loading, setLoading] = useState(true);
+  const [hasMounted, setHasMounted] = useState(false);
 
   useEffect(() => {
-    // Only run on client side after component mount
-    if (typeof window === 'undefined') {
+    setHasMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (!hasMounted) {
       setLoading(false);
       return;
     }
@@ -44,7 +49,6 @@ export function useSeoOverride({
 
         if (error) {
           console.warn('SEO override fetch failed:', error);
-          // Use fallbacks on error instead of throwing
           setSeoData({
             title: fallbackTitle,
             description: fallbackDescription
@@ -59,15 +63,11 @@ export function useSeoOverride({
             keywords: data.keywords || undefined,
             source: data.source || 'manual'
           });
-        } else {
-          // If no override exists and entityId provided, try to generate AI metadata
-          if (entityId) {
-            await generateAiMetadata(path, entityId);
-          }
+        } else if (entityId) {
+          await generateAiMetadata(path, entityId);
         }
       } catch (error) {
         console.error('Error fetching SEO override:', error);
-        // Always provide fallbacks instead of crashing
         setSeoData({
           title: fallbackTitle,
           description: fallbackDescription
@@ -78,9 +78,11 @@ export function useSeoOverride({
     }
 
     fetchSeoOverride();
-  }, [path, entityId, fallbackTitle, fallbackDescription]);
+  }, [path, entityId, fallbackTitle, fallbackDescription, hasMounted]);
 
   const generateAiMetadata = async (path: string, entityId: string) => {
+    if (!hasMounted) return;
+    
     try {
       const { data, error } = await supabase.functions.invoke('generateSeoMetadata', {
         body: { path, entityId }
@@ -101,9 +103,15 @@ export function useSeoOverride({
       }
     } catch (error) {
       console.error('Error generating AI metadata:', error);
-      // Silently fail and keep fallbacks
     }
   };
+
+  if (!hasMounted) {
+    return { 
+      seoData: { title: fallbackTitle, description: fallbackDescription }, 
+      loading: true 
+    };
+  }
 
   return { seoData, loading };
 }
