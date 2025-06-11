@@ -5,7 +5,11 @@ import { Footer } from '../components/layout/Footer';
 import { HeroSection } from '../components/home/HeroSection';
 import { AiTeaserCards } from '../components/home/AiTeaserCards';
 import { RoleSelectorCards } from '../components/home/RoleSelectorCards';
-import { AppProviders } from '../components/providers/AppProviders';
+import { AuthProvider } from '../context/AuthContext';
+import { WalletProvider } from '../context/WalletProvider';
+import { NotificationProvider } from '../context/NotificationProvider';
+import { AiProvider } from '../context/AiProvider';
+import { CreditGateProvider } from '../context/CreditGateProvider';
 import { MobileCardGrid, MobileCardSpacing } from '../components/mobile/MobileCardSpacingFix';
 
 // Simple fallback loading component
@@ -151,9 +155,17 @@ const Index: React.FC = () => {
   );
 
   return (
-    <AppProviders>
-      <PageContent />
-    </AppProviders>
+    <AuthProvider>
+      <WalletProvider>
+        <NotificationProvider>
+          <AiProvider>
+            <CreditGateProvider>
+              <PageContent />
+            </CreditGateProvider>
+          </AiProvider>
+        </NotificationProvider>
+      </WalletProvider>
+    </AuthProvider>
   );
 };
 

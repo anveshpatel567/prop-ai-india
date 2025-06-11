@@ -6,15 +6,6 @@ import './index.css'
 
 console.log('Starting React application...');
 
-// Ensure React is properly loaded
-if (!React || !ReactDOM) {
-  throw new Error('React modules not loaded properly');
-}
-
-console.log('React:', React);
-console.log('ReactDOM:', ReactDOM);
-console.log('React version:', React.version);
-
 const rootElement = document.getElementById("root");
 if (!rootElement) {
   throw new Error('Root element not found');

@@ -17,7 +17,6 @@ const queryClient = new QueryClient({
 
 export default function App() {
   console.log('App component mounting...');
-  console.log('React version check:', React.version);
   
   return (
     <HelmetProvider>
