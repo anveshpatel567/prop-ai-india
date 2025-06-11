@@ -5,11 +5,6 @@ import { Footer } from '../components/layout/Footer';
 import { HeroSection } from '../components/home/HeroSection';
 import { AiTeaserCards } from '../components/home/AiTeaserCards';
 import { RoleSelectorCards } from '../components/home/RoleSelectorCards';
-import { AuthProvider } from '../context/AuthContext';
-import { WalletProvider } from '../context/WalletProvider';
-import { NotificationProvider } from '../context/NotificationProvider';
-import { AiProvider } from '../context/AiProvider';
-import { CreditGateProvider } from '../context/CreditGateProvider';
 import { MobileCardGrid, MobileCardSpacing } from '../components/mobile/MobileCardSpacingFix';
 
 // Simple fallback loading component
@@ -67,7 +62,7 @@ const Index: React.FC = () => {
     );
   };
 
-  const PageContent = () => (
+  return (
     <div className="min-h-screen bg-gradient-to-br from-[#fff7f0] to-[#ffe4d6]">
       <Navbar />
       <HeroSection />
@@ -152,20 +147,6 @@ const Index: React.FC = () => {
       
       <Footer />
     </div>
-  );
-
-  return (
-    <AuthProvider>
-      <WalletProvider>
-        <NotificationProvider>
-          <AiProvider>
-            <CreditGateProvider>
-              <PageContent />
-            </CreditGateProvider>
-          </AiProvider>
-        </NotificationProvider>
-      </WalletProvider>
-    </AuthProvider>
   );
 };
 
