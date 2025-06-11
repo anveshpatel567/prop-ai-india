@@ -9,7 +9,7 @@ import { WalletProvider } from '@/context/WalletContext';
 import { NotificationProvider } from '@/context/NotificationProvider';
 import { AiProvider } from '@/context/AiProvider';
 import { CreditGateProvider } from '@/context/CreditGateProvider';
-import AppRoutes from '@/AppRoutes';
+import AppRoutes from './AppRoutes';
 import './index.css'
 
 console.log('Starting React application...');
