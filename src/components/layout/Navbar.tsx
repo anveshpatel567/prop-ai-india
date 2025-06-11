@@ -1,6 +1,5 @@
 
 import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/context/AuthContext';
 import { UserWalletBadge } from '@/components/common/UserWalletBadge';
@@ -10,55 +9,24 @@ export const Navbar: React.FC = () => {
   console.log('Navbar rendering...');
   
   const { user, logout } = useAuth();
-  
-  // Add safety check for router context
-  let navigate;
-  let hasRouterContext = true;
-  
-  try {
-    navigate = useNavigate();
-  } catch (error) {
-    console.error('Router context not available in Navbar:', error);
-    hasRouterContext = false;
-    // Fallback navigation function
-    navigate = (path: string) => {
-      window.location.href = path;
-    };
-  }
 
   const handleLogout = async () => {
     console.log('Logout initiated...');
     await logout();
-    if (hasRouterContext && typeof navigate === 'function') {
-      navigate('/');
-    } else {
-      window.location.href = '/';
-    }
+    window.location.href = '/';
+  };
+
+  // Safe navigation function that doesn't rely on router context
+  const navigate = (path: string) => {
+    window.location.href = path;
   };
 
   const NavLink: React.FC<{ to: string; children: React.ReactNode; className?: string }> = ({ to, children, className }) => {
-    if (!hasRouterContext) {
-      return (
-        <a href={to} className={className}>
-          {children}
-        </a>
-      );
-    }
-    
-    try {
-      return (
-        <Link to={to} className={className}>
-          {children}
-        </Link>
-      );
-    } catch (error) {
-      console.error('Link component error:', error);
-      return (
-        <a href={to} className={className}>
-          {children}
-        </a>
-      );
-    }
+    return (
+      <a href={to} onClick={(e) => { e.preventDefault(); navigate(to); }} className={className}>
+        {children}
+      </a>
+    );
   };
 
   return (
