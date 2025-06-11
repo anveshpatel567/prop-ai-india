@@ -65,6 +65,27 @@ class AppErrorBoundary extends React.Component<
 
 export default function App() {
   console.log('App component mounting...');
+  console.log('React object:', React);
+  console.log('React.useEffect:', React.useEffect);
+  
+  // Early return with fallback if React is not properly loaded
+  if (!React || !React.useEffect) {
+    console.error('React is not properly loaded!');
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="text-center p-8">
+          <div className="text-2xl font-bold text-red-600 mb-4">Loading Error</div>
+          <div className="text-gray-600 mb-4">React framework is not properly initialized.</div>
+          <button 
+            onClick={() => window.location.reload()} 
+            className="bg-blue-500 text-white px-4 py-2 rounded"
+          >
+            Refresh Page
+          </button>
+        </div>
+      </div>
+    );
+  }
   
   return (
     <AppErrorBoundary>
