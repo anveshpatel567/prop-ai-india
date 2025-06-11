@@ -13,17 +13,22 @@ interface WalletContextType {
 const WalletContext = createContext<WalletContextType | null>(null);
 
 export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  // ✅ Always call hooks at the top level - never conditionally
+  // ✅ SSR-safe: All hooks declared unconditionally
   const [isMounted, setIsMounted] = useState(false);
   const [balance, setBalance] = useState<WalletBalance | null>(null);
   const [receipts, setReceipts] = useState<PaymentReceipt[]>([]);
 
+  // ✅ SSR-safe: Mount detection
   useEffect(() => {
-    setIsMounted(true);
+    if (typeof window !== 'undefined') {
+      setIsMounted(true);
+    }
   }, []);
 
+  // ✅ SSR-safe: Initialize wallet data only after mounting
   useEffect(() => {
-    // Initialize wallet data after mounting
+    if (!isMounted) return;
+
     const initializeWallet = () => {
       const dummyBalance: WalletBalance = {
         id: '1',
@@ -37,7 +42,7 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 
     const timeoutId = setTimeout(initializeWallet, 50);
     return () => clearTimeout(timeoutId);
-  }, []);
+  }, [isMounted]);
 
   const addCredits = async (amount: number, receiptUrl: string) => {
     const newReceipt: PaymentReceipt = {
@@ -81,8 +86,20 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     console.log('Refreshing wallet balance...');
   };
 
-  // ✅ Safe guard AFTER all hooks are called
-  if (!isMounted) return null;
+  // ✅ SSR-safe: Provide loading state during hydration
+  if (!isMounted) {
+    return (
+      <WalletContext.Provider value={{
+        balance: null,
+        receipts: [],
+        addCredits,
+        deductCredits,
+        refreshBalance
+      }}>
+        {children}
+      </WalletContext.Provider>
+    );
+  }
 
   return (
     <WalletContext.Provider value={{

@@ -20,25 +20,31 @@ interface AiContextType {
 const AiContext = createContext<AiContextType | null>(null);
 
 export const AiProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  // ✅ Always call hooks at the top level - never conditionally
+  // ✅ SSR-safe: All hooks declared unconditionally
   const [isMounted, setIsMounted] = useState(false);
   const [aiTools, setAiTools] = useState<AiTool[]>([]);
 
+  // ✅ SSR-safe: Mount detection
   useEffect(() => {
     if (typeof window !== 'undefined') {
       setIsMounted(true);
-      
-      // Initialize default AI tools after mounting
-      const defaultTools: AiTool[] = [
-        { id: '1', name: 'ai_search', enabled: true, creditCost: 10, description: 'AI-powered property search' },
-        { id: '2', name: 'smart_pricing', enabled: true, creditCost: 30, description: 'AI pricing analysis' },
-        { id: '3', name: 'brochure_parser', enabled: true, creditCost: 50, description: 'Brochure parsing' },
-        { id: '4', name: 'video_generator', enabled: true, creditCost: 100, description: 'Video generation' },
-        { id: '5', name: 'lead_scorer', enabled: true, creditCost: 25, description: 'Lead scoring' },
-      ];
-      setAiTools(defaultTools);
     }
   }, []);
+
+  // ✅ SSR-safe: Initialize AI tools only after mounting
+  useEffect(() => {
+    if (!isMounted) return;
+    
+    // Initialize default AI tools after mounting
+    const defaultTools: AiTool[] = [
+      { id: '1', name: 'ai_search', enabled: true, creditCost: 10, description: 'AI-powered property search' },
+      { id: '2', name: 'smart_pricing', enabled: true, creditCost: 30, description: 'AI pricing analysis' },
+      { id: '3', name: 'brochure_parser', enabled: true, creditCost: 50, description: 'Brochure parsing' },
+      { id: '4', name: 'video_generator', enabled: true, creditCost: 100, description: 'Video generation' },
+      { id: '5', name: 'lead_scorer', enabled: true, creditCost: 25, description: 'Lead scoring' },
+    ];
+    setAiTools(defaultTools);
+  }, [isMounted]);
 
   const isToolEnabled = (toolName: string): boolean => {
     if (!isMounted) return false;
@@ -58,12 +64,18 @@ export const AiProvider: React.FC<{ children: React.ReactNode }> = ({ children }
     ));
   };
 
-  // ✅ Safe guard AFTER all hooks are called
+  // ✅ SSR-safe: Provide loading state during hydration
   if (!isMounted) {
     return (
-      <div className="fixed bottom-28 right-4 bg-purple-100 px-4 py-2 rounded-lg shadow-lg text-sm z-50">
-        🤖 AI context initializing...
-      </div>
+      <AiContext.Provider value={{
+        aiTools: [],
+        setAiTools: () => {},
+        isToolEnabled: () => false,
+        getToolCost: () => 0,
+        toggleTool: () => {}
+      }}>
+        {children}
+      </AiContext.Provider>
     );
   }
 

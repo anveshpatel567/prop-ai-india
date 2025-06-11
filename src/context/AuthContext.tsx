@@ -18,19 +18,23 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | null>(null);
 
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  // ✅ Always call hooks at the top level - never conditionally
-  const [isClient, setIsClient] = useState(false);
+  // ✅ SSR-safe: No hooks called when context might be null
+  const [isMounted, setIsMounted] = useState(false);
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  // ✅ SSR-safe: Mount detection happens after hydration
   useEffect(() => {
-    setIsClient(true);
+    if (typeof window !== 'undefined') {
+      setIsMounted(true);
+    }
   }, []);
 
+  // ✅ SSR-safe: Auth setup only after mounting
   useEffect(() => {
-    if (!isClient) return;
+    if (!isMounted) return;
     
     // Set up auth state listener AFTER mounting
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
@@ -49,7 +53,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     });
 
     return () => subscription.unsubscribe();
-  }, [isClient]);
+  }, [isMounted]);
 
   const login = async (email: string, password: string): Promise<void> => {
     try {
@@ -76,7 +80,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       
       const { error } = await supabase.auth.signUp({
         email: data.email,
-        password: 'temporary_password_123', // This should be provided by user
+        password: 'temporary_password_123',
         options: {
           emailRedirectTo: redirectUrl,
           data: {
@@ -110,15 +114,31 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     }
   };
 
-  // ✅ Safe guard AFTER all hooks are called
-  if (!isClient) return null;
+  // ✅ SSR-safe: Return loading state during hydration
+  if (!isMounted) {
+    return (
+      <AuthContext.Provider value={{
+        user: null,
+        session: null,
+        isLoading: true,
+        isMounted: false,
+        login,
+        register,
+        logout,
+        updateProfile,
+        error: null
+      }}>
+        {children}
+      </AuthContext.Provider>
+    );
+  }
 
   return (
     <AuthContext.Provider value={{
       user,
       session,
       isLoading,
-      isMounted: isClient,
+      isMounted,
       login,
       register,
       logout,

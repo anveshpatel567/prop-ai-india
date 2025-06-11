@@ -21,26 +21,33 @@ interface NotificationContextType {
 const NotificationContext = createContext<NotificationContextType | null>(null);
 
 export const NotificationProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  // ✅ Always call hooks at the top level - never conditionally
+  // ✅ SSR-safe: All hooks declared unconditionally
   const [isMounted, setIsMounted] = useState(false);
   const [notifications, setNotifications] = useState<Notification[]>([]);
 
+  // ✅ SSR-safe: Mount detection
   useEffect(() => {
     if (typeof window !== 'undefined') {
       setIsMounted(true);
-      
-      // Load notifications from localStorage after mounting
-      const stored = localStorage.getItem("freeproplist_notifications");
-      if (stored) {
-        try {
-          setNotifications(JSON.parse(stored));
-        } catch (error) {
-          console.error('Failed to load notifications from storage:', error);
-        }
-      }
     }
   }, []);
 
+  // ✅ SSR-safe: localStorage access only after mounting
+  useEffect(() => {
+    if (!isMounted) return;
+    
+    // Load notifications from localStorage after mounting
+    const stored = localStorage.getItem("freeproplist_notifications");
+    if (stored) {
+      try {
+        setNotifications(JSON.parse(stored));
+      } catch (error) {
+        console.error('Failed to load notifications from storage:', error);
+      }
+    }
+  }, [isMounted]);
+
+  // ✅ SSR-safe: localStorage save only when mounted
   useEffect(() => {
     if (isMounted && notifications.length > 0) {
       localStorage.setItem("freeproplist_notifications", JSON.stringify(notifications));
@@ -73,14 +80,20 @@ export const NotificationProvider: React.FC<{ children: React.ReactNode }> = ({ 
     return notifications.filter(n => !n.isRead).length;
   };
 
-  // ✅ Safe guard AFTER all hooks are called
+  // ✅ SSR-safe: Provide loading state during hydration
   if (!isMounted) {
     return (
-      <div className="fixed bottom-16 right-4 bg-blue-100 px-4 py-2 rounded-lg shadow-lg text-sm z-50">
-        📱 Notification context initializing...
-      </div>
+      <NotificationContext.Provider value={{
+        notifications: [],
+        addNotification: () => {},
+        markAsRead: () => {},
+        removeNotification: () => {},
+        getUnreadCount: () => 0
+      }}>
+        {children}
+      </NotificationContext.Provider>
     );
-  }
+    };
 
   return (
     <NotificationContext.Provider value={{
