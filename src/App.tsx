@@ -10,6 +10,8 @@ import { AiProvider } from '@/context/AiContext';
 import { CreditGateProvider } from '@/context/CreditGateContext';
 
 export default function App() {
+  console.log('App component mounting...');
+  
   return (
     <HelmetProvider>
       <BrowserRouter>

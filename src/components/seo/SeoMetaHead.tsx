@@ -19,6 +19,8 @@ export const SeoMetaHead: React.FC<SeoMetaHeadProps> = ({
   canonicalUrl,
   type = 'website'
 }) => {
+  console.log('SeoMetaHead rendering with title:', title);
+  
   const currentUrl = canonicalUrl || (typeof window !== 'undefined' ? window.location.href : '');
   const siteName = 'FreePropList - AI-Powered Property Platform';
   
@@ -55,6 +57,10 @@ export const SeoMetaHead: React.FC<SeoMetaHeadProps> = ({
     );
   } catch (error) {
     console.error('Error rendering SeoMetaHead:', error);
-    return null;
+    return (
+      <div>
+        <title>{title}</title>
+      </div>
+    );
   }
 };

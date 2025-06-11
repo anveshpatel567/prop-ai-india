@@ -7,14 +7,19 @@ import { UserWalletBadge } from '@/components/common/UserWalletBadge';
 import { LayoutDashboard, Brain, BarChart3, Settings, User, LogOut } from 'lucide-react';
 
 export const Navbar: React.FC = () => {
+  console.log('Navbar rendering...');
+  
   const { user, logout } = useAuth();
   
   // Add safety check for router context
   let navigate;
+  let hasRouterContext = true;
+  
   try {
     navigate = useNavigate();
   } catch (error) {
     console.error('Router context not available in Navbar:', error);
+    hasRouterContext = false;
     // Fallback navigation function
     navigate = (path: string) => {
       window.location.href = path;
@@ -22,8 +27,9 @@ export const Navbar: React.FC = () => {
   }
 
   const handleLogout = async () => {
+    console.log('Logout initiated...');
     await logout();
-    if (typeof navigate === 'function') {
+    if (hasRouterContext && typeof navigate === 'function') {
       navigate('/');
     } else {
       window.location.href = '/';
@@ -31,6 +37,14 @@ export const Navbar: React.FC = () => {
   };
 
   const NavLink: React.FC<{ to: string; children: React.ReactNode; className?: string }> = ({ to, children, className }) => {
+    if (!hasRouterContext) {
+      return (
+        <a href={to} className={className}>
+          {children}
+        </a>
+      );
+    }
+    
     try {
       return (
         <Link to={to} className={className}>

@@ -13,13 +13,24 @@ export const GoBackHomeButton: React.FC<GoBackHomeButtonProps> = ({
   className = '',
   variant = 'outline'
 }) => {
+  console.log('GoBackHomeButton rendering...');
+  
   // Add safety check for router context
+  let location;
+  let hasRouterContext = true;
+  
   try {
-    const location = useLocation();
+    location = useLocation();
     console.log('Current location:', location.pathname);
   } catch (error) {
     console.error('Router context not available:', error);
-    // Fallback to regular button without Link
+    hasRouterContext = false;
+  }
+
+  // If no router context, render fallback button
+  if (!hasRouterContext) {
+    console.log('Rendering fallback button without router context');
+    
     if (variant === 'primary') {
       return (
         <Button 
@@ -44,6 +55,7 @@ export const GoBackHomeButton: React.FC<GoBackHomeButtonProps> = ({
     );
   }
 
+  // Render with router context
   if (variant === 'primary') {
     return (
       <Link to="/">
