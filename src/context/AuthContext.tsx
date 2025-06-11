@@ -19,31 +19,10 @@ const AuthContext = createContext<AuthContextType | null>(null);
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   console.log('AuthProvider mounting...');
   
-  // Initialize state with proper error handling
-  let user, setUser, session, setSession, isLoading, setIsLoading, error, setError;
-  
-  try {
-    [user, setUser] = useState<User | null>(null);
-    [session, setSession] = useState<Session | null>(null);
-    [isLoading, setIsLoading] = useState(true);
-    [error, setError] = useState<string | null>(null);
-  } catch (err) {
-    console.error('Error initializing AuthProvider state:', err);
-    // Fallback to simple component if useState fails
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-red-50">
-        <div className="text-center">
-          <div className="text-red-600 mb-4">Authentication system initialization failed</div>
-          <button 
-            onClick={() => window.location.reload()} 
-            className="bg-red-600 text-white px-4 py-2 rounded"
-          >
-            Reload
-          </button>
-        </div>
-      </div>
-    );
-  }
+  const [user, setUser] = useState<User | null>(null);
+  const [session, setSession] = useState<Session | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     console.log('AuthProvider useEffect running...');
