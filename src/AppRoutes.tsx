@@ -6,6 +6,7 @@ import Index from './pages/index';
 import Search from './pages/search';
 import ListProperty from './pages/list-property';
 import CreateListing from './pages/listing/create';
+import AllListings from './pages/listing/all';
 import AiTools from './pages/ai/index';
 import SeoPreview from './pages/admin/seo-preview';
 import AiEngagement from './pages/admin/ai-engagement';
@@ -28,6 +29,7 @@ export default function AppRoutes() {
       <Route path="/search" element={<PageWrapper><Search /></PageWrapper>} />
       <Route path="/list-property" element={<PageWrapper><ListProperty /></PageWrapper>} />
       <Route path="/listing/create" element={<PageWrapper><CreateListing /></PageWrapper>} />
+      <Route path="/listing/all" element={<PageWrapper><AllListings /></PageWrapper>} />
       <Route path="/ai" element={<PageWrapper><AiTools /></PageWrapper>} />
       <Route path="/login" element={<PageWrapper><Login /></PageWrapper>} />
       <Route path="/admin/seo-preview" element={<PageWrapper><SeoPreview /></PageWrapper>} />
