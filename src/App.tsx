@@ -1,7 +1,6 @@
 
 import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
-import { HelmetProvider } from 'react-helmet-async';
 import AppRoutes from '@/AppRoutes';
 import { AuthProvider } from '@/context/AuthContext';
 import { WalletProvider } from '@/context/WalletProvider';
@@ -57,21 +56,19 @@ export default function App() {
   
   return (
     <AppErrorBoundary>
-      <HelmetProvider>
-        <BrowserRouter>
-          <AuthProvider>
-            <WalletProvider>
-              <NotificationProvider>
-                <AiProvider>
-                  <CreditGateProvider>
-                    <AppRoutes />
-                  </CreditGateProvider>
-                </AiProvider>
-              </NotificationProvider>
-            </WalletProvider>
-          </AuthProvider>
-        </BrowserRouter>
-      </HelmetProvider>
+      <BrowserRouter>
+        <AuthProvider>
+          <WalletProvider>
+            <NotificationProvider>
+              <AiProvider>
+                <CreditGateProvider>
+                  <AppRoutes />
+                </CreditGateProvider>
+              </AiProvider>
+            </NotificationProvider>
+          </WalletProvider>
+        </AuthProvider>
+      </BrowserRouter>
     </AppErrorBoundary>
   );
 }

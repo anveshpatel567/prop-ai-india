@@ -5,8 +5,6 @@ import { Footer } from '../components/layout/Footer';
 import { HeroSection } from '../components/home/HeroSection';
 import { AiTeaserCards } from '../components/home/AiTeaserCards';
 import { RoleSelectorCards } from '../components/home/RoleSelectorCards';
-import { SeoMetaHead } from '../components/seo/SeoMetaHead';
-import { JsonLdSchema } from '../components/seo/JsonLdSchema';
 import { useSeoOverride } from '../hooks/useSeoOverride';
 import { MobileCardGrid, MobileCardSpacing } from '../components/mobile/MobileCardSpacingFix';
 
@@ -26,6 +24,18 @@ const Index: React.FC = () => {
   const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
+    // Set document title directly
+    document.title = 'FreePropList - AI-Powered Property Platform | Smart Real Estate Solutions';
+    
+    // Set meta description directly
+    let metaDescription = document.querySelector('meta[name="description"]');
+    if (!metaDescription) {
+      metaDescription = document.createElement('meta');
+      metaDescription.setAttribute('name', 'description');
+      document.head.appendChild(metaDescription);
+    }
+    metaDescription.setAttribute('content', 'Discover properties with AI-powered search, fraud detection, pricing optimization and more. India\'s most intelligent real estate platform with verified listings and smart matching.');
+
     // Wait a bit to ensure all contexts are initialized
     const timer = setTimeout(() => {
       setIsReady(true);
@@ -38,19 +48,6 @@ const Index: React.FC = () => {
   if (!isReady) {
     return <PageLoading />;
   }
-
-  const { seoData } = useSeoOverride({
-    path: '/',
-    fallbackTitle: 'FreePropList - AI-Powered Property Platform | Smart Real Estate Solutions',
-    fallbackDescription: 'Discover properties with AI-powered search, fraud detection, pricing optimization and more. India\'s most intelligent real estate platform with verified listings and smart matching.'
-  });
-
-  const organizationData = {
-    name: 'FreePropList',
-    description: 'AI-Powered Property Platform for India',
-    url: 'https://freeproplist.com',
-    logo: 'https://freeproplist.com/logo.png'
-  };
 
   // Safe link component that handles potential router context issues
   const SafeLink: React.FC<{ to: string; children: React.ReactNode; className?: string }> = ({ to, children, className }) => {
@@ -68,14 +65,6 @@ const Index: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#fff7f0] to-[#ffe4d6]">
-      <SeoMetaHead
-        title={seoData?.title || 'FreePropList - AI-Powered Property Platform'}
-        description={seoData?.description || 'Discover properties with AI-powered search and smart matching'}
-        keywords={seoData?.keywords}
-        canonicalUrl="https://freeproplist.com/"
-      />
-      <JsonLdSchema type="organization" data={organizationData} />
-      
       <Navbar />
       <HeroSection />
       
