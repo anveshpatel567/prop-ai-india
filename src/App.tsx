@@ -22,17 +22,38 @@ const queryClient = new QueryClient({
 
 export default function App() {
   console.log('App component mounting...');
-  console.log('React in App:', React);
-  console.log('React.useEffect in App:', React.useEffect);
   
-  // Add defensive check for React
-  if (!React || typeof React.useEffect !== 'function') {
-    console.error('React hooks not available!');
+  // Simplified app with error boundary approach
+  try {
+    return (
+      <React.Fragment>
+        <HelmetProvider>
+          <QueryClientProvider client={queryClient}>
+            <BrowserRouter>
+              <AuthProvider>
+                <WalletProvider>
+                  <NotificationProvider>
+                    <AiProvider>
+                      <CreditGateProvider>
+                        <AppRoutes />
+                      </CreditGateProvider>
+                    </AiProvider>
+                  </NotificationProvider>
+                </WalletProvider>
+              </AuthProvider>
+            </BrowserRouter>
+          </QueryClientProvider>
+        </HelmetProvider>
+      </React.Fragment>
+    );
+  } catch (error) {
+    console.error('Error in App component:', error);
     return (
       <div className="min-h-screen flex items-center justify-center bg-red-50">
         <div className="text-center p-8">
-          <h1 className="text-xl font-bold text-red-600 mb-4">React Loading Error</h1>
-          <p className="text-gray-700 mb-4">React hooks are not properly initialized.</p>
+          <h1 className="text-xl font-bold text-red-600 mb-4">App Error</h1>
+          <p className="text-gray-700 mb-4">An error occurred while loading the application.</p>
+          <pre className="bg-white p-4 rounded mb-4 text-left text-sm text-gray-800">{String(error)}</pre>
           <button 
             onClick={() => window.location.reload()} 
             className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
@@ -43,26 +64,4 @@ export default function App() {
       </div>
     );
   }
-  
-  return (
-    <React.Fragment>
-      <HelmetProvider>
-        <QueryClientProvider client={queryClient}>
-          <BrowserRouter>
-            <AuthProvider>
-              <WalletProvider>
-                <NotificationProvider>
-                  <AiProvider>
-                    <CreditGateProvider>
-                      <AppRoutes />
-                    </CreditGateProvider>
-                  </AiProvider>
-                </NotificationProvider>
-              </WalletProvider>
-            </AuthProvider>
-          </BrowserRouter>
-        </QueryClientProvider>
-      </HelmetProvider>
-    </React.Fragment>
-  );
 }
