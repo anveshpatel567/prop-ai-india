@@ -1,6 +1,6 @@
 
-import React from 'react'
-import ReactDOM from 'react-dom/client'
+import React from 'react';
+import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { HelmetProvider } from 'react-helmet-async';
@@ -10,7 +10,7 @@ import { NotificationProvider } from '@/context/NotificationProvider';
 import { AiProvider } from '@/context/AiProvider';
 import { CreditGateProvider } from '@/context/CreditGateProvider';
 import AppRoutes from './AppRoutes';
-import './index.css'
+import './index.css';
 
 console.log('Starting React application...');
 
@@ -24,7 +24,7 @@ const queryClient = new QueryClient({
   },
 });
 
-const App: React.FC = () => {
+const App = () => {
   console.log('App component mounting...');
   
   return (

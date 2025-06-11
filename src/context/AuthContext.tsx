@@ -16,17 +16,22 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
-export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
+  console.log('AuthProvider mounting...');
+  
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    console.log('AuthProvider useEffect running...');
+    
     // Get initial session first
     const getSession = async () => {
       try {
         const { data: { session } } = await supabase.auth.getSession();
+        console.log('Initial session:', session);
         setSession(session);
         setUser(session?.user ?? null);
         setIsLoading(false);
@@ -41,6 +46,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     // Set up auth state listener
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (event, session) => {
+        console.log('Auth state change:', event, session);
         setSession(session);
         setUser(session?.user ?? null);
         setIsLoading(false);
