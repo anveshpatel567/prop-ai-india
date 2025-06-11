@@ -1,4 +1,3 @@
-
 // Flat type definitions for the application
 export interface WalletBalance {
   id: string;
