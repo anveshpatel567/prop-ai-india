@@ -20,9 +20,6 @@ export const SeoMetaHead: React.FC<SeoMetaHeadProps> = ({
 }) => {
   console.log('SeoMetaHead rendering with title:', title);
   
-  const currentUrl = canonicalUrl || (typeof window !== 'undefined' ? window.location.href : '');
-  const siteName = 'FreePropList - AI-Powered Property Platform';
-  
   // For now, let's just use basic HTML head elements without react-helmet-async
   // This avoids the helmet context issues
   React.useEffect(() => {
