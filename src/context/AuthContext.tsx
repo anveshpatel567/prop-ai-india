@@ -17,36 +17,8 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | null>(null);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  console.log('=== AuthProvider Debug ===');
   console.log('AuthProvider mounting...');
 
-  // Enhanced defensive check with error boundary approach
-  try {
-    // Test if hooks are actually callable
-    const testState = useState(null);
-    console.log('✅ useState test successful');
-  } catch (error) {
-    console.error('❌ useState test failed:', error);
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-red-50">
-        <div className="text-center p-8">
-          <h1 className="text-xl font-bold text-red-600 mb-4">React Hooks Error</h1>
-          <p className="text-gray-700 mb-4">useState is not available in AuthProvider</p>
-          <pre className="bg-white p-4 rounded mb-4 text-left text-sm text-gray-800">{String(error)}</pre>
-          <button 
-            onClick={() => window.location.reload()} 
-            className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
-          >
-            Reload Page
-          </button>
-        </div>
-      </div>
-    );
-  }
-
-  console.log('✅ React hooks verified in AuthProvider - proceeding with state setup');
-
-  // Use hooks normally now that we've verified they work
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -175,3 +147,4 @@ export const useAuth = () => {
 };
 
 export default AuthProvider;
+
