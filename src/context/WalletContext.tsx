@@ -12,18 +12,22 @@ interface WalletContextType {
 
 const WalletContext = createContext<WalletContextType | null>(null);
 
-export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const WalletProvider = ({ children }: { children: React.ReactNode }) => {
+  console.log('WalletProvider mounting...');
+  
   const [hasMounted, setHasMounted] = useState(false);
   const [balance, setBalance] = useState<WalletBalance | null>(null);
   const [receipts, setReceipts] = useState<PaymentReceipt[]>([]);
 
   useEffect(() => {
+    console.log('WalletProvider initial mount effect...');
     setHasMounted(true);
   }, []);
 
   useEffect(() => {
     if (!hasMounted) return;
 
+    console.log('WalletProvider initializing wallet...');
     const initializeWallet = () => {
       const dummyBalance: WalletBalance = {
         id: '1',
@@ -33,6 +37,7 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
         status: 'active'
       };
       setBalance(dummyBalance);
+      console.log('Wallet initialized with balance:', dummyBalance);
     };
 
     const timeoutId = setTimeout(initializeWallet, 50);
@@ -40,6 +45,7 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   }, [hasMounted]);
 
   const addCredits = async (amount: number, receiptUrl: string) => {
+    console.log('Adding credits:', amount, receiptUrl);
     const newReceipt: PaymentReceipt = {
       id: Date.now().toString(),
       user_id: '1',
@@ -63,7 +69,9 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   };
 
   const deductCredits = async (amount: number, toolName: string): Promise<boolean> => {
+    console.log('Deducting credits:', amount, 'for tool:', toolName);
     if (!balance || balance.balance < amount) {
+      console.log('Insufficient credits for deduction');
       return false;
     }
 
@@ -82,17 +90,20 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   };
 
   if (!hasMounted) {
+    console.log('WalletProvider not mounted yet, returning null');
     return null;
   }
 
+  const contextValue: WalletContextType = {
+    balance,
+    receipts,
+    addCredits,
+    deductCredits,
+    refreshBalance
+  };
+
   return (
-    <WalletContext.Provider value={{
-      balance,
-      receipts,
-      addCredits,
-      deductCredits,
-      refreshBalance
-    }}>
+    <WalletContext.Provider value={contextValue}>
       {children}
     </WalletContext.Provider>
   );
