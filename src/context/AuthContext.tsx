@@ -19,12 +19,30 @@ const AuthContext = createContext<AuthContextType | null>(null);
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   console.log('AuthProvider mounting...');
   
-  const [user, setUser] = useState<User | null>(null);
-  const [session, setSession] = useState<Session | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  // Ensure React hooks are available
+  if (!React || !useState) {
+    console.error('React hooks not available in AuthProvider');
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-red-50">
+        <div className="text-center">
+          <div className="text-red-600 mb-4">React not properly loaded</div>
+          <button 
+            onClick={() => window.location.reload()} 
+            className="bg-red-600 text-white px-4 py-2 rounded"
+          >
+            Reload
+          </button>
+        </div>
+      </div>
+    );
+  }
 
-  useEffect(() => {
+  const [user, setUser] = React.useState<User | null>(null);
+  const [session, setSession] = React.useState<Session | null>(null);
+  const [isLoading, setIsLoading] = React.useState(true);
+  const [error, setError] = React.useState<string | null>(null);
+
+  React.useEffect(() => {
     console.log('AuthProvider useEffect running...');
     
     // Get initial session first
