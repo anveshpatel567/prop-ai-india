@@ -21,11 +21,11 @@ export const Navbar: React.FC = () => {
     window.location.href = path;
   };
 
-  const NavLink: React.FC<{ to: string; children: React.ReactNode; className?: string }> = ({ to, children, className }) => {
+  const NavButton: React.FC<{ to: string; children: React.ReactNode; className?: string }> = ({ to, children, className }) => {
     return (
-      <a href={to} onClick={(e) => { e.preventDefault(); navigate(to); }} className={className}>
+      <button onClick={() => navigate(to)} className={className}>
         {children}
-      </a>
+      </button>
     );
   };
 
@@ -33,43 +33,43 @@ export const Navbar: React.FC = () => {
     <nav className="bg-[#fff7f0] shadow-[0_0_20px_rgba(255,102,0,0.25)] border-b border-[#ff4500] sticky top-0 z-50">
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center h-16">
-          <NavLink to="/" className="flex items-center space-x-2">
+          <NavButton to="/" className="flex items-center space-x-2">
             <div className="text-2xl font-bold bg-gradient-to-r from-[#ff6a00] via-[#ff3c00] to-[#ff0000] bg-clip-text text-transparent">
               FreePropList
             </div>
-          </NavLink>
+          </NavButton>
 
           <div className="flex items-center space-x-6">
             {user ? (
               <>
-                <NavLink to="/dashboard" className="flex items-center space-x-2 text-[#ff4500] hover:text-[#2d0000] transition-colors hover:scale-105 duration-200">
+                <NavButton to="/dashboard" className="flex items-center space-x-2 text-[#ff4500] hover:text-[#2d0000] transition-colors hover:scale-105 duration-200">
                   <LayoutDashboard className="h-5 w-5" />
                   <span className="hidden sm:inline">Dashboard</span>
-                </NavLink>
+                </NavButton>
                 
-                <NavLink to="/ai" className="flex items-center space-x-2 text-[#ff4500] hover:text-[#2d0000] transition-colors hover:scale-105 duration-200">
+                <NavButton to="/ai" className="flex items-center space-x-2 text-[#ff4500] hover:text-[#2d0000] transition-colors hover:scale-105 duration-200">
                   <Brain className="h-5 w-5" />
                   <span className="hidden sm:inline">AI Tools</span>
-                </NavLink>
+                </NavButton>
 
-                <NavLink to="/my-ai-usage" className="flex items-center space-x-2 text-[#ff4500] hover:text-[#2d0000] transition-colors hover:scale-105 duration-200">
+                <NavButton to="/my-ai-usage" className="flex items-center space-x-2 text-[#ff4500] hover:text-[#2d0000] transition-colors hover:scale-105 duration-200">
                   <BarChart3 className="h-5 w-5" />
                   <span className="hidden sm:inline">Usage</span>
-                </NavLink>
+                </NavButton>
 
                 {user.user_metadata?.role === 'admin' && (
-                  <NavLink to="/admin" className="flex items-center space-x-2 text-[#ff4500] hover:text-[#2d0000] transition-colors hover:scale-105 duration-200">
+                  <NavButton to="/admin" className="flex items-center space-x-2 text-[#ff4500] hover:text-[#2d0000] transition-colors hover:scale-105 duration-200">
                     <Settings className="h-5 w-5" />
                     <span className="hidden sm:inline">Admin</span>
-                  </NavLink>
+                  </NavButton>
                 )}
 
                 <UserWalletBadge />
 
-                <NavLink to="/profile" className="flex items-center space-x-2 text-[#ff4500] hover:text-[#2d0000] transition-colors hover:scale-105 duration-200">
+                <NavButton to="/profile" className="flex items-center space-x-2 text-[#ff4500] hover:text-[#2d0000] transition-colors hover:scale-105 duration-200">
                   <User className="h-5 w-5" />
                   <span className="hidden sm:inline">Profile</span>
-                </NavLink>
+                </NavButton>
 
                 <Button
                   onClick={handleLogout}
@@ -82,11 +82,11 @@ export const Navbar: React.FC = () => {
                 </Button>
               </>
             ) : (
-              <NavLink to="/login">
+              <NavButton to="/login">
                 <button className="bg-gradient-to-r from-[#ff6a00] via-[#ff3c00] to-[#ff0000] text-[#fff7f0] font-semibold px-6 py-2 rounded-xl shadow-[0_0_30px_rgba(255,102,0,0.45)] hover:shadow-[0_0_40px_rgba(255,102,0,0.6)] transition-all duration-300 transform hover:scale-105 hover:from-[#ff3c00] hover:to-[#ff6a00]">
                   Start Now
                 </button>
-              </NavLink>
+              </NavButton>
             )}
           </div>
         </div>

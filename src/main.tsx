@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { createRoot } from 'react-dom/client';
-import App from './App';
+import AppWithProviders from './AppWithProviders';
 import './index.css';
 
 console.log('Main.tsx starting...');
@@ -19,7 +19,7 @@ if (!container) {
 console.log('Creating React root...');
 const root = createRoot(container);
 
-console.log('Rendering App...');
-root.render(<App />);
+console.log('Rendering AppWithProviders...');
+root.render(<AppWithProviders />);
 
 console.log('Main.tsx completed.');
