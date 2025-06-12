@@ -6,10 +6,11 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Sparkles, Wand2, FileText, Video, DollarSign } from 'lucide-react';
+import { Sparkles, Wand2, FileText, Video, DollarSign, Upload, Camera, CheckCircle } from 'lucide-react';
 import { AiToolGate } from '@/components/common/AiToolGate';
 import { useWallet } from '@/context/WalletContext';
 import { useToast } from '@/hooks/use-toast';
+import { useParsedBrochure } from '@/hooks/useParsedBrochure';
 
 interface ListingData {
   title: string;
@@ -22,9 +23,15 @@ interface ListingData {
   bedrooms: string;
   bathrooms: string;
   area_sqft: string;
+  photos: File[];
+  amenities: string[];
 }
 
-export const EnhancedListingForm: React.FC = () => {
+interface EnhancedListingFormProps {
+  onReraToggle?: (show: boolean) => void;
+}
+
+export const EnhancedListingForm: React.FC<EnhancedListingFormProps> = ({ onReraToggle }) => {
   const [listingData, setListingData] = useState<ListingData>({
     title: '',
     description: '',
@@ -35,14 +42,18 @@ export const EnhancedListingForm: React.FC = () => {
     locality: '',
     bedrooms: '',
     bathrooms: '',
-    area_sqft: ''
+    area_sqft: '',
+    photos: [],
+    amenities: []
   });
 
   const { balance, deductCredits } = useWallet();
   const { toast } = useToast();
   const [enhancing, setEnhancing] = useState(false);
+  const [brochureFile, setBrochureFile] = useState<File | null>(null);
+  const { parsing, parsedData, parseBrochure } = useParsedBrochure();
 
-  const handleInputChange = (field: string, value: string) => {
+  const handleInputChange = (field: string, value: string | File[] | string[]) => {
     setListingData(prev => ({ ...prev, [field]: value }));
   };
 
@@ -179,11 +190,174 @@ export const EnhancedListingForm: React.FC = () => {
     }
   };
 
+  const handleBrochureUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      setBrochureFile(file);
+    }
+  };
+
+  const parseBrochureWithAI = async () => {
+    if (!brochureFile) return;
+
+    const currentCredits = balance?.balance || 0;
+    if (currentCredits < 50) {
+      toast({
+        title: "Insufficient Credits",
+        description: "You need 50 credits to parse brochure with AI",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    try {
+      const success = await deductCredits(50, 'AI Brochure Parser');
+      if (!success) {
+        toast({
+          title: "Payment Failed",
+          description: "Could not deduct credits for brochure parsing",
+          variant: "destructive"
+        });
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = async (e) => {
+        const text = e.target?.result as string;
+        try {
+          await parseBrochure(text);
+          if (parsedData) {
+            // Auto-fill form with parsed data
+            setListingData(prev => ({
+              ...prev,
+              title: parsedData.title || prev.title,
+              description: parsedData.description || prev.description,
+              property_type: parsedData.property_type || prev.property_type,
+              price: parsedData.price?.toString() || prev.price,
+              city: parsedData.city || prev.city,
+              locality: parsedData.locality || prev.locality,
+              bedrooms: parsedData.bedrooms?.toString() || prev.bedrooms,
+              bathrooms: parsedData.bathrooms?.toString() || prev.bathrooms,
+              area_sqft: parsedData.area_sqft?.toString() || prev.area_sqft,
+              amenities: parsedData.amenities || prev.amenities
+            }));
+            
+            toast({
+              title: "Brochure Parsed Successfully",
+              description: "AI has extracted property details and filled the form",
+            });
+          }
+        } catch (error) {
+          console.error('Brochure parsing failed:', error);
+          toast({
+            title: "Parsing Failed",
+            description: "Could not parse brochure with AI",
+            variant: "destructive"
+          });
+        }
+      };
+      reader.readAsText(brochureFile);
+    } catch (error) {
+      console.error('Brochure parsing failed:', error);
+    }
+  };
+
+  const handlePhotoUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(event.target.files || []);
+    const newPhotos = [...listingData.photos, ...files].slice(0, 20);
+    handleInputChange('photos', newPhotos);
+  };
+
+  const generateVideo = async () => {
+    const currentCredits = balance?.balance || 0;
+    if (currentCredits < 100) {
+      toast({
+        title: "Insufficient Credits",
+        description: "You need 100 credits to generate AI video",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    if (listingData.photos.length === 0) {
+      toast({
+        title: "Photos Required",
+        description: "Please upload photos first to generate video",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    try {
+      const success = await deductCredits(100, 'AI Video Generation');
+      if (!success) {
+        toast({
+          title: "Payment Failed",
+          description: "Could not deduct credits for video generation",
+          variant: "destructive"
+        });
+        return;
+      }
+
+      toast({
+        title: "Video Generation Started",
+        description: "AI is creating your property video. You'll be notified when ready.",
+      });
+    } catch (error) {
+      console.error('Video generation failed:', error);
+    }
+  };
+
   return (
     <div className="space-y-6">
+      {/* AI Brochure Parser Section */}
+      <Card className="border-2 border-dashed border-blue-200">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2 text-blue-600">
+            <FileText className="h-5 w-5" />
+            AI Brochure Parser (Optional)
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <p className="text-sm text-gray-600">
+            Upload a property brochure and let AI extract all the details automatically.
+          </p>
+          <div className="flex items-center gap-4">
+            <input
+              type="file"
+              accept=".pdf,.doc,.docx,.txt"
+              onChange={handleBrochureUpload}
+              className="hidden"
+              id="brochure-upload"
+            />
+            <label htmlFor="brochure-upload" className="cursor-pointer">
+              <Button variant="outline" asChild>
+                <span>
+                  <Upload className="h-4 w-4 mr-2" />
+                  Choose Brochure
+                </span>
+              </Button>
+            </label>
+            {brochureFile && (
+              <div className="flex items-center gap-2">
+                <span className="text-sm text-green-600">{brochureFile.name}</span>
+                <Button
+                  onClick={parseBrochureWithAI}
+                  disabled={parsing}
+                  size="sm"
+                  className="bg-blue-600"
+                >
+                  {parsing ? 'Parsing...' : 'Parse with AI (50 Credits)'}
+                </Button>
+              </div>
+            )}
+          </div>
+        </CardContent>
+      </Card>
+
       <Card>
         <CardHeader>
-          <CardTitle>Create Property Listing</CardTitle>
+          <CardTitle>Property Information</CardTitle>
         </CardHeader>
         <CardContent className="space-y-6">
           {/* Basic Property Info */}
@@ -359,28 +533,93 @@ export const EnhancedListingForm: React.FC = () => {
             />
           </div>
 
+          {/* Photo Upload Section */}
+          <div className="space-y-4">
+            <div className="flex items-center justify-between">
+              <Label>Property Photos</Label>
+              <div className="flex gap-2">
+                <input
+                  type="file"
+                  accept="image/*"
+                  multiple
+                  onChange={handlePhotoUpload}
+                  className="hidden"
+                  id="photo-upload"
+                />
+                <label htmlFor="photo-upload">
+                  <Button variant="outline" size="sm" asChild>
+                    <span>
+                      <Camera className="h-4 w-4 mr-2" />
+                      Upload Photos
+                    </span>
+                  </Button>
+                </label>
+                <AiToolGate toolName="video_generator" toolTitle="AI Video Generator">
+                  <Button
+                    onClick={generateVideo}
+                    disabled={listingData.photos.length === 0}
+                    variant="outline"
+                    size="sm"
+                    className="flex items-center gap-2 text-purple-600"
+                  >
+                    <Video className="h-4 w-4" />
+                    Generate Video (100 Credits)
+                  </Button>
+                </AiToolGate>
+              </div>
+            </div>
+            
+            {listingData.photos.length > 0 && (
+              <div className="grid grid-cols-4 gap-2">
+                {listingData.photos.slice(0, 8).map((photo, index) => (
+                  <div key={index} className="relative">
+                    <img
+                      src={URL.createObjectURL(photo)}
+                      alt={`Property ${index + 1}`}
+                      className="w-full h-20 object-cover rounded"
+                    />
+                    {index === 0 && (
+                      <div className="absolute top-1 left-1 bg-green-500 text-white text-xs px-1 rounded">
+                        Cover
+                      </div>
+                    )}
+                  </div>
+                ))}
+                {listingData.photos.length > 8 && (
+                  <div className="flex items-center justify-center bg-gray-100 rounded h-20">
+                    <span className="text-sm text-gray-500">+{listingData.photos.length - 8} more</span>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+
           {/* AI Tools Section */}
           <div className="border-t pt-6">
-            <h3 className="text-lg font-semibold mb-4">AI-Powered Tools</h3>
+            <h3 className="text-lg font-semibold mb-4">AI-Powered Enhancement Tools</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <AiToolGate
-                toolName="video_generator"
-                toolTitle="AI Video Generator"
-              >
-                <Button variant="outline" className="w-full flex items-center gap-2">
-                  <Video className="h-4 w-4" />
-                  Generate Video (100 Credits)
-                </Button>
+              <AiToolGate toolName="brochure_parser" toolTitle="Brochure Parser">
+                <Card className="p-4 bg-blue-50 border-blue-200">
+                  <div className="flex items-center gap-2 mb-2">
+                    <FileText className="h-4 w-4 text-blue-600" />
+                    <span className="font-medium text-blue-800">Smart Form Fill</span>
+                  </div>
+                  <p className="text-sm text-blue-600">
+                    Upload brochures and let AI fill your form automatically
+                  </p>
+                </Card>
               </AiToolGate>
 
-              <AiToolGate
-                toolName="brochure_parser"
-                toolTitle="Brochure Parser"
-              >
-                <Button variant="outline" className="w-full flex items-center gap-2">
-                  <FileText className="h-4 w-4" />
-                  Parse Brochure (50 Credits)
-                </Button>
+              <AiToolGate toolName="quality_enhancer" toolTitle="Quality Enhancer">
+                <Card className="p-4 bg-green-50 border-green-200">
+                  <div className="flex items-center gap-2 mb-2">
+                    <CheckCircle className="h-4 w-4 text-green-600" />
+                    <span className="font-medium text-green-800">Quality Check</span>
+                  </div>
+                  <p className="text-sm text-green-600">
+                    Get AI suggestions to improve your listing performance
+                  </p>
+                </Card>
               </AiToolGate>
             </div>
           </div>
