@@ -21,6 +21,11 @@ export default defineConfig(({ mode }) => ({
   },
   optimizeDeps: {
     include: ['react', 'react-dom'],
+    exclude: ['@supabase/supabase-js', '@supabase/postgrest-js', '@supabase/storage-js', '@supabase/realtime-js'],
+    force: true,
+  },
+  define: {
+    global: 'globalThis',
   },
   build: {
     rollupOptions: {
@@ -28,6 +33,7 @@ export default defineConfig(({ mode }) => ({
       output: {
         manualChunks: {
           react: ['react', 'react-dom'],
+          supabase: ['@supabase/supabase-js'],
         },
       },
     },

@@ -354,6 +354,79 @@ export interface Database {
           created_at?: string;
         };
       };
+      payment_logs: {
+        Row: {
+          id: string;
+          user_id: string;
+          stripe_session_id: string;
+          amount: number;
+          currency: string;
+          status: string;
+          credits_added: number;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          user_id: string;
+          stripe_session_id: string;
+          amount: number;
+          currency?: string;
+          status?: string;
+          credits_added?: number;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          user_id?: string;
+          stripe_session_id?: string;
+          amount?: number;
+          currency?: string;
+          status?: string;
+          credits_added?: number;
+          created_at?: string;
+          updated_at?: string;
+        };
+      };
+      wallet_transactions: {
+        Row: {
+          id: string;
+          user_id: string;
+          wallet_id: string | null;
+          transaction_type: 'debit' | 'credit' | 'refund';
+          amount: number;
+          description: string | null;
+          reference_id: string | null;
+          reference_type: string | null;
+          status: 'pending' | 'completed' | 'failed';
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          user_id: string;
+          wallet_id?: string | null;
+          transaction_type: 'debit' | 'credit' | 'refund';
+          amount: number;
+          description?: string | null;
+          reference_id?: string | null;
+          reference_type?: string | null;
+          status?: 'pending' | 'completed' | 'failed';
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          user_id?: string;
+          wallet_id?: string | null;
+          transaction_type?: 'debit' | 'credit' | 'refund';
+          amount?: number;
+          description?: string | null;
+          reference_id?: string | null;
+          reference_type?: string | null;
+          status?: 'pending' | 'completed' | 'failed';
+          created_at?: string;
+        };
+      };
       ui_button_controls: {
         Row: {
           id: string;

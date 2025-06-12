@@ -1,45 +1,47 @@
 
-import React from 'react';
+import React, { Suspense, lazy } from 'react';
 import { Routes, Route } from 'react-router-dom';
-import { ErrorBoundary } from '@/components/common/ErrorBoundary';
-import Index from './pages/index';
-import Search from './pages/search';
-import ListProperty from './pages/list-property';
-import CreateListing from './pages/listing/create';
-import AllListings from './pages/listing/all';
-import AiTools from './pages/ai/index';
-import SeoPreview from './pages/admin/seo-preview';
-import AiEngagement from './pages/admin/ai-engagement';
-import CommunityIndex from './pages/community/index';
-import Login from './pages/login';
-import Dashboard from './pages/dashboard/index';
-import NotFound from './pages/404';
-import DevtoolsGpt from './pages/devtools/gpt';
 
-// Wrapper component for pages with error boundaries
-const PageWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => (
-  <ErrorBoundary>
-    {children}
-  </ErrorBoundary>
+// Lazy load components for better performance
+const Home = lazy(() => import('./pages/Home'));
+const Auth = lazy(() => import('./pages/Auth'));
+const ListProperty = lazy(() => import('./pages/list-property'));
+const CreateListing = lazy(() => import('./pages/listing/create'));
+const PropertyDetail = lazy(() => import('./pages/property/[id]'));
+const Search = lazy(() => import('./pages/Search'));
+const Wallet = lazy(() => import('./pages/Wallet'));
+const AdminDashboard = lazy(() => import('./pages/admin/Dashboard'));
+const AiTools = lazy(() => import('./pages/AiTools'));
+const MyAiUsage = lazy(() => import('./pages/MyAiUsage'));
+const GptApiTester = lazy(() => import('./pages/devtools/GptApiTester'));
+const QaTools = lazy(() => import('./pages/QaTools'));
+const Pricing = lazy(() => import('./pages/Pricing'));
+
+const LoadingSpinner = () => (
+  <div className="flex items-center justify-center min-h-[60vh]">
+    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-orange-500"></div>
+  </div>
 );
 
 const AppRoutes: React.FC = () => {
   return (
-    <Routes>
-      <Route path="/" element={<PageWrapper><Index /></PageWrapper>} />
-      <Route path="/dashboard" element={<PageWrapper><Dashboard /></PageWrapper>} />
-      <Route path="/search" element={<PageWrapper><Search /></PageWrapper>} />
-      <Route path="/list-property" element={<PageWrapper><ListProperty /></PageWrapper>} />
-      <Route path="/listing/create" element={<PageWrapper><CreateListing /></PageWrapper>} />
-      <Route path="/listing/all" element={<PageWrapper><AllListings /></PageWrapper>} />
-      <Route path="/ai" element={<PageWrapper><AiTools /></PageWrapper>} />
-      <Route path="/login" element={<PageWrapper><Login /></PageWrapper>} />
-      <Route path="/admin/seo-preview" element={<PageWrapper><SeoPreview /></PageWrapper>} />
-      <Route path="/admin/ai-engagement" element={<PageWrapper><AiEngagement /></PageWrapper>} />
-      <Route path="/community" element={<PageWrapper><CommunityIndex /></PageWrapper>} />
-      <Route path="/devtools/gpt" element={<PageWrapper><DevtoolsGpt /></PageWrapper>} />
-      <Route path="*" element={<PageWrapper><NotFound /></PageWrapper>} />
-    </Routes>
+    <Suspense fallback={<LoadingSpinner />}>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/auth" element={<Auth />} />
+        <Route path="/list-property" element={<ListProperty />} />
+        <Route path="/listing/create" element={<CreateListing />} />
+        <Route path="/property/:id" element={<PropertyDetail />} />
+        <Route path="/search" element={<Search />} />
+        <Route path="/wallet" element={<Wallet />} />
+        <Route path="/admin/*" element={<AdminDashboard />} />
+        <Route path="/ai" element={<AiTools />} />
+        <Route path="/my-ai-usage" element={<MyAiUsage />} />
+        <Route path="/devtools/gpt" element={<GptApiTester />} />
+        <Route path="/qa-tools" element={<QaTools />} />
+        <Route path="/pricing" element={<Pricing />} />
+      </Routes>
+    </Suspense>
   );
 };
 

@@ -4578,6 +4578,50 @@ export type Database = {
           },
         ]
       }
+      payment_logs: {
+        Row: {
+          amount: number
+          created_at: string | null
+          credits_added: number | null
+          currency: string
+          id: string
+          status: string
+          stripe_session_id: string
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          amount: number
+          created_at?: string | null
+          credits_added?: number | null
+          currency?: string
+          id?: string
+          status?: string
+          stripe_session_id: string
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          amount?: number
+          created_at?: string | null
+          credits_added?: number | null
+          currency?: string
+          id?: string
+          status?: string
+          stripe_session_id?: string
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "payment_logs_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       payment_receipts: {
         Row: {
           admin_notes: string | null
