@@ -21,7 +21,13 @@ export default defineConfig(({ mode }) => ({
   },
   optimizeDeps: {
     include: ['react', 'react-dom'],
-    exclude: ['@supabase/supabase-js'],
+    exclude: [
+      '@supabase/supabase-js',
+      '@supabase/postgrest-js',
+      '@supabase/storage-js',
+      '@supabase/realtime-js',
+      '@supabase/gotrue-js'
+    ],
   },
   build: {
     rollupOptions: {
@@ -32,5 +38,8 @@ export default defineConfig(({ mode }) => ({
         },
       },
     },
+  },
+  ssr: {
+    noExternal: ['@supabase/supabase-js'],
   },
 }));
