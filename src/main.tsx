@@ -12,10 +12,12 @@ import { CreditGateProvider } from '@/context/CreditGateProvider';
 import AppRoutes from './AppRoutes';
 import './index.css';
 
+// Cache bust comment - force reload: 2025-06-12-08:15
 console.log('Starting React application...');
 console.log('React version:', React.version);
 console.log('React available:', !!React);
 console.log('useState available:', !!React.useState);
+console.log('Cache bust timestamp:', Date.now());
 
 // Create QueryClient instance with error handling
 const queryClient = new QueryClient({

@@ -21,5 +21,10 @@ export default defineConfig(({ mode }) => ({
   },
   optimizeDeps: {
     include: ['react', 'react-dom'],
+    force: true, // Force re-bundling to clear cache
+  },
+  // Force cache busting
+  define: {
+    __CACHE_BUST__: JSON.stringify(Date.now()),
   },
 }));
