@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Navbar } from '../components/layout/Navbar';
 import { Footer } from '../components/layout/Footer';
 import { GlassCard } from '../components/layout/GlassCard';
-import { ImprovedSearchInterface } from '../components/search/ImprovedSearchInterface';
+import { EnhancedSearchInterface } from '../components/search/EnhancedSearchInterface';
 import { ListingCard } from '../components/listing/ListingCard';
 import { useSearch } from '../hooks/useSearch';
 
@@ -32,7 +32,7 @@ const Search: React.FC = () => {
         </div>
 
         <div className="space-y-8">
-          <ImprovedSearchInterface
+          <EnhancedSearchInterface
             onSearch={handleManualSearch}
             onAiSearch={handleAiSearch}
             searchResults={searchResults}

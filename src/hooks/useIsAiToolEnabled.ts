@@ -1,7 +1,9 @@
 
-import { useAi } from '@/context/AiProvider';
+import { useCreditGate } from '@/context/CreditGateContext';
 
-export function useIsAiToolEnabled(toolName: string): boolean {
-  const { isToolEnabled } = useAi();
-  return isToolEnabled(toolName);
-}
+export const useIsAiToolEnabled = (toolName: string): boolean => {
+  const { getToolRequirement } = useCreditGate();
+  
+  const requirement = getToolRequirement(toolName);
+  return requirement?.is_enabled ?? false;
+};

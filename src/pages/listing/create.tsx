@@ -2,7 +2,7 @@
 import React from 'react';
 import { Navbar } from '@/components/layout/Navbar';
 import { Footer } from '@/components/layout/Footer';
-import { ListingFormWizard } from '@/components/listing/ListingFormWizard';
+import { EnhancedListingForm } from '@/components/listing/EnhancedListingForm';
 
 const CreateListing: React.FC = () => {
   return (
@@ -14,7 +14,7 @@ const CreateListing: React.FC = () => {
           <p className="text-gray-600">List your property with our step-by-step wizard and AI-powered tools</p>
         </div>
 
-        <ListingFormWizard />
+        <EnhancedListingForm />
       </div>
       <Footer />
     </div>
