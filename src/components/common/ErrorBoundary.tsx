@@ -1,6 +1,6 @@
 
 import React, { Component, ErrorInfo, ReactNode } from 'react';
-import { AlertCircle } from 'lucide-react';
+import { AlertCircle, RefreshCw, Home } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 interface Props {
@@ -30,6 +30,10 @@ export class ErrorBoundary extends Component<Props, State> {
     this.setState({ hasError: false, error: undefined });
   };
 
+  private handleGoHome = () => {
+    window.location.href = '/';
+  };
+
   public render() {
     if (this.state.hasError) {
       if (this.props.fallback) {
@@ -37,31 +41,33 @@ export class ErrorBoundary extends Component<Props, State> {
       }
 
       return (
-        <div className="min-h-screen flex items-center justify-center bg-gray-50">
-          <div className="max-w-md mx-auto text-center p-6">
-            <AlertCircle className="h-12 w-12 text-red-500 mx-auto mb-4" />
-            <h1 className="text-2xl font-bold text-gray-900 mb-2">Something went wrong</h1>
-            <p className="text-gray-600 mb-4">
-              We're sorry, but something unexpected happened. Please try refreshing the page.
+        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-orange-50 to-red-50 px-4">
+          <div className="max-w-md mx-auto text-center p-6 bg-white/80 backdrop-blur-sm border border-orange-500 rounded-lg shadow-lg">
+            <AlertCircle className="h-16 w-16 text-orange-500 mx-auto mb-4" />
+            <h1 className="text-2xl font-bold text-gray-900 mb-2">Oops! Something went wrong</h1>
+            <p className="text-gray-600 mb-6">
+              We encountered an unexpected error. Don't worry, our team has been notified.
             </p>
-            <div className="space-y-2">
-              <Button onClick={this.handleReset} className="w-full">
+            <div className="space-y-3">
+              <Button onClick={this.handleReset} className="w-full bg-gradient-to-r from-orange-500 to-red-600">
+                <RefreshCw className="h-4 w-4 mr-2" />
                 Try Again
               </Button>
               <Button 
                 variant="outline" 
-                onClick={() => window.location.reload()}
-                className="w-full"
+                onClick={this.handleGoHome}
+                className="w-full border-orange-500 text-orange-500 hover:bg-orange-500 hover:text-white"
               >
-                Refresh Page
+                <Home className="h-4 w-4 mr-2" />
+                Go Home
               </Button>
             </div>
             {process.env.NODE_ENV === 'development' && this.state.error && (
               <details className="mt-4 text-left">
-                <summary className="cursor-pointer text-sm text-gray-500">
-                  Error Details (Development)
+                <summary className="cursor-pointer text-sm text-gray-500 mb-2">
+                  Error Details (Development Mode)
                 </summary>
-                <pre className="mt-2 text-xs text-red-600 bg-red-50 p-2 rounded overflow-auto">
+                <pre className="text-xs text-red-600 bg-red-50 p-2 rounded overflow-auto max-h-32">
                   {this.state.error.stack}
                 </pre>
               </details>

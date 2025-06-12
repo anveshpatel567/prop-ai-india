@@ -28,6 +28,7 @@ export default defineConfig(({ mode }) => ({
     global: 'globalThis',
   },
   build: {
+    target: 'es2015',
     rollupOptions: {
       external: [],
       output: {
@@ -41,5 +42,8 @@ export default defineConfig(({ mode }) => ({
       include: [/node_modules/],
       transformMixedEsModules: true,
     },
+  },
+  ssr: {
+    noExternal: ['@supabase/supabase-js', '@supabase/postgrest-js'],
   },
 }));

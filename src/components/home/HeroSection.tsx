@@ -1,9 +1,9 @@
 
 import React from 'react';
+import { Button } from '@/components/ui/button';
+import { Search, Building2, Zap, Shield } from 'lucide-react';
 
 export const HeroSection: React.FC = () => {
-  console.log('HeroSection rendering...');
-
   const handleGetStarted = () => {
     window.location.href = '/search';
   };
@@ -13,78 +13,141 @@ export const HeroSection: React.FC = () => {
   };
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-[#fff7f0] to-[#ffe4d6] overflow-hidden">
-      {/* Background elements */}
-      <div className="absolute inset-0 bg-[url('/placeholder.svg')] opacity-5"></div>
+    <section className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-orange-50 to-red-50 overflow-hidden">
+      {/* Background Pattern */}
+      <div className="absolute inset-0 opacity-5">
+        <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%23ff4500" fill-opacity="0.1"%3E%3Cpath d="M30 30c0-5.5-4.5-10-10-10s-10 4.5-10 10 4.5 10 10 10 10-4.5 10-10zm10 0c0-5.5-4.5-10-10-10s-10 4.5-10 10 4.5 10 10 10 10-4.5 10-10z"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')]"></div>
+      </div>
       
-      <div className="relative z-10 text-center px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto">
-        {/* Main heading */}
-        <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6">
-          <span className="block text-[#2d0000] mb-2">India's Most</span>
-          <span className="block bg-gradient-to-r from-[#ff6a00] via-[#ff3c00] to-[#ff0000] bg-clip-text text-transparent">
-            Intelligent
-          </span>
-          <span className="block text-[#2d0000]">Property Platform</span>
-        </h1>
-
-        {/* Subtitle */}
-        <p className="text-lg sm:text-xl text-[#8b4513] mb-8 max-w-3xl mx-auto leading-relaxed">
-          Discover properties with AI-powered search, fraud detection, pricing optimization and more. 
-          Experience the future of real estate with verified listings and smart matching.
-        </p>
-
-        {/* CTA Buttons */}
-        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
-          <button
-            onClick={handleGetStarted}
-            className="w-full sm:w-auto bg-gradient-to-r from-[#ff6a00] via-[#ff3c00] to-[#ff0000] text-[#fff7f0] font-bold py-4 px-8 rounded-xl shadow-[0_0_30px_rgba(255,102,0,0.45)] hover:shadow-[0_0_40px_rgba(255,102,0,0.6)] transition-all duration-300 ease-in-out transform hover:scale-105 min-h-[56px]"
-          >
-            🔍 Start AI Search
-          </button>
-          
-          <button
-            onClick={handleListProperty}
-            className="w-full sm:w-auto bg-white/20 backdrop-blur-sm text-[#ff4500] font-bold py-4 px-8 rounded-xl border-2 border-[#ff4500] hover:bg-[#ff4500] hover:text-white transition-all duration-300 ease-in-out min-h-[56px]"
-          >
-            🏠 List Your Property
-          </button>
+      <div className="relative z-10 text-center px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto">
+        {/* Top Tagline */}
+        <div className="mb-6 animate-fade-in">
+          <p className="text-sm sm:text-base font-medium text-orange-600 uppercase tracking-wider">
+            India's 1st AI-driven real estate hub
+          </p>
         </div>
 
-        {/* Features grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mt-12">
-          <div className="bg-white/10 backdrop-blur-xl rounded-2xl p-4 sm:p-6 text-center shadow-[0_0_30px_rgba(255,102,0,0.25)] border border-[#ff4500]/20">
-            <div className="w-12 h-12 mx-auto mb-4 bg-gradient-to-r from-[#ff6a00] to-[#ff0000] rounded-full flex items-center justify-center text-white text-xl">
-              🤖
+        {/* Main Heading with Animation */}
+        <div className="animate-slide-up">
+          <h1 className="text-4xl sm:text-5xl lg:text-7xl font-bold mb-6 leading-tight">
+            <span className="block text-gray-900 mb-2">Find Your Perfect</span>
+            <span className="block bg-gradient-to-r from-orange-500 via-red-500 to-pink-500 bg-clip-text text-transparent animate-gradient">
+              Property
+            </span>
+            <span className="block text-gray-900">with AI Power</span>
+          </h1>
+        </div>
+
+        {/* Subtitle */}
+        <p className="text-lg sm:text-xl text-gray-600 mb-8 max-w-3xl mx-auto leading-relaxed animate-fade-in-delayed">
+          Discover verified properties with AI-powered search, fraud detection, smart pricing, and instant matching. 
+          Experience the future of real estate today.
+        </p>
+
+        {/* CTA Buttons with Hover Effects */}
+        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12 animate-fade-in-delayed">
+          <Button
+            onClick={handleGetStarted}
+            size="lg"
+            className="w-full sm:w-auto bg-gradient-to-r from-orange-500 via-red-500 to-pink-500 text-white font-bold py-4 px-8 rounded-xl shadow-[0_0_30px_rgba(255,102,0,0.3)] hover:shadow-[0_0_40px_rgba(255,102,0,0.5)] transition-all duration-300 ease-in-out transform hover:scale-105 animate-pulse-glow"
+          >
+            <Search className="h-5 w-5 mr-2" />
+            Start AI Search
+          </Button>
+          
+          <Button
+            onClick={handleListProperty}
+            variant="outline"
+            size="lg"
+            className="w-full sm:w-auto border-2 border-orange-500 text-orange-500 font-bold py-4 px-8 rounded-xl hover:bg-gradient-to-r hover:from-orange-500 hover:to-red-500 hover:text-white transition-all duration-300 ease-in-out transform hover:scale-105"
+          >
+            <Building2 className="h-5 w-5 mr-2" />
+            List Your Property
+          </Button>
+        </div>
+
+        {/* Feature Cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 animate-stagger-up">
+          <div className="bg-white/20 backdrop-blur-xl rounded-2xl p-6 text-center shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 border border-orange-200">
+            <div className="w-12 h-12 mx-auto mb-4 bg-gradient-to-r from-orange-500 to-red-500 rounded-full flex items-center justify-center text-white">
+              <Zap className="h-6 w-6" />
             </div>
-            <h3 className="font-semibold mb-2 text-[#2d0000]">AI-Powered</h3>
-            <p className="text-sm text-[#8b4513]">Smart search and matching</p>
+            <h3 className="font-semibold mb-2 text-gray-900">AI-Powered</h3>
+            <p className="text-sm text-gray-600">Smart search and instant matching</p>
           </div>
 
-          <div className="bg-white/10 backdrop-blur-xl rounded-2xl p-4 sm:p-6 text-center shadow-[0_0_30px_rgba(255,102,0,0.25)] border border-[#ff4500]/20">
-            <div className="w-12 h-12 mx-auto mb-4 bg-gradient-to-r from-[#ff6a00] to-[#ff0000] rounded-full flex items-center justify-center text-white text-xl">
-              🛡️
+          <div className="bg-white/20 backdrop-blur-xl rounded-2xl p-6 text-center shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 border border-orange-200">
+            <div className="w-12 h-12 mx-auto mb-4 bg-gradient-to-r from-orange-500 to-red-500 rounded-full flex items-center justify-center text-white">
+              <Shield className="h-6 w-6" />
             </div>
-            <h3 className="font-semibold mb-2 text-[#2d0000]">Fraud Detection</h3>
-            <p className="text-sm text-[#8b4513]">Verified listings only</p>
+            <h3 className="font-semibold mb-2 text-gray-900">Fraud Detection</h3>
+            <p className="text-sm text-gray-600">Verified listings only</p>
           </div>
 
-          <div className="bg-white/10 backdrop-blur-xl rounded-2xl p-4 sm:p-6 text-center shadow-[0_0_30px_rgba(255,102,0,0.25)] border border-[#ff4500]/20">
-            <div className="w-12 h-12 mx-auto mb-4 bg-gradient-to-r from-[#ff6a00] to-[#ff0000] rounded-full flex items-center justify-center text-white text-xl">
+          <div className="bg-white/20 backdrop-blur-xl rounded-2xl p-6 text-center shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 border border-orange-200">
+            <div className="w-12 h-12 mx-auto mb-4 bg-gradient-to-r from-orange-500 to-red-500 rounded-full flex items-center justify-center text-white text-xl">
               💰
             </div>
-            <h3 className="font-semibold mb-2 text-[#2d0000]">Smart Pricing</h3>
-            <p className="text-sm text-[#8b4513]">AI pricing optimization</p>
+            <h3 className="font-semibold mb-2 text-gray-900">Smart Pricing</h3>
+            <p className="text-sm text-gray-600">AI pricing optimization</p>
           </div>
 
-          <div className="bg-white/10 backdrop-blur-xl rounded-2xl p-4 sm:p-6 text-center shadow-[0_0_30px_rgba(255,102,0,0.25)] border border-[#ff4500]/20">
-            <div className="w-12 h-12 mx-auto mb-4 bg-gradient-to-r from-[#ff6a00] to-[#ff0000] rounded-full flex items-center justify-center text-white text-xl">
+          <div className="bg-white/20 backdrop-blur-xl rounded-2xl p-6 text-center shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 border border-orange-200">
+            <div className="w-12 h-12 mx-auto mb-4 bg-gradient-to-r from-orange-500 to-red-500 rounded-full flex items-center justify-center text-white text-xl">
               ⚡
             </div>
-            <h3 className="font-semibold mb-2 text-[#2d0000]">Fast Matching</h3>
-            <p className="text-sm text-[#8b4513]">Instant property matches</p>
+            <h3 className="font-semibold mb-2 text-gray-900">Fast Matching</h3>
+            <p className="text-sm text-gray-600">Instant property matches</p>
           </div>
         </div>
       </div>
+
+      <style jsx>{`
+        @keyframes fade-in {
+          from { opacity: 0; transform: translateY(20px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes slide-up {
+          from { opacity: 0; transform: translateY(30px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes pulse-glow {
+          0%, 100% { box-shadow: 0 0 30px rgba(255,102,0,0.3); }
+          50% { box-shadow: 0 0 40px rgba(255,102,0,0.6); }
+        }
+        
+        @keyframes gradient {
+          0%, 100% { background-position: 0% 50%; }
+          50% { background-position: 100% 50%; }
+        }
+        
+        .animate-fade-in {
+          animation: fade-in 0.8s ease-out;
+        }
+        
+        .animate-fade-in-delayed {
+          animation: fade-in 0.8s ease-out 0.2s both;
+        }
+        
+        .animate-slide-up {
+          animation: slide-up 1s ease-out;
+        }
+        
+        .animate-pulse-glow {
+          animation: pulse-glow 2s infinite;
+        }
+        
+        .animate-gradient {
+          background-size: 200% 200%;
+          animation: gradient 3s ease infinite;
+        }
+        
+        .animate-stagger-up {
+          animation: slide-up 0.8s ease-out 0.4s both;
+        }
+      `}</style>
     </section>
   );
 };

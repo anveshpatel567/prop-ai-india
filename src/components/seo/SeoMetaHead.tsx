@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useEffect } from 'react';
 
 interface SeoMetaHeadProps {
   title: string;
@@ -8,24 +8,23 @@ interface SeoMetaHeadProps {
   ogImage?: string;
   canonicalUrl?: string;
   type?: 'website' | 'article';
+  noindex?: boolean;
 }
 
 export const SeoMetaHead: React.FC<SeoMetaHeadProps> = ({
   title,
   description,
   keywords,
-  ogImage = '/placeholder.svg',
+  ogImage = '/icon-512.png',
   canonicalUrl,
-  type = 'website'
+  type = 'website',
+  noindex = false
 }) => {
-  console.log('SeoMetaHead rendering with title:', title);
-  
-  // For now, let's just use basic HTML head elements without react-helmet-async
-  // This avoids the helmet context issues
-  React.useEffect(() => {
+  useEffect(() => {
+    // Update document title
     document.title = title;
     
-    // Update meta description
+    // Update or create meta description
     let metaDescription = document.querySelector('meta[name="description"]');
     if (!metaDescription) {
       metaDescription = document.createElement('meta');
@@ -34,7 +33,7 @@ export const SeoMetaHead: React.FC<SeoMetaHeadProps> = ({
     }
     metaDescription.setAttribute('content', description);
     
-    // Update keywords if provided
+    // Update or create keywords meta tag
     if (keywords) {
       let metaKeywords = document.querySelector('meta[name="keywords"]');
       if (!metaKeywords) {
@@ -44,7 +43,65 @@ export const SeoMetaHead: React.FC<SeoMetaHeadProps> = ({
       }
       metaKeywords.setAttribute('content', keywords);
     }
-  }, [title, description, keywords]);
+    
+    // Update or create Open Graph tags
+    const ogTags = [
+      { property: 'og:title', content: title },
+      { property: 'og:description', content: description },
+      { property: 'og:type', content: type },
+      { property: 'og:image', content: ogImage },
+      { property: 'og:site_name', content: 'FreePropList' },
+    ];
+    
+    ogTags.forEach(({ property, content }) => {
+      let tag = document.querySelector(`meta[property="${property}"]`);
+      if (!tag) {
+        tag = document.createElement('meta');
+        tag.setAttribute('property', property);
+        document.head.appendChild(tag);
+      }
+      tag.setAttribute('content', content);
+    });
+    
+    // Update or create Twitter Card tags
+    const twitterTags = [
+      { name: 'twitter:card', content: 'summary_large_image' },
+      { name: 'twitter:title', content: title },
+      { name: 'twitter:description', content: description },
+      { name: 'twitter:image', content: ogImage },
+    ];
+    
+    twitterTags.forEach(({ name, content }) => {
+      let tag = document.querySelector(`meta[name="${name}"]`);
+      if (!tag) {
+        tag = document.createElement('meta');
+        tag.setAttribute('name', name);
+        document.head.appendChild(tag);
+      }
+      tag.setAttribute('content', content);
+    });
+    
+    // Handle canonical URL
+    if (canonicalUrl) {
+      let canonical = document.querySelector('link[rel="canonical"]');
+      if (!canonical) {
+        canonical = document.createElement('link');
+        canonical.setAttribute('rel', 'canonical');
+        document.head.appendChild(canonical);
+      }
+      canonical.setAttribute('href', canonicalUrl);
+    }
+    
+    // Handle noindex
+    let robotsMeta = document.querySelector('meta[name="robots"]');
+    if (!robotsMeta) {
+      robotsMeta = document.createElement('meta');
+      robotsMeta.setAttribute('name', 'robots');
+      document.head.appendChild(robotsMeta);
+    }
+    robotsMeta.setAttribute('content', noindex ? 'noindex, nofollow' : 'index, follow');
+    
+  }, [title, description, keywords, ogImage, canonicalUrl, type, noindex]);
   
-  return null; // This component only manages document head, no visual output
+  return null; // This component only manages document head
 };

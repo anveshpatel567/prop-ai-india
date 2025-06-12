@@ -1,14 +1,14 @@
-User-agent: Googlebot
-Allow: /
-
-User-agent: Bingbot
-Allow: /
-
-User-agent: Twitterbot
-Allow: /
-
-User-agent: facebookexternalhit
-Allow: /
 
 User-agent: *
 Allow: /
+Allow: /search
+Allow: /property/
+Allow: /listing/
+
+Disallow: /admin/
+Disallow: /devtools/
+Disallow: /test/
+Disallow: /api/
+Disallow: /auth
+
+Sitemap: https://freeproplist.com/sitemap.xml
