@@ -19,6 +19,12 @@ const AuthContext = createContext<AuthContextType | null>(null);
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   console.log('AuthProvider mounting...');
   
+  // Add safety check for React hooks
+  if (!React || !useState) {
+    console.error('React or useState is not available');
+    return <div>Loading...</div>;
+  }
+
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
   const [isLoading, setIsLoading] = useState(true);
