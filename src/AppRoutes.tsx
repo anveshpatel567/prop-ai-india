@@ -9,7 +9,7 @@ const ListProperty = lazy(() => import('./pages/list-property'));
 const CreateListing = lazy(() => import('./pages/listing/create'));
 const PropertyDetail = lazy(() => import('./pages/property/[id]'));
 const Search = lazy(() => import('./pages/search'));
-const Wallet = lazy(() => import('./pages/Wallet'));
+const Wallet = lazy(() => import('./pages/wallet'));
 const AdminDashboard = lazy(() => import('./pages/admin/index'));
 const AiTools = lazy(() => import('./pages/ai/index'));
 const MyAiUsage = lazy(() => import('./pages/my-ai-usage'));
