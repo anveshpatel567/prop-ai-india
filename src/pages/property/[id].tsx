@@ -3,12 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Navbar } from '@/components/layout/Navbar';
 import { Footer } from '@/components/layout/Footer';
-import { GlassCard } from '@/components/layout/GlassCard';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Separator } from '@/components/ui/separator';
-import { BuyCreditsCta } from '@/components/common/BuyCreditsCta';
+import { PropertyDetailView } from '@/components/property/PropertyDetailView';
 import { useWallet } from '@/context/WalletContext';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
@@ -51,7 +46,6 @@ const PropertyDetail: React.FC = () => {
   const [property, setProperty] = useState<PropertyData | null>(null);
   const [agent, setAgent] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
-  const [contacting, setContacting] = useState(false);
 
   useEffect(() => {
     if (!id) {
@@ -65,7 +59,6 @@ const PropertyDetail: React.FC = () => {
     try {
       setLoading(true);
       
-      // Fetch property data
       const { data: propertyData, error: propertyError } = await supabase
         .from('listings')
         .select('*')
@@ -86,7 +79,6 @@ const PropertyDetail: React.FC = () => {
 
       setProperty(propertyData);
 
-      // Fetch agent data
       const { data: agentData, error: agentError } = await supabase
         .from('users')
         .select('id, full_name, email, phone, role')
@@ -121,33 +113,54 @@ const PropertyDetail: React.FC = () => {
       return;
     }
 
-    const currentCredits = balance?.balance || 0;
-    if (currentCredits < 10) {
+    toast({
+      title: "Brochure Request Sent",
+      description: "The agent has been notified of your request.",
+    });
+  };
+
+  const handleNegotiate = () => {
+    if (!user) {
       toast({
-        title: "Insufficient Credits",
-        description: "You need 10 credits to contact the agent.",
+        title: "Login Required",
+        description: "Please login to start negotiations.",
         variant: "destructive"
       });
       return;
     }
 
-    setContacting(true);
-    try {
-      // Deduct credits for contacting agent
-      // This would normally integrate with your credit system
+    toast({
+      title: "AI Negotiation",
+      description: "This feature will be available soon!",
+    });
+  };
+
+  const handleDownloadFlyer = () => {
+    toast({
+      title: "PDF Generation",
+      description: "Property flyer download will be available soon!",
+    });
+  };
+
+  const handleShare = async () => {
+    const shareData = {
+      title: property?.title || 'Property Listing',
+      text: `Check out this property: ${property?.title}`,
+      url: window.location.href,
+    };
+
+    if (navigator.share) {
+      try {
+        await navigator.share(shareData);
+      } catch (error) {
+        console.log('Error sharing:', error);
+      }
+    } else {
+      await navigator.clipboard.writeText(window.location.href);
       toast({
-        title: "Contact Request Sent",
-        description: "The agent has been notified of your interest.",
+        title: "Link Copied",
+        description: "Property link has been copied to clipboard.",
       });
-    } catch (error) {
-      console.error('Contact error:', error);
-      toast({
-        title: "Error",
-        description: "Failed to send contact request.",
-        variant: "destructive"
-      });
-    } finally {
-      setContacting(false);
     }
   };
 
@@ -171,213 +184,33 @@ const PropertyDetail: React.FC = () => {
       <div className="min-h-screen bg-gradient-to-br from-orange-50 to-red-50">
         <Navbar />
         <div className="max-w-4xl mx-auto px-4 py-8">
-          <GlassCard>
-            <div className="p-8 text-center">
-              <h1 className="text-2xl font-bold text-gray-800 mb-4">Property Not Found</h1>
-              <p className="text-gray-600 mb-6">The property you're looking for doesn't exist or is no longer available.</p>
-              <Button onClick={() => navigate('/')} className="bg-gradient-to-r from-orange-500 to-red-600">
-                Back to Home
-              </Button>
-            </div>
-          </GlassCard>
+          <div className="bg-white/80 backdrop-blur-sm border border-orange-500 rounded-lg shadow-lg p-8 text-center">
+            <h1 className="text-2xl font-bold text-gray-800 mb-4">Property Not Found</h1>
+            <p className="text-gray-600 mb-6">The property you're looking for doesn't exist or is no longer available.</p>
+            <button 
+              onClick={() => navigate('/')} 
+              className="bg-gradient-to-r from-orange-500 to-red-600 text-white px-6 py-3 rounded-lg hover:shadow-lg transition-all"
+            >
+              Back to Home
+            </button>
+          </div>
         </div>
         <Footer />
       </div>
     );
   }
 
-  const currentCredits = balance?.balance || 0;
-  const hasInsufficientCredits = currentCredits < 10;
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-orange-50 to-red-50">
       <Navbar />
-      
-      <div className="max-w-6xl mx-auto px-4 py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Main Content */}
-          <div className="lg:col-span-2 space-y-6">
-            {/* Property Images */}
-            <GlassCard>
-              <div className="aspect-video bg-gray-100 rounded-lg overflow-hidden">
-                {property.photos && property.photos.length > 0 ? (
-                  <img 
-                    src={property.photos[0]} 
-                    alt={property.title}
-                    className="w-full h-full object-cover"
-                  />
-                ) : (
-                  <div className="flex items-center justify-center h-full text-gray-500">
-                    <div className="text-center">
-                      <div className="text-6xl mb-4">🏠</div>
-                      <p>No image available</p>
-                    </div>
-                  </div>
-                )}
-              </div>
-            </GlassCard>
-
-            {/* Property Details */}
-            <GlassCard>
-              <div className="p-6">
-                <div className="flex items-start justify-between mb-4">
-                  <div>
-                    <h1 className="text-3xl font-bold text-gray-800 mb-2">{property.title}</h1>
-                    <div className="flex items-center gap-2 mb-4">
-                      <Badge variant="secondary" className="capitalize">
-                        {property.property_type}
-                      </Badge>
-                      <Badge variant="outline" className="capitalize">
-                        For {property.listing_type}
-                      </Badge>
-                    </div>
-                  </div>
-                  <div className="text-right">
-                    <p className="text-3xl font-bold text-orange-600">
-                      ₹{property.price.toLocaleString()}
-                    </p>
-                    {property.listing_type === 'rent' && (
-                      <p className="text-sm text-gray-600">per month</p>
-                    )}
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-                  {property.area_sqft && (
-                    <div className="text-center p-3 bg-white/50 rounded-lg">
-                      <p className="text-2xl font-bold text-gray-800">{property.area_sqft}</p>
-                      <p className="text-sm text-gray-600">Sq Ft</p>
-                    </div>
-                  )}
-                  {property.bedrooms && (
-                    <div className="text-center p-3 bg-white/50 rounded-lg">
-                      <p className="text-2xl font-bold text-gray-800">{property.bedrooms}</p>
-                      <p className="text-sm text-gray-600">Bedrooms</p>
-                    </div>
-                  )}
-                  {property.bathrooms && (
-                    <div className="text-center p-3 bg-white/50 rounded-lg">
-                      <p className="text-2xl font-bold text-gray-800">{property.bathrooms}</p>
-                      <p className="text-sm text-gray-600">Bathrooms</p>
-                    </div>
-                  )}
-                  <div className="text-center p-3 bg-white/50 rounded-lg">
-                    <p className="text-lg font-bold text-gray-800">{property.city}</p>
-                    <p className="text-sm text-gray-600">City</p>
-                  </div>
-                </div>
-
-                <Separator className="my-6" />
-
-                <div>
-                  <h3 className="text-lg font-semibold text-gray-800 mb-3">Description</h3>
-                  <p className="text-gray-600 leading-relaxed">
-                    {property.description || 'No description available for this property.'}
-                  </p>
-                </div>
-
-                {property.amenities && property.amenities.length > 0 && (
-                  <>
-                    <Separator className="my-6" />
-                    <div>
-                      <h3 className="text-lg font-semibold text-gray-800 mb-3">Amenities</h3>
-                      <div className="flex flex-wrap gap-2">
-                        {property.amenities.map((amenity, index) => (
-                          <Badge key={index} variant="outline">
-                            {amenity}
-                          </Badge>
-                        ))}
-                      </div>
-                    </div>
-                  </>
-                )}
-              </div>
-            </GlassCard>
-          </div>
-
-          {/* Sidebar */}
-          <div className="space-y-6">
-            {/* Agent Info */}
-            {agent && (
-              <Card>
-                <CardHeader>
-                  <CardTitle>Contact Agent</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div>
-                    <p className="font-semibold text-gray-800">{agent.full_name}</p>
-                    <p className="text-sm text-gray-600 capitalize">{agent.role}</p>
-                  </div>
-                  
-                  <div className="space-y-2">
-                    <p className="text-sm text-gray-600">Email: {agent.email}</p>
-                    {agent.phone && (
-                      <p className="text-sm text-gray-600">Phone: {agent.phone}</p>
-                    )}
-                  </div>
-
-                  {hasInsufficientCredits ? (
-                    <BuyCreditsCta 
-                      creditsNeeded={10}
-                      toolName="Contact Agent"
-                      className="w-full"
-                    />
-                  ) : (
-                    <Button 
-                      onClick={handleContactAgent}
-                      disabled={contacting}
-                      className="w-full bg-gradient-to-r from-orange-500 to-red-600"
-                    >
-                      {contacting ? 'Contacting...' : 'Contact Agent (10 Credits)'}
-                    </Button>
-                  )}
-                </CardContent>
-              </Card>
-            )}
-
-            {/* Location Info */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Location</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-2">
-                  <p className="font-semibold text-gray-800">{property.city}</p>
-                  {property.locality && (
-                    <p className="text-gray-600">{property.locality}</p>
-                  )}
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Property Info */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Property Information</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                <div className="flex justify-between">
-                  <span className="text-gray-600">Type:</span>
-                  <span className="font-medium capitalize">{property.property_type}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-600">Listed:</span>
-                  <span className="font-medium">
-                    {new Date(property.created_at).toLocaleDateString()}
-                  </span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-600">Status:</span>
-                  <Badge variant="outline" className="capitalize">
-                    {property.status}
-                  </Badge>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-      </div>
-
+      <PropertyDetailView
+        property={property}
+        agent={agent}
+        onContactAgent={handleContactAgent}
+        onNegotiate={handleNegotiate}
+        onDownloadFlyer={handleDownloadFlyer}
+        onShare={handleShare}
+      />
       <Footer />
     </div>
   );
