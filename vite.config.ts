@@ -21,10 +21,16 @@ export default defineConfig(({ mode }) => ({
   },
   optimizeDeps: {
     include: ['react', 'react-dom'],
-    force: true, // Force re-bundling to clear cache
+    exclude: ['@supabase/supabase-js'],
   },
-  // Force cache busting
-  define: {
-    __CACHE_BUST__: JSON.stringify(Date.now()),
+  build: {
+    rollupOptions: {
+      external: [],
+      output: {
+        manualChunks: {
+          react: ['react', 'react-dom'],
+        },
+      },
+    },
   },
 }));

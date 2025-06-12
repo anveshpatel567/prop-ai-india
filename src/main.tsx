@@ -12,12 +12,19 @@ import { CreditGateProvider } from '@/context/CreditGateProvider';
 import AppRoutes from './AppRoutes';
 import './index.css';
 
-// Cache bust comment - force reload: 2025-06-12-08:15
+// Enhanced React availability check
 console.log('Starting React application...');
 console.log('React version:', React.version);
 console.log('React available:', !!React);
 console.log('useState available:', !!React.useState);
-console.log('Cache bust timestamp:', Date.now());
+console.log('useEffect available:', !!React.useEffect);
+console.log('createContext available:', !!React.createContext);
+
+// Verify React hooks are properly available
+if (!React.useState || !React.useEffect || !React.createContext) {
+  console.error('Critical React hooks are missing - potential dual React instance');
+  throw new Error('React hooks not available - please refresh the page');
+}
 
 // Create QueryClient instance with error handling
 const queryClient = new QueryClient({

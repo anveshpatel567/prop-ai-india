@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, createContext, useContext } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import type { User, Session } from '@supabase/supabase-js';
@@ -20,6 +21,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   console.log('React available in AuthProvider:', !!React);
   console.log('useState available in AuthProvider:', !!useState);
   
+  // Safety check for React hooks availability
+  if (typeof useState !== 'function') {
+    console.error('useState is not a function, React context may be corrupted');
+    return <div>Loading React context...</div>;
+  }
+
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
   const [isLoading, setIsLoading] = useState(true);
