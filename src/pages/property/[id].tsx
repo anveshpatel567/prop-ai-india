@@ -318,7 +318,7 @@ const PropertyDetail: React.FC = () => {
 
                   {hasInsufficientCredits ? (
                     <BuyCreditsCta 
-                      requiredCredits={10}
+                      creditsNeeded={10}
                       toolName="Contact Agent"
                       className="w-full"
                     />
