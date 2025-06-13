@@ -20,7 +20,7 @@ export default defineConfig(({ mode }) => ({
     dedupe: ['react', 'react-dom'],
   },
   optimizeDeps: {
-    include: ['react', 'react-dom'],
+    include: ['react', 'react-dom', '@supabase/supabase-js'],
     exclude: ['@supabase/postgrest-js', '@supabase/storage-js', '@supabase/realtime-js'],
     force: true,
   },
@@ -44,6 +44,7 @@ export default defineConfig(({ mode }) => ({
     },
   },
   ssr: {
-    noExternal: ['@supabase/supabase-js', '@supabase/postgrest-js'],
+    noExternal: ['@supabase/supabase-js'],
+    external: ['@supabase/postgrest-js', '@supabase/storage-js', '@supabase/realtime-js'],
   },
 }));

@@ -21,17 +21,17 @@ export const HeroSection: React.FC = () => {
       
       <div className="relative z-10 text-center px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto">
         {/* Top Tagline */}
-        <div className="mb-6 animate-fade-in">
+        <div className="mb-6 animate-fade-in opacity-0 [animation-delay:0.2s] [animation-fill-mode:forwards]">
           <p className="text-sm sm:text-base font-medium text-orange-600 uppercase tracking-wider">
             India&apos;s 1st AI-driven real estate hub
           </p>
         </div>
 
         {/* Main Heading with Animation */}
-        <div className="animate-slide-up">
+        <div className="animate-slide-up opacity-0 [animation-delay:0.4s] [animation-fill-mode:forwards]">
           <h1 className="text-4xl sm:text-5xl lg:text-7xl font-bold mb-6 leading-tight">
             <span className="block text-gray-900 mb-2">Find Your Perfect</span>
-            <span className="block bg-gradient-to-r from-orange-500 via-red-500 to-pink-500 bg-clip-text text-transparent animate-gradient">
+            <span className="block bg-gradient-to-r from-orange-500 via-red-500 to-pink-500 bg-clip-text text-transparent animate-pulse">
               Property
             </span>
             <span className="block text-gray-900">with AI Power</span>
@@ -39,17 +39,17 @@ export const HeroSection: React.FC = () => {
         </div>
 
         {/* Subtitle */}
-        <p className="text-lg sm:text-xl text-gray-600 mb-8 max-w-3xl mx-auto leading-relaxed animate-fade-in-delayed">
+        <p className="text-lg sm:text-xl text-gray-600 mb-8 max-w-3xl mx-auto leading-relaxed opacity-0 animate-fade-in [animation-delay:0.6s] [animation-fill-mode:forwards]">
           Discover verified properties with AI-powered search, fraud detection, smart pricing, and instant matching. 
           Experience the future of real estate today.
         </p>
 
         {/* CTA Buttons with Hover Effects */}
-        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12 animate-fade-in-delayed">
+        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12 opacity-0 animate-fade-in [animation-delay:0.8s] [animation-fill-mode:forwards]">
           <Button
             onClick={handleGetStarted}
             size="lg"
-            className="w-full sm:w-auto bg-gradient-to-r from-orange-500 via-red-500 to-pink-500 text-white font-bold py-4 px-8 rounded-xl shadow-[0_0_30px_rgba(255,102,0,0.3)] hover:shadow-[0_0_40px_rgba(255,102,0,0.5)] transition-all duration-300 ease-in-out transform hover:scale-105 animate-pulse-glow"
+            className="w-full sm:w-auto bg-gradient-to-r from-orange-500 via-red-500 to-pink-500 text-white font-bold py-4 px-8 rounded-xl shadow-[0_0_30px_rgba(255,102,0,0.3)] hover:shadow-[0_0_40px_rgba(255,102,0,0.5)] transition-all duration-300 ease-in-out transform hover:scale-105 hover:animate-pulse"
           >
             <Search className="h-5 w-5 mr-2" />
             Start AI Search
@@ -67,7 +67,7 @@ export const HeroSection: React.FC = () => {
         </div>
 
         {/* Feature Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 animate-stagger-up">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 opacity-0 animate-fade-in [animation-delay:1s] [animation-fill-mode:forwards]">
           <div className="bg-white/20 backdrop-blur-xl rounded-2xl p-6 text-center shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 border border-orange-200">
             <div className="w-12 h-12 mx-auto mb-4 bg-gradient-to-r from-orange-500 to-red-500 rounded-full flex items-center justify-center text-white">
               <Zap className="h-6 w-6" />
@@ -101,55 +101,6 @@ export const HeroSection: React.FC = () => {
           </div>
         </div>
       </div>
-
-      <style>
-        {`
-        @keyframes fade-in {
-          from { opacity: 0; transform: translateY(20px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-        
-        @keyframes slide-up {
-          from { opacity: 0; transform: translateY(30px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-        
-        @keyframes pulse-glow {
-          0%, 100% { box-shadow: 0 0 30px rgba(255,102,0,0.3); }
-          50% { box-shadow: 0 0 40px rgba(255,102,0,0.6); }
-        }
-        
-        @keyframes gradient {
-          0%, 100% { background-position: 0% 50%; }
-          50% { background-position: 100% 50%; }
-        }
-        
-        .animate-fade-in {
-          animation: fade-in 0.8s ease-out;
-        }
-        
-        .animate-fade-in-delayed {
-          animation: fade-in 0.8s ease-out 0.2s both;
-        }
-        
-        .animate-slide-up {
-          animation: slide-up 1s ease-out;
-        }
-        
-        .animate-pulse-glow {
-          animation: pulse-glow 2s infinite;
-        }
-        
-        .animate-gradient {
-          background-size: 200% 200%;
-          animation: gradient 3s ease infinite;
-        }
-        
-        .animate-stagger-up {
-          animation: slide-up 0.8s ease-out 0.4s both;
-        }
-        `}
-      </style>
     </section>
   );
 };
