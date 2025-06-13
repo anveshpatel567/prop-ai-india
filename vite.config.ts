@@ -19,11 +19,20 @@ export default defineConfig(({ mode }) => ({
     },
   },
   optimizeDeps: {
-    exclude: ["@supabase/postgrest-js"]
+    exclude: ["@supabase/postgrest-js"],
+    include: ["@supabase/supabase-js"]
   },
   build: {
     commonjsOptions: {
-      transformMixedEsModules: true
+      transformMixedEsModules: true,
+      include: [/node_modules/]
+    },
+    rollupOptions: {
+      external: (id) => {
+        // Don't externalize supabase client
+        if (id.includes('@supabase/supabase-js')) return false;
+        return false;
+      }
     }
   }
 }));

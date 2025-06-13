@@ -1,5 +1,5 @@
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { supabase } from '@/lib/supabaseClient';
 
 export type SearchResult = {
@@ -13,13 +13,13 @@ export type SearchResult = {
 };
 
 export function useSearch() {
-  const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>(null);
+  const [results, setResults] = useState<SearchResult[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string>('');
 
   const manualSearch = async (filters: any) => {
-    setIsLoading(true);
-    setError(null);
+    setLoading(true);
+    setError('');
     
     try {
       const { data, error } = await supabase
@@ -30,7 +30,7 @@ export function useSearch() {
         
       if (error) {
         setError(error.message);
-        setSearchResults([]);
+        setResults([]);
       } else {
         const mappedResults = (data || []).map(item => ({
           id: item.id,
@@ -41,19 +41,19 @@ export function useSearch() {
           property_type: item.property_type || 'residential',
           listing_type: item.listing_type || 'sale'
         }));
-        setSearchResults(mappedResults);
+        setResults(mappedResults);
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Search failed');
-      setSearchResults([]);
+      setResults([]);
     } finally {
-      setIsLoading(false);
+      setLoading(false);
     }
   };
 
   const aiSearch = async (query: string) => {
-    setIsLoading(true);
-    setError(null);
+    setLoading(true);
+    setError('');
     
     try {
       const { data, error } = await supabase
@@ -65,7 +65,7 @@ export function useSearch() {
         
       if (error) {
         setError(error.message);
-        setSearchResults([]);
+        setResults([]);
       } else {
         const mappedResults = (data || []).map(item => ({
           id: item.id,
@@ -76,20 +76,20 @@ export function useSearch() {
           property_type: item.property_type || 'residential',
           listing_type: item.listing_type || 'sale'
         }));
-        setSearchResults(mappedResults);
+        setResults(mappedResults);
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'AI search failed');
-      setSearchResults([]);
+      setResults([]);
     } finally {
-      setIsLoading(false);
+      setLoading(false);
     }
   };
 
   return { 
-    searchResults, 
-    isLoading, 
-    error: error || '', 
+    searchResults: results, 
+    isLoading: loading, 
+    error, 
     manualSearch, 
     aiSearch 
   };
