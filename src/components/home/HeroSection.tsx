@@ -102,7 +102,8 @@ export const HeroSection: React.FC = () => {
         </div>
       </div>
 
-      <style jsx>{`
+      <style>
+        {`
         @keyframes fade-in {
           from { opacity: 0; transform: translateY(20px); }
           to { opacity: 1; transform: translateY(0); }
@@ -147,7 +148,8 @@ export const HeroSection: React.FC = () => {
         .animate-stagger-up {
           animation: slide-up 0.8s ease-out 0.4s both;
         }
-      `}</style>
+        `}
+      </style>
     </section>
   );
 };
