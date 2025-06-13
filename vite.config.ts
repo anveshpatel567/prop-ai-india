@@ -1,50 +1,25 @@
 
-import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react-swc';
-import path from 'path';
-import { componentTagger } from "lovable-tagger";
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react-swc";
+import path from "path";
 
-export default defineConfig(({ mode }) => ({
+export default defineConfig({
   server: {
     host: "::",
     port: 8080,
   },
-  plugins: [
-    react(),
-    mode === 'development' && componentTagger(),
-  ].filter(Boolean),
+  plugins: [react()],
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, './src'),
+      "@": path.resolve(__dirname, "./src"),
     },
-    dedupe: ['react', 'react-dom'],
   },
   optimizeDeps: {
-    include: ['react', 'react-dom', '@supabase/supabase-js'],
-    exclude: ['@supabase/postgrest-js', '@supabase/storage-js', '@supabase/realtime-js'],
-    force: true,
-  },
-  define: {
-    global: 'globalThis',
+    exclude: ["@supabase/postgrest-js"]
   },
   build: {
-    target: 'es2015',
-    rollupOptions: {
-      external: [],
-      output: {
-        manualChunks: {
-          react: ['react', 'react-dom'],
-          supabase: ['@supabase/supabase-js'],
-        },
-      },
-    },
     commonjsOptions: {
-      include: [/node_modules/],
-      transformMixedEsModules: true,
-    },
-  },
-  ssr: {
-    noExternal: ['@supabase/supabase-js'],
-    external: ['@supabase/postgrest-js', '@supabase/storage-js', '@supabase/realtime-js'],
-  },
-}));
+      transformMixedEsModules: true
+    }
+  }
+});

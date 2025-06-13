@@ -2,58 +2,70 @@
 [
   {
     "path": "src/hooks/usePublicListings.ts",
-    "summary": "Fetches all active public listings. Used in home feed and search results."
+    "summary": "Fetches all active public listings with flat types. Used in home feed and search results."
   },
   {
-    "path": "src/hooks/useUserListings.ts",
-    "summary": "Fetches listings created by the logged-in user for dashboard management."
+    "path": "src/hooks/useUserListings.ts", 
+    "summary": "Fetches listings created by the logged-in user for dashboard management with flat types."
   },
   {
     "path": "src/hooks/useListingById.ts",
-    "summary": "Fetches full listing details by ID, used on the property detail page."
+    "summary": "Fetches full listing details by ID with flat types, used on property detail page."
   },
   {
     "path": "src/hooks/useAiResumeLogs.ts",
-    "summary": "Fetches AI resume builder usage logs for the logged-in user."
+    "summary": "Fetches AI resume builder usage logs for logged-in user with flat types."
   },
   {
     "path": "src/hooks/useAgentMatchResults.ts",
-    "summary": "Fetches the latest AI agent match results for the user from Supabase."
+    "summary": "Fetches AI agent match results for user from Supabase with flat types."
   },
   {
     "path": "src/hooks/useSeoSchemas.ts",
-    "summary": "Loads all saved JSON-LD SEO schemas created by the user."
+    "summary": "Loads saved JSON-LD SEO schemas created by user with flat types."
   },
   {
     "path": "src/hooks/useActiveTools.ts",
-    "summary": "Returns all AI tools currently enabled from the admin-controlled tool flags table."
+    "summary": "Returns enabled AI tools from admin-controlled flags table with flat types."
   },
   {
     "path": "src/hooks/useUserCredits.ts",
-    "summary": "Returns remaining and used credits for the current user for AI tool usage tracking."
+    "summary": "Returns remaining and used credits for current user with flat types."
   },
   {
     "path": "src/hooks/useToolAccess.ts",
-    "summary": "Checks whether a specific AI tool is currently enabled for the user."
+    "summary": "Checks if specific AI tool is enabled for user with flat types."
   },
   {
     "path": "src/hooks/useAiUsageLogs.ts",
-    "summary": "Returns full AI credit usage logs (admin-only panel for audit and tracking)."
+    "summary": "Returns AI credit usage logs for admin panel with flat types."
   },
   {
     "path": "src/hooks/useAiCreditSummary.ts",
-    "summary": "Returns total credits used across all users (admin summary panel)."
+    "summary": "Returns total credits used across all users for admin with flat types."
   },
   {
     "path": "src/hooks/useDeveloperAiStats.ts",
-    "summary": "Returns a leaderboard of developers by total AI tool usage (admin view)."
+    "summary": "Returns developer leaderboard by AI tool usage for admin with flat types."
   },
   {
     "path": "src/hooks/useCrmAuditLogs.ts",
-    "summary": "Admin-only audit log for CRM lead interactions and system actions."
+    "summary": "Admin-only audit log for CRM lead interactions with flat types."
   },
   {
-    "path":  "src/hooks/useSearch.ts",
-    "summary": "Updated search hook with flat types for manual and AI-powered property search."
+    "path": "src/hooks/useSearch.ts",
+    "summary": "Property search functionality with AI and manual filters using flat types."
+  },
+  {
+    "path": "src/hooks/useResumeBuilder.ts",
+    "summary": "AI resume generation with flat types and proper error handling."
+  },
+  {
+    "path": "src/hooks/useAgentMatches.ts",
+    "summary": "Agent matching results with flat types for real estate connections."
+  },
+  {
+    "path": "src/hooks/useSeoSchemasFlat.ts",
+    "summary": "SEO schema management with flat types for better search optimization."
   }
 ]
