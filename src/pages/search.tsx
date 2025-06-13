@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Navbar } from '@/components/layout/Navbar';
 import { Footer } from '@/components/layout/Footer';
@@ -104,7 +103,7 @@ const Search: React.FC = () => {
                     <h3 className="font-semibold text-lg mb-2 line-clamp-2">{listing.title || 'Property Title'}</h3>
                     <p className="text-gray-600 text-sm mb-2 flex items-center">
                       <MapPin className="h-4 w-4 mr-1" />
-                      Location
+                      {listing.location}
                     </p>
                     <p className="text-orange-600 font-bold text-lg">₹{(listing.price || 0).toLocaleString()}</p>
                   </CardContent>
