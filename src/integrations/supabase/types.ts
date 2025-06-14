@@ -4974,6 +4974,80 @@ export type Database = {
         }
         Relationships: []
       }
+      resume_summaries: {
+        Row: {
+          created_at: string
+          credits_used: number
+          error_message: string | null
+          id: string
+          resume_id: string
+          status: string
+          summary: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          credits_used?: number
+          error_message?: string | null
+          id?: string
+          resume_id: string
+          status?: string
+          summary: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          credits_used?: number
+          error_message?: string | null
+          id?: string
+          resume_id?: string
+          status?: string
+          summary?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "resume_summaries_resume_id_fkey"
+            columns: ["resume_id"]
+            isOneToOne: false
+            referencedRelation: "resume_uploads"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      resume_uploads: {
+        Row: {
+          created_at: string
+          error_message: string | null
+          extracted_text: string | null
+          file_name: string
+          file_url: string
+          id: string
+          status: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          error_message?: string | null
+          extracted_text?: string | null
+          file_name: string
+          file_url: string
+          id?: string
+          status?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          error_message?: string | null
+          extracted_text?: string | null
+          file_name?: string
+          file_url?: string
+          id?: string
+          status?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       saved_properties: {
         Row: {
           created_at: string | null
