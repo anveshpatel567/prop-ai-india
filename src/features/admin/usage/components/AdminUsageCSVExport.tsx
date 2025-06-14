@@ -1,27 +1,30 @@
-
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Download, FileSpreadsheet } from 'lucide-react';
+
+// ✅ FIX: Define the type explicitly
+type UsageExportRow = {
+  id: string;
+  email: string;
+  fullName: string;
+  totalCreditsUsed: number;
+  lastActiveDate: string;
+  topTool: string;
+  status: string;
+  joinedDate: string;
+};
 
 export function AdminUsageCSVExport({ 
   data,
   filename = "user-usage-report" 
 }: { 
-  data: Array<{
-    id: string;
-    email: string;
-    fullName: string;
-    totalCreditsUsed: number;
-    lastActiveDate: string;
-    topTool: string;
-    status: string;
-    joinedDate: string;
-  }>;
+  data: UsageExportRow[];
   filename?: string;
 }) {
   const [isExporting, setIsExporting] = useState<boolean>(false);
 
-  const convertToCSV = (data: typeof data) => {
+  // ✅ Fix this line to avoid referencing itself
+  const convertToCSV = (rows: UsageExportRow[]) => {
     const headers = [
       'User ID',
       'Email', 
@@ -35,7 +38,7 @@ export function AdminUsageCSVExport({
 
     const csvContent = [
       headers.join(','),
-      ...data.map(row => [
+      ...rows.map(row => [
         row.id,
         `"${row.email}"`,
         `"${row.fullName || ''}"`,
@@ -53,21 +56,16 @@ export function AdminUsageCSVExport({
   const handleExport = async () => {
     try {
       setIsExporting(true);
-      
       const csvContent = convertToCSV(data);
       const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-      
       const link = document.createElement('a');
       const url = URL.createObjectURL(blob);
-      
       link.setAttribute('href', url);
       link.setAttribute('download', `${filename}-${new Date().toISOString().split('T')[0]}.csv`);
       link.style.visibility = 'hidden';
-      
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
-      
       URL.revokeObjectURL(url);
     } catch (error) {
       console.error('Export failed:', error);
