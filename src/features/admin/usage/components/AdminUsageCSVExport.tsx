@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Download, FileSpreadsheet } from 'lucide-react';
 
-// ✅ FIX: Define the type explicitly
-type UsageExportRow = {
+type UsageRow = {
   id: string;
   email: string;
   fullName: string;
@@ -14,20 +13,18 @@ type UsageExportRow = {
   joinedDate: string;
 };
 
-export function AdminUsageCSVExport({ 
-  data,
-  filename = "user-usage-report" 
-}: { 
-  data: UsageExportRow[];
+type Props = {
+  data: UsageRow[];
   filename?: string;
-}) {
-  const [isExporting, setIsExporting] = useState<boolean>(false);
+};
 
-  // ✅ Fix this line to avoid referencing itself
-  const convertToCSV = (rows: UsageExportRow[]) => {
+export function AdminUsageCSVExport({ data, filename = "user-usage-report" }: Props) {
+  const [isExporting, setIsExporting] = useState(false);
+
+  const convertToCSV = () => {
     const headers = [
       'User ID',
-      'Email', 
+      'Email',
       'Full Name',
       'Total Credits Used',
       'Last Active Date',
@@ -36,39 +33,35 @@ export function AdminUsageCSVExport({
       'Joined Date'
     ];
 
-    const csvContent = [
-      headers.join(','),
-      ...rows.map(row => [
-        row.id,
-        `"${row.email}"`,
-        `"${row.fullName || ''}"`,
-        row.totalCreditsUsed,
-        row.lastActiveDate,
-        `"${row.topTool || ''}"`,
-        row.status,
-        row.joinedDate
-      ].join(','))
-    ].join('\n');
+    const csvRows = data.map(row => [
+      row.id,
+      `"${row.email}"`,
+      `"${row.fullName || ''}"`,
+      row.totalCreditsUsed.toString(),
+      row.lastActiveDate,
+      `"${row.topTool || ''}"`,
+      row.status,
+      row.joinedDate
+    ]);
 
-    return csvContent;
+    return [headers, ...csvRows].map(row => row.join(',')).join('\n');
   };
 
-  const handleExport = async () => {
+  const handleExport = () => {
+    setIsExporting(true);
+
     try {
-      setIsExporting(true);
-      const csvContent = convertToCSV(data);
+      const csvContent = convertToCSV();
       const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
       const link = document.createElement('a');
       const url = URL.createObjectURL(blob);
-      link.setAttribute('href', url);
+
+      link.href = url;
       link.setAttribute('download', `${filename}-${new Date().toISOString().split('T')[0]}.csv`);
-      link.style.visibility = 'hidden';
-      document.body.appendChild(link);
       link.click();
-      document.body.removeChild(link);
       URL.revokeObjectURL(url);
-    } catch (error) {
-      console.error('Export failed:', error);
+    } catch (e) {
+      console.error("CSV Export failed:", e);
     } finally {
       setIsExporting(false);
     }
@@ -89,7 +82,7 @@ export function AdminUsageCSVExport({
       ) : (
         <>
           <Download className="h-4 w-4" />
-          <span>Export CSV ({data.length} records)</span>
+          <span>Export CSV ({data.length})</span>
         </>
       )}
     </Button>
